@@ -1,0 +1,166 @@
+/*
+ * D2 Tag — every value is an --l3-* token.
+ * Figma leaves the tag's padding, gap, radius and height unbound; they're mapped
+ * to the Number tokens with the same values (spacing/02·04, radius/04, size/16·20·24).
+ */
+
+.tag {
+  /* Palette per color (below); variants pick from it. */
+  --tag-solid: var(--l3-surface-inverted);
+  --tag-on-solid: var(--l3-content-inverted);
+  --tag-soft: var(--l3-surface-tertiary);
+  --tag-soft-border: var(--l3-border-intense);
+  --tag-soft-content: var(--l3-content-primary);
+
+  --tag-surface: var(--tag-solid);
+  --tag-content: var(--tag-on-solid);
+  --tag-border: transparent;
+  /* Figma stroke weight has no variable; drawn inside, like Figma, via inset shadow. */
+  --tag-border-width: 1px;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-02);
+  max-width: 100%;
+  min-height: var(--tag-height);
+  padding: 0 var(--tag-padding-inline);
+  border-radius: var(--l3-radius-04);
+  box-shadow: inset 0 0 0 var(--tag-border-width) var(--tag-border);
+  background-color: var(--tag-surface);
+  color: var(--tag-content);
+  font: var(--tag-font);
+  vertical-align: middle;
+}
+
+/* ---- Sizes (the tag and label paddings trade places at Medium; text sits 6px in either way) ---- */
+
+.tag[data-size='sm'] {
+  --tag-height: var(--l3-size-16);
+  --tag-padding-inline: var(--l3-spacing-04);
+  --tag-label-padding: var(--l3-spacing-02);
+  --tag-font: var(--l3-text-semibold-10); /* D2/semibold - Label/10 */
+  --tag-icon-size: var(--l3-icon-size-12);
+}
+
+.tag[data-size='md'] {
+  --tag-height: var(--l3-size-20);
+  --tag-padding-inline: var(--l3-spacing-02);
+  --tag-label-padding: var(--l3-spacing-04);
+  --tag-font: var(--l3-text-semibold-12); /* D2/semibold - Label/12 */
+  --tag-icon-size: var(--l3-icon-size-16);
+}
+
+.tag[data-size='lg'] {
+  --tag-height: var(--l3-size-24);
+  --tag-padding-inline: var(--l3-spacing-04);
+  --tag-label-padding: var(--l3-spacing-02);
+  --tag-font: var(--l3-text-semibold-14); /* D2/semibold - Label/14 */
+  --tag-icon-size: var(--l3-icon-size-18);
+}
+
+/* ---- Colors (Figma name → token accent) ---------------------------------- */
+
+.tag[data-color='green'] {
+  --tag-solid: var(--l3-surface-accent-success-default);
+  --tag-soft: var(--l3-surface-accent-success-light);
+  --tag-soft-border: var(--l3-border-accent-success-light);
+  --tag-soft-content: var(--l3-content-accent-success-default);
+}
+
+.tag[data-color='purple'] {
+  --tag-solid: var(--l3-surface-accent-purple-default);
+  --tag-soft: var(--l3-surface-accent-purple-light);
+  --tag-soft-border: var(--l3-border-accent-purple-light);
+  --tag-soft-content: var(--l3-content-accent-purple-default);
+}
+
+.tag[data-color='yellow'] {
+  --tag-solid: var(--l3-surface-accent-warning-default);
+  --tag-on-solid: var(--l3-static-black); /* Figma: yellow is the one solid tag with black text */
+  --tag-soft: var(--l3-surface-accent-warning-light);
+  --tag-soft-border: var(--l3-border-accent-warning-light);
+  --tag-soft-content: var(--l3-content-accent-warning-default);
+}
+
+.tag[data-color='red'] {
+  --tag-solid: var(--l3-surface-accent-error-default);
+  --tag-soft: var(--l3-surface-accent-error-light);
+  --tag-soft-border: var(--l3-border-accent-error-light);
+  --tag-soft-content: var(--l3-content-accent-error-default);
+}
+
+.tag[data-color='indigo'] {
+  --tag-solid: var(--l3-surface-accent-indigo-default);
+  --tag-soft: var(--l3-surface-accent-indigo-light);
+  --tag-soft-border: var(--l3-border-accent-indigo-light);
+  --tag-soft-content: var(--l3-content-accent-indigo-default);
+}
+
+.tag[data-color='teal'] {
+  --tag-solid: var(--l3-surface-accent-teal-default);
+  --tag-soft: var(--l3-surface-accent-teal-light);
+  --tag-soft-border: var(--l3-border-accent-teal-light);
+  --tag-soft-content: var(--l3-content-accent-teal-default);
+}
+
+.tag[data-color='discover'] {
+  --tag-solid: var(--l3-surface-accent-discover-default);
+  --tag-soft: var(--l3-surface-accent-discover-light);
+  --tag-soft-border: var(--l3-border-accent-discover-light);
+  --tag-soft-content: var(--l3-content-accent-discover-default);
+}
+
+.tag[data-color='orange'] {
+  --tag-solid: var(--l3-surface-accent-orange-default);
+  --tag-soft: var(--l3-surface-accent-orange-light);
+  --tag-soft-border: var(--l3-border-accent-orange-light);
+  --tag-soft-content: var(--l3-content-accent-orange-default);
+}
+
+/* ---- Variants ------------------------------------------------------------ */
+
+.tag[data-variant='secondary'] {
+  --tag-surface: var(--tag-soft);
+  --tag-content: var(--tag-soft-content);
+  --tag-border: var(--tag-soft-border);
+}
+
+.tag[data-variant='tertiary'] {
+  --tag-surface: var(--tag-soft);
+  --tag-content: var(--tag-soft-content);
+}
+
+/* Disabled wins over any variant/color (Figma only draws it in Neutral). */
+.tag[data-disabled] {
+  --tag-surface: var(--l3-surface-disabled);
+  --tag-content: var(--l3-content-disabled);
+  --tag-border: transparent;
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.icon {
+  flex: none;
+  display: inline-flex;
+  width: var(--tag-icon-size);
+  height: var(--tag-icon-size);
+}
+
+.icon > :is(svg, img, span) {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  display: flex;
+  min-width: 0;
+  padding-inline: var(--tag-label-padding);
+}
+
+.labelText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

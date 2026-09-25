@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
-import { MaskIcon } from './icons.tsx'
+import { MaskIcon } from '../MaskIcon'
 import loaderTrack from './assets/loader-track.svg'
 import loaderArc from './assets/loader-arc.svg'
 import styles from './Button.module.css'

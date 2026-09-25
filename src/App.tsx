@@ -6,14 +6,15 @@ import { ColorsPreview } from './preview/ColorsPreview'
 import { TypographyPreview } from './preview/TypographyPreview'
 import { NumbersPreview } from './preview/NumbersPreview'
 import { ButtonPreview } from './preview/ButtonPreview'
+import { TagPreview } from './preview/TagPreview'
 import './App.css'
 
-const tabs = { button: 'Button', colors: 'Colors', typography: 'Typography', numbers: 'Spacing & radius' } as const
+const tabs = { button: 'Button', tag: 'Tag', colors: 'Colors', typography: 'Typography', numbers: 'Spacing & radius' } as const
 type Tab = keyof typeof tabs
 
 function App() {
   const { product, mode, modePreference, availableModes, setProduct, setModePreference } = useTheme()
-  const [tab, setTab] = useState<Tab>('button')
+  const [tab, setTab] = useState<Tab>('tag')
 
   return (
     <main className="preview">
@@ -43,6 +44,7 @@ function App() {
       </nav>
 
       {tab === 'button' && <ButtonPreview />}
+      {tab === 'tag' && <TagPreview />}
       {tab === 'colors' && <ColorsPreview />}
       {tab === 'typography' && <TypographyPreview />}
       {tab === 'numbers' && <NumbersPreview />}
