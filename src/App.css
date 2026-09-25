@@ -125,6 +125,59 @@
   }
 }
 
+.btn-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  color: var(--l3-content-secondary);
+}
+
+.btn-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-controls input:not([type='checkbox']) {
+  font: inherit;
+  width: 160px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-secondary);
+  border: 1px solid var(--l3-border-intense);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-grid-scroll {
+  overflow-x: auto;
+}
+
+.btn-grid {
+  border-collapse: separate;
+  border-spacing: 16px 12px;
+  margin: 0 -16px;
+}
+
+.btn-grid th {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--l3-content-tertiary);
+  white-space: nowrap;
+}
+
+.btn-grid td {
+  min-width: 200px;
+}
+
 .num-list,
 .num-grid {
   list-style: none;

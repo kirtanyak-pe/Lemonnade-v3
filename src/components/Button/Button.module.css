@@ -1,0 +1,268 @@
+/*
+ * L3 Button — every value is an --l3-* token.
+ * Figma's "[Do not change] interaction layer" was only a workaround for hover/press;
+ * here the state-layer tokens tint the background directly (no overlay element).
+ */
+
+.button {
+  /* Set per variant / size / state below. */
+  --btn-surface: transparent;
+  --btn-content: var(--l3-content-primary);
+  --btn-border: transparent;
+  --btn-layer-default: var(--l3-state-layer-dark-default);
+  --btn-layer-hover: var(--l3-state-layer-dark-hover);
+  --btn-layer-pressed: var(--l3-state-layer-dark-pressed);
+  --btn-layer: var(--btn-layer-default);
+  /* Figma stroke weight has no variable; strokes are drawn inside, like Figma, via inset shadow. */
+  --btn-border-width: 1px;
+
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  max-width: 100%;
+  height: var(--btn-height);
+  min-width: var(--btn-height);
+  padding: var(--btn-padding-block) var(--btn-padding-inline);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--btn-radius);
+  box-shadow: inset 0 0 0 var(--btn-border-width) var(--btn-border);
+  background-color: var(--btn-surface);
+  background-image: linear-gradient(var(--btn-layer), var(--btn-layer));
+  color: var(--btn-content);
+  font: var(--btn-font);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:hover {
+  --btn-layer: var(--btn-layer-hover);
+}
+
+.button:active {
+  --btn-layer: var(--btn-layer-pressed);
+}
+
+.button:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* ---- Sizes --------------------------------------------------------------- */
+
+.button[data-size='lg'] {
+  --btn-height: var(--l3-size-control-lg);
+  --btn-padding-block: var(--l3-spacing-12);
+  --btn-padding-inline: var(--l3-spacing-12);
+  --btn-gap: var(--l3-spacing-08);
+  --btn-radius: var(--l3-radius-12);
+  --btn-font: var(--l3-text-bold-16); /* D2/bold/16 */
+  --btn-label-padding: var(--l3-spacing-04);
+  --btn-icon-size: var(--l3-icon-size-24);
+  --btn-loader-size: var(--l3-icon-size-20);
+}
+
+.button[data-size='md'] {
+  --btn-height: var(--l3-size-control-md);
+  --btn-padding-block: var(--l3-spacing-10);
+  --btn-padding-inline: var(--l3-spacing-10);
+  --btn-gap: var(--l3-spacing-04);
+  --btn-radius: var(--l3-radius-12);
+  --btn-font: var(--l3-text-bold-14); /* D2/bold/14 */
+  --btn-label-padding: var(--l3-spacing-04);
+  --btn-icon-size: var(--l3-icon-size-20);
+  --btn-loader-size: var(--l3-icon-size-20);
+}
+
+.button[data-size='sm'] {
+  --btn-height: var(--l3-size-control-sm);
+  --btn-padding-block: var(--l3-spacing-06);
+  --btn-padding-inline: var(--l3-spacing-08);
+  --btn-gap: var(--l3-spacing-02);
+  --btn-radius: var(--l3-radius-08);
+  --btn-font: var(--l3-text-semibold-12); /* D2/semibold - Label/12 */
+  --btn-label-padding: var(--l3-spacing-02);
+  --btn-icon-size: var(--l3-icon-size-16);
+  --btn-loader-size: var(--l3-icon-size-16);
+}
+
+/* Ghost has no side padding; its Medium vertical padding is spacing/08 in Figma. */
+.button[data-variant='ghost'] {
+  --btn-padding-inline: var(--l3-spacing-00);
+  min-width: 0;
+}
+
+.button[data-variant='ghost'][data-size='md'] {
+  --btn-padding-block: var(--l3-spacing-08);
+}
+
+/* ---- Variants ------------------------------------------------------------ */
+
+.button[data-variant='primary'] {
+  --btn-surface: var(--l3-button-primary-surface);
+  --btn-content: var(--l3-button-primary-content);
+  --btn-surface-loading: var(--l3-button-primary-surface-loading);
+  --btn-content-loading: var(--l3-button-primary-content-loading);
+  --btn-surface-disabled: var(--l3-button-primary-surface-disabled);
+  --btn-content-disabled: var(--l3-button-primary-content-disabled);
+  /* Primary sits on the inverted surface, so it uses the light state layer. */
+  --btn-layer-default: var(--l3-state-layer-light-default);
+  --btn-layer-hover: var(--l3-state-layer-light-hover);
+  --btn-layer-pressed: var(--l3-state-layer-light-pressed);
+}
+
+.button[data-variant='secondary'] {
+  --btn-surface: var(--l3-button-secondary-surface);
+  --btn-content: var(--l3-button-secondary-content);
+  --btn-border: var(--l3-button-secondary-border);
+  --btn-surface-loading: var(--l3-button-secondary-surface-loading);
+  --btn-content-loading: var(--l3-button-secondary-content-loading);
+  --btn-border-loading: var(--l3-button-secondary-border-loading);
+  --btn-surface-disabled: transparent; /* Figma: no fill when disabled */
+  --btn-content-disabled: var(--l3-button-secondary-content-disabled);
+  --btn-border-disabled: var(--l3-button-secondary-border-disabled);
+}
+
+.button[data-variant='tertiary'] {
+  --btn-surface: var(--l3-button-tertiary-surface);
+  --btn-content: var(--l3-button-tertiary-content);
+  --btn-border: var(--l3-button-tertiary-border);
+  --btn-surface-loading: var(--l3-button-tertiary-surface-loading);
+  --btn-content-loading: var(--l3-button-tertiary-content-loading);
+  --btn-border-loading: var(--l3-button-tertiary-border-loading);
+  --btn-surface-disabled: transparent; /* Figma: no fill when disabled */
+  --btn-content-disabled: var(--l3-button-tertiary-content-disabled);
+  --btn-border-disabled: var(--l3-button-tertiary-border-disabled);
+}
+
+.button[data-variant='ghost'] {
+  --btn-content: var(--l3-button-ghost-content);
+  --btn-content-loading: var(--l3-button-ghost-content-loading);
+  --btn-content-disabled: var(--l3-button-ghost-content-disabled);
+}
+
+.button[data-variant='brand'] {
+  --btn-surface: var(--l3-button-brand-surface);
+  --btn-content: var(--l3-button-brand-content);
+  --btn-surface-loading: var(--l3-button-brand-surface-loading);
+  --btn-content-loading: var(--l3-button-brand-content-loading);
+  --btn-surface-disabled: var(--l3-button-brand-surface-disabled);
+  --btn-content-disabled: var(--l3-button-brand-content-disabled);
+}
+
+.button[data-variant='buy'] {
+  --btn-surface: var(--l3-button-buy-surface);
+  --btn-content: var(--l3-button-buy-content);
+  --btn-surface-loading: var(--l3-button-buy-surface-loading);
+  --btn-content-loading: var(--l3-button-buy-content-loading);
+  --btn-surface-disabled: var(--l3-button-buy-surface-disabled);
+  --btn-content-disabled: var(--l3-button-buy-content-disabled);
+}
+
+.button[data-variant='sell'] {
+  --btn-surface: var(--l3-button-sell-surface);
+  --btn-content: var(--l3-button-sell-content);
+  --btn-surface-loading: var(--l3-button-sell-surface-loading);
+  --btn-content-loading: var(--l3-button-sell-content-loading);
+  --btn-surface-disabled: var(--l3-button-sell-surface-disabled);
+  --btn-content-disabled: var(--l3-button-sell-content-disabled);
+}
+
+/* ---- States (after variants so they win) ---------------------------------- */
+
+.button[data-state='loading'] {
+  --btn-surface: var(--btn-surface-loading, transparent);
+  --btn-content: var(--btn-content-loading);
+  --btn-border: var(--btn-border-loading, transparent);
+  --btn-layer: var(--btn-layer-default);
+  cursor: progress;
+}
+
+.button[data-state='disabled'] {
+  --btn-surface: var(--btn-surface-disabled, transparent);
+  --btn-content: var(--btn-content-disabled);
+  --btn-border: var(--btn-border-disabled, transparent);
+  --btn-layer: var(--btn-layer-default);
+  cursor: not-allowed;
+}
+
+/* Keep the label/icons in layout (stable width, accessible name) but hide them behind the loader. */
+.button[data-state='loading'] > :not(.loader) {
+  opacity: 0;
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.icon {
+  flex: none;
+  display: inline-flex;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+}
+
+.icon > :is(svg, img, span) {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  display: flex;
+  min-width: 0;
+  padding-inline: var(--btn-label-padding);
+}
+
+.labelText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.maskIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  mask: var(--mask-src) center / 100% 100% no-repeat;
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--btn-loader-size);
+  height: var(--btn-loader-size);
+  /* Spin speed has no Figma variable (no motion tokens yet). */
+  animation: spin 0.8s linear infinite;
+}
+
+.loader > .maskIcon {
+  position: absolute;
+  inset: 0;
+}
+
+/* Arc placement inside the loader, as exported from Figma's loader icon. */
+.loader > .loaderArc {
+  inset: 0.31% 0 35.08% 50.78%;
+  width: auto;
+  height: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation-duration: 2.4s;
+  }
+}
