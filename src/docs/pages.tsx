@@ -10,10 +10,11 @@ import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
 import { BottomSheetVariants } from '../preview/BottomSheetVariants'
 import { AerobarVariants } from '../preview/AerobarVariants'
 import { TextFieldVariants } from '../preview/TextFieldVariants'
+import { ListCellVariants } from '../preview/ListCellVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { AccountDemo, FiltersDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -378,6 +379,43 @@ export const pages: DocPage[] = [
   },
 
   // ---- Data display -----------------------------------------------------------
+  {
+    id: 'list-cell',
+    title: 'List cell',
+    group: 'Data display',
+    description: 'A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.',
+    status: 'Figma synced',
+    altNames: 'List item, row, cell, settings row, menu item',
+    figmaNodeId: '4543:65400',
+    source: 'src/components/ListCell',
+    exports: ['ListCell'],
+    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-semibold-14 · 16', 'text-medium-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    overview: (
+      <>
+        <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
+          <AccountDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Plain or card</h2>
+          <p>Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Tappable rows</h2>
+          <p>Use <code>as="button"</code> or <code>href</code> to make the whole row tappable with a pressed tint. Use <code>as="label"</code> with a Switch or Checkbox in <code>trailing</code> so tapping anywhere on the row toggles it — try “Biometric login”.</p>
+        </section>
+      </>
+    ),
+    variants: <ListCellVariants />,
+    props: [
+      { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
+      { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
+      { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row, or bordered rounded card.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },
+      { name: 'trailing', type: 'ReactNode', description: 'Anything else on the right: Switch, Checkbox, Tag, value text.' },
+      { name: 'dotLeft / dotRight', type: 'boolean', default: 'false', description: 'Figma Dot-L / Dot-R: unread dot on the icon.' },
+      { name: 'as / href / onClick', type: "'div' | 'button' | 'a' | 'label'", description: 'Makes the row tappable (button / a) or a label for a trailing control.' },
+    ],
+  },
   {
     id: 'tag',
     title: 'Tag',

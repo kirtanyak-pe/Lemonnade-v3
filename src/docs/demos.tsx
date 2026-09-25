@@ -5,6 +5,8 @@ import { ButtonGroup } from '../components/ButtonGroup'
 import { BottomSheet, BottomSheetHeader } from '../components/BottomSheet'
 import { Aerobar } from '../components/Aerobar'
 import { TextField } from '../components/TextField'
+import { ListCell } from '../components/ListCell'
+import { ChevronDownIcon } from '../components/icons'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -450,6 +452,51 @@ export function OrderFormDemo() {
       <ButtonGroup className={styles.dock} aria-label="Place order">
         <Button variant="buy" disabled={!ready} onClick={() => setSubmitted(true)}>{submitted ? 'Order placed ✓' : 'Place buy order'}</Button>
       </ButtonGroup>
+    </div>
+  )
+}
+
+export function AccountDemo() {
+  const [expanded, setExpanded] = useState(false)
+  const [biometric, setBiometric] = useState(true)
+  const [unread, setUnread] = useState(true)
+  const icon = <PlaceholderIcon />
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen}`}>
+      <div className={styles.appBar}>Account</div>
+      <div className={styles.scrollArea}>
+        <ListCell as="button" iconLeft={icon} label="Kirtanya K." description="Client ID · LM4821" iconRight={<ChevronDownIcon />} onClick={() => setExpanded((e) => !e)} />
+        {expanded && (
+          <div className={styles.cardStack}>
+            <ListCell variant="card" size="sm" iconLeft={icon} label="Email" description="k••••@peepal.co" />
+            <ListCell variant="card" size="sm" iconLeft={icon} label="Phone" description="+91 ••••• ••921" />
+          </div>
+        )}
+        <div className={styles.sectionLabel + ' ' + styles.listHeading}>Settings</div>
+        <ListCell
+          as="button"
+          iconLeft={icon}
+          dotLeft={unread}
+          label="Notifications"
+          description={unread ? '2 new alerts' : 'All caught up'}
+          iconRight={<ChevronDownIcon />}
+          onClick={() => setUnread(false)}
+        />
+        <ListCell
+          as="label"
+          iconLeft={icon}
+          label="Biometric login"
+          description="Face ID or fingerprint"
+          trailing={<Switch checked={biometric} onChange={(e) => setBiometric(e.target.checked)} />}
+        />
+        <ListCell iconLeft={icon} label="Plan" description="Renews 26 Oct" trailing={<Tag variant="secondary" color="green" size="md">PRO</Tag>} />
+        <div className={styles.sectionLabel + ' ' + styles.listHeading}>Bank accounts</div>
+        <div className={styles.cardStack}>
+          <ListCell variant="card" as="button" iconLeft={icon} label="HDFC Bank ••4821" description="Primary · Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
+          <ListCell variant="card" as="button" iconLeft={icon} label="ICICI Bank ••0937" description="Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
+        </div>
+      </div>
     </div>
   )
 }

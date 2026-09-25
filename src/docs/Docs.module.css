@@ -393,6 +393,17 @@
   overflow: hidden;
 }
 
+.cardStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding: var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-12);
+}
+
+.listHeading {
+  padding: var(--l3-spacing-16) var(--l3-spacing-16) var(--l3-spacing-04);
+}
+
 .formStack {
   display: flex;
   flex-direction: column;

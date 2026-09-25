@@ -10,6 +10,7 @@ import warningAmber14 from './assets/warning-amber-14.svg'
 import checkCircle14 from './assets/check-circle-14.svg'
 import info14 from './assets/info-14.svg'
 import textGrip from './assets/text-grip.svg'
+import keyboardArrowDown from './assets/keyboard-arrow-down.svg'
 
 /** Figma "D2 → arrow_back" (24). */
 export const BackIcon = () => <MaskIcon src={arrowBack} />
@@ -29,3 +30,5 @@ export const CheckCircleIcon = () => <MaskIcon src={checkCircle14} />
 export const InfoSmallIcon = () => <MaskIcon src={info14} />
 /** Figma text box "Handler" resize grip (36) — SVG carries 60% opacity. */
 export const TextGripIcon = () => <MaskIcon src={textGrip} />
+/** Figma "D2 → keyboard_arrow_down" (24) — the list cell's default right icon. */
+export const ChevronDownIcon = () => <MaskIcon src={keyboardArrowDown} />

@@ -1,0 +1,153 @@
+/*
+ * L3 list cell — every value is an --l3-* token.
+ * Figma's unbound spacing (16 · 12 · 8 · 4 · 2) and radius (12) map to same-value tokens.
+ */
+
+.cell {
+  --cell-layer: var(--l3-state-layer-dark-default);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  background-color: var(--l3-surface-primary);
+  background-image: linear-gradient(var(--cell-layer), var(--cell-layer));
+  color: var(--l3-content-primary);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+}
+
+/* ---- Plain / card × size ------------------------------------------------------ */
+
+.cell[data-variant='plain'][data-size='md'] {
+  gap: var(--l3-spacing-16);
+  min-height: var(--l3-size-48);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+}
+
+.cell[data-variant='plain'][data-size='sm'] {
+  gap: var(--l3-spacing-12);
+  min-height: var(--l3-size-32);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+}
+
+.cell[data-variant='card'] {
+  gap: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+}
+
+.cell[data-variant='card'][data-size='md'] {
+  min-height: var(--l3-size-48);
+  padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-12) var(--l3-spacing-12);
+}
+
+.cell[data-variant='card'][data-size='sm'] {
+  min-height: var(--l3-size-32);
+  padding: var(--l3-spacing-12);
+}
+
+/* ---- Parts --------------------------------------------------------------------- */
+
+.icon,
+.trailing {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: var(--cell-icon);
+  height: var(--cell-icon);
+}
+
+.cell[data-size='md'] {
+  --cell-icon: var(--l3-icon-size-24);
+}
+
+.cell[data-size='sm'] {
+  --cell-icon: var(--l3-icon-size-16);
+}
+
+.icon > :is(svg, img, span:not(.dot)) {
+  width: 100%;
+  height: 100%;
+}
+
+.text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cell[data-size='md'] .text {
+  gap: var(--l3-spacing-04);
+}
+
+.cell[data-size='sm'] .text {
+  gap: var(--l3-spacing-02);
+}
+
+.label,
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell[data-size='md'] .label {
+  font: var(--l3-text-semibold-16); /* L3/semibold - Label/16 */
+}
+
+.cell[data-size='sm'] .label {
+  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+}
+
+.description {
+  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  color: var(--l3-content-secondary);
+}
+
+/* Figma Dot-L / Dot-R: 8px discover dot with a 2px surface ring, on the icon's top-right. */
+.dot {
+  position: absolute;
+  top: 25%;
+  right: 0;
+  box-sizing: border-box;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  border: var(--l3-spacing-02) solid var(--l3-surface-primary);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-content-accent-discover-default);
+  transform: translateY(-50%);
+}
+
+/* ---- Tappable rows: state-layer tint (not drawn in Figma) ---------------------- */
+
+.cell[data-interactive] {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .cell[data-interactive]:hover {
+    --cell-layer: var(--l3-state-layer-dark-hover);
+  }
+}
+
+.cell[data-interactive]:active {
+  --cell-layer: var(--l3-state-layer-dark-pressed);
+}
+
+.cell[data-interactive]:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: calc(-1 * var(--l3-spacing-02));
+}
