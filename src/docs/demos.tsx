@@ -4,6 +4,7 @@ import { Button, PlaceholderIcon } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
 import { BottomSheet, BottomSheetHeader } from '../components/BottomSheet'
 import { Aerobar } from '../components/Aerobar'
+import { TextField } from '../components/TextField'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -394,6 +395,60 @@ export function ToastDemo() {
       <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Trade">
         <Button variant="sell" onClick={() => show({ key: Date.now(), type: 'danger', heading: 'Sell order rejected', paragraph: 'You have no RELIANCE shares to sell.' })}>Sell</Button>
         <Button variant="buy" onClick={() => show({ key: Date.now(), type: 'success', heading: 'Buy order placed', paragraph: '10 × RELIANCE at ₹2,947.10' })}>Buy</Button>
+      </ButtonGroup>
+    </div>
+  )
+}
+
+export function OrderFormDemo() {
+  const [qty, setQty] = useState('')
+  const [price, setPrice] = useState('2947.10')
+  const [note, setNote] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const qtyNum = Number(qty)
+  const qtyError = qty !== '' && (!Number.isInteger(qtyNum) || qtyNum < 1) ? 'Enter a whole number of shares' : undefined
+  const priceNum = Number(price)
+  const band = [2652.39, 3241.81] // ±10% circuit band around the last price
+  const priceError = price !== '' && (Number.isNaN(priceNum) || priceNum < band[0] || priceNum > band[1]) ? `Must be between ₹${band[0]} and ₹${band[1]}` : undefined
+  const ready = qty !== '' && !qtyError && !priceError
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen}`}>
+      <div className={styles.appBar}>Buy RELIANCE</div>
+      <div className={`${styles.scrollArea} ${styles.formStack}`}>
+        <TextField
+          label="Quantity"
+          required
+          inputMode="numeric"
+          placeholder="e.g. 10"
+          value={qty}
+          onChange={(e) => setQty(e.target.value)}
+          status={qtyError ? 'error' : qty && !qtyError ? 'success' : undefined}
+          helperText={qtyError ?? (qty ? `≈ ₹${(qtyNum * priceNum || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}` : 'Shares to buy at the limit price')}
+        />
+        <TextField
+          label="Limit price"
+          inputMode="decimal"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          status={priceError ? 'error' : undefined}
+          helperText={priceError ?? 'Within today’s circuit band'}
+          helperIcon={!priceError}
+        />
+        <TextField
+          multiline
+          label="Note to self"
+          placeholder="Why this trade?"
+          maxLength={60}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          helperText="Only visible to you"
+        />
+        <TextField label="Exchange" defaultValue="NSE" disabled helperText="Set by your default exchange" />
+      </div>
+      <ButtonGroup className={styles.dock} aria-label="Place order">
+        <Button variant="buy" disabled={!ready} onClick={() => setSubmitted(true)}>{submitted ? 'Order placed ✓' : 'Place buy order'}</Button>
       </ButtonGroup>
     </div>
   )

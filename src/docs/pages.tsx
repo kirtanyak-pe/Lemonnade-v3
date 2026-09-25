@@ -9,10 +9,11 @@ import { TabsVariants } from '../preview/TabsVariants'
 import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
 import { BottomSheetVariants } from '../preview/BottomSheetVariants'
 import { AerobarVariants } from '../preview/AerobarVariants'
+import { TextFieldVariants } from '../preview/TextFieldVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { FiltersDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -170,6 +171,46 @@ export const pages: DocPage[] = [
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma Disabled=True.' },
       { name: 'name / value', type: 'string', description: 'Radio grouping and form value.' },
       { name: '…input props', type: 'InputHTMLAttributes', description: 'onChange, aria-label, id, etc. Needs an accessible name.' },
+    ],
+  },
+  {
+    id: 'text-field',
+    title: 'Input field & text box',
+    group: 'Input & control',
+    description: 'Fields let people enter text — a single line (input field) or several lines with a character counter (text box).',
+    status: 'Figma synced',
+    altNames: 'Text input, text field, textarea, form field',
+    figmaNodeId: '4543:66091',
+    source: 'src/components/TextField',
+    exports: ['TextField'],
+    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-medium-12 · 14', 'text-semibold-12', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
+    overview: (
+      <>
+        <PhoneFrame label="Buy order form with quantity, limit price, note and a disabled exchange field">
+          <OrderFormDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>States come from the input</h2>
+          <p>Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with <code>status</code> — try a quantity of 0 or a price outside the band above.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Text box counter</h2>
+          <p>With <code>multiline</code> and <code>maxLength</code> the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.</p>
+        </section>
+      </>
+    ),
+    variants: <TextFieldVariants />,
+    props: [
+      { name: 'label / required', type: 'string / boolean', description: 'Figma Label and the red * (also sets required).' },
+      { name: 'placeholder / value / onChange', type: 'input props', description: 'Standard input (or textarea) props pass through.' },
+      { name: 'helperText', type: 'ReactNode', description: 'Figma Helper text row.' },
+      { name: 'helperIcon', type: 'boolean', default: 'true', description: 'Field: the ⓘ before neutral helper text.' },
+      { name: 'status', type: "'error' | 'success'", description: 'Figma State=Error / Success: red border + ⚠ message, or ✓ message.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma State=Disabled.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Field: Figma 16px icon slots.' },
+      { name: 'multiline', type: 'boolean', default: 'false', description: 'Figma isInputBox: multi-line text box.' },
+      { name: 'maxLength', type: 'number', description: 'Text box: shows the counter; over the limit → error.' },
+      { name: 'limitMessage', type: 'string', default: "'Character limit reached'", description: 'Text box: message when over the limit.' },
     ],
   },
   {

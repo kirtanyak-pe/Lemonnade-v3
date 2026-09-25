@@ -393,6 +393,13 @@
   overflow: hidden;
 }
 
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-20);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16) var(--l3-spacing-24);
+}
+
 .toastExamples {
   display: flex;
   flex-direction: column;

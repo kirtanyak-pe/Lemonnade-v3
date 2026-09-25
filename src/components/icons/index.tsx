@@ -6,6 +6,10 @@ import close from './assets/close.svg'
 import infoOutline from './assets/info-outline.svg'
 import infoOutline24 from './assets/info-outline-24.svg'
 import search from './assets/search.svg'
+import warningAmber14 from './assets/warning-amber-14.svg'
+import checkCircle14 from './assets/check-circle-14.svg'
+import info14 from './assets/info-14.svg'
+import textGrip from './assets/text-grip.svg'
 
 /** Figma "D2 → arrow_back" (24). */
 export const BackIcon = () => <MaskIcon src={arrowBack} />
@@ -17,3 +21,11 @@ export const InfoIcon = () => <MaskIcon src={infoOutline} />
 export const InfoOutlineIcon = () => <MaskIcon src={infoOutline24} />
 /** Figma "D2 → search" (16). */
 export const SearchIcon = () => <MaskIcon src={search} />
+/** Figma "D2 → warning_amber" (14). */
+export const WarningIcon = () => <MaskIcon src={warningAmber14} />
+/** Figma "D2 → check_circle_outline" (14). */
+export const CheckCircleIcon = () => <MaskIcon src={checkCircle14} />
+/** Figma "Info-icon" (14) — SVG carries 60% opacity (use content/primary for a content/secondary look). */
+export const InfoSmallIcon = () => <MaskIcon src={info14} />
+/** Figma text box "Handler" resize grip (36) — SVG carries 60% opacity. */
+export const TextGripIcon = () => <MaskIcon src={textGrip} />
