@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+  font: 16px/1.45 system-ui, 'Segoe UI', Roboto, sans-serif;
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-default);
+  -webkit-font-smoothing: antialiased;
+}

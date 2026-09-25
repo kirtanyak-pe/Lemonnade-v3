@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>figma-react-app</title>
+    <script>
+      // Apply the stored L3 theme before first paint (mirrors src/theme/ThemeProvider.tsx).
+      (function () {
+        var s = {};
+        try { s = JSON.parse(localStorage.getItem('l3-theme') || '{}') } catch (e) {}
+        var p = ['lm', 'cspro', 'kuber'].indexOf(s.product) >= 0 ? s.product : 'lm';
+        var m = s.mode === 'light' || s.mode === 'dark' ? s.mode
+          : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (p === 'cspro') m = 'dark';
+        document.documentElement.dataset.product = p;
+        document.documentElement.dataset.mode = m;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
