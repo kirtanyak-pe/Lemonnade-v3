@@ -4,13 +4,16 @@ import { MaskIcon } from '../MaskIcon'
 import arrowBack from './assets/arrow-back.svg'
 import close from './assets/close.svg'
 import infoOutline from './assets/info-outline.svg'
+import infoOutline24 from './assets/info-outline-24.svg'
 import search from './assets/search.svg'
 
 /** Figma "D2 → arrow_back" (24). */
 export const BackIcon = () => <MaskIcon src={arrowBack} />
 /** Figma "D2 → close" (24). */
 export const CloseIcon = () => <MaskIcon src={close} />
-/** Figma "info icon" (16). */
+/** Figma "info icon" (16) — its SVG carries 60% opacity, so use content/primary to get content/secondary. */
 export const InfoIcon = () => <MaskIcon src={infoOutline} />
+/** Figma "D2 → info_outline" (24), full opacity. */
+export const InfoOutlineIcon = () => <MaskIcon src={infoOutline24} />
 /** Figma "D2 → search" (16). */
 export const SearchIcon = () => <MaskIcon src={search} />

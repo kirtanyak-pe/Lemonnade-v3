@@ -1,0 +1,131 @@
+/*
+ * L3 aerobar - toast — every value is an --l3-* token.
+ * Figma's unbound spacing (16 · 12 · 6 · 2) and radius (12) map to same-value tokens.
+ */
+
+.aerobar {
+  /* Soft (Figma isPrimary=False) by default. */
+  --ab-surface: var(--l3-surface-tertiary);
+  --ab-content: var(--l3-content-primary);
+  --ab-paragraph: var(--l3-content-secondary);
+  --ab-shadow: var(--l3-shadow-elevation-medium);
+
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* ---- Types: light tint (soft) / full colour (solid) ------------------------ */
+
+.aerobar[data-type='discover'] { --ab-soft: var(--l3-surface-accent-discover-light); --ab-solid: var(--l3-surface-accent-discover-default); }
+.aerobar[data-type='danger'] { --ab-soft: var(--l3-surface-accent-error-light); --ab-solid: var(--l3-surface-accent-error-default); }
+.aerobar[data-type='success'] { --ab-soft: var(--l3-surface-accent-success-light); --ab-solid: var(--l3-surface-accent-success-default); }
+.aerobar[data-type='warning'] { --ab-soft: var(--l3-surface-accent-warning-light); --ab-solid: var(--l3-surface-accent-warning-default); }
+
+.aerobar:not([data-type='primary'])[data-emphasis='secondary'] {
+  --ab-surface: var(--ab-soft);
+}
+
+/* Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token). */
+.aerobar[data-emphasis='primary'] {
+  --ab-surface: var(--ab-solid, var(--l3-surface-inverted));
+  --ab-content: var(--l3-content-inverted);
+  --ab-paragraph: rgb(from var(--l3-content-inverted) r g b / calc(alpha * var(--l3-opacity-60)));
+}
+
+/*
+ * Solid warning: black text, paragraph at 80%. Figma's floating solid warning switches to
+ * inverted (white) text — kept black here so the two match and stay readable on yellow.
+ */
+.aerobar[data-type='warning'][data-emphasis='primary'] {
+  --ab-content: var(--l3-static-black);
+  --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+}
+
+/* Figma: the soft neutral toast floats on elevation/low; every other floating one on medium. */
+.aerobar[data-type='primary'][data-emphasis='secondary'] {
+  --ab-shadow: var(--l3-shadow-elevation-low);
+}
+
+/* ---- Layout ---------------------------------------------------------------- */
+
+.body {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  min-width: 0;
+  padding: 0 var(--l3-spacing-16);
+  background: var(--ab-surface);
+  color: var(--ab-content);
+}
+
+/* Floating (toast): inset 16, rounded card with a shadow, tighter right padding for the button. */
+.aerobar[data-floating] {
+  padding: var(--l3-spacing-16);
+}
+
+.aerobar[data-floating] .body {
+  padding: 0 var(--l3-spacing-06) 0 var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  box-shadow: var(--ab-shadow);
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  width: var(--l3-icon-size-24);
+  height: var(--l3-icon-size-24);
+  margin: var(--l3-spacing-12) 0;
+}
+
+.icon > :is(svg, img, span) {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+  padding: var(--l3-spacing-12) 0;
+}
+
+.heading {
+  margin: 0;
+  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+}
+
+.paragraph {
+  margin: 0;
+  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  color: var(--ab-paragraph);
+}
+
+/* Floating toasts rise and fade in when they appear (Figma has no motion; local motion tokens). */
+.aerobar[data-floating] .body {
+  transition:
+    opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard),
+    transform var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+@starting-style {
+  .aerobar[data-floating] .body {
+    opacity: 0;
+    transform: translateY(var(--l3-spacing-16));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aerobar[data-floating] .body {
+    transition: none;
+  }
+}
+
+/* Figma uses a small Secondary Button with its border removed. */
+.body .action[data-variant] {
+  --btn-border: transparent;
+  flex: none;
+}

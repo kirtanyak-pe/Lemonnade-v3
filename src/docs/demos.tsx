@@ -3,6 +3,7 @@ import { useState, type UIEvent } from 'react'
 import { Button, PlaceholderIcon } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
 import { BottomSheet, BottomSheetHeader } from '../components/BottomSheet'
+import { Aerobar } from '../components/Aerobar'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -342,6 +343,58 @@ export function SheetsDemo() {
           </label>
         ))}
       </BottomSheet>
+    </div>
+  )
+}
+
+type ToastState = { key: number; type: 'success' | 'danger'; heading: string; paragraph: string } | null
+
+export function ToastDemo() {
+  // Start with a toast on screen (it stays until "View") so the floating toast is visible without tapping.
+  const [toast, setToast] = useState<ToastState>({ key: 0, type: 'success', heading: 'Buy order placed', paragraph: '10 × RELIANCE at ₹2,947.10' })
+  const [banner, setBanner] = useState(true)
+
+  // Auto-dismiss after 4s; a new toast (new key) restarts the timer and replays the enter animation.
+  const show = (next: Exclude<ToastState, null>) => {
+    setToast(next)
+    window.setTimeout(() => setToast((t) => (t?.key === next.key ? null : t)), 4000)
+  }
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.sheetHost}`}>
+      <div className={styles.appBar}>RELIANCE</div>
+      {banner && (
+        <Aerobar
+          type="warning"
+          heading="Market closes in 15 min"
+          paragraph="Orders after 3:30 PM are queued for tomorrow."
+          action={{ label: 'Dismiss', onClick: () => setBanner(false) }}
+        />
+      )}
+      <div className={styles.quote}>
+        <div>
+          <div className={styles.symbol}>2,947.10</div>
+          <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+        </div>
+      </div>
+      <p className={`${styles.rowHint} ${styles.finePrint}`}>The toast above the buttons stays until you tap View. Buy and Sell show new toasts that disappear after 4 seconds.</p>
+      <div className={styles.toastSlot} aria-live="polite">
+        {toast && (
+          <Aerobar
+            key={toast.key}
+            floating
+            emphasis="primary"
+            type={toast.type}
+            heading={toast.heading}
+            paragraph={toast.paragraph}
+            action={{ label: 'View', onClick: () => setToast(null) }}
+          />
+        )}
+      </div>
+      <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Trade">
+        <Button variant="sell" onClick={() => show({ key: Date.now(), type: 'danger', heading: 'Sell order rejected', paragraph: 'You have no RELIANCE shares to sell.' })}>Sell</Button>
+        <Button variant="buy" onClick={() => show({ key: Date.now(), type: 'success', heading: 'Buy order placed', paragraph: '10 × RELIANCE at ₹2,947.10' })}>Buy</Button>
+      </ButtonGroup>
     </div>
   )
 }

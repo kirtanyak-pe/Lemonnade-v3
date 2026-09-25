@@ -291,3 +291,23 @@ section > h2 {
   color: var(--l3-content-secondary);
   text-align: center;
 }
+
+.ab-grid {
+  border-collapse: separate;
+  border-spacing: 16px 12px;
+  margin: 0 -16px;
+}
+
+.ab-grid th {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--l3-content-tertiary);
+  white-space: nowrap;
+}
+
+.ab-grid td {
+  width: 320px;
+  min-width: 320px;
+  vertical-align: middle;
+}

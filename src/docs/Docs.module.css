@@ -393,6 +393,22 @@
   overflow: hidden;
 }
 
+.toastExamples {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-secondary);
+}
+
+.toastSlot {
+  position: absolute;
+  right: 0;
+  bottom: var(--l3-size-80);
+  left: 0;
+  z-index: 1;
+}
+
 .sheetHelper {
   margin: 0;
   font: var(--l3-text-medium-12);

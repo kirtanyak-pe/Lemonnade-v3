@@ -1,4 +1,5 @@
 import { Button } from '../components/Button'
+import { Aerobar } from '../components/Aerobar'
 import { Tag } from '../components/Tag'
 import { ButtonPreview } from '../preview/ButtonPreview'
 import { TagPreview } from '../preview/TagPreview'
@@ -7,10 +8,11 @@ import { SelectionVariants } from '../preview/SelectionVariants'
 import { TabsVariants } from '../preview/TabsVariants'
 import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
 import { BottomSheetVariants } from '../preview/BottomSheetVariants'
+import { AerobarVariants } from '../preview/AerobarVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, OrderReviewDemo, SheetsDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { FiltersDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -285,6 +287,52 @@ export const pages: DocPage[] = [
       { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading.' },
       { name: 'Header: onBack / onClose / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, close button, or any right-side node (Tag, small Button).' },
       { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
+    ],
+  },
+
+  {
+    id: 'aerobar',
+    title: 'Aerobar & toast',
+    group: 'Feedback & status',
+    description: 'A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.',
+    status: 'Figma synced',
+    altNames: 'Toast, snackbar, banner, alert bar, notification',
+    figmaNodeId: '4543:65562',
+    source: 'src/components/Aerobar',
+    exports: ['Aerobar'],
+    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/black', 'opacity/60 · 80', 'text-semibold-14', 'text-medium-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
+    overview: (
+      <>
+        <PhoneFrame label="Stock screen with an inline warning aerobar and floating success or danger toasts">
+          <ToastDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Toasts</h2>
+          <p>Floating, solid toasts for results people should notice — always shown here; in the phone above they rise in after Buy or Sell.</p>
+          <div className={styles.toastExamples}>
+            <Aerobar floating emphasis="primary" type="success" heading="Buy order placed" paragraph="10 × RELIANCE at ₹2,947.10" action={{ label: 'View', onClick: () => {} }} />
+            <Aerobar floating emphasis="primary" type="danger" heading="Sell order rejected" paragraph="You have no RELIANCE shares to sell." action={{ label: 'Retry', onClick: () => {} }} />
+            <Aerobar floating type="discover" heading="New: price alerts" paragraph="Get notified when a stock crosses your target." action={{ label: 'Try', onClick: () => {} }} />
+          </div>
+        </section>
+        <section className={styles.section}>
+          <h2>Inline or floating</h2>
+          <p>Without <code>floating</code> it's a full-width strip that sits in the layout (the market-hours warning above). With <code>floating</code> it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Soft or solid</h2>
+          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid colour (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status").</p>
+        </section>
+      </>
+    ),
+    variants: <AerobarVariants />,
+    props: [
+      { name: 'type', type: "'primary' | 'discover' | 'danger' | 'success' | 'warning'", default: "'primary'", description: 'Figma Type.' },
+      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'secondary'", description: 'Figma isPrimary: solid colour (primary) or light tint (secondary).' },
+      { name: 'floating', type: 'boolean', default: 'false', description: 'Figma isFloating: toast card with shadow and a rise-in animation.' },
+      { name: 'heading / paragraph', type: 'ReactNode', description: 'Figma Headline text / Paragraph text (hidden when not passed).' },
+      { name: 'icon', type: 'ReactNode | false', default: 'info icon', description: 'Figma icon-L slot (24px); false hides it.' },
+      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small borderless secondary button.' },
     ],
   },
 
