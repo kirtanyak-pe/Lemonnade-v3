@@ -1,0 +1,10 @@
+{
+  "$description": "Not in Figma — project decisions that differ from or add to the Figma Number collection.",
+  "size": {
+    "tap-target": {
+      "$type": "dimension",
+      "$value": "32px",
+      "$description": "Minimum tap area for interactive components. Figma's size/touch-min is 48px; the team chose 32px."
+    }
+  }
+}

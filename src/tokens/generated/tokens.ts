@@ -406,6 +406,7 @@ export const numberVars = {
   'icon-size/20': '--l3-icon-size-20',
   'icon-size/22': '--l3-icon-size-22',
   'icon-size/24': '--l3-icon-size-24',
+  'size/tap-target': '--l3-size-tap-target',
 } as const
 
 /** Figma text style → CSS custom property (use as `font: var(--l3-text-bold-16)`). */

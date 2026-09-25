@@ -42,10 +42,15 @@
 .tabs {
   display: flex;
   gap: 4px;
-  margin-top: 16px;
+  margin: 16px -16px 0;
+  padding: 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .tabs button {
+  flex: none;
+  white-space: nowrap;
   font: var(--l3-text-semibold-14);
   padding: 6px 12px;
   border-radius: 8px;
@@ -157,7 +162,20 @@
 }
 
 .btn-grid-scroll {
+  max-width: 100%;
   overflow-x: auto;
+}
+
+/* Preview inputs: 16px keeps iOS Safari from zooming in on focus. */
+.preview input:not([type='checkbox']):not([type='radio']),
+.preview select {
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .controls-demo fieldset {
+    flex: 1 1 100%;
+  }
 }
 
 .btn-grid {

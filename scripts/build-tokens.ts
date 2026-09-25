@@ -44,7 +44,11 @@ const varName = (path: string) =>
 const base = flatten(readJson('source/base.colors.json'))
 const opacity = flatten(readJson('source/base.opacity.json'))
 // Figma "🌌 Number" (spacing / radius / size) + "ℹ️ L3 → Icon size" (one variable, a mode per size).
-const numbers = new Map([...flatten(readJson('source/base.number.json')), ...flatten(readJson('source/base.icon-size.json'))])
+const numbers = new Map([
+  ...flatten(readJson('source/base.number.json')),
+  ...flatten(readJson('source/base.icon-size.json')),
+  ...flatten(readJson('source/local.size.json')), // not in Figma (e.g. size/tap-target)
+])
 
 // ---- base.css -------------------------------------------------------------
 const baseLines = [base, opacity, numbers].flatMap((group) =>

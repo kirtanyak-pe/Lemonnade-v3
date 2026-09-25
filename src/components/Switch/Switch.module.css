@@ -31,14 +31,19 @@
   --sw-width: calc(var(--l3-size-24) + var(--l3-spacing-04)); /* 28 */
 }
 
-/* The real input covers the whole control, invisible, so clicks/taps and keyboard hit it. */
+/*
+ * The real input sits over the control, invisible, so taps and keyboard hit it.
+ * It's grown to size/tap-target (32, local token) around the control for mobile tap targets.
+ */
 .input {
   position: absolute;
-  inset: 0;
+  inset: min(var(--l3-spacing-00), calc((100% - var(--l3-size-tap-target)) / 2));
   z-index: 1;
   margin: 0;
   opacity: 0;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .track {

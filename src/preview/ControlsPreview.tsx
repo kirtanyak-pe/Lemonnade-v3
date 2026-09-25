@@ -20,6 +20,7 @@ export function ControlsPreview() {
     <>
       <section>
         <h2>Toggle switch (Figma grid)</h2>
+        <div className="btn-grid-scroll">
         <table className="tag-grid">
           <thead>
             <tr><th /><th scope="col">On</th><th scope="col">Off</th><th scope="col">Disabled on (not in Figma)</th><th scope="col">Disabled off (not in Figma)</th></tr>
@@ -36,10 +37,12 @@ export function ControlsPreview() {
             ))}
           </tbody>
         </table>
+        </div>
       </section>
 
       <section>
         <h2>Radio button &amp; check box (Figma grid)</h2>
+        <div className="btn-grid-scroll">
         <table className="tag-grid">
           <thead>
             <tr><th /><th scope="col">Checkbox</th><th scope="col">Checkbox disabled</th><th scope="col">Radio</th><th scope="col">Radio disabled</th></tr>
@@ -67,6 +70,7 @@ export function ControlsPreview() {
             </tr>
           </tbody>
         </table>
+        </div>
       </section>
 
       <section>

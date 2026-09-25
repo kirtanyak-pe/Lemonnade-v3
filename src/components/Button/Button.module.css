@@ -26,7 +26,6 @@
   height: var(--btn-height);
   min-width: var(--btn-height);
   padding: var(--btn-padding-block) var(--btn-padding-inline);
-  overflow: hidden;
   border: 0;
   border-radius: var(--btn-radius);
   box-shadow: inset 0 0 0 var(--btn-border-width) var(--btn-border);
@@ -36,11 +35,22 @@
   font: var(--btn-font);
   cursor: pointer;
   user-select: none;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-.button:hover {
-  --btn-layer: var(--btn-layer-hover);
+/* Mobile: grow the tap area to size/tap-target (32, local token) without changing the drawn size. */
+.button::after {
+  content: '';
+  position: absolute;
+  inset: min(var(--l3-spacing-00), calc((100% - var(--l3-size-tap-target)) / 2));
+}
+
+/* Only real hover devices — on touch screens :hover sticks after a tap. */
+@media (hover: hover) {
+  .button:hover {
+    --btn-layer: var(--btn-layer-hover);
+  }
 }
 
 .button:active {
