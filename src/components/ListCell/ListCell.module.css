@@ -151,3 +151,13 @@
   outline: var(--l3-spacing-02) solid var(--l3-border-dark);
   outline-offset: calc(-1 * var(--l3-spacing-02));
 }
+
+/* Text only screen readers get (e.g. "New" for a dot). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

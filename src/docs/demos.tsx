@@ -158,8 +158,8 @@ export function FiltersDemo() {
   return (
     <div className={styles.screen}>
       <div className={styles.appBar}>Filters</div>
-      <div className={styles.sheetSection}>
-        <div className={styles.sectionLabel}>Segments</div>
+      <fieldset className={styles.sheetSection}>
+        <legend className={styles.sectionLabel}>Segments</legend>
         <label className={styles.optionRow}>
           <Checkbox checked={all} indeterminate={picked.length > 0 && !all} onChange={() => setPicked(all ? [] : [...segments])} />
           All segments
@@ -170,9 +170,9 @@ export function FiltersDemo() {
             {s}
           </label>
         ))}
-      </div>
-      <div className={styles.sheetSection}>
-        <div className={styles.sectionLabel}>Order validity</div>
+      </fieldset>
+      <fieldset className={styles.sheetSection}>
+        <legend className={styles.sectionLabel}>Order validity</legend>
         {[['day', 'Day'], ['ioc', 'Immediate or cancel']].map(([value, label]) => (
           <label key={value} className={styles.optionRow}>
             <Radio name="validity" value={value} checked={validity === value} onChange={() => setValidity(value)} />
@@ -183,7 +183,7 @@ export function FiltersDemo() {
           <Radio name="validity" value="gtt" disabled />
           Good till triggered (unavailable)
         </label>
-      </div>
+      </fieldset>
       <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Filter actions">
         <Button variant="tertiary" onClick={() => { setPicked([]); setValidity('day') }}>Reset</Button>
         <Button variant="primary">Apply</Button>
@@ -357,11 +357,9 @@ export function ToastDemo() {
   const [toast, setToast] = useState<ToastState>({ key: 0, type: 'success', heading: 'Buy order placed', paragraph: '10 × RELIANCE at ₹2,947.10' })
   const [banner, setBanner] = useState(true)
 
-  // Auto-dismiss after 4s; a new toast (new key) restarts the timer and replays the enter animation.
-  const show = (next: Exclude<ToastState, null>) => {
-    setToast(next)
-    window.setTimeout(() => setToast((t) => (t?.key === next.key ? null : t)), 4000)
-  }
+  // Toasts with an action stay until dismissed or replaced (no time limit — WCAG 2.2.1).
+  // A new key replays the enter animation.
+  const show = (next: Exclude<ToastState, null>) => setToast(next)
 
   return (
     <div className={`${styles.screen} ${styles.fixedScreen} ${styles.sheetHost}`}>
@@ -380,8 +378,9 @@ export function ToastDemo() {
           <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
         </div>
       </div>
-      <p className={`${styles.rowHint} ${styles.finePrint}`}>The toast above the buttons stays until you tap View. Buy and Sell show new toasts that disappear after 4 seconds.</p>
-      <div className={styles.toastSlot} aria-live="polite">
+      <p className={`${styles.rowHint} ${styles.finePrint}`}>Buy and Sell show a new toast above the buttons. Toasts with an action stay until you tap it, so nobody has to race a timer.</p>
+      {/* No extra aria-live here: the toast's own role (status / alert) announces it. */}
+      <div className={styles.toastSlot}>
         {toast && (
           <Aerobar
             key={toast.key}

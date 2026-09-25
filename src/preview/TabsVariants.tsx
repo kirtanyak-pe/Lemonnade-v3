@@ -47,17 +47,17 @@ export function TabsVariants() {
               {(['md', 'sm'] as const).map((size) => (
                 <tr key={`u-${size}`}>
                   <th scope="row">Underline · {size === 'md' ? '40' : 'isSmall 36'}</th>
-                  <td><div role="tablist" aria-label="demo"><Tab size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
-                  <td><div role="tablist" aria-label="demo"><Tab size={size} {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Underline ${size} selected`}><Tab size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Underline ${size} unselected`}><Tab size={size} {...icons} onClick={noop}>Label</Tab></div></td>
                   <td className="grid-note">— (underline is always primary)</td>
                 </tr>
               ))}
               {(['md', 'sm'] as const).map((size) => (
                 <tr key={`p-${size}`}>
                   <th scope="row">Pill · {size === 'md' ? '32' : 'isSmall 24'}</th>
-                  <td><div role="tablist" aria-label="demo"><Tab appearance="pill" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
-                  <td><div role="tablist" aria-label="demo"><Tab appearance="pill" size={size} {...icons} onClick={noop}>Label</Tab></div></td>
-                  <td><div role="tablist" aria-label="demo"><Tab appearance="pill" emphasis="secondary" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} selected`}><Tab appearance="pill" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} unselected`}><Tab appearance="pill" size={size} {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} secondary selected`}><Tab appearance="pill" emphasis="secondary" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
                 </tr>
               ))}
             </tbody>

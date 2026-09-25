@@ -40,7 +40,6 @@ export function Tag({
       data-color={color}
       data-size={size}
       data-disabled={disabled || undefined}
-      aria-disabled={disabled || undefined}
     >
       {iconLeft && <span className={styles.icon}>{iconLeft}</span>}
       {children != null && (

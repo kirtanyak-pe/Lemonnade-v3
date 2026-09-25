@@ -221,6 +221,16 @@
   padding-right: var(--l3-spacing-16);
 }
 
+/* The ⓘ as a button: 16px like the decorative icon, same tap area as the other icon buttons. */
+.iconButton.infoButton {
+  width: var(--l3-icon-size-16);
+  height: var(--l3-icon-size-16);
+}
+
+.iconButton.infoButton::after {
+  inset: calc((var(--l3-icon-size-16) - var(--l3-size-tap-target)) / 2);
+}
+
 /* 24px icon buttons (back / close) with a tap area of at least size/tap-target. */
 .iconButton {
   position: relative;

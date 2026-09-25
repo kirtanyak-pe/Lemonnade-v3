@@ -308,6 +308,10 @@ export const pages: DocPage[] = [
           <p><strong>BottomSheet</strong> is the modal: the Figma "L3: Overlay" backdrop, slide-in, focus trap, Esc / backdrop / drag-down to close. <strong>BottomSheetHeader</strong> is Figma's header in small (back · heading · ⓘ · close or any action) and large (icon · tag · heading · description) sizes. <strong>BottomSheetSurface</strong> is the panel alone, for embedding or static layouts.</p>
         </section>
         <section className={styles.section}>
+          <h2>Always give it a close button</h2>
+          <p>Backdrop tap, Esc and drag-down all close the sheet, but screen-reader and switch users on touch devices rely on a real button — pass <code>onClose</code> to the header (or put a Cancel button in the footer). The page behind the sheet is made inert while it is open.</p>
+        </section>
+        <section className={styles.section}>
           <h2>Bottom or top</h2>
           <p>Figma's isBottom=False drops the sheet from the top with rounded bottom corners — handy for sort or filter menus tied to the top of the screen.</p>
         </section>
@@ -326,7 +330,8 @@ export const pages: DocPage[] = [
       { name: 'aria-labelledby', type: 'string', description: 'Point at the header heading (headingId) to name the dialog.' },
       { name: 'Header: size', type: "'sm' | 'lg'", default: "'sm'", description: 'Figma isSmall.' },
       { name: 'Header: heading / description', type: 'string', description: 'Heading text and optional description.' },
-      { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading.' },
+      { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading (decorative on its own).' },
+      { name: 'Header: onInfo / infoLabel', type: "() => void / string", default: "'More information'", description: 'sm: makes the ⓘ a real, labelled button.' },
       { name: 'Header: onBack / onClose / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, close button, or any right-side node (Tag, small Button).' },
       { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
     ],
@@ -363,7 +368,7 @@ export const pages: DocPage[] = [
         </section>
         <section className={styles.section}>
           <h2>Soft or solid</h2>
-          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid colour (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status").</p>
+          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid colour (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
         </section>
       </>
     ),
@@ -413,6 +418,7 @@ export const pages: DocPage[] = [
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },
       { name: 'trailing', type: 'ReactNode', description: 'Anything else on the right: Switch, Checkbox, Tag, value text.' },
       { name: 'dotLeft / dotRight', type: 'boolean', default: 'false', description: 'Figma Dot-L / Dot-R: unread dot on the icon.' },
+      { name: 'dotLabel', type: 'string', default: "'New'", description: 'What screen readers hear for the dot (it is otherwise only visual).' },
       { name: 'as / href / onClick', type: "'div' | 'button' | 'a' | 'label'", description: 'Makes the row tappable (button / a) or a label for a trailing control.' },
     ],
   },

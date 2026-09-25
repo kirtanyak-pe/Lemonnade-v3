@@ -14,6 +14,30 @@
   color: var(--l3-content-primary);
 }
 
+/* Skip link: hidden until focused, then pinned top-left above the header. */
+.skipLink {
+  position: fixed;
+  top: var(--l3-spacing-08);
+  left: var(--l3-spacing-08);
+  z-index: 40;
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+  font: var(--l3-text-semibold-14);
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--l3-spacing-16)));
+}
+
+.skipLink:focus {
+  transform: none;
+}
+
+/* Main is focusable (skip link target) but shouldn't show a ring for that. */
+.main:focus {
+  outline: none;
+}
+
 /* ---- Header ---------------------------------------------------------------- */
 
 .header {
@@ -512,7 +536,14 @@
 }
 
 .sheetSection {
+  min-width: 0;
+  margin: 0;
   padding: var(--l3-spacing-08) var(--l3-spacing-16) var(--l3-spacing-16);
+  border: 0;
+}
+
+legend.sectionLabel {
+  padding: 0;
 }
 
 .sectionLabel {
@@ -629,10 +660,14 @@
       visibility var(--l3-motion-duration-medium);
   }
 
+  /* Visible immediately on open (so focus can move in straight away); hidden only after the slide-out. */
   .rail[data-open] {
     transform: none;
     visibility: visible;
     box-shadow: var(--l3-shadow-elevation-high);
+    transition:
+      transform var(--l3-motion-duration-medium) var(--l3-motion-easing-standard),
+      visibility 0s;
   }
 
   .scrim {

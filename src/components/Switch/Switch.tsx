@@ -1,4 +1,5 @@
-import type { InputHTMLAttributes } from 'react'
+import { useRef, type InputHTMLAttributes } from 'react'
+import { useAccessibleNameWarning } from '../a11y'
 import styles from './Switch.module.css'
 
 /** Figma "L3→ Toggle switch" (node 4543:65343). Figma isSmall=True is `size="sm"`. */
@@ -13,9 +14,11 @@ export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | '
  * Give it an accessible name (`aria-label`, or wrap/point a <label> at it).
  */
 export function Switch({ size = 'md', className, ...rest }: SwitchProps) {
+  const ref = useRef<HTMLInputElement>(null)
+  useAccessibleNameWarning(ref, 'Switch')
   return (
     <span className={[styles.switch, className].filter(Boolean).join(' ')} data-size={size}>
-      <input {...rest} type="checkbox" role="switch" className={styles.input} />
+      <input {...rest} ref={ref} type="checkbox" role="switch" className={styles.input} />
       <span className={styles.track} aria-hidden="true">
         <span className={styles.knob} />
       </span>

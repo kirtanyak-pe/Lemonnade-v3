@@ -116,12 +116,13 @@ export function TextField(props: TextFieldProps) {
       {control}
       {hasHelperRow && (
         <div id={helperId} className={styles.helper}>
-          <span className={styles.helperMessage}>
+          {/* Live so a new error/success message is announced while typing, not only on focus. */}
+          <span className={styles.helperMessage} aria-live="polite">
             {leadIcon && message && <span className={styles.helperIcon}>{leadIcon}</span>}
             {message}
           </span>
           {maxLength !== undefined && (
-            <span className={styles.counter} aria-live="polite">
+            <span className={styles.counter}>
               {length}/{maxLength}
             </span>
           )}

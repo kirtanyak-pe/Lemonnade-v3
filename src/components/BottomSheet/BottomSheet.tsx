@@ -86,6 +86,7 @@ export function BottomSheet({
   const [dragY, setDragY] = useState(0)
   const [prevOpen, setPrevOpen] = useState(open)
   const sheetRef = useRef<HTMLDivElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ startY: number; startT: number } | null>(null)
 
   // React to `open` changing during render (no effect needed for the synchronous part).
@@ -116,6 +117,16 @@ export function BottomSheet({
       previous?.focus?.()
     }
   }, [open, mounted, container])
+
+  // Make everything behind the sheet inert (screen-reader browse mode can't wander behind it).
+  useEffect(() => {
+    if (!open || !mounted) return
+    const root = rootRef.current
+    const siblings = root?.parentElement ? [...root.parentElement.children].filter((el) => el !== root) : []
+    const touched = siblings.filter((el): el is HTMLElement => el instanceof HTMLElement && !el.inert)
+    touched.forEach((el) => { el.inert = true })
+    return () => touched.forEach((el) => { el.inert = false })
+  }, [open, mounted])
 
   if (!mounted) return null
 
@@ -168,6 +179,7 @@ export function BottomSheet({
 
   return createPortal(
     <div
+      ref={rootRef}
       className={styles.root}
       data-contained={container ? '' : undefined}
       data-state={open ? 'open' : 'closed'}

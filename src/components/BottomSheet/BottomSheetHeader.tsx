@@ -10,8 +10,12 @@ export type BottomSheetHeaderProps = {
   description?: string
   /** Id for the heading, so a dialog can point aria-labelledby at it. */
   headingId?: string
-  /** sm: Figma 👁️ Info — the ⓘ after the heading. Pass a node (e.g. a button) to replace the icon. */
+  /** sm: Figma 👁️ Info — the ⓘ after the heading. Decorative unless `onInfo` is set. Pass a node to replace it. */
   info?: boolean | ReactNode
+  /** sm: makes the ⓘ a button (e.g. to open an explainer). */
+  onInfo?: () => void
+  /** Accessible name for the ⓘ button. */
+  infoLabel?: string
   /** sm: Figma action-left "⬅️ Back". Shows the back button. */
   onBack?: () => void
   /** sm: Figma action-right "❌ Cross". Shows the close button (unless `trailing` is set). */
@@ -31,6 +35,8 @@ export function BottomSheetHeader({
   description,
   headingId,
   info = false,
+  onInfo,
+  infoLabel = 'More information',
   onBack,
   onClose,
   trailing,
@@ -71,7 +77,14 @@ export function BottomSheetHeader({
       <div className={styles.headerText}>
         <div className={styles.headingRow}>
           <h2 id={headingId} className={styles.heading}>{heading}</h2>
-          {info && <span className={styles.info}>{info === true ? <InfoIcon /> : info}</span>}
+          {info && onInfo && (
+            <button type="button" className={`${styles.iconButton} ${styles.infoButton}`} onClick={onInfo} aria-label={infoLabel}>
+              {info === true ? <InfoIcon /> : info}
+            </button>
+          )}
+          {info && !onInfo && (
+            <span className={styles.info} aria-hidden={info === true || undefined}>{info === true ? <InfoIcon /> : info}</span>
+          )}
         </div>
         {description && <p className={styles.description}>{description}</p>}
       </div>

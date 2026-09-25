@@ -54,9 +54,14 @@
   box-shadow: inset 0 0 0 1px var(--tf-border), var(--l3-shadow-elevation-low);
 }
 
-/* Figma Typing: dark border while focused (error keeps its red border). */
+/* Figma Typing: dark border while focused. */
 .field:not([data-status='error']) .control:focus-within {
   --tf-border: var(--l3-border-dark);
+}
+
+/* Error keeps its red border, so focus is shown by thickening it (visible focus, WCAG 2.4.7). */
+.field[data-status='error'] .control:focus-within {
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) var(--tf-border), var(--l3-shadow-elevation-low);
 }
 
 /* Field: 44 tall (Figma h44), 12 side padding. */

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import styles from './ListCell.module.css'
 
 /** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`. */
@@ -19,6 +19,8 @@ export type ListCellProps = {
   /** Figma Dot-L / Dot-R: an unread/new dot on the left or right icon. */
   dotLeft?: boolean
   dotRight?: boolean
+  /** What screen readers hear for a dot (it's otherwise only visual). */
+  dotLabel?: string
   /**
    * What the row is. `button` / `a` make the whole row tappable (with press feedback);
    * `label` lets a Switch or Checkbox in `trailing` toggle from anywhere on the row.
@@ -39,6 +41,7 @@ export function ListCell({
   trailing,
   dotLeft = false,
   dotRight = false,
+  dotLabel = 'New',
   as,
   href,
   onClick,
@@ -46,6 +49,21 @@ export function ListCell({
 }: ListCellProps) {
   const Element = as ?? (href ? 'a' : onClick ? 'button' : 'div')
   const interactive = Element !== 'div'
+  const trailingRef = useRef<HTMLSpanElement>(null)
+
+  // A button/link row can't contain another control (invalid nesting; screen readers get confused).
+  useEffect(() => {
+    if (!import.meta.env.DEV || (Element !== 'button' && Element !== 'a')) return
+    if (trailingRef.current?.querySelector('input, button, a, select, textarea')) {
+      console.warn('[L3] <ListCell> is a button/link but `trailing` contains a control. Use as="label" (for a Switch/Checkbox) or as="div".')
+    }
+  })
+
+  const dot = (
+    <span className={styles.dot}>
+      <span className={styles.srOnly}>{dotLabel}</span>
+    </span>
+  )
 
   return (
     <Element
@@ -60,18 +78,18 @@ export function ListCell({
       {iconLeft && (
         <span className={styles.icon}>
           {iconLeft}
-          {dotLeft && <span className={styles.dot} aria-hidden="true" />}
+          {dotLeft && dot}
         </span>
       )}
       <span className={styles.text}>
         <span className={styles.label}>{label}</span>
         {description && <span className={styles.description}>{description}</span>}
       </span>
-      {trailing && <span className={styles.trailing}>{trailing}</span>}
+      {trailing && <span ref={trailingRef} className={styles.trailing}>{trailing}</span>}
       {iconRight && (
         <span className={styles.icon}>
           {iconRight}
-          {dotRight && <span className={styles.dot} aria-hidden="true" />}
+          {dotRight && dot}
         </span>
       )}
     </Element>
