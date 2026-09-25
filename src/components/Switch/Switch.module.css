@@ -1,5 +1,5 @@
 /*
- * D2 Toggle switch — every size and color is an --l3-* token.
+ * L3 Toggle switch — every size and color is an --l3-* token.
  * Figma draws the track as a pill, 2px inset, with the knob travelling from the
  * left edge to the right edge; track width = 2 × knob + padding (34 / 28).
  */

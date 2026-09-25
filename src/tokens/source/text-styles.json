@@ -11,7 +11,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/10"
+          "l3.figmaStyle": "L3/extrabold - Heading/10"
         }
       },
       "12": {
@@ -24,7 +24,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/12"
+          "l3.figmaStyle": "L3/extrabold - Heading/12"
         }
       },
       "14": {
@@ -37,7 +37,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/14"
+          "l3.figmaStyle": "L3/extrabold - Heading/14"
         }
       },
       "16": {
@@ -50,7 +50,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/16"
+          "l3.figmaStyle": "L3/extrabold - Heading/16"
         }
       },
       "18": {
@@ -63,7 +63,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/18"
+          "l3.figmaStyle": "L3/extrabold - Heading/18"
         }
       },
       "20": {
@@ -76,7 +76,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/20"
+          "l3.figmaStyle": "L3/extrabold - Heading/20"
         }
       },
       "24": {
@@ -89,7 +89,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/24"
+          "l3.figmaStyle": "L3/extrabold - Heading/24"
         }
       },
       "28": {
@@ -102,7 +102,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/28"
+          "l3.figmaStyle": "L3/extrabold - Heading/28"
         }
       },
       "32": {
@@ -115,7 +115,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/32"
+          "l3.figmaStyle": "L3/extrabold - Heading/32"
         }
       },
       "36": {
@@ -128,7 +128,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/extrabold - Heading/36"
+          "l3.figmaStyle": "L3/extrabold - Heading/36"
         }
       }
     },
@@ -143,7 +143,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/10"
+          "l3.figmaStyle": "L3/bold/10"
         }
       },
       "12": {
@@ -156,7 +156,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/12"
+          "l3.figmaStyle": "L3/bold/12"
         }
       },
       "14": {
@@ -169,7 +169,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/14"
+          "l3.figmaStyle": "L3/bold/14"
         }
       },
       "16": {
@@ -182,7 +182,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/16"
+          "l3.figmaStyle": "L3/bold/16"
         }
       },
       "18": {
@@ -195,7 +195,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/18"
+          "l3.figmaStyle": "L3/bold/18"
         }
       },
       "20": {
@@ -208,7 +208,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/20"
+          "l3.figmaStyle": "L3/bold/20"
         }
       },
       "24": {
@@ -221,7 +221,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/24"
+          "l3.figmaStyle": "L3/bold/24"
         }
       },
       "28": {
@@ -234,7 +234,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/28"
+          "l3.figmaStyle": "L3/bold/28"
         }
       },
       "32": {
@@ -247,7 +247,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/32"
+          "l3.figmaStyle": "L3/bold/32"
         }
       },
       "36": {
@@ -260,7 +260,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/bold/36"
+          "l3.figmaStyle": "L3/bold/36"
         }
       }
     },
@@ -275,7 +275,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/10"
+          "l3.figmaStyle": "L3/semibold - Label/10"
         }
       },
       "12": {
@@ -288,7 +288,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/12"
+          "l3.figmaStyle": "L3/semibold - Label/12"
         }
       },
       "14": {
@@ -301,7 +301,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/14"
+          "l3.figmaStyle": "L3/semibold - Label/14"
         }
       },
       "16": {
@@ -314,7 +314,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/16"
+          "l3.figmaStyle": "L3/semibold - Label/16"
         }
       },
       "18": {
@@ -327,7 +327,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/18"
+          "l3.figmaStyle": "L3/semibold - Label/18"
         }
       },
       "20": {
@@ -340,7 +340,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/20"
+          "l3.figmaStyle": "L3/semibold - Label/20"
         }
       },
       "24": {
@@ -353,7 +353,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/24"
+          "l3.figmaStyle": "L3/semibold - Label/24"
         }
       },
       "28": {
@@ -366,7 +366,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/28"
+          "l3.figmaStyle": "L3/semibold - Label/28"
         }
       },
       "32": {
@@ -379,7 +379,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/32"
+          "l3.figmaStyle": "L3/semibold - Label/32"
         }
       },
       "36": {
@@ -392,7 +392,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/semibold - Label/36"
+          "l3.figmaStyle": "L3/semibold - Label/36"
         }
       }
     },
@@ -407,7 +407,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/10"
+          "l3.figmaStyle": "L3/Medium - Body/10"
         }
       },
       "12": {
@@ -420,7 +420,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/12"
+          "l3.figmaStyle": "L3/Medium - Body/12"
         }
       },
       "14": {
@@ -433,7 +433,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/14"
+          "l3.figmaStyle": "L3/Medium - Body/14"
         }
       },
       "16": {
@@ -446,7 +446,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/16"
+          "l3.figmaStyle": "L3/Medium - Body/16"
         }
       },
       "18": {
@@ -459,7 +459,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/18"
+          "l3.figmaStyle": "L3/Medium - Body/18"
         }
       },
       "20": {
@@ -472,7 +472,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Medium - Body/20"
+          "l3.figmaStyle": "L3/Medium - Body/20"
         }
       }
     },
@@ -487,7 +487,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/10"
+          "l3.figmaStyle": "L3/Regular/10"
         }
       },
       "12": {
@@ -500,7 +500,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/12"
+          "l3.figmaStyle": "L3/Regular/12"
         }
       },
       "14": {
@@ -513,7 +513,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/14"
+          "l3.figmaStyle": "L3/Regular/14"
         }
       },
       "16": {
@@ -526,7 +526,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/16"
+          "l3.figmaStyle": "L3/Regular/16"
         }
       },
       "18": {
@@ -539,7 +539,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/18"
+          "l3.figmaStyle": "L3/Regular/18"
         }
       },
       "20": {
@@ -552,7 +552,7 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "D2/Regular/20"
+          "l3.figmaStyle": "L3/Regular/20"
         }
       }
     }

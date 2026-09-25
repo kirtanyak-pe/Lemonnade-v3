@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from 'react'
 import styles from './Switch.module.css'
 
-/** Figma "D2→ Toggle switch" (node 4543:65343). Figma isSmall=True is `size="sm"`. */
+/** Figma "L3→ Toggle switch" (node 4543:65343). Figma isSmall=True is `size="sm"`. */
 export type SwitchSize = 'md' | 'sm'
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> & {

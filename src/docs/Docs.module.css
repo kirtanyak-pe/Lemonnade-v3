@@ -428,6 +428,18 @@
   font: var(--l3-text-semibold-14);
 }
 
+.filterRow {
+  padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-04);
+}
+
+.emptyState {
+  margin: 0;
+  padding: var(--l3-spacing-48) var(--l3-spacing-16);
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+  text-align: center;
+}
+
 .sheetSection {
   padding: var(--l3-spacing-08) var(--l3-spacing-16) var(--l3-spacing-16);
 }

@@ -1,5 +1,5 @@
 /*
- * D2 Radio button & check box — every size and color is an --l3-* token.
+ * L3 Radio button & check box — every size and color is an --l3-* token.
  * Figma: a 20px shape inset 2px in a 24px box; 2px outline when off, filled when on.
  * Checkbox corners use the linked-library variable s-3 (6px) = radius/06; inset s-1 (2px) = spacing/02.
  */

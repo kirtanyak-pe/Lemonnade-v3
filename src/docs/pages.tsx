@@ -4,10 +4,11 @@ import { ButtonPreview } from '../preview/ButtonPreview'
 import { TagPreview } from '../preview/TagPreview'
 import { SwitchVariants } from '../preview/SwitchVariants'
 import { SelectionVariants } from '../preview/SelectionVariants'
+import { TabsVariants } from '../preview/TabsVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { FiltersDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -159,6 +160,48 @@ export const pages: DocPage[] = [
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: md 34×20, sm 28×16.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Not drawn in Figma; uses content/disabled.' },
       { name: '…input props', type: 'InputHTMLAttributes', description: 'onChange, aria-label, id, etc. Renders role="switch".' },
+    ],
+  },
+
+  // ---- Navigation -------------------------------------------------------------
+  {
+    id: 'tabs',
+    title: 'Tabs',
+    group: 'Navigation',
+    description: 'Tabs switch between related views on the same screen. Underline tabs split a page into sections; pill tabs filter what\'s shown.',
+    status: 'Figma synced',
+    altNames: 'Tab bar, segmented control, chips, filter pills',
+    figmaNodeId: '4543:65938',
+    source: 'src/components/Tabs',
+    exports: ['Tabs', 'Tab'],
+    tokens: ['content/primary · secondary · inverted', 'surface/primary · inverted', 'border/light · dark', 'state-layer/*', 'text-semibold-10 · 12 · 14', 'text-extrabold-12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
+    overview: (
+      <>
+        <PhoneFrame label="Portfolio screen with underline section tabs and pill filters">
+          <PortfolioDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Two components</h2>
+          <p><strong>Tabs</strong> (Figma "L3: Tabs") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. <strong>Tab</strong> (Figma "L3: base tab") is one item, in underline or pill form, md or sm.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>No layout shift</h2>
+          <p>Selected underline tabs switch to the extrabold style. Each tab reserves that bolder width up front, so neighbouring tabs don't move when the selection changes.</p>
+        </section>
+      </>
+    ),
+    variants: <TabsVariants />,
+    props: [
+      { name: 'items', type: 'TabItem[]', description: 'Tabs: { value, label, iconLeft?, iconRight? }.' },
+      { name: 'value', type: 'string', description: 'Tabs: the selected item value.' },
+      { name: 'onChange', type: '(value) => void', description: 'Tabs: called on tap and on arrow / Home / End keys.' },
+      { name: 'appearance', type: "'underline' | 'pill'", default: "'underline'", description: 'Figma isPill (Tabs) / isChip (base tab).' },
+      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'primary'", description: 'Figma isPrimary: selected pill filled (primary) or outlined (secondary).' },
+      { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
+      { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
+      { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, coloured with the label.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
     ],
   },
 

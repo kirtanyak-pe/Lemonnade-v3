@@ -1,0 +1,213 @@
+/*
+ * L3 Tabs + base tab — every value is an --l3-* token.
+ * Figma's state-interaction overlay is replaced by tinting the tab background with the
+ * state-layer tokens (as in Button). Unbound Figma numbers are mapped to same-value tokens.
+ */
+
+/* ---- Tab bar ------------------------------------------------------------- */
+
+.tabs {
+  position: relative; /* offsetParent for keeping the selected tab in view */
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Figma draws the 1px border/light under each tab, so the line stops after the last tab.
+ * Here it spans the whole bar — identical when tabs fill the width, tidier when they don't.
+ */
+.tabs[data-appearance='underline'] {
+  box-shadow: inset 0 -1px 0 var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+}
+
+.tabs[data-appearance='pill'] {
+  gap: var(--l3-spacing-08);
+}
+
+/* ---- Tab ------------------------------------------------------------------ */
+
+.tab {
+  --tab-surface: transparent;
+  --tab-content: var(--l3-content-secondary);
+  --tab-border: transparent;
+  --tab-layer-default: var(--l3-state-layer-dark-default);
+  --tab-layer-hover: var(--l3-state-layer-dark-hover);
+  --tab-layer-pressed: var(--l3-state-layer-dark-pressed);
+  --tab-layer: var(--tab-layer-default);
+  /* Figma stroke weight has no variable. */
+  --tab-border-width: 1px;
+
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tab-gap);
+  height: var(--tab-height);
+  padding: var(--tab-padding-block) var(--tab-padding-inline);
+  border: 0;
+  border-radius: var(--tab-radius);
+  box-shadow: inset 0 0 0 var(--tab-border-width) var(--tab-border);
+  background-color: var(--tab-surface);
+  background-image: linear-gradient(var(--tab-layer), var(--tab-layer));
+  color: var(--tab-content);
+  font: var(--tab-font);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile: tap area at least size/tap-target (32) — only the 24px small pill needs it. */
+.tab::after {
+  content: '';
+  position: absolute;
+  inset: min(var(--l3-spacing-00), calc((100% - var(--l3-size-tap-target)) / 2)) 0;
+}
+
+@media (hover: hover) {
+  .tab:hover {
+    --tab-layer: var(--tab-layer-hover);
+  }
+}
+
+.tab:active {
+  --tab-layer: var(--tab-layer-pressed);
+}
+
+.tab:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: calc(-1 * var(--l3-spacing-02));
+}
+
+/* ---- Underline tabs (Figma isChip=False) ----------------------------------- */
+
+.tab[data-appearance='underline'] {
+  --tab-padding-block: var(--l3-spacing-00);
+  --tab-padding-inline: var(--l3-spacing-12);
+  --tab-gap: var(--l3-spacing-04);
+  --tab-label-padding: var(--l3-spacing-04);
+  /* Figma rounds the hover layer's top corners only. */
+  --tab-radius: var(--l3-radius-12) var(--l3-radius-12) 0 0;
+  /* Figma's 1px border/light under each tab (same row as the bar's line, so standalone tabs match too). */
+  box-shadow: inset 0 -1px 0 var(--l3-border-light);
+}
+
+.tab[data-appearance='underline'][data-size='md'] {
+  --tab-height: var(--l3-size-40);
+  --tab-font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  --tab-font-selected: var(--l3-text-extrabold-14); /* L3/extrabold - Heading/14 */
+}
+
+.tab[data-appearance='underline'][data-size='sm'] {
+  --tab-height: var(--l3-spacing-36);
+  --tab-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  --tab-font-selected: var(--l3-text-extrabold-12); /* L3/extrabold - Heading/12 */
+}
+
+/* Selected underline tab: primary text, bolder style, indicator bar; Figma has no hover layer on it. */
+.tab[data-appearance='underline'][aria-selected='true'] {
+  --tab-content: var(--l3-content-primary);
+  --tab-layer-hover: var(--tab-layer-default);
+  --tab-layer-pressed: var(--tab-layer-default);
+  font: var(--tab-font-selected);
+}
+
+.indicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-inverted);
+}
+
+/* ---- Pill tabs (Figma isChip=True) ------------------------------------------ */
+
+.tab[data-appearance='pill'] {
+  --tab-surface: var(--l3-surface-primary);
+  --tab-content: var(--l3-content-primary);
+  --tab-border: var(--l3-border-light);
+  --tab-radius: var(--l3-radius-full);
+  --tab-label-padding: var(--l3-spacing-02);
+}
+
+.tab[data-appearance='pill'][data-size='md'] {
+  --tab-height: var(--l3-size-32);
+  --tab-padding-block: var(--l3-spacing-08);
+  --tab-padding-inline: var(--l3-spacing-08);
+  --tab-gap: var(--l3-spacing-04);
+  --tab-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+}
+
+.tab[data-appearance='pill'][data-size='sm'] {
+  --tab-height: var(--l3-size-24);
+  --tab-padding-block: var(--l3-spacing-04);
+  --tab-padding-inline: var(--l3-spacing-06);
+  --tab-gap: var(--l3-spacing-02);
+  --tab-font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
+}
+
+/* Selected, primary: filled inverted pill with the light state layer. */
+.tab[data-appearance='pill'][data-emphasis='primary'][aria-selected='true'] {
+  --tab-surface: var(--l3-surface-inverted);
+  --tab-content: var(--l3-content-inverted);
+  --tab-border: transparent;
+  --tab-layer-default: var(--l3-state-layer-light-default);
+  --tab-layer-hover: var(--l3-state-layer-light-hover);
+  --tab-layer-pressed: var(--l3-state-layer-light-pressed);
+}
+
+/*
+ * Selected, secondary: outlined with border/dark. Figma gives it the light state layer,
+ * which is invisible on a light pill — the dark layer is kept so hover/press still show.
+ */
+.tab[data-appearance='pill'][data-emphasis='secondary'][aria-selected='true'] {
+  --tab-border: var(--l3-border-dark);
+}
+
+/* ---- Parts ------------------------------------------------------------------ */
+
+.icon {
+  flex: none;
+  display: inline-flex;
+  width: var(--l3-icon-size-16);
+  height: var(--l3-icon-size-16);
+}
+
+.icon > :is(svg, img, span) {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  display: flex;
+  padding-inline: var(--tab-label-padding);
+}
+
+/* Stack an invisible bold copy under the label so the tab is always as wide as its selected state. */
+.labelText {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.labelText::after {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font: var(--tab-font-selected, inherit);
+  user-select: none;
+  pointer-events: none; /* visibility: hidden also keeps it out of the accessibility tree */
+}

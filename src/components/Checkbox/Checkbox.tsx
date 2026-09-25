@@ -1,7 +1,7 @@
 import { useEffect, useRef, type InputHTMLAttributes } from 'react'
 import styles from './Checkbox.module.css'
 
-/** Figma "D2: Radio button & check box" (node 4543:65366), isRadio=False. */
+/** Figma "L3: Radio button & check box" (node 4543:65366), isRadio=False. */
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   /** Figma State=Intermediate — the "some selected" dash. */
   indeterminate?: boolean
@@ -24,7 +24,7 @@ export function Checkbox({ indeterminate = false, className, ...rest }: Checkbox
   )
 }
 
-/** Figma "D2: Radio button & check box", isRadio=True. Group radios with a shared `name`. */
+/** Figma "L3: Radio button & check box", isRadio=True. Group radios with a shared `name`. */
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
 
 export function Radio({ className, ...rest }: RadioProps) {

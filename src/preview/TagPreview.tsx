@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Tag, TagChevronIcon, TagPlaceholderIcon, type TagColor, type TagSize, type TagVariant } from '../components/Tag'
 
-// Order matches the Figma "D2: Tags" frame.
+// Order matches the Figma "L3: Tags" frame.
 const colors: TagColor[] = ['neutral', 'green', 'purple', 'yellow', 'red', 'indigo', 'teal', 'discover', 'orange']
 const rows: { label: string; variant: TagVariant; disabled?: boolean }[] = [
   { label: 'Primary', variant: 'primary' },

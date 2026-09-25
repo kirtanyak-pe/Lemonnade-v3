@@ -4,7 +4,77 @@ import { Button } from '../components/Button'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
+import { Tabs } from '../components/Tabs'
 import styles from './Docs.module.css'
+
+type Holding = { name: string; segment: string; qty: string; value: string; change: string; up: boolean }
+type Section = 'holdings' | 'positions' | 'orders'
+
+const portfolio: Record<Section, Holding[]> = {
+  holdings: [
+    { name: 'RELIANCE', segment: 'equity', qty: '12 shares', value: '₹35,365', change: '+4.2%', up: true },
+    { name: 'NIFTY 26 SEP 25000 CE', segment: 'fno', qty: '75 qty', value: '₹8,880', change: '+18.6%', up: true },
+    { name: 'HDFCBANK', segment: 'equity', qty: '20 shares', value: '₹32,851', change: '−1.1%', up: false },
+    { name: 'GOLD 05 OCT', segment: 'commodity', qty: '1 lot', value: '₹74,210', change: '+0.6%', up: true },
+  ],
+  positions: [
+    { name: 'BANKNIFTY 26 SEP 52000 PE', segment: 'fno', qty: '−30 qty', value: '₹4,215', change: '−7.4%', up: false },
+    { name: 'CRUDEOIL 18 OCT', segment: 'commodity', qty: '1 lot', value: '₹6,120', change: '+2.3%', up: true },
+  ],
+  orders: [],
+}
+const segmentFilters = [
+  { value: 'all', label: 'All' },
+  { value: 'equity', label: 'Equity' },
+  { value: 'fno', label: 'F&O' },
+  { value: 'commodity', label: 'Commodity' },
+]
+
+export function PortfolioDemo() {
+  const [section, setSection] = useState<Section>('holdings')
+  const [segment, setSegment] = useState('all')
+  const rows = portfolio[section].filter((r) => segment === 'all' || r.segment === segment)
+
+  return (
+    <div className={styles.screen}>
+      <div className={styles.appBar}>Portfolio</div>
+      <Tabs
+        aria-label="Portfolio sections"
+        idPrefix="portfolio"
+        items={[
+          { value: 'holdings', label: 'Holdings' },
+          { value: 'positions', label: 'Positions' },
+          { value: 'orders', label: 'Orders' },
+        ]}
+        value={section}
+        onChange={setSection}
+      />
+      <div className={styles.filterRow}>
+        <Tabs aria-label="Segment" appearance="pill" size="sm" items={segmentFilters} value={segment} onChange={setSegment} />
+      </div>
+      <div role="tabpanel" id={`portfolio-panel-${section}`} aria-labelledby={`portfolio-tab-${section}`}>
+        {rows.length === 0 ? (
+          <p className={styles.emptyState}>Nothing here yet.</p>
+        ) : (
+          <ul className={styles.list}>
+            {rows.map((row) => (
+              <li key={row.name} className={styles.listRow}>
+                <span className={styles.rowMain}>
+                  <span className={styles.rowTitle}>{row.name}</span>
+                  <span className={styles.rowHint}>{row.qty}</span>
+                </span>
+                <span className={styles.rowEnd}>
+                  <span className={styles.rowValue}>{row.value}</span>
+                  <Tag variant="tertiary" color={row.up ? 'green' : 'red'} size="sm">{row.change}</Tag>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export function TradeTicketDemo() {
   const [placing, setPlacing] = useState<'buy' | 'sell' | null>(null)

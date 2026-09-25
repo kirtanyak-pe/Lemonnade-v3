@@ -4,7 +4,7 @@ import leading from './assets/icon-leading.svg'
 import trailing from './assets/icon-trailing.svg'
 import styles from './Tag.module.css'
 
-/** Figma "D2: Tags" (node 4464:27218). Figma's Type=Tertiory is `tertiary` here. */
+/** Figma "L3: Tags" (node 4464:27218). Figma's Type=Tertiory is `tertiary` here. */
 export type TagVariant = 'primary' | 'secondary' | 'tertiary'
 export type TagColor = 'neutral' | 'green' | 'purple' | 'yellow' | 'red' | 'indigo' | 'teal' | 'discover' | 'orange'
 export type TagSize = 'sm' | 'md' | 'lg'
