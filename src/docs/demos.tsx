@@ -1,7 +1,8 @@
 // Realistic mobile screens for each component's Overview hero.
 import { useState, type UIEvent } from 'react'
-import { Button } from '../components/Button'
+import { Button, PlaceholderIcon } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
+import { BottomSheet, BottomSheetHeader } from '../components/BottomSheet'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -265,6 +266,82 @@ export function OrderReviewDemo() {
         <Button variant="buy">Confirm buy</Button>
         <Button variant="secondary">Edit order</Button>
       </ButtonGroup>
+    </div>
+  )
+}
+
+export function SheetsDemo() {
+  const [screen, setScreen] = useState<HTMLDivElement | null>(null)
+  const [sheet, setSheet] = useState<'order' | 'placed' | 'sort' | null>(null)
+  const [qty, setQty] = useState(10)
+  const [sort, setSort] = useState('Price change')
+  const close = () => setSheet(null)
+
+  return (
+    <div ref={setScreen} className={`${styles.screen} ${styles.fixedScreen} ${styles.sheetHost}`}>
+      <div className={styles.appBar}>RELIANCE</div>
+      <div className={styles.quote}>
+        <div>
+          <div className={styles.symbol}>2,947.10</div>
+          <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+        </div>
+        <Button size="sm" variant="tertiary" onClick={() => setSheet('sort')}>Sort: {sort}</Button>
+      </div>
+      <p className={`${styles.rowHint} ${styles.finePrint}`}>Tap Buy to open a bottom sheet. Drag its handle down, tap outside, press Esc or use ✕ to close. "Sort" opens a top sheet.</p>
+      <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Trade">
+        <Button variant="sell" onClick={() => setSheet('order')}>Sell</Button>
+        <Button variant="buy" onClick={() => setSheet('order')}>Buy</Button>
+      </ButtonGroup>
+
+      <BottomSheet
+        open={sheet === 'order'}
+        onClose={close}
+        container={screen}
+        dragHandle
+        aria-labelledby="order-sheet-title"
+        header={<BottomSheetHeader headingId="order-sheet-title" heading="Buy RELIANCE" info description="NSE · Delivery" onClose={close} />}
+        footer={
+          <ButtonGroup aria-label="Order actions">
+            <Button variant="buy" onClick={() => setSheet('placed')}>Buy {qty} shares</Button>
+            <Button variant="ghost" onClick={close}>Cancel</Button>
+            <p className={styles.sheetHelper}>Approx. ₹{(qty * 2947.1).toLocaleString('en-IN', { maximumFractionDigits: 0 })} + charges</p>
+          </ButtonGroup>
+        }
+      >
+        <div className={styles.qtyRow}>
+          <span className={styles.rowTitle}>Quantity</span>
+          <span className={styles.qtyStepper}>
+            <Button size="sm" variant="tertiary" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">−</Button>
+            <span className={styles.rowValue}>{qty}</span>
+            <Button size="sm" variant="tertiary" onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity">+</Button>
+          </span>
+        </div>
+      </BottomSheet>
+
+      <BottomSheet
+        open={sheet === 'placed'}
+        onClose={close}
+        container={screen}
+        aria-labelledby="placed-sheet-title"
+        header={<BottomSheetHeader size="lg" headingId="placed-sheet-title" heading="Order placed" description={`${qty} shares of RELIANCE at market price`} icon={<PlaceholderIcon />} tag={<Tag size="sm">EXECUTED</Tag>} />}
+        footer={<ButtonGroup aria-label="Done"><Button onClick={close}>Done</Button></ButtonGroup>}
+      />
+
+      <BottomSheet
+        open={sheet === 'sort'}
+        onClose={close}
+        container={screen}
+        placement="top"
+        aria-labelledby="sort-sheet-title"
+        header={<BottomSheetHeader headingId="sort-sheet-title" heading="Sort by" onClose={close} />}
+      >
+        {['Price change', 'Price', 'Name'].map((option) => (
+          <label key={option} className={styles.optionRow}>
+            <Radio name="sort" checked={sort === option} onChange={() => { setSort(option); close() }} />
+            {option}
+          </label>
+        ))}
+      </BottomSheet>
     </div>
   )
 }

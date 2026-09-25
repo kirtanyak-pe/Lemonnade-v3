@@ -6,10 +6,11 @@ import { SwitchVariants } from '../preview/SwitchVariants'
 import { SelectionVariants } from '../preview/SelectionVariants'
 import { TabsVariants } from '../preview/TabsVariants'
 import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
+import { BottomSheetVariants } from '../preview/BottomSheetVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, OrderReviewDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { FiltersDemo, OrderReviewDemo, SheetsDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -239,6 +240,51 @@ export const pages: DocPage[] = [
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, coloured with the label.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
+    ],
+  },
+
+  {
+    id: 'bottom-sheet',
+    title: 'Bottom sheet',
+    group: 'Surfaces',
+    description: 'A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.',
+    status: 'Figma synced',
+    altNames: 'Sheet, modal sheet, drawer, action sheet, top sheet',
+    figmaNodeId: '4543:63932',
+    source: 'src/components/BottomSheet',
+    exports: ['BottomSheet', 'BottomSheetHeader', 'BottomSheetSurface'],
+    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-extrabold-18 · 20', 'text-semibold-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
+    overview: (
+      <>
+        <PhoneFrame label="Stock screen that opens an order bottom sheet, a result sheet and a top sheet">
+          <SheetsDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Three pieces</h2>
+          <p><strong>BottomSheet</strong> is the modal: the Figma "L3: Overlay" backdrop, slide-in, focus trap, Esc / backdrop / drag-down to close. <strong>BottomSheetHeader</strong> is Figma's header in small (back · heading · ⓘ · close or any action) and large (icon · tag · heading · description) sizes. <strong>BottomSheetSurface</strong> is the panel alone, for embedding or static layouts.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Bottom or top</h2>
+          <p>Figma's isBottom=False drops the sheet from the top with rounded bottom corners — handy for sort or filter menus tied to the top of the screen.</p>
+        </section>
+      </>
+    ),
+    variants: <BottomSheetVariants />,
+    props: [
+      { name: 'open / onClose', type: 'boolean / () => void', description: 'BottomSheet: visibility; onClose fires on backdrop tap, Esc and drag-down.' },
+      { name: 'placement', type: "'bottom' | 'top'", default: "'bottom'", description: 'Figma isBottom.' },
+      { name: 'header', type: 'ReactNode', description: 'Figma 👁️ Header — usually <BottomSheetHeader />.' },
+      { name: 'children', type: 'ReactNode', description: 'Figma content slot; scrolls if the sheet would be taller than the screen.' },
+      { name: 'footer', type: 'ReactNode', description: 'Figma "Buttons" — usually <ButtonGroup>.' },
+      { name: 'utility', type: 'ReactNode', description: 'Figma Utility slot, below the buttons.' },
+      { name: 'dragHandle', type: 'boolean', default: 'false', description: 'Figma 👁️ Drag handle; also enables drag-down to dismiss.' },
+      { name: 'container', type: 'HTMLElement | null', default: 'document.body', description: 'Render inside another element instead of covering the page.' },
+      { name: 'aria-labelledby', type: 'string', description: 'Point at the header heading (headingId) to name the dialog.' },
+      { name: 'Header: size', type: "'sm' | 'lg'", default: "'sm'", description: 'Figma isSmall.' },
+      { name: 'Header: heading / description', type: 'string', description: 'Heading text and optional description.' },
+      { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading.' },
+      { name: 'Header: onBack / onClose / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, close button, or any right-side node (Tag, small Button).' },
+      { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
     ],
   },
 

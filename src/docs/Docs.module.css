@@ -388,6 +388,30 @@
   padding-bottom: var(--l3-spacing-16);
 }
 
+.sheetHost {
+  position: relative;
+  overflow: hidden;
+}
+
+.sheetHelper {
+  margin: 0;
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+  text-align: center;
+}
+
+.qtyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qtyStepper {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+}
+
 .finePrint {
   display: block;
   padding: var(--l3-spacing-16) var(--l3-spacing-16) 0;

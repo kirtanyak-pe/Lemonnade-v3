@@ -1,0 +1,288 @@
+/*
+ * L3 Bottom sheet + header + overlay — colours, type, spacing, radius, shadow and motion are --l3-* tokens.
+ * Figma's unbound numbers are mapped to same-value tokens; Space blocks become padding.
+ */
+
+/* ---- Modal root, overlay, dialog -------------------------------------------- */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; /* stacking order isn't a design token */
+  display: flex;
+  flex-direction: column;
+}
+
+.root[data-contained] {
+  position: absolute;
+  z-index: 1;
+}
+
+.root[data-placement='bottom'] {
+  justify-content: flex-end;
+}
+
+/* Figma "L3: Overlay": black at 80%. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+  opacity: 0;
+  transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - var(--l3-spacing-48));
+  outline: none;
+  transition: transform var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+.root[data-placement='bottom'] .dialog {
+  transform: translateY(100%);
+}
+
+.root[data-placement='top'] .dialog {
+  transform: translateY(-100%);
+}
+
+.root[data-state='open'] .backdrop {
+  opacity: 1;
+}
+
+.root[data-state='open'] .dialog {
+  transform: none;
+}
+
+/* Enter transition: start from the closed position when the sheet first appears. */
+@starting-style {
+  .root[data-state='open'] .backdrop {
+    opacity: 0;
+  }
+
+  .root[data-state='open'][data-placement='bottom'] .dialog {
+    transform: translateY(100%);
+  }
+
+  .root[data-state='open'][data-placement='top'] .dialog {
+    transform: translateY(-100%);
+  }
+}
+
+/* Follow the finger while dragging the handle. */
+.root[data-dragging] .dialog {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .dialog {
+    transition: none;
+  }
+}
+
+/* ---- Sheet surface --------------------------------------------------------- */
+
+.surface {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  background: var(--l3-surface-primary);
+}
+
+/* Figma isBottom=True: top corners 24, 1px border/light outside the top edge, elevation/high. */
+.surface[data-placement='bottom'] {
+  border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
+  box-shadow: 0 -1px 0 var(--l3-border-light), var(--l3-shadow-elevation-high);
+}
+
+/* Figma isBottom=False: drops from the top, bottom corners 24. */
+.surface[data-placement='top'] {
+  border-radius: 0 0 var(--l3-radius-24) var(--l3-radius-24);
+  box-shadow: var(--l3-shadow-elevation-high);
+  /* The top sheet sits under the status bar; Figma shows the system status bar here. */
+  padding-top: env(safe-area-inset-top, var(--l3-spacing-00));
+}
+
+.handleArea {
+  display: flex;
+  flex: none;
+  justify-content: center;
+  padding-top: var(--l3-spacing-08);
+  touch-action: none; /* we handle the drag */
+  cursor: grab;
+}
+
+/*
+ * Figma: 48×4 pill filled with the linked-library variable D2/color/icon/quarternary (#868686)
+ * at 50% — not in the L3 tokens, so the nearest themed token (border/intense) is used.
+ */
+.handle {
+  width: var(--l3-size-48);
+  height: var(--l3-size-04);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-border-intense);
+}
+
+/* Figma: top space 16 · content slot (16 side padding) · bottom space 24. */
+.content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--l3-spacing-16) var(--l3-spacing-16) var(--l3-spacing-24);
+}
+
+/* ---- Header ---------------------------------------------------------------- */
+
+.header {
+  flex: none;
+  box-sizing: border-box;
+  width: 100%;
+  background: var(--l3-surface-primary);
+  border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
+}
+
+/* Figma isSmall=True: 16 · [back 24 · 12] · text (16 top/bottom) · 12 · [action · 16]. */
+.header[data-size='sm'] {
+  display: flex;
+  align-items: stretch;
+  /* Figma: 0.5px border/light hairline under the header (stroke weight has no variable). */
+  box-shadow: inset 0 -0.5px 0 var(--l3-border-light);
+}
+
+.headerLeading {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-16) var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-16);
+}
+
+.headerLeading:empty {
+  padding-right: 0;
+}
+
+.headerText {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  padding: var(--l3-spacing-16) 0;
+}
+
+.headingRow {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+}
+
+.heading {
+  margin: 0;
+  color: var(--l3-content-primary);
+}
+
+.header[data-size='sm'] .heading {
+  font: var(--l3-text-extrabold-18); /* L3/extrabold - Heading/18 */
+}
+
+/* The info SVG already carries 60% opacity, so content/primary renders as Figma's content/secondary. */
+.info {
+  display: inline-flex;
+  flex: none;
+  width: var(--l3-icon-size-16);
+  height: var(--l3-icon-size-16);
+  color: var(--l3-content-primary);
+}
+
+.description {
+  margin: 0;
+  color: var(--l3-content-secondary);
+}
+
+.header[data-size='sm'] .description {
+  font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+}
+
+.headerTrailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: var(--l3-spacing-12);
+}
+
+.headerTrailing[data-has-action] {
+  padding-right: var(--l3-spacing-16);
+}
+
+/* 24px icon buttons (back / close) with a tap area of at least size/tap-target. */
+.iconButton {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+  padding: 0;
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: transparent;
+  color: var(--l3-content-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.iconButton::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--l3-size-24) - var(--l3-size-tap-target)) / 2);
+}
+
+.iconButton:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+/* Figma isSmall=False: centred icon (64) · tag · heading 20 · description 14. */
+.header[data-size='lg'] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-24);
+  padding: var(--l3-spacing-24) var(--l3-spacing-16);
+  text-align: center;
+}
+
+.headerIcon {
+  display: flex;
+  width: var(--l3-size-64);
+  height: var(--l3-size-64);
+  color: var(--l3-content-primary);
+}
+
+.headerIcon > :is(svg, img, span) {
+  width: 100%;
+  height: 100%;
+}
+
+.headerCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+}
+
+.header[data-size='lg'] .heading {
+  font: var(--l3-text-extrabold-20); /* L3/extrabold - Heading/20 */
+}
+
+.header[data-size='lg'] .description {
+  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+}

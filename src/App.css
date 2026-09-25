@@ -256,3 +256,38 @@ section > h2 {
   margin: 32px 0 12px;
   font: var(--l3-text-bold-18);
 }
+
+.sheet-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--l3-surface-secondary);
+}
+
+.sheet-stack .grid-note {
+  margin: 8px 0 0;
+}
+
+.sheet-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.sheet-placeholder {
+  padding: 24px;
+  border: 1px dashed var(--l3-border-accent-brand-default);
+  background: var(--l3-surface-accent-brand-light);
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+  text-align: center;
+}
+
+.sheet-helper {
+  margin: 0;
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+  text-align: center;
+}
