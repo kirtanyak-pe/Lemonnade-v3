@@ -1,19 +1,18 @@
-// Throwaway token preview for checking theme switching — replace once real components exist.
-import { productLabels, products, themeTokenVars, type ThemeToken } from './tokens'
+// Throwaway token preview for checking tokens and theme switching — replace once real components exist.
+import { useState } from 'react'
+import { productLabels, products } from './tokens'
 import { useTheme, type ModePreference } from './theme'
+import { ColorsPreview } from './preview/ColorsPreview'
+import { TypographyPreview } from './preview/TypographyPreview'
+import { NumbersPreview } from './preview/NumbersPreview'
 import './App.css'
 
-const groups: { title: string; prefix: string }[] = [
-  { title: 'Surface', prefix: 'surface/' },
-  { title: 'Content', prefix: 'content/' },
-  { title: 'Border', prefix: 'border/' },
-  { title: 'Button', prefix: 'component/button/' },
-]
-
-const tokenNames = Object.keys(themeTokenVars) as ThemeToken[]
+const tabs = { colors: 'Colors', typography: 'Typography', numbers: 'Spacing & radius' } as const
+type Tab = keyof typeof tabs
 
 function App() {
   const { product, mode, modePreference, availableModes, setProduct, setModePreference } = useTheme()
+  const [tab, setTab] = useState<Tab>('typography')
 
   return (
     <main className="preview">
@@ -36,19 +35,15 @@ function App() {
         <code>data-product="{product}" data-mode="{mode}"</code>
       </header>
 
-      {groups.map(({ title, prefix }) => (
-        <section key={title}>
-          <h2>{title}</h2>
-          <ul className="swatches">
-            {tokenNames.filter((n) => n.startsWith(prefix)).map((name) => (
-              <li key={name}>
-                <span className="chip" style={{ background: `var(${themeTokenVars[name]})` }} />
-                <span className="name">{name.slice(prefix.length)}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+      <nav className="tabs" role="tablist">
+        {(Object.keys(tabs) as Tab[]).map((t) => (
+          <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>{tabs[t]}</button>
+        ))}
+      </nav>
+
+      {tab === 'colors' && <ColorsPreview />}
+      {tab === 'typography' && <TypographyPreview />}
+      {tab === 'numbers' && <NumbersPreview />}
     </main>
   )
 }

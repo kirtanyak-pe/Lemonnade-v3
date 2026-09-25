@@ -39,6 +39,147 @@
   color: var(--l3-content-tertiary);
 }
 
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.tabs button {
+  font: var(--l3-text-semibold-14);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  color: var(--l3-content-secondary);
+  background: transparent;
+}
+
+.tabs button[aria-selected='true'] {
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-tertiary);
+}
+
+.sample-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  color: var(--l3-content-secondary);
+}
+
+.sample-input input {
+  font: inherit;
+  flex: 1 1 240px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-secondary);
+  border: 1px solid var(--l3-border-intense);
+}
+
+.type-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.type-list li {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr;
+  gap: 16px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--l3-border-light);
+}
+
+.type-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.type-name {
+  font-size: 13px;
+  color: var(--l3-content-primary);
+}
+
+.type-meta code {
+  font-size: 12px;
+  color: var(--l3-content-tertiary);
+  overflow-wrap: anywhere;
+}
+
+.type-sample {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .type-list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+.num-list,
+.num-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.num-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.num-list .num-name {
+  flex: none;
+  width: 110px;
+}
+
+.num-bar {
+  height: 12px;
+  border-radius: 2px;
+  background: var(--l3-surface-accent-brand-default);
+}
+
+.num-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.num-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.num-box {
+  width: 64px;
+  height: 64px;
+  background: var(--l3-surface-accent-brand-light);
+  border: 1px solid var(--l3-border-accent-brand-default);
+}
+
+.num-square {
+  background: var(--l3-surface-accent-brand-default);
+}
+
+.num-name {
+  font-size: 12px;
+  color: var(--l3-content-secondary);
+}
+
 .preview h2 {
   font-size: 16px;
   margin: 32px 0 12px;

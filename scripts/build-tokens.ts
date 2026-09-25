@@ -8,14 +8,21 @@ import { themes, defaultProduct, defaultMode, productModes } from '../src/tokens
 const root = fileURLToPath(new URL('../src/tokens/', import.meta.url))
 const OPACITY_EXT = 'l3.opacity'
 
-type Leaf = { $type: string; $value: string | number; $extensions?: Record<string, string> }
+type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string }
+type Leaf = { $type: string; $value: string | number | TypographyValue; $extensions?: Record<string, string> }
 type Tree = { [key: string]: Tree | Leaf }
 
 const readJson = (path: string): Tree => JSON.parse(readFileSync(root + path, 'utf8'))
 const isLeaf = (node: Tree | Leaf): node is Leaf => '$value' in node
 
+// JS objects list integer-like keys ("10") before others ("00", "full"), so restore scale order:
+// numeric keys ascending, then named keys in source order.
+const isNumeric = (key: string) => /^\d+$/.test(key)
+const byScale = ([a]: [string, unknown], [b]: [string, unknown]) =>
+  isNumeric(a) && isNumeric(b) ? Number(a) - Number(b) : Number(isNumeric(b)) - Number(isNumeric(a))
+
 function flatten(tree: Tree, prefix: string[] = [], out = new Map<string, Leaf>()) {
-  for (const [key, node] of Object.entries(tree)) {
+  for (const [key, node] of Object.entries(tree).sort(byScale)) {
     if (isLeaf(node)) out.set([...prefix, key].join('.'), node)
     else flatten(node, [...prefix, key], out)
   }
@@ -34,12 +41,12 @@ const varName = (path: string) =>
 
 const base = flatten(readJson('source/base.colors.json'))
 const opacity = flatten(readJson('source/base.opacity.json'))
+// Figma "🌌 Number" (spacing / radius / size) + "ℹ️ L3 → Icon size" (one variable, a mode per size).
+const numbers = new Map([...flatten(readJson('source/base.number.json')), ...flatten(readJson('source/base.icon-size.json'))])
 
 // ---- base.css -------------------------------------------------------------
-const baseLines = [
-  ...[...base].map(([path, leaf]) => `  ${varName(path)}: ${leaf.$value};`),
-  ...[...opacity].map(([path, leaf]) => `  ${varName(path)}: ${leaf.$value};`),
-]
+const baseLines = [base, opacity, numbers].flatMap((group) =>
+  [...group].map(([path, leaf]) => `  ${varName(path)}: ${leaf.$value};`))
 
 // ---- themes.css -----------------------------------------------------------
 const themeTokens = themes.map((theme) => ({ theme, tokens: flatten(readJson(`source/themes/${theme.id}.json`)) }))
@@ -72,6 +79,33 @@ const themeBlocks = themeTokens.map(({ theme, tokens }) => {
   return `/* ${theme.figmaMode} */\n${selectorFor(theme)} {\n  color-scheme: ${theme.mode};\n${lines.join('\n')}\n}`
 })
 
+// ---- typography.css -------------------------------------------------------
+const fontTokens = flatten(readJson('source/base.typography.json'))
+const textStyles = flatten(readJson('source/text-styles.json'))
+
+const fontRef = (value: string) => {
+  const target = refPath(value)
+  if (!fontTokens.has(target)) throw new Error(`typography: unknown ${target}`)
+  return `var(${varName(target)})`
+}
+
+const fontLines = [...fontTokens].map(([path, leaf]) =>
+  `  ${varName(path)}: ${leaf.$type === 'fontFamily' ? `'${leaf.$value}', sans-serif` : leaf.$value};`)
+
+const styleLines = [...textStyles].flatMap(([path, leaf]) => {
+  const v = leaf.$value as TypographyValue
+  const name = varName(path)
+  const [family, weight, size] = [fontRef(v.fontFamily), fontRef(v.fontWeight), fontRef(v.fontSize)]
+  return [
+    `  /* ${leaf.$extensions?.['l3.figmaStyle']} */`,
+    `  ${name}-weight: ${weight};`,
+    `  ${name}-size: ${size};`,
+    `  ${name}-line-height: ${v.lineHeight};`,
+    `  ${name}-letter-spacing: ${v.letterSpacing};`,
+    `  ${name}: ${weight} ${size}/${v.lineHeight} ${family};`,
+  ]
+})
+
 // ---- tokens.ts ------------------------------------------------------------
 const figmaName = (path: string) => path.replaceAll('.', '/')
 
@@ -92,9 +126,26 @@ export const baseColorVars = {
 ${[...base.keys()].map((p) => `  '${figmaName(p.replace(/^base\./, ''))}': '${varName(p)}',`).join('\n')}
 } as const
 
+/** Spacing / radius / size / icon-size variable (Figma name) → CSS custom property. */
+export const numberVars = {
+${[...numbers.keys()].map((p) => `  '${figmaName(p)}': '${varName(p)}',`).join('\n')}
+} as const
+
+/** Figma text style → CSS custom property (use as \`font: var(--l3-text-bold-16)\`). */
+export const textStyles = [
+${[...textStyles].map(([path, leaf]) => {
+  const v = leaf.$value as TypographyValue
+  const [, weight, size] = path.split('.')
+  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${size}, lineHeight: ${parseFloat(v.lineHeight)} },`
+}).join('\n')}
+] as const
+
 export type ThemeToken = keyof typeof themeTokenVars
 export type BaseColor = keyof typeof baseColorVars
+export type NumberToken = keyof typeof numberVars
+export type TextStyle = (typeof textStyles)[number]['cssVar']
 `,
 )
+writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n}\n`)
 
-console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${tokenPaths.length} theme tokens × ${themes.length} themes`)
+console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles`)

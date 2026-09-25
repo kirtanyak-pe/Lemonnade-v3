@@ -1,0 +1,227 @@
+{
+  "font": {
+    "family": {
+      "manrope": {
+        "$type": "fontFamily",
+        "$value": "Manrope"
+      }
+    },
+    "weight": {
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400,
+        "$extensions": {
+          "l3.figmaValue": "regular"
+        }
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$extensions": {
+          "l3.figmaValue": "medium"
+        }
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600,
+        "$extensions": {
+          "l3.figmaValue": "semibold"
+        }
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700,
+        "$extensions": {
+          "l3.figmaValue": "bold"
+        }
+      },
+      "extrabold": {
+        "$type": "fontWeight",
+        "$value": 800,
+        "$extensions": {
+          "l3.figmaValue": "extrabold"
+        }
+      }
+    },
+    "size": {
+      "regular": {
+        "50": {
+          "$type": "dimension",
+          "$value": "10px"
+        },
+        "100": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "200": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "300": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "400": {
+          "$type": "dimension",
+          "$value": "18px"
+        },
+        "500": {
+          "$type": "dimension",
+          "$value": "20px"
+        }
+      },
+      "medium": {
+        "50": {
+          "$type": "dimension",
+          "$value": "10px"
+        },
+        "100": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "200": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "300": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "400": {
+          "$type": "dimension",
+          "$value": "18px"
+        },
+        "500": {
+          "$type": "dimension",
+          "$value": "20px"
+        }
+      },
+      "semibold": {
+        "50": {
+          "$type": "dimension",
+          "$value": "10px"
+        },
+        "100": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "200": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "300": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "400": {
+          "$type": "dimension",
+          "$value": "18px"
+        },
+        "500": {
+          "$type": "dimension",
+          "$value": "20px"
+        },
+        "600": {
+          "$type": "dimension",
+          "$value": "24px"
+        },
+        "700": {
+          "$type": "dimension",
+          "$value": "28px"
+        },
+        "800": {
+          "$type": "dimension",
+          "$value": "32px"
+        },
+        "900": {
+          "$type": "dimension",
+          "$value": "36px"
+        }
+      },
+      "bold": {
+        "50": {
+          "$type": "dimension",
+          "$value": "10px"
+        },
+        "100": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "200": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "300": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "400": {
+          "$type": "dimension",
+          "$value": "18px"
+        },
+        "500": {
+          "$type": "dimension",
+          "$value": "20px"
+        },
+        "600": {
+          "$type": "dimension",
+          "$value": "24px"
+        },
+        "700": {
+          "$type": "dimension",
+          "$value": "28px"
+        },
+        "800": {
+          "$type": "dimension",
+          "$value": "32px"
+        },
+        "900": {
+          "$type": "dimension",
+          "$value": "36px"
+        }
+      },
+      "extrabold": {
+        "50": {
+          "$type": "dimension",
+          "$value": "10px"
+        },
+        "100": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "200": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "300": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "400": {
+          "$type": "dimension",
+          "$value": "18px"
+        },
+        "500": {
+          "$type": "dimension",
+          "$value": "20px"
+        },
+        "600": {
+          "$type": "dimension",
+          "$value": "24px"
+        },
+        "700": {
+          "$type": "dimension",
+          "$value": "28px"
+        },
+        "800": {
+          "$type": "dimension",
+          "$value": "32px"
+        },
+        "900": {
+          "$type": "dimension",
+          "$value": "36px"
+        }
+      }
+    }
+  }
+}

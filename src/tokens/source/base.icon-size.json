@@ -1,0 +1,53 @@
+{
+  "icon-size": {
+    "12": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$extensions": {
+        "l3.figmaMode": "12"
+      }
+    },
+    "14": {
+      "$type": "dimension",
+      "$value": "14px",
+      "$extensions": {
+        "l3.figmaMode": "14"
+      }
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$extensions": {
+        "l3.figmaMode": "16"
+      }
+    },
+    "18": {
+      "$type": "dimension",
+      "$value": "18px",
+      "$extensions": {
+        "l3.figmaMode": "18"
+      }
+    },
+    "20": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$extensions": {
+        "l3.figmaMode": "20"
+      }
+    },
+    "22": {
+      "$type": "dimension",
+      "$value": "22px",
+      "$extensions": {
+        "l3.figmaMode": "22"
+      }
+    },
+    "24": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$extensions": {
+        "l3.figmaMode": "24"
+      }
+    }
+  }
+}
