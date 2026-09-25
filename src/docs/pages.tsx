@@ -5,10 +5,11 @@ import { TagPreview } from '../preview/TagPreview'
 import { SwitchVariants } from '../preview/SwitchVariants'
 import { SelectionVariants } from '../preview/SelectionVariants'
 import { TabsVariants } from '../preview/TabsVariants'
+import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { FiltersDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { FiltersDemo, OrderReviewDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
@@ -97,6 +98,42 @@ export const pages: DocPage[] = [
       { name: 'iconRight', type: 'ReactNode', description: 'Figma icon-r slot.' },
       { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch to the container width.' },
       { name: '…button props', type: 'ButtonHTMLAttributes', description: 'onClick, type (defaults to "button"), aria-*, etc.' },
+    ],
+  },
+
+  {
+    id: 'button-group',
+    title: 'Button group',
+    group: 'Action',
+    description: 'A bar at the bottom of a screen or sheet that holds its main actions — stacked full-width, or side by side.',
+    status: 'Figma synced',
+    altNames: 'Button dock, action bar, sticky footer, CTA bar',
+    figmaNodeId: '4471:29456',
+    source: 'src/components/ButtonGroup',
+    exports: ['ButtonGroup'],
+    tokens: ['surface/primary', 'border/light', 'spacing/12 · 16', 'shadow/elevation-high', 'motion/* (local)'],
+    overview: (
+      <>
+        <PhoneFrame label="Order review with a vertical button group that lifts while content scrolls under it">
+          <OrderReviewDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Direction</h2>
+          <p>Vertical stacks full-width buttons with the primary on top. Horizontal shares the width equally with the primary on the right — the Order ticket and Filters demos use it.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Scroll indicator</h2>
+          <p>Figma's "Scroll indicator" adds the elevation-high shadow so the bar reads as floating over content. Turn it on while there's more content below — scroll the order above to the end and it fades away.</p>
+        </section>
+      </>
+    ),
+    variants: <ButtonGroupVariants />,
+    props: [
+      { name: 'direction', type: "'vertical' | 'horizontal'", default: "'vertical'", description: 'Figma Direction.' },
+      { name: 'scrollIndicator', type: 'boolean', default: 'false', description: 'Figma "Scroll indicator": shadow while content scrolls underneath.' },
+      { name: 'children', type: 'ReactNode', description: 'Figma "wrapper" slot — usually <Button size="lg" />s. Horizontal gives each an equal share.' },
+      { name: 'aria-label', type: 'string', description: 'Names the group (role="group") for screen readers.' },
+      { name: '…div props', type: 'HTMLAttributes', description: 'className (e.g. to make it sticky), style, etc.' },
     ],
   },
 

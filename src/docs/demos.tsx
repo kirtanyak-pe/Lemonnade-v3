@@ -1,6 +1,7 @@
 // Realistic mobile screens for each component's Overview hero.
-import { useState } from 'react'
+import { useState, type UIEvent } from 'react'
 import { Button } from '../components/Button'
+import { ButtonGroup } from '../components/ButtonGroup'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -101,10 +102,10 @@ export function TradeTicketDemo() {
         <div><dt>Order type</dt><dd>Market</dd></div>
         <div><dt>Margin required</dt><dd>₹6,20,308</dd></div>
       </dl>
-      <div className={styles.dock}>
-        <Button variant="sell" fullWidth loading={placing === 'sell'} disabled={placing === 'buy'} onClick={() => place('sell')}>Sell</Button>
-        <Button variant="buy" fullWidth loading={placing === 'buy'} disabled={placing === 'sell'} onClick={() => place('buy')}>Buy</Button>
-      </div>
+      <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Order actions">
+        <Button variant="sell" loading={placing === 'sell'} disabled={placing === 'buy'} onClick={() => place('sell')}>Sell</Button>
+        <Button variant="buy" loading={placing === 'buy'} disabled={placing === 'sell'} onClick={() => place('buy')}>Buy</Button>
+      </ButtonGroup>
     </div>
   )
 }
@@ -178,10 +179,10 @@ export function FiltersDemo() {
           Good till triggered (unavailable)
         </label>
       </div>
-      <div className={styles.dock}>
-        <Button variant="tertiary" fullWidth onClick={() => { setPicked([]); setValidity('day') }}>Reset</Button>
-        <Button variant="primary" fullWidth>Apply</Button>
-      </div>
+      <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Filter actions">
+        <Button variant="tertiary" onClick={() => { setPicked([]); setValidity('day') }}>Reset</Button>
+        <Button variant="primary">Apply</Button>
+      </ButtonGroup>
     </div>
   )
 }
@@ -214,6 +215,56 @@ export function SettingsDemo() {
           </li>
         ))}
       </ul>
+    </div>
+  )
+}
+
+const reviewLines = [
+  ['Order type', 'Delivery · Limit'],
+  ['Quantity', '12 shares'],
+  ['Limit price', '₹2,947.10'],
+  ['Order value', '₹35,365.20'],
+  ['Brokerage', '₹20.00'],
+  ['STT', '₹35.37'],
+  ['Exchange charges', '₹1.14'],
+  ['SEBI fee', '₹0.04'],
+  ['Stamp duty', '₹5.30'],
+  ['GST', '₹3.81'],
+  ['Total charges', '₹65.66'],
+  ['Amount required', '₹35,430.86'],
+]
+
+export function OrderReviewDemo() {
+  // Scroll indicator on while there is more content below the fold (Figma "Scroll indicator").
+  const [moreBelow, setMoreBelow] = useState(true)
+  const onScroll = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget
+    setMoreBelow(el.scrollTop + el.clientHeight < el.scrollHeight - 1)
+  }
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen}`}>
+      <div className={styles.appBar}>Review order</div>
+      <div className={styles.scrollArea} onScroll={onScroll}>
+        <div className={styles.quote}>
+          <div>
+            <div className={styles.symbol}>RELIANCE</div>
+            <Tag variant="tertiary" size="sm">NSE</Tag>
+          </div>
+          <div className={styles.priceBlock}>
+            <div className={styles.price}>2,947.10</div>
+            <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+          </div>
+        </div>
+        <dl className={styles.fields}>
+          {reviewLines.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+        <p className={styles.rowHint + ' ' + styles.finePrint}>Charges are estimates. Scroll to the end and the bar's shadow goes away.</p>
+      </div>
+      <ButtonGroup direction="vertical" scrollIndicator={moreBelow} aria-label="Confirm order">
+        <Button variant="buy">Confirm buy</Button>
+        <Button variant="secondary">Edit order</Button>
+      </ButtonGroup>
     </div>
   )
 }

@@ -372,12 +372,25 @@
   font: var(--l3-text-semibold-14);
 }
 
+/* Docks inside demo screens are ButtonGroups pinned to the bottom of the screen. */
 .dock {
-  display: flex;
-  gap: var(--l3-spacing-12);
   margin-top: auto;
-  padding: var(--l3-spacing-16);
-  border-top: 1px solid var(--l3-border-light);
+}
+
+.fixedScreen {
+  height: 560px;
+}
+
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: var(--l3-spacing-16);
+}
+
+.finePrint {
+  display: block;
+  padding: var(--l3-spacing-16) var(--l3-spacing-16) 0;
 }
 
 .list {

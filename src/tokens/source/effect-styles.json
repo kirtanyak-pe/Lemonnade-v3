@@ -11,7 +11,7 @@
       },
       "$description": "Cards, list items, input fields — sitting just above the background",
       "$extensions": {
-        "l3.figmaStyle": "D2/elevation/low"
+        "l3.figmaStyle": "L3/elevation/low"
       }
     },
     "elevation-medium": {
@@ -25,7 +25,7 @@
       },
       "$description": "Dropdowns, bottom sheets, floating action buttons — mid-layer components",
       "$extensions": {
-        "l3.figmaStyle": "D2/elevation/medium"
+        "l3.figmaStyle": "L3/elevation/medium"
       }
     },
     "elevation-high": {
@@ -39,7 +39,7 @@
       },
       "$description": "Modals, dialogs, overlays — top-layer components",
       "$extensions": {
-        "l3.figmaStyle": "D2/elevation/high"
+        "l3.figmaStyle": "L3/elevation/high"
       }
     },
     "sm": {

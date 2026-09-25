@@ -1,0 +1,41 @@
+/*
+ * L3 Button Group — every value is an --l3-* token.
+ * Figma's padding (16) and gap (12) are unbound; mapped to spacing/16 and spacing/12.
+ * The "base for scroll" layer's shadow (0 0 16, black 18%) is exactly L3/elevation/high.
+ */
+
+.group {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--l3-spacing-12);
+  width: 100%;
+  padding: var(--l3-spacing-16);
+  /* Mobile: clear the home indicator when the page uses viewport-fit=cover. */
+  padding-bottom: calc(var(--l3-spacing-16) + env(safe-area-inset-bottom, var(--l3-spacing-00)));
+  background-color: var(--l3-surface-primary);
+  box-shadow: inset 0 1px 0 var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+  transition: box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.group[data-direction='vertical'] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Horizontal: every button takes an equal share of the width (Figma flex 1). */
+.group[data-direction='horizontal'] > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Scroll indicator: keep the top line and lift the bar off the scrolling content. */
+.group[data-scrolled] {
+  box-shadow: inset 0 1px 0 var(--l3-border-light), var(--l3-shadow-elevation-high);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group {
+    transition: none;
+  }
+}
