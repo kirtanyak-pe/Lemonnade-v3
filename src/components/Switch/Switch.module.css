@@ -1,0 +1,98 @@
+/*
+ * D2 Toggle switch — every size and color is an --l3-* token.
+ * Figma draws the track as a pill, 2px inset, with the knob travelling from the
+ * left edge to the right edge; track width = 2 × knob + padding (34 / 28).
+ */
+
+.switch {
+  --sw-pad: var(--l3-spacing-02);
+  --sw-track: var(--l3-content-tertiary);
+  --sw-knob-color: var(--l3-content-inverted);
+  /* Figma's off-knob shadow is a raw effect (not a style or variable): 0 1 2, black 25%. */
+  --sw-knob-shadow: 0 1px 2px rgb(from var(--l3-static-black) r g b / var(--l3-opacity-25));
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+  width: var(--sw-width);
+  height: var(--sw-height);
+}
+
+.switch[data-size='md'] {
+  --sw-height: var(--l3-size-20);
+  --sw-knob: var(--l3-size-16);
+  --sw-width: calc(var(--l3-size-32) + var(--l3-spacing-02)); /* 34 */
+}
+
+.switch[data-size='sm'] {
+  --sw-height: var(--l3-size-16);
+  --sw-knob: var(--l3-size-12);
+  --sw-width: calc(var(--l3-size-24) + var(--l3-spacing-04)); /* 28 */
+}
+
+/* The real input covers the whole control, invisible, so clicks/taps and keyboard hit it. */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.track {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--sw-pad);
+  border-radius: var(--l3-radius-full);
+  background-color: var(--sw-track);
+  transition: background-color var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.knob {
+  flex: none;
+  width: var(--sw-knob);
+  height: var(--sw-knob);
+  border-radius: var(--l3-radius-full);
+  background-color: var(--sw-knob-color);
+  box-shadow: var(--sw-knob-shadow);
+  transition:
+    transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard),
+    box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* Motion isn't in Figma — it comes from local tokens. Instant for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .knob {
+    transition: none;
+  }
+}
+
+/* On: dark track, knob at the right edge, no shadow (as in Figma). */
+.input:checked + .track {
+  --sw-track: var(--l3-content-primary);
+}
+
+.input:checked + .track > .knob {
+  --sw-knob-shadow: none;
+  transform: translateX(calc(var(--sw-width) - var(--sw-knob) - 2 * var(--sw-pad)));
+}
+
+/* Not drawn in Figma (only State=Enabled exists): disabled reuses the theme's disabled content color. */
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.input:disabled + .track {
+  --sw-track: var(--l3-content-disabled);
+}
+
+.input:focus-visible + .track {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}

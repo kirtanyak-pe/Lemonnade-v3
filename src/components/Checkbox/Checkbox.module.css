@@ -1,0 +1,107 @@
+/*
+ * D2 Radio button & check box — every size and color is an --l3-* token.
+ * Figma: a 20px shape inset 2px in a 24px box; 2px outline when off, filled when on.
+ * Checkbox corners use the linked-library variable s-3 (6px) = radius/06; inset s-1 (2px) = spacing/02.
+ */
+
+.control {
+  --ctl-color: var(--l3-content-primary);
+  --ctl-mark: var(--l3-content-inverted);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+}
+
+/* The real input covers the control, invisible, so clicks/taps and keyboard hit it. */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.box {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--l3-size-20);
+  height: var(--l3-size-20);
+  margin: var(--l3-spacing-02);
+  border: var(--l3-spacing-02) solid var(--ctl-color);
+  border-radius: var(--l3-radius-06);
+  /* content/disabled is translucent — keep fill and border from stacking into a darker ring. */
+  background-clip: padding-box;
+}
+
+.control[data-kind='radio'] .box {
+  border-radius: var(--l3-radius-full);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.input:disabled + .box {
+  --ctl-color: var(--l3-content-disabled);
+}
+
+.input:focus-visible + .box {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+/* ---- Checkbox: filled + mark (check / dash), drawn from the Figma SVGs at their own size ---- */
+
+.control[data-kind='checkbox'] .input:is(:checked, :indeterminate) + .box {
+  background-color: var(--ctl-color);
+}
+
+.control[data-kind='checkbox'] .input:is(:checked, :indeterminate) + .box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--ctl-mark);
+  mask: url('./assets/check.svg') center / auto no-repeat;
+}
+
+.control[data-kind='checkbox'] .input:indeterminate + .box::after {
+  mask-image: url('./assets/dash.svg');
+}
+
+/* ---- Radio: filled ring, 16px inner disc (shadow-sm), 10px dot ---- */
+
+.control[data-kind='radio'] .input:checked + .box {
+  background-color: var(--ctl-color);
+}
+
+.control[data-kind='radio'] .input:checked + .box::before,
+.control[data-kind='radio'] .input:checked + .box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: var(--l3-radius-full);
+}
+
+.control[data-kind='radio'] .input:checked + .box::before {
+  width: var(--l3-size-16);
+  height: var(--l3-size-16);
+  background-color: var(--ctl-mark);
+  box-shadow: var(--l3-shadow-sm);
+}
+
+.control[data-kind='radio'] .input:checked + .box::after {
+  width: var(--l3-spacing-10);
+  height: var(--l3-spacing-10);
+  background-color: var(--ctl-color);
+}
+
+/* Figma's disabled selected radio drops the inner shadow. */
+.control[data-kind='radio'] .input:checked:disabled + .box::before {
+  box-shadow: none;
+}

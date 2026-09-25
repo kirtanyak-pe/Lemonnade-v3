@@ -1,0 +1,60 @@
+{
+  "shadow": {
+    "elevation-low": {
+      "$type": "shadow",
+      "$value": {
+        "color": "rgb(0 0 0 / 0.08)",
+        "offsetX": "0px",
+        "offsetY": "2px",
+        "blur": "4px",
+        "spread": "0px"
+      },
+      "$description": "Cards, list items, input fields — sitting just above the background",
+      "$extensions": {
+        "l3.figmaStyle": "D2/elevation/low"
+      }
+    },
+    "elevation-medium": {
+      "$type": "shadow",
+      "$value": {
+        "color": "rgb(0 0 0 / 0.1)",
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "12px",
+        "spread": "0px"
+      },
+      "$description": "Dropdowns, bottom sheets, floating action buttons — mid-layer components",
+      "$extensions": {
+        "l3.figmaStyle": "D2/elevation/medium"
+      }
+    },
+    "elevation-high": {
+      "$type": "shadow",
+      "$value": {
+        "color": "rgb(0 0 0 / 0.18)",
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "16px",
+        "spread": "0px"
+      },
+      "$description": "Modals, dialogs, overlays — top-layer components",
+      "$extensions": {
+        "l3.figmaStyle": "D2/elevation/high"
+      }
+    },
+    "sm": {
+      "$type": "shadow",
+      "$value": {
+        "color": "rgb(0 0 0 / 0.08)",
+        "offsetX": "0px",
+        "offsetY": "1px",
+        "blur": "3px",
+        "spread": "0px"
+      },
+      "$description": "From a linked library (not local to this file); used by the selected radio",
+      "$extensions": {
+        "l3.figmaStyle": "shadow/shadow-sm [light]"
+      }
+    }
+  }
+}

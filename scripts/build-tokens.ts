@@ -9,7 +9,8 @@ const root = fileURLToPath(new URL('../src/tokens/', import.meta.url))
 const OPACITY_EXT = 'l3.opacity'
 
 type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string }
-type Leaf = { $type: string; $value: string | number | TypographyValue; $extensions?: Record<string, string> }
+type ShadowValue = { color: string; offsetX: string; offsetY: string; blur: string; spread: string }
+type Leaf = { $type: string; $value: string | number | TypographyValue | ShadowValue; $description?: string; $extensions?: Record<string, string> }
 type Tree = { [key: string]: Tree | Leaf }
 
 const readJson = (path: string): Tree => JSON.parse(readFileSync(root + path, 'utf8'))
@@ -23,6 +24,7 @@ const byScale = ([a]: [string, unknown], [b]: [string, unknown]) =>
 
 function flatten(tree: Tree, prefix: string[] = [], out = new Map<string, Leaf>()) {
   for (const [key, node] of Object.entries(tree).sort(byScale)) {
+    if (key.startsWith('$')) continue // group metadata ($description etc.)
     if (isLeaf(node)) out.set([...prefix, key].join('.'), node)
     else flatten(node, [...prefix, key], out)
   }
@@ -106,6 +108,20 @@ const styleLines = [...textStyles].flatMap(([path, leaf]) => {
   ]
 })
 
+// ---- effects.css ----------------------------------------------------------
+const shadows = flatten(readJson('source/effect-styles.json'))
+const shadowLines = [...shadows].flatMap(([path, leaf]) => {
+  const v = leaf.$value as ShadowValue
+  return [`  /* ${leaf.$extensions?.['l3.figmaStyle']} */`, `  ${varName(path)}: ${v.offsetX} ${v.offsetY} ${v.blur} ${v.spread} ${v.color};`]
+})
+
+// ---- motion (local, not from Figma) → effects.css ------------------------
+const motion = flatten(readJson('source/local.motion.json'))
+const motionLines = [...motion].map(([path, leaf]) => {
+  const v = leaf.$value
+  return `  ${varName(path)}: ${Array.isArray(v) ? `cubic-bezier(${v.join(', ')})` : v};`
+})
+
 // ---- tokens.ts ------------------------------------------------------------
 const figmaName = (path: string) => path.replaceAll('.', '/')
 
@@ -147,5 +163,9 @@ export type TextStyle = (typeof textStyles)[number]['cssVar']
 `,
 )
 writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n}\n`)
+writeFileSync(
+  root + 'generated/effects.css',
+  `${header}:root {\n${shadowLines.join('\n')}\n\n  /* Motion — local tokens, not in Figma yet (source/local.motion.json) */\n${motionLines.join('\n')}\n}\n`,
+)
 
-console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles`)
+console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles, ${shadows.size} shadows, ${motion.size} motion (local)`)
