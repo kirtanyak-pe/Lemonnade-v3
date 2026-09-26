@@ -26,20 +26,30 @@
   --ab-surface: var(--ab-soft);
 }
 
-/* Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token). */
+/*
+ * Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token).
+ * The Ghost action takes the inverted colour too, with light state layers on the dark fill.
+ */
 .aerobar[data-emphasis='primary'] {
   --ab-surface: var(--ab-solid, var(--l3-surface-inverted));
   --ab-content: var(--l3-content-inverted);
   --ab-paragraph: rgb(from var(--l3-content-inverted) r g b / calc(alpha * var(--l3-opacity-60)));
+  --ab-action: var(--l3-content-inverted);
+  --ab-action-layer-hover: var(--l3-state-layer-light-hover);
+  --ab-action-layer-pressed: var(--l3-state-layer-light-pressed);
 }
 
-/*
- * Solid warning: black text, paragraph at 80%. Figma's floating solid warning switches to
- * inverted (white) text — kept black here so the two match and stay readable on yellow.
- */
+/* Solid warning: black text and action on yellow. Paragraph 80% inline, 60% floating (Figma). */
 .aerobar[data-type='warning'][data-emphasis='primary'] {
   --ab-content: var(--l3-static-black);
   --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+  --ab-action: var(--l3-static-black);
+  --ab-action-layer-hover: var(--l3-state-layer-dark-hover);
+  --ab-action-layer-pressed: var(--l3-state-layer-dark-pressed);
+}
+
+.aerobar[data-type='warning'][data-emphasis='primary'][data-floating] {
+  --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-60));
 }
 
 /* Figma: the soft neutral toast floats on elevation/low; every other floating one on medium. */
@@ -124,8 +134,19 @@
   }
 }
 
-/* Figma uses a small Secondary Button with its border removed. */
-.body .action[data-variant] {
-  --btn-border: transparent;
+/* Figma "wrapper": a 48px slot on the right with the Ghost button centred in it. */
+.actionSlot {
+  display: flex;
   flex: none;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  min-width: var(--l3-size-48);
+}
+
+/* Figma: small Ghost button — its label follows the bar (ghost/content on soft, inverted on solid). */
+.actionSlot .action[data-variant] {
+  --btn-content: var(--ab-action, var(--l3-button-ghost-content));
+  --btn-layer-hover: var(--ab-action-layer-hover, var(--l3-state-layer-dark-hover));
+  --btn-layer-pressed: var(--ab-action-layer-pressed, var(--l3-state-layer-dark-pressed));
 }

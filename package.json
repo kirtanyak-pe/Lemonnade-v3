@@ -11,7 +11,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "icons": "node scripts/sync-icons.ts"
+    "icons": "node scripts/sync-icons.ts",
+    "deploy:docs": "bash scripts/deploy-docs.sh"
   },
   "dependencies": {
     "react": "^19.2.8",

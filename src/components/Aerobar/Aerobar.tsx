@@ -19,7 +19,7 @@ export type AerobarProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   paragraph?: ReactNode
   /** Figma icon-L slot (24px). Defaults to the info icon; pass `false` to hide it (👁️ Icon-L). */
   icon?: ReactNode | false
-  /** Figma 👁️ Action-r: a small borderless secondary button. */
+  /** Figma 👁️ Action-r: a small Ghost button in a 48px slot on the right. */
   action?: { label: string; onClick: () => void }
 }
 
@@ -55,9 +55,11 @@ export function Aerobar({
           {paragraph && <p className={styles.paragraph}>{paragraph}</p>}
         </div>
         {action && (
-          <Button size="sm" variant="secondary" className={styles.action} onClick={action.onClick}>
-            {action.label}
-          </Button>
+          <span className={styles.actionSlot}>
+            <Button size="sm" variant="ghost" className={styles.action} onClick={action.onClick}>
+              {action.label}
+            </Button>
+          </span>
         )}
       </div>
     </div>

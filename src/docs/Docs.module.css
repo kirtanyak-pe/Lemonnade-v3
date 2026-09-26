@@ -390,12 +390,12 @@
   margin-top: var(--l3-spacing-48);
 }
 
-.section h2 {
+.section > h2 {
   margin: 0 0 var(--l3-spacing-08);
   font: var(--l3-text-bold-20);
 }
 
-.section p {
+.section > p {
   max-width: 640px;
   margin: 0 0 var(--l3-spacing-16);
   font: var(--l3-text-medium-16);
@@ -1346,7 +1346,7 @@ legend.sectionLabel {
   margin-top: var(--l3-spacing-20);
 }
 
-.guideline h3 {
+.guideline > h3 {
   margin: 0 0 var(--l3-spacing-08);
   font: var(--l3-text-bold-16);
 }

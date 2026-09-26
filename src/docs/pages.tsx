@@ -497,7 +497,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'floating', type: 'boolean', default: 'false', description: 'Figma isFloating: toast card with shadow and a rise-in animation.' },
       { name: 'heading / paragraph', type: 'ReactNode', description: 'Figma Headline text / Paragraph text (hidden when not passed).' },
       { name: 'icon', type: 'ReactNode | false', default: 'info icon', description: 'Figma icon-L slot (24px); false hides it.' },
-      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small borderless secondary button.' },
+      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small Ghost button in a 48px slot; its label follows the bar colour.' },
     ],
   },
 
