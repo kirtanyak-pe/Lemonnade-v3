@@ -1,0 +1,72 @@
+/*
+ * L3 Empty state — every value is an --l3-* token.
+ * Figma: vertical stack, centred, 24px gap, 16px side padding, surface/default:
+ * 120px illustration · heading + description (4px gap, centred) · small primary CTA.
+ * Figma's frame is a fixed 412px tall; here it grows to fill a flex parent and centres.
+ */
+
+.emptyState {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-24);
+  width: 100%;
+  padding: var(--l3-spacing-24) var(--l3-spacing-16);
+  background: var(--l3-surface-default);
+  text-align: center;
+}
+
+.illustration {
+  display: flex;
+  flex: none;
+  width: var(--l3-size-illustration);
+}
+
+.illustrationSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  width: 100%;
+}
+
+.title,
+.description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.title {
+  font: var(--l3-text-extrabold-16); /* L3/extrabold - Heading/16 */
+  color: var(--l3-content-primary);
+}
+
+.description {
+  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  color: var(--l3-content-secondary);
+}
+
+/* Illustration fills — all bound to variables in Figma. */
+.brand {
+  fill: var(--l3-surface-accent-brand-default);
+}
+
+.black {
+  fill: var(--l3-static-black);
+}
+
+.white {
+  fill: var(--l3-static-white);
+}
+
+.ink {
+  fill: var(--l3-content-primary);
+}

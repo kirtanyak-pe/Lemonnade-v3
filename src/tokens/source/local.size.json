@@ -5,6 +5,11 @@
       "$type": "dimension",
       "$value": "32px",
       "$description": "Minimum tap area for interactive components. Figma's size/touch-min is 48px; the team chose 32px."
+    },
+    "illustration": {
+      "$type": "dimension",
+      "$value": "120px",
+      "$description": "Empty-state illustration slot (Figma L3 → Empty state, 120×120). No Number variable exists for it."
     }
   }
 }

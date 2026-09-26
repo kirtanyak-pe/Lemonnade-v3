@@ -13,10 +13,11 @@ import { TextFieldVariants } from '../preview/TextFieldVariants'
 import { ListCellVariants } from '../preview/ListCellVariants'
 import { ActionbarVariants } from '../preview/ActionbarVariants'
 import { BottomNavbarVariants } from '../preview/BottomNavbarVariants'
+import { EmptyStateVariants } from '../preview/EmptyStateVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { AccountDemo, AppNavDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { AccountDemo, AppNavDemo, EmptySearchDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
 import type { DocPage } from './types'
@@ -492,6 +493,45 @@ import { msWallet, msWalletFill } from './icons/material'
   },
 
   // ---- Data display -----------------------------------------------------------
+  {
+    id: 'empty-state',
+    title: 'Empty state',
+    group: 'Feedback & status',
+    description: 'What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.',
+    status: 'Figma synced',
+    altNames: 'No results, zero state, blank slate, nothing found',
+    figmaNodeId: '4543:66488',
+    source: 'src/components/EmptyState',
+    exports: ['EmptyState', 'NoResultsIllustration'],
+    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-extrabold-16', 'text-semibold-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
+    overview: (
+      <>
+        <PhoneFrame label="Stock search with no matches: the empty state with a Clear button">
+          <EmptySearchDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Say what happened, then offer a way out</h2>
+          <p>Use the heading to say what's missing ("No results found") and the description to say what to try. Figma's CTA is a small primary Button, "Clear" with a delete icon, that resets the search. Tap it in the demo above, then type to see results come back.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Illustration</h2>
+          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand colour. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Layout and accessibility</h2>
+          <p>The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use <code>headingLevel=&#123;3&#125;</code> under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.</p>
+        </section>
+      </>
+    ),
+    variants: <EmptyStateVariants />,
+    props: [
+      { name: 'title', type: 'ReactNode', description: 'Figma ✏️ Heading.' },
+      { name: 'description', type: 'ReactNode', description: 'Figma ✏️ Description.' },
+      { name: 'illustration', type: 'ReactNode | null', default: '<NoResultsIllustration />', description: 'Figma Illustration slot, 120px. null hides it.' },
+      { name: 'action', type: 'ReactNode', description: 'Figma Clear CTA: usually <Button size="sm" variant="primary">.' },
+      { name: 'headingLevel', type: '2 | 3', default: '2', description: 'Heading element for the title.' },
+    ],
+  },
   {
     id: 'list-cell',
     title: 'List cell',

@@ -732,3 +732,9 @@ legend.sectionLabel {
     transition: none;
   }
 }
+
+/* Lets a child (e.g. EmptyState) fill and centre in the scroll area. */
+.fillColumn {
+  display: flex;
+  flex-direction: column;
+}

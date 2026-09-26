@@ -9,12 +9,13 @@ import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
 import { Icon } from '../components/Icon'
 import { Actionbar, ActionbarAction } from '../components/Actionbar'
-import { msAccountBalance, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
+import { msAccountBalance, msDeleteForever, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
 import { Tabs } from '../components/Tabs'
 import { BottomNavbar } from '../components/BottomNavbar'
+import { EmptyState } from '../components/EmptyState'
 import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import styles from './Docs.module.css'
 
@@ -544,7 +545,13 @@ export function StockDetailDemo() {
                 <ListCell size="sm" as="button" label={c} description="NSE" onClick={() => { setSymbol(c); setSearching(false); setQuery('') }} />
               </li>
             ))}
-            {matches.length === 0 && <p className={styles.emptyState}>No companies match “{query}”.</p>}
+            {matches.length === 0 && (
+              <EmptyState
+                title="No results found"
+                description={`No companies match “${query.trim()}”.`}
+                action={<Button size="sm" variant="primary" iconLeft={<Icon icon={msDeleteForever} size={12} />} onClick={() => setQuery('')}>Clear</Button>}
+              />
+            )}
           </ul>
         ) : (
           <div className={styles.quote}>
@@ -605,6 +612,37 @@ export function AppNavDemo() {
         onChange={select}
         home={nav === 'main' ? undefined : { label: 'Home', onClick: () => { setNav('main'); setValue('stocks') } }}
       />
+    </div>
+  )
+}
+
+const instruments = ['RELIANCE', 'HDFCBANK', 'HDFCLIFE', 'INFY', 'ITC', 'TCS', 'TATAMOTORS', 'TATASTEEL', 'NIFTY 50', 'BANK NIFTY']
+
+/** Search that starts with no matches, so the empty state and its Clear action are visible. */
+export function EmptySearchDemo() {
+  const [query, setQuery] = useState('ZOMATOO')
+  const matches = instruments.filter((c) => c.includes(query.trim().toUpperCase()))
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad}`}>
+      <Actionbar onBack={() => {}} search={{ value: query, onChange: setQuery, placeholder: 'Search stocks, F&O, indices' }} />
+      <div className={`${styles.scrollArea} ${styles.fillColumn}`}>
+        {matches.length > 0 ? (
+          <ul className={styles.list}>
+            {matches.map((c) => (
+              <li key={c}>
+                <ListCell size="sm" as="button" label={c} description="NSE" onClick={() => {}} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState
+            title="No results found"
+            description={`Nothing matches “${query.trim()}”. Check the spelling or try a symbol.`}
+            action={<Button size="sm" variant="primary" iconLeft={<Icon icon={msDeleteForever} size={12} />} onClick={() => setQuery('')}>Clear</Button>}
+          />
+        )}
+      </div>
     </div>
   )
 }
