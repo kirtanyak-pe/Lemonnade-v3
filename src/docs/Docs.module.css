@@ -41,6 +41,7 @@
 /* ---- Header ---------------------------------------------------------------- */
 
 .header {
+  box-sizing: border-box; /* border inside --header-height, so the rail's sticky top lines up */
   position: sticky;
   top: 0;
   z-index: 30;
@@ -136,10 +137,12 @@
 }
 
 .rail {
+  box-sizing: border-box; /* padding inside the height, or it overflows the viewport and gets pushed up at the page end */
   position: sticky;
   top: var(--header-height);
-  height: calc(100vh - var(--header-height));
+  height: calc(100dvh - var(--header-height)); /* dvh: follows mobile browser toolbars */
   overflow-y: auto;
+  overscroll-behavior: contain; /* scrolling past the end of the nav doesn't scroll the page */
   padding: var(--l3-spacing-24) var(--l3-spacing-12);
   border-right: 1px solid var(--l3-border-light);
   background: var(--l3-surface-default);
