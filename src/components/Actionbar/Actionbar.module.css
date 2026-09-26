@@ -1,0 +1,157 @@
+/*
+ * L3 Actionbar — every value is an --l3-* token.
+ * Figma: 32px system status bar (phone chrome — here the safe-area inset) + 48px row:
+ * 16 · [back 24 · 12] · content · [12 · actions] · 16, with a 1px border/light line below.
+ */
+
+.actionbar {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: env(safe-area-inset-top, var(--l3-spacing-00));
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 -1px 0 var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+}
+
+.actionbar[data-sticky] {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* stacking order isn't a design token */
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  min-height: var(--l3-size-48);
+  padding: 0 var(--l3-spacing-16);
+}
+
+/* ---- Back: 24px icon, round 32px state layer (Figma "L3 → State layer") ---- */
+
+.back {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: var(--l3-icon-size-24);
+  height: var(--l3-icon-size-24);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--l3-content-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.back::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--l3-icon-size-24) - var(--l3-size-32)) / 2);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-state-layer-dark-default);
+}
+
+@media (hover: hover) {
+  .back:hover::before {
+    background: var(--l3-state-layer-dark-hover);
+  }
+}
+
+.back:active::before {
+  background: var(--l3-state-layer-dark-pressed);
+}
+
+.back:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-06);
+  border-radius: var(--l3-radius-full);
+}
+
+.back > span {
+  position: relative;
+}
+
+/* ---- Content: heading / description, or the search input ------------------ */
+
+.content {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+  /* Figma: 48px row with the text centred (heading + description = 38px, so no extra padding). */
+}
+
+.title,
+.description {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title {
+  font: var(--l3-text-extrabold-14); /* L3/extrabold - Heading/14 */
+  color: var(--l3-content-primary);
+}
+
+.description {
+  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  color: var(--l3-content-secondary);
+}
+
+/* Figma Type=Search (placeholder content/disabled) / Searched (content/primary), blue caret. */
+.search {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--l3-content-primary);
+  caret-color: var(--l3-content-accent-discover-default);
+  font: var(--l3-text-medium-14); /* L3/Medium - Body/14 */
+  appearance: none;
+}
+
+.search::placeholder {
+  color: var(--l3-content-disabled);
+  opacity: 1;
+}
+
+.search::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Keyboard users still see where focus is (the caret alone isn't enough). */
+.row:has(.search:focus-visible) {
+  box-shadow: inset 0 calc(-1 * var(--l3-spacing-02)) 0 var(--l3-border-dark);
+}
+
+/* ---- Actions ------------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+}
+
+/* Figma: small Secondary Button, pill, border/light instead of border/dark, icon only. */
+.actions .action[data-variant] {
+  --btn-radius: var(--l3-radius-full);
+  --btn-border: var(--l3-border-light);
+}
+
+.actions .action[data-variant][aria-pressed='true'] {
+  --btn-border: var(--l3-border-dark);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+}

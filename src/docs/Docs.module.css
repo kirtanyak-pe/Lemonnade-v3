@@ -427,6 +427,10 @@
   overflow: hidden;
 }
 
+.noTopPad {
+  padding-top: var(--l3-spacing-36);
+}
+
 .cardStack {
   display: flex;
   flex-direction: column;

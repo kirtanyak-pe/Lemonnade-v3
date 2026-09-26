@@ -8,7 +8,8 @@ import { TextField } from '../components/TextField'
 import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
 import { Icon } from '../components/Icon'
-import { msAccountBalance, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
+import { Actionbar, ActionbarAction } from '../components/Actionbar'
+import { msAccountBalance, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -496,6 +497,62 @@ export function AccountDemo() {
           <ListCell variant="card" as="button" iconLeft={<Icon icon={msAccountBalance} />} label="HDFC Bank ••4821" description="Primary · Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
           <ListCell variant="card" as="button" iconLeft={<Icon icon={msAccountBalance} />} label="ICICI Bank ••0937" description="Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
         </div>
+      </div>
+    </div>
+  )
+}
+
+const companies = ['RELIANCE', 'RELIANCE POWER', 'RELIGARE', 'HDFCBANK', 'HDFCLIFE', 'INFY', 'ITC', 'TCS', 'TATAMOTORS', 'TATASTEEL']
+
+export function StockDetailDemo() {
+  const [searching, setSearching] = useState(false)
+  const [query, setQuery] = useState('')
+  const [starred, setStarred] = useState(false)
+  const [tab, setTab] = useState('overview')
+  const [symbol, setSymbol] = useState('RELIANCE')
+  const matches = companies.filter((c) => c.includes(query.trim().toUpperCase()))
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad}`}>
+      {searching ? (
+        <Actionbar
+          onBack={() => { setSearching(false); setQuery('') }}
+          backLabel="Close search"
+          search={{ value: query, onChange: setQuery, placeholder: 'Search for a company', autoFocus: true }}
+        />
+      ) : (
+        <Actionbar
+          title={symbol}
+          description="NSE · Equity"
+          onBack={() => {}}
+          actions={
+            <>
+              <ActionbarAction icon={msSearchIcon} label="Search" onClick={() => setSearching(true)} />
+              <ActionbarAction icon={starred ? msStarFill : msStar} label={starred ? 'Remove from watchlist' : 'Add to watchlist'} pressed={starred} onClick={() => setStarred((s) => !s)} />
+            </>
+          }
+          bottom={<Tabs aria-label="Stock sections" items={[{ value: 'overview', label: 'Overview' }, { value: 'financials', label: 'Financials' }, { value: 'news', label: 'News' }]} value={tab} onChange={setTab} />}
+        />
+      )}
+      <div className={styles.scrollArea}>
+        {searching ? (
+          <ul className={styles.list}>
+            {matches.map((c) => (
+              <li key={c}>
+                <ListCell size="sm" as="button" label={c} description="NSE" onClick={() => { setSymbol(c); setSearching(false); setQuery('') }} />
+              </li>
+            ))}
+            {matches.length === 0 && <p className={styles.emptyState}>No companies match “{query}”.</p>}
+          </ul>
+        ) : (
+          <div className={styles.quote}>
+            <div>
+              <div className={styles.symbol}>2,947.10</div>
+              <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+            </div>
+            <span className={styles.rowHint}>{tab === 'overview' ? 'Overview' : tab === 'financials' ? 'Financials' : 'News'} for {symbol}</span>
+          </div>
+        )}
       </div>
     </div>
   )

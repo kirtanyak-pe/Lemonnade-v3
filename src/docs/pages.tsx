@@ -11,10 +11,11 @@ import { BottomSheetVariants } from '../preview/BottomSheetVariants'
 import { AerobarVariants } from '../preview/AerobarVariants'
 import { TextFieldVariants } from '../preview/TextFieldVariants'
 import { ListCellVariants } from '../preview/ListCellVariants'
+import { ActionbarVariants } from '../preview/ActionbarVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { AccountDemo, FiltersDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { AccountDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
 import type { DocPage } from './types'
@@ -310,6 +311,44 @@ import { msWallet, msWalletFill } from './icons/material'
     ],
   },
 
+  {
+    id: 'actionbar',
+    title: 'Actionbar',
+    group: 'Navigation',
+    description: 'The bar at the top of a screen: back, the screen title with an optional description, and up to a couple of actions — or a search field.',
+    status: 'Figma synced',
+    altNames: 'App bar, top bar, navigation bar, header, toolbar',
+    figmaNodeId: '4543:65480',
+    source: 'src/components/Actionbar',
+    exports: ['Actionbar', 'ActionbarAction'],
+    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-extrabold-14', 'text-medium-12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
+    overview: (
+      <>
+        <PhoneFrame label="Stock screen with an actionbar: back, title, search and watchlist actions, and tabs underneath">
+          <StockDetailDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Title or search</h2>
+          <p>Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass <code>search</code> and the middle becomes a real search input — tap the search action above.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Actions and bottom content</h2>
+          <p><code>ActionbarAction</code> is Figma's round 32px icon button; give it a label so it's announced. <code>bottom</code> is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).</p>
+        </section>
+      </>
+    ),
+    variants: <ActionbarVariants />,
+    props: [
+      { name: 'title / description', type: 'ReactNode', description: 'Figma ✏️ Heading / ✏️ Description.' },
+      { name: 'headingLevel', type: '1 | 2', default: '1', description: 'The title is the screen heading; use 2 inside sheets or previews.' },
+      { name: 'onBack / backLabel', type: "() => void / string", default: "'Back'", description: 'Figma 👁️ Action - left: back button with a round state layer.' },
+      { name: 'actions', type: 'ReactNode', description: 'Figma → content right — usually <ActionbarAction icon label onClick />.' },
+      { name: 'bottom', type: 'ReactNode', description: 'Figma ↓ Content bottom — Tabs, filters…' },
+      { name: 'search', type: '{ value, onChange, placeholder?, label?, autoFocus? }', description: 'Figma base content Type=Search / Searched: the middle becomes a search input.' },
+      { name: 'sticky', type: 'boolean', default: 'false', description: 'Stick to the top while the page scrolls.' },
+      { name: 'ActionbarAction', type: '{ icon, label, onClick, pressed? }', description: 'Round 32px icon button; pressed shows a toggle state (e.g. watchlist).' },
+    ],
+  },
   {
     id: 'bottom-sheet',
     title: 'Bottom sheet',
