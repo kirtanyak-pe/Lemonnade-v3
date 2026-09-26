@@ -12,10 +12,11 @@ import { AerobarVariants } from '../preview/AerobarVariants'
 import { TextFieldVariants } from '../preview/TextFieldVariants'
 import { ListCellVariants } from '../preview/ListCellVariants'
 import { ActionbarVariants } from '../preview/ActionbarVariants'
+import { BottomNavbarVariants } from '../preview/BottomNavbarVariants'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { AccountDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { AccountDemo, AppNavDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
 import type { DocPage } from './types'
@@ -347,6 +348,51 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'search', type: '{ value, onChange, placeholder?, label?, autoFocus? }', description: 'Figma base content Type=Search / Searched: the middle becomes a search input.' },
       { name: 'sticky', type: 'boolean', default: 'false', description: 'Stick to the top while the page scrolls.' },
       { name: 'ActionbarAction', type: '{ icon, label, onClick, pressed? }', description: 'Round 32px icon button; pressed shows a toggle state (e.g. watchlist).' },
+    ],
+  },
+  {
+    id: 'bottom-navbar',
+    title: 'Bottom navbar',
+    group: 'Navigation',
+    description: 'The tab bar at the bottom of the app for moving between its main sections. Mutual Fund and F&O have their own sub-navs with a Home item back to the main bar.',
+    status: 'Figma synced',
+    altNames: 'Bottom navigation, tab bar, nav bar, bottom tabs, dock',
+    figmaNodeId: '4543:61961',
+    source: 'src/components/BottomNavbar',
+    exports: ['BottomNavbar', 'NavIcon', 'navIconNames'],
+    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-semibold-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
+    overview: (
+      <>
+        <PhoneFrame label="App home screen with the bottom navbar: tap Mutual Fund or F&O to open their sub-navs, and Home to come back">
+          <AppNavDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Main nav and sub-navs</h2>
+          <p>The main bar has Stocks, Market, Portfolio, Mutual Fund and F&amp;O. Mutual Fund and F&amp;O each have their own bar. Pass <code>home</code> to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Moving between navs</h2>
+          <p>When the options change, the bar animates. The option you tapped glides into its new slot, and the rest slide in one after another from the direction you're going: from the right into a sub-nav, from the left back Home. The animation uses the motion tokens, and it's turned off when the device is set to reduce motion.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Nav icons</h2>
+          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one colour, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colours, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Accessibility</h2>
+          <p>The bar is a <code>&lt;nav&gt;</code> landmark. Give it a name with <code>aria-label</code>. Each option is a button, or a link when you pass <code>href</code>. The current option is marked with <code>aria-current="page"</code>, and the label is always shown. With <code>fixed</code>, the bar sticks to the bottom of the screen and adds space for the home indicator.</p>
+        </section>
+      </>
+    ),
+    variants: <BottomNavbarVariants />,
+    props: [
+      { name: 'items', type: 'BottomNavbarItem[]', description: '{ value, label, icon, selectedIcon?, href? }. Icons are 24px.' },
+      { name: 'value', type: 'string', description: 'The current section (Figma Tab / isActive).' },
+      { name: 'onChange', type: '(value) => void', description: 'Called when an option is tapped.' },
+      { name: 'home', type: '{ label?, onClick?, href? }', description: "Figma MF / F&O sub-navs: a Home item (back-home icon) and a separator. The label defaults to 'Home'." },
+      { name: 'aria-label', type: 'string', default: "'Main'", description: 'Name of the nav landmark.' },
+      { name: 'fixed', type: 'boolean', default: 'false', description: 'Fix the bar to the bottom of the viewport and add the safe-area inset.' },
+      { name: 'NavIcon', type: '{ name: NavIconName; selected? }', description: 'Figma .L3: base navicons: stocks, market, portfolio, mutualFund, fno, mfFunds, mfDashboard, mfSips, fnoOptionChain, fnoPositions, fnoScalper, backHome.' },
     ],
   },
   {

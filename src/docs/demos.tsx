@@ -14,6 +14,8 @@ import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
 import { Tabs } from '../components/Tabs'
+import { BottomNavbar } from '../components/BottomNavbar'
+import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import styles from './Docs.module.css'
 
 type Holding = { name: string; segment: string; qty: string; value: string; change: string; up: boolean }
@@ -554,6 +556,55 @@ export function StockDetailDemo() {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+const sectionRows: Record<string, { label: string; description: string }[]> = {
+  stocks: [{ label: 'RELIANCE', description: '₹2,947.10 · +1.24%' }, { label: 'HDFCBANK', description: '₹1,642.55 · −0.38%' }, { label: 'INFY', description: '₹1,873.20 · +0.91%' }],
+  market: [{ label: 'NIFTY 50', description: '25,104.30 · +0.42%' }, { label: 'SENSEX', description: '82,011.75 · +0.37%' }, { label: 'BANK NIFTY', description: '52,318.60 · −0.12%' }],
+  portfolio: [{ label: 'Invested', description: '₹1,48,210' }, { label: 'Current', description: '₹1,55,306 · +4.8%' }],
+  mf: [{ label: 'Top rated funds', description: 'Curated by our research team' }, { label: 'Tax saver (ELSS)', description: 'Save up to ₹46,800 a year' }],
+  funds: [{ label: 'Parag Parikh Flexi Cap', description: '3Y · 21.4%' }, { label: 'Mirae Asset Large Cap', description: '3Y · 15.2%' }],
+  dashboard: [{ label: 'Current value', description: '₹62,480 · +9.1%' }],
+  sips: [{ label: 'Next SIP', description: '5 Oct · ₹5,000' }, { label: 'Active SIPs', description: '3' }],
+  fno: [{ label: 'NIFTY 26 SEP 25000 CE', description: '₹118.40 · +18.6%' }],
+  chain: [{ label: 'NIFTY · 26 SEP', description: 'Strikes 24,500 – 25,500' }],
+  positions: [{ label: 'BANKNIFTY 26 SEP 52000 PE', description: '−30 qty · ₹4,215' }],
+  scalper: [{ label: 'One-tap scalping', description: 'Buy / sell at market with preset qty' }],
+}
+
+/** Home screen with the main bottom nav; Mutual Fund and F&O open their own sub-navs with a Home item. */
+export function AppNavDemo() {
+  const [nav, setNav] = useState<'main' | 'mf' | 'fno'>('main')
+  const [value, setValue] = useState('stocks')
+  const items = nav === 'mf' ? mfNavItems : nav === 'fno' ? fnoNavItems : mainNavItems
+  const title = items.find((i) => i.value === value)?.label
+
+  const select = (v: string) => {
+    if (nav === 'main' && (v === 'mf' || v === 'fno')) setNav(v)
+    setValue(v)
+  }
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad}`}>
+      <Actionbar title={title} description={nav === 'main' ? undefined : nav === 'mf' ? 'Mutual funds' : 'Futures & options'} />
+      <div className={styles.scrollArea}>
+        <ul className={styles.list}>
+          {sectionRows[value].map((r) => (
+            <li key={r.label}>
+              <ListCell as="button" label={r.label} description={r.description} onClick={() => {}} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <BottomNavbar
+        aria-label={nav === 'main' ? 'Main' : nav === 'mf' ? 'Mutual funds' : 'F&O'}
+        items={items}
+        value={value}
+        onChange={select}
+        home={nav === 'main' ? undefined : { label: 'Home', onClick: () => { setNav('main'); setValue('stocks') } }}
+      />
     </div>
   )
 }

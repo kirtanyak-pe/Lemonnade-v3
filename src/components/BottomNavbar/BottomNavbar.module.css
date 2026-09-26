@@ -1,0 +1,129 @@
+/*
+ * L3 Bottom Navbar — every value is an --l3-* token.
+ * Figma: equal-width options (flex 1), 64px tall, 10px top/bottom padding, 4px gap:
+ * 24px icon over a semibold-10 label. 1px border/light line on top, surface/primary fill.
+ * Below it Figma draws the 24px OS navigation bar — here that's the safe-area inset.
+ */
+
+.navbar {
+  box-sizing: border-box;
+  width: 100%;
+  padding-bottom: env(safe-area-inset-bottom, var(--l3-spacing-00));
+  background: var(--l3-surface-primary);
+  /* Figma: 1px border/subtle (= border/light) top stroke + a raw upward shadow (0 -4 24, 6% black)
+     that isn't an effect style — elevation-medium is the nearest token. */
+  box-shadow:
+    inset 0 1px 0 var(--l3-border-light), /* 1px: Figma stroke weight has no variable */
+    var(--l3-shadow-elevation-medium);
+}
+
+.navbar[data-fixed] {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 10; /* stacking order isn't a design token */
+}
+
+.tabs {
+  position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tabs > li {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Figma MF / F&O sub-navs: 44px separator after the Home option, centred in the 64px row. */
+.homeItem {
+  position: relative;
+}
+
+.homeItem::after {
+  content: '';
+  position: absolute;
+  top: var(--l3-spacing-10);
+  bottom: var(--l3-spacing-10);
+  right: 0;
+  width: 1px; /* 1px: Figma stroke weight has no variable */
+  background: var(--l3-border-light);
+}
+
+/* ---- Option (Figma "L3 → base navoption", isActive) ----------------------------- */
+
+.option {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  min-height: var(--l3-size-64);
+  padding: var(--l3-spacing-10) var(--l3-spacing-00); /* Figma: no side padding */
+  border: 0;
+  background: transparent;
+  color: var(--l3-content-tertiary);
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.option[data-selected] {
+  color: var(--l3-content-accent-success-default);
+}
+
+/* No state layer in Figma — a light press tint so taps register. */
+.option:active {
+  background-image: linear-gradient(var(--l3-state-layer-dark-pressed), var(--l3-state-layer-dark-pressed));
+}
+
+@media (hover: hover) {
+  .option:hover {
+    background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover));
+  }
+}
+
+.option:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: calc(-1 * var(--l3-spacing-02));
+}
+
+.icon {
+  display: block;
+  flex: none;
+  width: var(--l3-icon-size-24);
+  height: var(--l3-icon-size-24);
+}
+
+.label {
+  max-width: 100%;
+  overflow: hidden;
+  font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Figma nav icons: tertiary / secondary opacity is baked into the SVG, so mask with primary. */
+.option:not([data-selected]) .navMask {
+  color: var(--l3-content-primary);
+}
+
+.brandIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option {
+    transition: none;
+  }
+}
