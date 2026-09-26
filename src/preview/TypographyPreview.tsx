@@ -24,7 +24,7 @@ export function TypographyPreview() {
           <h2>{title}</h2>
           <ul className="type-list">
             {textStyles.filter((s) => s.weight === weight).map((s) => (
-              <li key={s.cssVar}>
+              <li key={s.cssVar} data-token={s.cssVar.replace('--l3-', '')}>
                 <div className="type-meta">
                   <span className="type-name">{s.figmaName}</span>
                   <code>{s.fontSize}/{s.lineHeight} · {s.cssVar}</code>

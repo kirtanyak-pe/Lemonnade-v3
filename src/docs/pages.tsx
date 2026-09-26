@@ -20,6 +20,7 @@ import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
+import { HomePage } from './HomePage'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
 
@@ -29,6 +30,14 @@ export const figmaUrl = (nodeId: string) => `${FIGMA_FILE}?node-id=${nodeId.repl
 const buttonVariants = ['primary', 'secondary', 'tertiary', 'ghost', 'brand', 'buy', 'sell'] as const
 
 export const pages: DocPage[] = [
+  {
+    id: 'home',
+    title: 'Home',
+    group: 'Start',
+    description: 'Lemonnade V3 components, tokens and guidelines.',
+    content: <HomePage />,
+  },
+
   // ---- Foundations --------------------------------------------------------
   {
     id: 'colors',
@@ -609,7 +618,7 @@ import { msWallet, msWalletFill } from './icons/material'
   },
 ]
 
-export const defaultPageId = 'button'
+export const defaultPageId = 'home'
 
 /** Nav rail groups in display order. */
 export const navGroups = [...new Set(pages.map((p) => p.group))].map((group) => ({

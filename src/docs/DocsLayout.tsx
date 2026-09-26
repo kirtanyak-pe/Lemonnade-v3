@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import { productLabels, products } from '../tokens'
-import { useTheme, type ModePreference } from '../theme'
 import { defaultPageId, navGroups, pages } from './pages'
 import { DocPageView } from './DocPageView'
+import { Search } from './Search'
+import { ThemeControls } from './ThemeControls'
 import { href, useHashRoute } from './useHashRoute'
 import styles from './Docs.module.css'
 
 export function DocsLayout() {
-  const { page: pageId, tab } = useHashRoute()
+  const { page: pageId, tab, query } = useHashRoute()
   const page = pages.find((p) => p.id === pageId) ?? pages.find((p) => p.id === defaultPageId)!
   // The mobile drawer is open "for" the page it was opened on, so navigating closes it.
   const [railOpenOn, setRailOpenOn] = useState<string | null>(null)
@@ -44,7 +44,7 @@ export function DocsLayout() {
     document.title = `${page.title} · L3 Design System`
   }, [page])
 
-  const section = page.group === 'Foundations' ? 'foundations' : 'components'
+  const section = page.group === 'Foundations' ? 'foundations' : page.group === 'Start' ? 'home' : 'components'
 
   return (
     <div className={styles.layout}>
@@ -68,6 +68,8 @@ export function DocsLayout() {
           <span className={styles.brandMark} aria-hidden="true" />
           L3
         </a>
+
+        <Search />
 
         <ThemeControls />
 
@@ -115,25 +117,9 @@ export function DocsLayout() {
         {railOpen && <div className={styles.scrim} onClick={() => setRailOpen(false)} aria-hidden="true" />}
 
         <main ref={mainRef} id="docs-main" tabIndex={-1} className={styles.main}>
-          <DocPageView page={page} tabId={tab} />
+          <DocPageView page={page} tabId={tab} highlightToken={query.get('token')} />
         </main>
       </div>
-    </div>
-  )
-}
-
-function ThemeControls() {
-  const { product, modePreference, availableModes, setProduct, setModePreference } = useTheme()
-  return (
-    <div className={styles.themeControls}>
-      <select aria-label="Product" value={product} onChange={(e) => setProduct(e.target.value as typeof product)}>
-        {products.map((p) => <option key={p} value={p}>{productLabels[p]}</option>)}
-      </select>
-      <select aria-label="Mode" value={modePreference} onChange={(e) => setModePreference(e.target.value as ModePreference)}>
-        <option value="system">System</option>
-        <option value="light" disabled={!availableModes.includes('light')}>Light</option>
-        <option value="dark">Dark</option>
-      </select>
     </div>
   )
 }
