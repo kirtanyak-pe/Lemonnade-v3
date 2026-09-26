@@ -1,7 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react'
-import { MaskIcon } from '../MaskIcon'
-import leading from './assets/icon-leading.svg'
-import trailing from './assets/icon-trailing.svg'
+import { ChevronDownIcon, PlaceholderIcon } from '../icons'
 import styles from './Tag.module.css'
 
 /** Figma "L3: Tags" (node 4464:27218). Figma's Type=Tertiory is `tertiary` here. */
@@ -52,8 +50,8 @@ export function Tag({
   )
 }
 
-/** Figma's default left icon (placeholder grid). */
-export const TagPlaceholderIcon = () => <MaskIcon src={leading} />
+/** Figma's default left icon (placeholder, blur_on). */
+export const TagPlaceholderIcon = PlaceholderIcon
 
-/** Figma's default right icon (chevron down). */
-export const TagChevronIcon = () => <MaskIcon src={trailing} />
+/** Figma's default right icon (keyboard_arrow_down). */
+export const TagChevronIcon = ChevronDownIcon

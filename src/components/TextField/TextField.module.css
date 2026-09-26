@@ -157,9 +157,9 @@
   height: var(--l3-icon-size-14);
 }
 
-/* The neutral ⓘ SVG carries 60% opacity; status icons use the message colour. */
+/* The neutral ⓘ is content/secondary; status icons use the message colour. */
 .field:not([data-status]) .helperIcon {
-  color: var(--l3-content-primary);
+  color: var(--l3-content-secondary);
 }
 
 .counter {

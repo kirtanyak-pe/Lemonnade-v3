@@ -287,6 +287,16 @@
   color: var(--l3-content-secondary);
 }
 
+.codeBlock {
+  overflow-x: auto;
+  margin: 0 0 var(--l3-spacing-16);
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-secondary);
+  font-size: var(--l3-font-size-regular-100);
+  line-height: 1.6;
+}
+
 .demoRow {
   display: flex;
   flex-wrap: wrap;

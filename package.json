@@ -10,7 +10,8 @@
     "prebuild": "npm run tokens",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "icons": "node scripts/sync-icons.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

@@ -1,0 +1,10 @@
+/* Sized by --icon-size; inside a component's icon slot (Button, Tag, Tabs, ListCell…) the slot sizes it. */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  vertical-align: middle;
+  background-color: currentColor;
+  mask: var(--icon-src) center / 100% 100% no-repeat;
+}

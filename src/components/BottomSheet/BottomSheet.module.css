@@ -191,13 +191,14 @@
   font: var(--l3-text-extrabold-18); /* L3/extrabold - Heading/18 */
 }
 
-/* The info SVG already carries 60% opacity, so content/primary renders as Figma's content/secondary. */
-.info {
+/* Figma: the ⓘ after the heading is content/secondary. */
+.info,
+.iconButton.infoButton {
   display: inline-flex;
   flex: none;
   width: var(--l3-icon-size-16);
   height: var(--l3-icon-size-16);
-  color: var(--l3-content-primary);
+  color: var(--l3-content-secondary);
 }
 
 .description {

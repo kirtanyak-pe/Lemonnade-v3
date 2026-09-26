@@ -16,6 +16,7 @@ import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, FiltersDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
+import { IconsBrowserLazy } from './IconsBrowserLazy'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
 
@@ -46,6 +47,28 @@ export const pages: DocPage[] = [
     group: 'Foundations',
     description: 'Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.',
     content: <NumbersPreview />,
+  },
+
+  {
+    id: 'icons',
+    title: 'Icons',
+    group: 'Foundations',
+    description: 'The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.',
+    content: (
+      <>
+        <section className={styles.section}>
+          <h2>Using an icon</h2>
+          <pre className={styles.codeBlock}><code>{`import { Icon } from './components/Icon'
+import { msWallet, msWalletFill } from './icons/material'
+
+<Icon icon={msWallet} size={24} />            // decorative
+<Icon icon={msWalletFill} label="Wallet" />    // meaningful → announced
+<Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`}</code></pre>
+          <p>Only the icons you import end up in the app. Colour comes from the surrounding text colour; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
+        </section>
+        <IconsBrowserLazy />
+      </>
+    ),
   },
 
   // ---- Action ---------------------------------------------------------------

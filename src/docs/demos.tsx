@@ -7,6 +7,8 @@ import { Aerobar } from '../components/Aerobar'
 import { TextField } from '../components/TextField'
 import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
+import { Icon } from '../components/Icon'
+import { msAccountBalance, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -459,23 +461,22 @@ export function AccountDemo() {
   const [expanded, setExpanded] = useState(false)
   const [biometric, setBiometric] = useState(true)
   const [unread, setUnread] = useState(true)
-  const icon = <PlaceholderIcon />
 
   return (
     <div className={`${styles.screen} ${styles.fixedScreen}`}>
       <div className={styles.appBar}>Account</div>
       <div className={styles.scrollArea}>
-        <ListCell as="button" iconLeft={icon} label="Kirtanya K." description="Client ID · LM4821" iconRight={<ChevronDownIcon />} onClick={() => setExpanded((e) => !e)} />
+        <ListCell as="button" iconLeft={<Icon icon={msPerson} />} label="Kirtanya K." description="Client ID · LM4821" iconRight={<ChevronDownIcon />} onClick={() => setExpanded((e) => !e)} />
         {expanded && (
           <div className={styles.cardStack}>
-            <ListCell variant="card" size="sm" iconLeft={icon} label="Email" description="k••••@peepal.co" />
-            <ListCell variant="card" size="sm" iconLeft={icon} label="Phone" description="+91 ••••• ••921" />
+            <ListCell variant="card" size="sm" iconLeft={<Icon icon={msMail} />} label="Email" description="k••••@peepal.co" />
+            <ListCell variant="card" size="sm" iconLeft={<Icon icon={msCall} />} label="Phone" description="+91 ••••• ••921" />
           </div>
         )}
         <div className={styles.sectionLabel + ' ' + styles.listHeading}>Settings</div>
         <ListCell
           as="button"
-          iconLeft={icon}
+          iconLeft={<Icon icon={msNotifications} />}
           dotLeft={unread}
           label="Notifications"
           description={unread ? '2 new alerts' : 'All caught up'}
@@ -484,16 +485,16 @@ export function AccountDemo() {
         />
         <ListCell
           as="label"
-          iconLeft={icon}
+          iconLeft={<Icon icon={msFingerprint} />}
           label="Biometric login"
           description="Face ID or fingerprint"
           trailing={<Switch checked={biometric} onChange={(e) => setBiometric(e.target.checked)} />}
         />
-        <ListCell iconLeft={icon} label="Plan" description="Renews 26 Oct" trailing={<Tag variant="secondary" color="green" size="md">PRO</Tag>} />
+        <ListCell iconLeft={<Icon icon={msWorkspacePremium} />} label="Plan" description="Renews 26 Oct" trailing={<Tag variant="secondary" color="green" size="md">PRO</Tag>} />
         <div className={styles.sectionLabel + ' ' + styles.listHeading}>Bank accounts</div>
         <div className={styles.cardStack}>
-          <ListCell variant="card" as="button" iconLeft={icon} label="HDFC Bank ••4821" description="Primary · Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
-          <ListCell variant="card" as="button" iconLeft={icon} label="ICICI Bank ••0937" description="Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
+          <ListCell variant="card" as="button" iconLeft={<Icon icon={msAccountBalance} />} label="HDFC Bank ••4821" description="Primary · Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
+          <ListCell variant="card" as="button" iconLeft={<Icon icon={msAccountBalance} />} label="ICICI Bank ••0937" description="Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
         </div>
       </div>
     </div>

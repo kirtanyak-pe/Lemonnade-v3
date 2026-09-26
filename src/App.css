@@ -336,3 +336,96 @@ section > h2 {
   font-size: 12px;
   color: var(--l3-content-tertiary);
 }
+
+.icons-browser {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.icons-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.icons-toolbar > :first-child {
+  flex: 1 1 280px;
+}
+
+.icons-toolbar > [role='tablist'] {
+  margin-bottom: 24px;
+}
+
+.icons-detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--l3-surface-secondary);
+}
+
+.icons-detail-preview {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.icons-detail-text {
+  display: flex;
+  flex: 1 1 240px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.icons-detail-text code {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  color: var(--l3-content-secondary);
+}
+
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.icons-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 4px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+.icons-cell span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 11px;
+  color: var(--l3-content-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icons-cell:hover,
+.icons-cell[aria-pressed='true'] {
+  background: var(--l3-surface-tertiary);
+}
+
+.icons-cell:focus-visible {
+  outline: 2px solid var(--l3-border-dark);
+}

@@ -1,5 +1,5 @@
 import { useId, useState, type ChangeEvent, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react'
-import { CheckCircleIcon, InfoSmallIcon, TextGripIcon, WarningIcon } from '../icons'
+import { CheckCircleIcon, InfoIcon, TextGripIcon, WarningIcon } from '../icons'
 import styles from './TextField.module.css'
 
 /** Figma "L3: input field & text Box" (node 4543:66091). */
@@ -54,7 +54,7 @@ export function TextField(props: TextFieldProps) {
   const message = overLimit && rest.multiline ? (rest.limitMessage ?? 'Character limit reached') : helperText
 
   const statusIcon = effectiveStatus === 'error' ? <WarningIcon /> : effectiveStatus === 'success' ? <CheckCircleIcon /> : null
-  const leadIcon = statusIcon ?? (!rest.multiline && helperIcon ? <InfoSmallIcon /> : null)
+  const leadIcon = statusIcon ?? (!rest.multiline && helperIcon ? <InfoIcon /> : null)
   const hasHelperRow = Boolean(message) || maxLength !== undefined
 
   const shared = {

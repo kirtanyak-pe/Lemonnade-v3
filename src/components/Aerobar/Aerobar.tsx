@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Button } from '../Button'
-import { InfoOutlineIcon } from '../icons'
+import { InfoIcon } from '../icons'
 import styles from './Aerobar.module.css'
 
 /** Figma "L3: aerobar - toast" (node 4543:65562). */
@@ -38,7 +38,7 @@ export function Aerobar({
   className,
   ...rest
 }: AerobarProps) {
-  const iconNode = icon === false ? null : (icon ?? <InfoOutlineIcon />)
+  const iconNode = icon === false ? null : (icon ?? <InfoIcon />)
   return (
     <div
       role={type === 'danger' ? 'alert' : 'status'}
