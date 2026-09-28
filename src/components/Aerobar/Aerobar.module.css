@@ -7,7 +7,8 @@
   /* Soft (Figma isPrimary=False) by default. */
   --ab-surface: var(--l3-surface-tertiary);
   --ab-content: var(--l3-content-primary);
-  --ab-paragraph: var(--l3-content-secondary);
+  /* Figma: content/secondary with its fill at 60% (Figma fill opacity → opacity token). */
+  --ab-paragraph: rgb(from var(--l3-content-secondary) r g b / calc(alpha * var(--l3-opacity-60)));
   --ab-shadow: var(--l3-shadow-elevation-medium);
 
   display: flex;
@@ -27,25 +28,26 @@
 }
 
 /*
- * Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token).
- * The Ghost action takes the inverted colour too, with light state layers on the dark fill.
+ * Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token);
+ * the Ghost action takes the same colour.
  */
 .aerobar[data-emphasis='primary'] {
   --ab-surface: var(--ab-solid, var(--l3-surface-inverted));
-  --ab-content: var(--l3-content-inverted);
-  --ab-paragraph: rgb(from var(--l3-content-inverted) r g b / calc(alpha * var(--l3-opacity-60)));
-  --ab-action: var(--l3-content-inverted);
-  --ab-action-layer-hover: var(--l3-state-layer-light-hover);
-  --ab-action-layer-pressed: var(--l3-state-layer-light-pressed);
+  --ab-on-solid: var(--l3-content-inverted);
+  --ab-content: var(--ab-on-solid);
+  --ab-paragraph: rgb(from var(--ab-on-solid) r g b / calc(alpha * var(--l3-opacity-60)));
+  --ab-action: var(--ab-on-solid);
 }
 
-/* Solid warning: black text and action on yellow. Paragraph 80% inline, 60% floating (Figma). */
+/* Figma: solid danger and success use static white (stays white in dark mode, unlike inverted). */
+.aerobar:is([data-type='danger'], [data-type='success'])[data-emphasis='primary'] {
+  --ab-on-solid: var(--l3-static-white);
+}
+
+/* Solid warning: static black on yellow. Paragraph 80% inline, 60% floating (Figma). */
 .aerobar[data-type='warning'][data-emphasis='primary'] {
-  --ab-content: var(--l3-static-black);
+  --ab-on-solid: var(--l3-static-black);
   --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
-  --ab-action: var(--l3-static-black);
-  --ab-action-layer-hover: var(--l3-state-layer-dark-hover);
-  --ab-action-layer-pressed: var(--l3-state-layer-dark-pressed);
 }
 
 .aerobar[data-type='warning'][data-emphasis='primary'][data-floating] {
@@ -144,9 +146,10 @@
   min-width: var(--l3-size-48);
 }
 
-/* Figma: small Ghost button — its label follows the bar (ghost/content on soft, inverted on solid). */
+/*
+ * Figma: small Ghost button — its label follows the bar (ghost/content on soft bars, the solid
+ * text colour on solid ones). Figma keeps the dark state layer on every bar (Button's default).
+ */
 .actionSlot .action[data-variant] {
   --btn-content: var(--ab-action, var(--l3-button-ghost-content));
-  --btn-layer-hover: var(--ab-action-layer-hover, var(--l3-state-layer-dark-hover));
-  --btn-layer-pressed: var(--ab-action-layer-pressed, var(--l3-state-layer-dark-pressed));
 }

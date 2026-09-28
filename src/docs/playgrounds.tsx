@@ -88,7 +88,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'variant', type: 'select', options: buttonVariants, default: 'primary' },
       { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'lg' },
-      { name: 'label', type: 'text', default: 'Place order' },
+      { name: 'label', label: 'Label', prop: 'children', type: 'text', default: 'Place order' },
       { name: 'iconLeft', type: 'boolean', default: false },
       { name: 'iconRight', type: 'boolean', default: false },
       { name: 'loading', type: 'boolean', default: false },
@@ -127,8 +127,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'direction', type: 'select', options: ['vertical', 'horizontal'], default: 'horizontal' },
       { name: 'scrollIndicator', type: 'boolean', default: false },
-      { name: 'primary', label: 'primary label', type: 'text', default: 'Confirm' },
-      { name: 'secondary', label: 'secondary label', type: 'text', default: 'Cancel' },
+      { name: 'primary', label: 'Primary button text', prop: false, type: 'text', default: 'Confirm' },
+      { name: 'secondary', label: 'Secondary button text', prop: false, type: 'text', default: 'Cancel' },
     ],
     render: (v) => {
       const primary = <Button key="p" size="lg">{s(v, 'primary')}</Button>
@@ -157,7 +157,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'variant', type: 'select', options: ['primary', 'secondary', 'tertiary'], default: 'secondary' },
       { name: 'color', type: 'select', options: tagColors, default: 'green' },
       { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'md' },
-      { name: 'label', type: 'text', default: '+1.24%' },
+      { name: 'label', label: 'Label', prop: 'children', type: 'text', default: '+1.24%' },
       { name: 'iconLeft', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
     ],
@@ -179,8 +179,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   switch: {
     controls: [
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
-      { name: 'label', type: 'text', default: 'Price alerts' },
-      { name: 'defaultChecked', type: 'boolean', default: true },
+      { name: 'label', label: 'Label text', prop: false, type: 'text', default: 'Price alerts' },
+      { name: 'defaultChecked', label: 'On', type: 'boolean', default: true },
       { name: 'disabled', type: 'boolean', default: false },
     ],
     render: (v) => (
@@ -195,10 +195,10 @@ export const playgrounds: Record<string, PlaygroundDef> = {
 
   checkbox: {
     controls: [
-      { name: 'kind', type: 'select', options: ['Checkbox', 'Radio'], default: 'Checkbox' },
-      { name: 'label', type: 'text', default: 'Equity' },
-      { name: 'defaultChecked', type: 'boolean', default: true },
-      { name: 'indeterminate', label: 'indeterminate (checkbox)', type: 'boolean', default: false },
+      { name: 'kind', label: 'Component', prop: false, type: 'select', options: ['Checkbox', 'Radio'], default: 'Checkbox' },
+      { name: 'label', label: 'Label text', prop: false, type: 'text', default: 'Equity' },
+      { name: 'defaultChecked', label: 'Checked', type: 'boolean', default: true },
+      { name: 'indeterminate', type: 'boolean', default: false, showIf: (v) => v.kind === 'Checkbox' },
       { name: 'disabled', type: 'boolean', default: false },
     ],
     render: (v) => {
@@ -228,12 +228,12 @@ export const playgrounds: Record<string, PlaygroundDef> = {
 
   'text-field': {
     controls: [
-      { name: 'multiline', label: 'multiline (text box)', type: 'boolean', default: false },
+      { name: 'multiline', label: 'Multiline (text box)', type: 'boolean', default: false },
       { name: 'label', type: 'text', default: 'Quantity' },
       { name: 'placeholder', type: 'text', default: 'Enter quantity' },
-      { name: 'helperText', type: 'text', default: 'Lot size is 25' },
+      { name: 'helperText', label: 'Helper text', type: 'text', default: 'Lot size is 25' },
       { name: 'status', type: 'select', options: ['none', 'error', 'success'], default: 'none' },
-      { name: 'maxLength', label: 'maxLength (text box)', type: 'select', options: ['none', '50', '140'], default: '140' },
+      { name: 'maxLength', label: 'Character limit', type: 'select', options: ['none', '50', '140'], default: '140', showIf: (v) => v.multiline === true },
       { name: 'required', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
     ],
@@ -258,8 +258,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'appearance', type: 'select', options: ['underline', 'pill'], default: 'underline' },
       { name: 'emphasis', type: 'select', options: ['primary', 'secondary'], default: 'primary' },
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
-      { name: 'count', label: 'tabs', type: 'select', options: ['2', '3', '4'], default: '3' },
-      { name: 'icons', label: 'iconLeft', type: 'boolean', default: false },
+      { name: 'count', label: 'Number of tabs', prop: 'items', type: 'select', options: ['2', '3', '4'], default: '3' },
+      { name: 'icons', label: 'Icon left', prop: 'items[].iconLeft', type: 'boolean', default: false },
     ],
     render: (v) => (
       <TabsPlay count={Number(s(v, 'count'))} appearance={s(v, 'appearance') as 'underline' | 'pill'} emphasis={s(v, 'emphasis') as TabEmphasis} size={s(v, 'size') as TabSize} icons={b(v, 'icons')} />
@@ -274,12 +274,12 @@ export const playgrounds: Record<string, PlaygroundDef> = {
 
   actionbar: {
     controls: [
-      { name: 'title', type: 'text', default: 'RELIANCE' },
-      { name: 'description', type: 'text', default: 'NSE · Equity' },
-      { name: 'back', label: 'onBack', type: 'boolean', default: true },
-      { name: 'actions', type: 'select', options: ['0', '1', '2'], default: '2' },
-      { name: 'search', label: 'search mode', type: 'boolean', default: false },
-      { name: 'bottom', label: 'bottom (tabs)', type: 'boolean', default: false },
+      { name: 'title', type: 'text', default: 'RELIANCE', showIf: (v) => v.search !== true },
+      { name: 'description', type: 'text', default: 'NSE · Equity', showIf: (v) => v.search !== true },
+      { name: 'back', label: 'Back button', prop: 'onBack', type: 'boolean', default: true },
+      { name: 'actions', label: 'Actions', type: 'select', options: ['0', '1', '2'], default: '2', showIf: (v) => v.search !== true },
+      { name: 'search', label: 'Search mode', type: 'boolean', default: false },
+      { name: 'bottom', label: 'Tabs below', type: 'boolean', default: false, showIf: (v) => v.search !== true },
     ],
     render: (v) =>
       b(v, 'search') ? (
@@ -316,7 +316,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   },
 
   'bottom-navbar': {
-    controls: [{ name: 'nav', type: 'select', options: ['Main', 'Mutual fund', 'F&O'], default: 'Main' }],
+    controls: [{ name: 'nav', label: 'Navbar', prop: 'items · home', type: 'select', options: ['Main', 'Mutual fund', 'F&O'], default: 'Main' }],
     render: (v) => <NavPlay key={s(v, 'nav')} nav={s(v, 'nav')} />,
     code: (v) => {
       const nav = s(v, 'nav')
@@ -330,13 +330,13 @@ export const playgrounds: Record<string, PlaygroundDef> = {
 
   'bottom-sheet': {
     controls: [
-      { name: 'size', label: 'header size', type: 'select', options: ['sm', 'lg'], default: 'sm' },
+      { name: 'size', label: 'Header size', prop: 'BottomSheetHeader size', type: 'select', options: ['sm', 'lg'], default: 'sm' },
       { name: 'heading', type: 'text', default: 'Buy RELIANCE' },
-      { name: 'description', label: 'description (lg)', type: 'text', default: 'NSE · Delivery' },
-      { name: 'back', label: 'onBack (sm)', type: 'boolean', default: false },
-      { name: 'info', label: 'info (sm)', type: 'boolean', default: true },
-      { name: 'close', label: 'onClose', type: 'boolean', default: true },
-      { name: 'dragHandle', type: 'boolean', default: true },
+      { name: 'description', type: 'text', default: 'NSE · Delivery', showIf: (v) => v.size === 'lg' },
+      { name: 'back', label: 'Back button', prop: 'onBack', type: 'boolean', default: false, showIf: (v) => v.size === 'sm' },
+      { name: 'info', label: 'Info button', type: 'boolean', default: true, showIf: (v) => v.size === 'sm' },
+      { name: 'close', label: 'Close button', prop: 'onClose', type: 'boolean', default: true },
+      { name: 'dragHandle', label: 'Drag handle', type: 'boolean', default: true },
     ],
     render: (v) => (
       <div className={styles.playSheet}>
@@ -377,11 +377,11 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'type', type: 'select', options: aerobarTypes, default: 'success' },
       { name: 'emphasis', type: 'select', options: ['primary', 'secondary'], default: 'primary' },
-      { name: 'floating', type: 'boolean', default: true },
+      { name: 'floating', label: 'Floating (toast)', type: 'boolean', default: true },
       { name: 'heading', type: 'text', default: 'Order placed' },
       { name: 'paragraph', type: 'text', default: 'Buy 10 RELIANCE at market' },
       { name: 'icon', type: 'boolean', default: true },
-      { name: 'action', type: 'boolean', default: true },
+      { name: 'action', label: 'Action button', type: 'boolean', default: true },
     ],
     render: (v) => (
       <Aerobar
@@ -410,8 +410,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'title', type: 'text', default: 'No results found' },
       { name: 'description', type: 'text', default: 'Try a different name or symbol.' },
-      { name: 'illustration', type: 'boolean', default: true },
-      { name: 'action', label: 'action (Clear)', type: 'boolean', default: true },
+      { name: 'illustration', label: 'Illustration', type: 'boolean', default: true },
+      { name: 'action', label: 'Clear button', type: 'boolean', default: true },
     ],
     render: (v) => (
       <EmptyState
@@ -437,10 +437,10 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
       { name: 'label', type: 'text', default: 'RELIANCE' },
       { name: 'description', type: 'text', default: '12 shares · ₹35,365' },
-      { name: 'as', type: 'select', options: ['div', 'button'], default: 'button' },
+      { name: 'as', label: 'Element', type: 'select', options: ['div', 'button'], default: 'button', showIf: (v) => v.trailing !== 'switch' },
       { name: 'iconLeft', type: 'boolean', default: false },
-      { name: 'trailing', type: 'select', options: ['none', 'chevron', 'tag', 'switch'], default: 'chevron' },
-      { name: 'dotLeft', type: 'boolean', default: false },
+      { name: 'trailing', label: 'Right side', prop: 'iconRight · trailing', type: 'select', options: ['none', 'chevron', 'tag', 'switch'], default: 'chevron' },
+      { name: 'dotLeft', label: 'New dot', type: 'boolean', default: false },
     ],
     render: (v) => {
       const trailing = s(v, 'trailing')

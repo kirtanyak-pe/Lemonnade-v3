@@ -465,7 +465,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65562',
     source: 'src/components/Aerobar',
     exports: ['Aerobar'],
-    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/black', 'opacity/60 · 80', 'text-semibold-14', 'text-medium-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
+    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-semibold-14', 'text-medium-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an inline warning aerobar and floating success or danger toasts">

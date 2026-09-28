@@ -20,7 +20,7 @@ function tabsFor(page: DocPage): Tab[] {
   const playground = playgrounds[page.id]
   const rules = guidelines[page.id]
   if (page.overview) tabs.push({ id: 'overview', label: 'Overview', content: <>{page.overview}{rules && <Guidelines items={rules} />}</> })
-  if (playground) tabs.push({ id: 'playground', label: 'Playground', content: <Playground def={playground} /> })
+  if (playground) tabs.push({ id: 'playground', label: 'Playground', content: <Playground key={page.id} def={playground} /> })
   if (page.variants) tabs.push({ id: 'variants', label: 'Variants', content: page.variants })
   if (playground) {
     const initial = Object.fromEntries(playground.controls.map((c) => [c.name, c.default]))

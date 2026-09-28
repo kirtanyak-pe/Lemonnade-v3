@@ -1179,63 +1179,96 @@ legend.sectionLabel {
   padding-inline: 0;
 }
 
+/* Props panel: L3 components (Tabs pills, ListCell + Switch, TextField, Button). */
 .controls {
+  position: sticky;
+  top: calc(var(--header-height) + var(--l3-spacing-16));
   display: flex;
   flex-direction: column;
-  gap: var(--l3-spacing-04);
-  margin: 0;
-  padding: var(--l3-spacing-12);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-12);
+  gap: var(--l3-spacing-16);
+  padding: var(--l3-spacing-12) 0 var(--l3-spacing-16);
+  border-radius: var(--l3-radius-16);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  background: var(--l3-surface-default);
 }
 
-.controls legend {
-  padding: 0 var(--l3-spacing-04);
-  font: var(--l3-text-bold-14);
-}
-
-.controlRow {
+.controlsHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--l3-spacing-12);
-  min-height: var(--l3-size-tap-target);
-  font: var(--l3-text-medium-14);
+  padding: 0 var(--l3-spacing-16);
 }
 
-.controlRow > span {
-  color: var(--l3-content-secondary);
+.controlsHeader h3 {
+  margin: 0;
+  font: var(--l3-text-extrabold-16);
 }
 
-.controlRow select,
-.controlRow input[type='text'] {
-  width: 55%;
-  min-height: var(--l3-size-tap-target);
-  padding: 0 var(--l3-spacing-08);
-  border: 1px solid var(--l3-border-light);
-  border-radius: var(--l3-radius-08);
-  background: var(--l3-surface-default);
-  color: var(--l3-content-primary);
-  font: var(--l3-text-medium-14);
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
 }
 
-.controlRow input[type='checkbox'] {
-  width: var(--l3-icon-size-18);
-  height: var(--l3-icon-size-18);
-  accent-color: var(--l3-surface-inverted);
+.controlGroup + .controlGroup {
+  padding-top: var(--l3-spacing-16);
+  border-top: 1px solid var(--l3-border-light);
 }
 
-.resetButton {
-  align-self: flex-start;
-  min-height: var(--l3-size-tap-target);
-  margin-top: var(--l3-spacing-04);
-  padding: 0 var(--l3-spacing-12);
-  border: 0;
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-secondary);
-  color: var(--l3-content-primary);
+.controlGroup h4 {
+  margin: 0;
+  padding: 0 var(--l3-spacing-16);
+  color: var(--l3-content-tertiary);
   font: var(--l3-text-semibold-12);
-  cursor: pointer;
+}
+
+/* Booleans are full-width ListCell rows, so they tighten the group gap. */
+.controlGroup[data-type='boolean'] {
+  gap: 0;
+}
+
+.controlGroup[data-type='boolean'] h4 {
+  margin-bottom: var(--l3-spacing-04);
+}
+
+.controlField,
+.controlText {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 var(--l3-spacing-16);
+}
+
+.controlField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+}
+
+.controlLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--l3-spacing-04) var(--l3-spacing-08);
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-primary);
+}
+
+.propName {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--l3-font-size-regular-100);
+  color: var(--l3-content-tertiary);
+}
+
+/* Pill Tabs as a choice group: wrap onto more lines instead of scrolling options out of view. */
+.controlChoices {
+  flex-wrap: wrap;
+  gap: var(--l3-spacing-08);
+  overflow: visible;
+}
+
+.controlCell {
+  width: 100%;
 }
 
 .codeWrap {
@@ -1252,22 +1285,9 @@ legend.sectionLabel {
   position: absolute;
   top: var(--l3-spacing-08);
   right: var(--l3-spacing-08);
-  min-height: var(--l3-size-tap-target);
-  padding: 0 var(--l3-spacing-12);
-  border: 0;
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-default);
-  box-shadow: inset 0 0 0 1px var(--l3-border-light);
-  color: var(--l3-content-primary);
-  font: var(--l3-text-semibold-12);
-  cursor: pointer;
 }
 
-.copyButton:focus-visible,
-.resetButton:focus-visible {
-  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
-  outline-offset: var(--l3-spacing-02);
-}
+
 
 .playRow {
   display: flex;
@@ -1297,6 +1317,11 @@ legend.sectionLabel {
 @media (max-width: 900px) {
   .playground {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked under the preview: scroll with the page instead of sticking. */
+  .controls {
+    position: static;
   }
 }
 
