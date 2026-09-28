@@ -2,11 +2,57 @@
   "$description": "Not in Figma yet — the file has no motion variables or prototype transitions. Replace when design defines them.",
   "motion": {
     "duration": {
-      "short": { "$type": "duration", "$value": "150ms", "$description": "Small state changes: toggles, checks, hovers" },
-      "medium": { "$type": "duration", "$value": "250ms", "$description": "Larger movement: expanding, sliding panels" }
+      "short": {
+        "$type": "duration",
+        "$value": "150ms",
+        "$description": "Small state changes: toggles, checks, hovers"
+      },
+      "medium": {
+        "$type": "duration",
+        "$value": "250ms",
+        "$description": "Larger movement: expanding, sliding panels"
+      }
     },
     "easing": {
-      "standard": { "$type": "cubicBezier", "$value": [0.2, 0, 0, 1], "$description": "Default for elements moving on screen" }
+      "standard": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.2,
+          0,
+          0,
+          1
+        ],
+        "$description": "Default for elements moving on screen"
+      }
+    },
+    "scale": {
+      "press": {
+        "xl": {
+          "$type": "number",
+          "$value": 1.0,
+          "$description": "Press scale, xl step (0.01 apart; default 0.98). Which elements use which step is not defined yet."
+        },
+        "l": {
+          "$type": "number",
+          "$value": 0.99,
+          "$description": "Press scale, l step (0.01 apart; default 0.98). Which elements use which step is not defined yet."
+        },
+        "default": {
+          "$type": "number",
+          "$value": 0.98,
+          "$description": "Press scale, default step (0.01 apart; default 0.98). Which elements use which step is not defined yet."
+        },
+        "m": {
+          "$type": "number",
+          "$value": 0.97,
+          "$description": "Press scale, m step (0.01 apart; default 0.98). Which elements use which step is not defined yet."
+        },
+        "sm": {
+          "$type": "number",
+          "$value": 0.96,
+          "$description": "Press scale, sm step (0.01 apart; default 0.98). Which elements use which step is not defined yet."
+        }
+      }
     }
   }
 }

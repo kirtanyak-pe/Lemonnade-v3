@@ -20,6 +20,34 @@
   z-index: 10; /* stacking order isn't a design token */
 }
 
+/* Scrolled: content passes under the bar, so it lifts with elevation-low (kept above later content). */
+.actionbar {
+  transition: box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.actionbar[data-elevated] {
+  position: relative;
+  z-index: 1; /* stacking order isn't a design token */
+  box-shadow: inset 0 -1px 0 var(--l3-border-light), var(--l3-shadow-elevation-low);
+}
+
+.actionbar[data-sticky][data-elevated] {
+  position: sticky;
+  z-index: 10;
+}
+
+/* Zero-height marker just above a sticky bar; when it scrolls away, the bar is "scrolled". */
+.sentinel {
+  display: block;
+  height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actionbar {
+    transition: none;
+  }
+}
+
 .row {
   display: flex;
   align-items: center;

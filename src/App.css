@@ -454,3 +454,32 @@ section > h2 {
   align-items: center;
   gap: var(--l3-spacing-24);
 }
+
+/* Card variants preview */
+.card-frame {
+  background: var(--l3-surface-default);
+}
+
+.card-demo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-12);
+}
+
+.card-demo-meta {
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+}
+
+.card-demo-title {
+  font: var(--l3-text-bold-16);
+}
+
+.card-demo-bleed {
+  display: block;
+  padding: var(--l3-spacing-24) var(--l3-spacing-16);
+  background: var(--l3-surface-secondary);
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+}

@@ -5,6 +5,7 @@ import { BottomNavbar } from '../components/BottomNavbar'
 import { BottomSheetHeader } from '../components/BottomSheet'
 import { Button } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
+import { Card } from '../components/Card'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { EmptyState } from '../components/EmptyState'
 import { Icon } from '../components/Icon'
@@ -22,6 +23,13 @@ const noop = () => {}
 const tabs3 = [{ value: 'a', label: 'Overview' }, { value: 'b', label: 'Financials' }, { value: 'c', label: 'News' }]
 
 export const guidelines: Record<string, Guideline[]> = {
+  card: [
+    {
+      title: 'One action? Make the whole card clickable',
+      do: { text: 'The card itself is the tap target — elevation-low, press scale.', example: <Card onClick={noop}><span className={styles.cardRow}><span className={styles.cardTitle}>NHPC</span><Tag variant="secondary" color="orange" size="md">Open</Tag></span></Card> },
+      dont: { text: 'Put a single button inside a static card.', example: <Card><span className={styles.cardRow}><span className={styles.cardTitle}>NHPC</span><Button size="sm" variant="secondary">View</Button></span></Card> },
+    },
+  ],
   button: [
     {
       title: 'One primary action per screen',
@@ -82,6 +90,11 @@ export const guidelines: Record<string, Guideline[]> = {
     },
   ],
   actionbar: [
+    {
+      title: 'Flat tabs belong to the bar',
+      do: { text: 'Put screen-level (flat) tabs in the Actionbar’s bottom slot.', example: <Actionbar headingLevel={2} title="Portfolio" bottom={<Tabs aria-label="Portfolio" items={[{ value: 'a', label: 'Positions' }, { value: 'b', label: 'Orders' }]} value="b" onChange={noop} />} /> },
+      dont: { text: 'Place flat tabs below the bar as a separate layer.', example: <div className={styles.exStack}><Actionbar headingLevel={2} title="Portfolio" /><Tabs aria-label="Portfolio" items={[{ value: 'a', label: 'Positions' }, { value: 'b', label: 'Orders' }]} value="b" onChange={noop} /></div> },
+    },
     {
       title: 'Two actions at most',
       do: { text: 'Keep the bar to the one or two most useful actions.', example: <Actionbar headingLevel={2} title="RELIANCE" onBack={noop} actions={<><ActionbarAction icon={msSearch} label="Search" onClick={noop} /><ActionbarAction icon={msStar} label="Watchlist" onClick={noop} /></>} /> },

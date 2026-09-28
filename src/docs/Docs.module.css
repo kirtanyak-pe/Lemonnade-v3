@@ -61,6 +61,7 @@
   font: var(--l3-text-extrabold-24);
   color: var(--l3-content-primary);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .brandMark {
@@ -458,23 +459,28 @@
   box-shadow: var(--l3-shadow-elevation-high);
 }
 
-.phoneNotch {
-  position: absolute;
-  top: var(--l3-spacing-16);
-  left: 50%;
-  z-index: 1;
-  width: var(--l3-size-80);
-  height: var(--l3-spacing-20);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-inverted);
-  transform: translateX(-50%);
-}
-
+/*
+ * Device screen: 360×800 by default (Figma frame), and the same 360:800 ratio at 392 / 412 wide.
+ * The DS System statusbar sits on top; the demo screen fills the rest.
+ */
 .phoneScreen {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  min-height: 560px;
+  width: var(--screen-width, 360px);
+  aspect-ratio: 360 / 800;
   border-radius: var(--l3-radius-24);
   background: var(--l3-surface-default);
+}
+
+.phoneScreen > :not(:first-child) {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Playground previews (compact): a bare phone-width screen that hugs its content. */
+.phone[data-compact] .phoneScreen {
+  aspect-ratio: auto;
 }
 
 /* ---- Demo screens (inside the phone) --------------------------------------- */
@@ -482,8 +488,8 @@
 .screen {
   display: flex;
   flex-direction: column;
-  min-height: 560px;
-  padding-top: var(--l3-spacing-48);
+  min-height: 0;
+  padding-top: var(--l3-spacing-08);
 }
 
 .appBar {
@@ -544,7 +550,7 @@
 }
 
 .fixedScreen {
-  height: 560px;
+  height: 100%;
 }
 
 .scrollArea {
@@ -560,7 +566,7 @@
 }
 
 .noTopPad {
-  padding-top: var(--l3-spacing-36);
+  padding-top: 0;
 }
 
 .cardStack {
@@ -848,8 +854,17 @@ legend.sectionLabel {
     display: none;
   }
 
+  .header {
+    gap: var(--l3-spacing-04);
+  }
+
+  .themeControls,
+  .modeToggle {
+    gap: var(--l3-spacing-04);
+  }
+
   .brand {
-    font: var(--l3-text-extrabold-20);
+    font: var(--l3-text-extrabold-16);
   }
 
   .titleRow h1 {
@@ -1161,7 +1176,6 @@ legend.sectionLabel {
 }
 
 .phone[data-compact] .phoneScreen {
-  min-height: 0;
   border-radius: var(--l3-radius-20);
 }
 
@@ -1753,4 +1767,61 @@ legend.sectionLabel {
   padding: var(--l3-spacing-48) var(--l3-spacing-24);
   border-radius: var(--l3-radius-24);
   background: var(--l3-surface-secondary);
+}
+
+/* ---- Card demo (Portfolio › Orders) ---------------------------------------------- */
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+  padding: var(--l3-spacing-16) var(--l3-spacing-16) var(--l3-spacing-24);
+}
+
+.cardStackList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-12);
+}
+
+.cardTags,
+.cardPair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--l3-spacing-04);
+}
+
+.cardTags {
+  align-items: center;
+  gap: var(--l3-spacing-08);
+}
+
+.cardMeta {
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+}
+
+.cardTitle {
+  font: var(--l3-text-bold-16);
+  color: var(--l3-content-primary);
+}
+
+.cardValue {
+  font: var(--l3-text-bold-14);
+  color: var(--l3-content-primary);
+}
+
+.cardValueLg {
+  font: var(--l3-text-bold-16);
+  color: var(--l3-content-primary);
 }

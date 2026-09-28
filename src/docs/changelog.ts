@@ -29,6 +29,18 @@ const iconsMigration = (): Release['changes'][number] => ({
 })
 
 export const changelog: Record<string, Release[]> = {
+  card: [
+    {
+      version: '1.0.0', date: '2026-09-29',
+      summary: 'First release',
+      changes: [
+        { kind: 'added', text: 'Clickable cards (onClick / href): surface/primary, border/light, elevation-low, press scale 0.98.' },
+        { kind: 'added', text: 'Static cards for information or decoration: surface/primary + border/light, no shadow or press.' },
+        { kind: 'a11y', text: 'Development warnings: a clickable card with controls inside, or a static card holding a single action.' },
+      ],
+    },
+  ],
+
   'brand-logo': [
     {
       version: '1.0.0', date: '2026-09-28',
@@ -174,6 +186,14 @@ export const changelog: Record<string, Release[]> = {
 
   tabs: [
     {
+      version: '1.1.0', date: '2026-09-29',
+      summary: 'Chip tabs are tappable surfaces',
+      changes: [
+        { kind: 'changed', text: 'Unselected chip (pill) tabs add elevation-low to their surface/primary + border/light.' },
+        { kind: 'added', text: 'Chip tabs scale to motion/scale/press-default (0.98) while pressed.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-26', commit: '8d68e35',
       summary: 'First release',
       changes: [
@@ -189,6 +209,14 @@ export const changelog: Record<string, Release[]> = {
       version: 'unreleased', date: '2026-09-28',
       summary: 'Figma updated, code to follow',
       changes: [{ kind: 'figma', text: 'Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.' }],
+    },
+    {
+      version: '1.1.0', date: '2026-09-29',
+      summary: 'Shadow on scroll',
+      changes: [
+        { kind: 'added', text: 'elevation-low when content scrolls under the bar: automatic with sticky, or via the new elevated prop.' },
+        { kind: 'changed', text: 'Rule: flat tabs at the top go in the bottom slot (docs demos updated).' },
+      ],
     },
     {
       version: '1.0.0', date: '2026-09-26', commit: 'c6b276f',

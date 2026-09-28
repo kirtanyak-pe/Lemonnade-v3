@@ -153,6 +153,7 @@ Components have no outer margin, so spacing between them belongs to the parent (
 | `BottomNavbar` + `NavIcon` | `components/BottomNavbar` | `items`, `value` | App-level section nav (3–5), including MF / F&O sub-navs with `home` |
 | `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen |
 | `Aerobar` | `components/Aerobar` | — (`heading` in practice) | A status bar (inline) or toast (`floating`) |
+| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1) |
 | `ListCell` | `components/ListCell` | `label` | Rows: plain or card, with icons, trailing content, dots |
 | `EmptyState` | `components/EmptyState` | `title` | Nothing to show, or no results |
 | `Icon` | `components/Icon` | `icon` | Any Material Symbol |
@@ -161,13 +162,16 @@ Components have no outer margin, so spacing between them belongs to the parent (
 **Use this, not that** (from the component APIs and docs):
 - **Tags are not buttons.** Anything tappable is a `Button`, a `ListCell as="button"`, or a Tab.
 - **There is no Chip component.** For a segmented or filter choice, use `Tabs appearance="pill"`.
-- **There is no Card component.** For simple rows use `ListCell variant="card"`; anything else is a pending pattern (section 7).
+- **Cards:** use `Card` (rules in 7.1). For a simple one-line row, `ListCell variant="card"` also exists.
 - **Status:**
   - A message that belongs to the page is an inline `Aerobar`.
   - The result of an action (e.g. "order placed") is `Aerobar floating`.
   - Danger announces as an alert, everything else as a status.
 - **Controls inside rows:** a row holding a Switch or Checkbox is `ListCell as="label"`, never `as="button"`. Button rows can't contain controls.
-- **Tabs that belong to the top bar** go in the `Actionbar` `bottom` slot, not below the Actionbar.
+- **Actionbar:** `surface-default` with a 1px `border-light` bottom line. When content scrolls under it, it gets
+  `shadow-elevation-low` (automatic with `sticky`, or set `elevated`).
+- **If flat tabs are used at the top, they go inside the Actionbar's content-bottom slot** (`bottom` prop), never as
+  a separate layer below the Actionbar.
 - **Don't use `MaskIcon` directly** in screens. Use `Icon` (it's the internal helper for icons and assets).
 
 ---
@@ -180,7 +184,21 @@ Components have no outer margin, so spacing between them belongs to the parent (
 
 ## 7. Composition patterns
 
-<!-- PENDING: patterns not yet defined, do not infer -->
+### 7.1 Card
+
+- **Clickable cards, and other tappable elements like chip tabs,** use `surface-primary`, because they sit on the
+  screen background `surface-default`. In the light theme both are the same colour (#FFFFFF), so a clickable
+  surface **must** also have a 1px `border-light` and `shadow-elevation-low`.
+- **Press interaction:** on press, a clickable surface scales down (`--l3-motion-scale-press-default`, 0.98).
+  Other steps exist for different text sizes (see 11), but which element uses which step is not defined yet.
+- **Non-clickable cards** are for decoration or information: `surface-primary` + `border-light`, no shadow, no press.
+  <!-- PENDING: confirm the non-clickable card style (currently: no shadow) -->
+- **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
+  So a clickable card never contains other buttons or links.
+
+### 7.2 Other patterns
+
+<!-- PENDING: form, list and other patterns not yet defined, do not infer -->
 
 ---
 
@@ -220,6 +238,9 @@ There is **no skeleton or spinner component** yet.
 - **Hover styles only inside `@media (hover: hover)`**, so taps don't leave elements stuck highlighted. Add `touch-action: manipulation`.
 - **Hover and press use state layers:** `--l3-state-layer-dark-*` on light fills and `--l3-state-layer-light-*` on dark ones, painted as a background image, not an overlay element.
 - **Focus:** `:focus-visible` outline `var(--l3-spacing-02) solid var(--l3-border-dark)`.
+- **Press scale** (clickable cards, chip tabs): `transform: scale(var(--l3-motion-scale-press-*))` while pressed,
+  with steps 0.01 apart: `xl` 1.00 · `l` 0.99 · `default` 0.98 · `m` 0.97 · `sm` 0.96 (local tokens).
+  <!-- PENDING: which step each element / text size uses; everything uses `default` today -->
 - **Motion:** only `--l3-motion-duration-short` (150ms), `--l3-motion-duration-medium` (250ms) and `--l3-motion-easing-standard`. Always add a `prefers-reduced-motion: reduce` rule that removes it.
 - **Toasts** with an action don't auto-dismiss; they stay until acted on or replaced.
 - **Bottom sheets** close on Esc, a backdrop tap or dragging down, and must also have a close button. Focus is trapped inside while one is open, and the page behind is inert.

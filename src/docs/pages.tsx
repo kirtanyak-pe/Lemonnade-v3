@@ -15,11 +15,12 @@ import { ActionbarVariants } from '../preview/ActionbarVariants'
 import { BottomNavbarVariants } from '../preview/BottomNavbarVariants'
 import { EmptyStateVariants } from '../preview/EmptyStateVariants'
 import { BrandLogoVariants } from '../preview/BrandLogoVariants'
+import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
-import { AccountDemo, AppNavDemo, EmptySearchDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
+import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
 import { HomePage } from './HomePage'
@@ -446,6 +447,45 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'aria-label', type: 'string', default: "'Main'", description: 'Name of the nav landmark.' },
       { name: 'fixed', type: 'boolean', default: 'false', description: 'Fix the bar to the bottom of the viewport and add the safe-area inset.' },
       { name: 'NavIcon', type: '{ name: NavIconName; selected? }', description: 'Figma .L3: base navicons: stocks, market, portfolio, mutualFund, fno, mfFunds, mfDashboard, mfSips, fnoOptionChain, fnoPositions, fnoScalper, backHome.' },
+    ],
+  },
+  {
+    id: 'card',
+    title: 'Card',
+    group: 'Surfaces',
+    description: 'A surface that groups related content. Clickable cards are one tap target; static cards just show information.',
+    status: 'Code first',
+    altNames: 'Tile, panel, container, list item card',
+    source: 'src/components/Card',
+    exports: ['Card'],
+    tokens: ['surface/primary', 'border/light', 'shadow/elevation-low (clickable)', 'motion/scale/press-default (local, 0.98)', 'motion/duration-short', 'state-layer/dark/hover', 'radius/16', 'spacing/16 · 08'],
+    overview: (
+      <>
+        <PhoneFrame label="Portfolio orders: tabs in the actionbar, chip tabs, a static summary card and clickable order cards">
+          <OrdersDemo />
+        </PhoneFrame>
+        <section className={styles.section}>
+          <h2>Clickable or static</h2>
+          <p>Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A <strong>clickable</strong> card (<code>onClick</code> or <code>href</code>) also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration and has no shadow or press.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>One action means a clickable card</h2>
+          <p>If a card would hold a single button, make the whole card clickable instead. A clickable card is one tap target, so it can't contain other buttons or links (a development warning flags both cases).</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Same rule for chip tabs</h2>
+          <p>Chip (pill) tabs are tappable surfaces too: unselected chips use surface/primary with border/light and elevation-low, and scale to 0.98 while pressed.</p>
+        </section>
+      </>
+    ),
+    variants: <CardVariants />,
+    props: [
+      { name: 'children', type: 'ReactNode', description: 'Card content. Inside a clickable card use text and spans only — no other controls.' },
+      { name: 'onClick', type: '() => void', description: 'Makes the whole card a button (clickable card).' },
+      { name: 'href', type: 'string', description: 'Makes the whole card a link (clickable card).' },
+      { name: 'as', type: "'div' | 'article' | 'section' | 'li'", default: "'div'", description: 'Element for a static card.' },
+      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '16px, or none for edge-to-edge content.' },
+      { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
   },
   {

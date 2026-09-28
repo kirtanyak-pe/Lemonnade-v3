@@ -67,7 +67,7 @@ export function DocsLayout() {
 
         <a className={styles.brand} href={href(defaultPageId)}>
           <BrandLogo brand="lemonn" variant="icon" decorative />
-          L3
+          Lemonnade V3
         </a>
 
         <Search />

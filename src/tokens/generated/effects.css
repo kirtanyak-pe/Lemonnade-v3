@@ -13,4 +13,9 @@
   --l3-motion-duration-short: 150ms;
   --l3-motion-duration-medium: 250ms;
   --l3-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --l3-motion-scale-press-xl: 1;
+  --l3-motion-scale-press-l: 0.99;
+  --l3-motion-scale-press-default: 0.98;
+  --l3-motion-scale-press-m: 0.97;
+  --l3-motion-scale-press-sm: 0.96;
 }

@@ -1,12 +1,14 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { SystemStatusbar } from '../components/SystemStatusbar'
 import { setViewportWidth, useViewportWidth, viewportWidths } from './viewport'
 import styles from './Docs.module.css'
 
 /**
- * `compact`: no notch or fixed height — a bare phone-width screen for playground previews.
+ * `compact`: no status bar or fixed height — a bare phone-width screen for playground previews.
  *
  * Mobile device frame on a patterned stage — these components are built for phone viewports.
- * The screen is exactly the chosen width (360 / 392 / 412, shared across the site); when the stage
+ * The screen is 360×800 by default and keeps that ratio at 392 / 412 wide (shared across the site), with
+ * the DS System statusbar on top. When the stage
  * is narrower than the phone, the whole phone is scaled down to fit instead of squashing the layout.
  */
 export function PhoneFrame({ children, label, compact = false }: { children: ReactNode; label?: string; compact?: boolean }) {
@@ -43,8 +45,10 @@ export function PhoneFrame({ children, label, compact = false }: { children: Rea
             data-compact={compact || undefined}
             style={{ '--screen-width': `${width}px`, transform: fit.scale < 1 ? `scale(${fit.scale})` : undefined } as CSSProperties}
           >
-            {!compact && <div className={styles.phoneNotch} aria-hidden="true" />}
-            <div className={styles.phoneScreen}>{children}</div>
+            <div className={styles.phoneScreen}>
+              {!compact && <SystemStatusbar />}
+              {children}
+            </div>
           </div>
         </div>
       </div>

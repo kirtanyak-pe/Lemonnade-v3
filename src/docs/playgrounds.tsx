@@ -7,6 +7,7 @@ import { BrandLogo, type Brand } from '../components/BrandLogo'
 import { BottomSheetHeader, BottomSheetSurface } from '../components/BottomSheet'
 import { Button, type ButtonSize, type ButtonVariant } from '../components/Button'
 import { ButtonGroup, type ButtonGroupDirection } from '../components/ButtonGroup'
+import { Card } from '../components/Card'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { EmptyState } from '../components/EmptyState'
 import { Icon } from '../components/Icon'
@@ -85,6 +86,35 @@ function TextFieldPlay(v: Values) {
 // ---- Definitions ---------------------------------------------------------------
 
 export const playgrounds: Record<string, PlaygroundDef> = {
+  card: {
+    controls: [
+      { name: 'kind', label: 'Kind', prop: 'onClick · href', type: 'select', options: ['clickable', 'link', 'static'], default: 'clickable' },
+      { name: 'padding', type: 'select', options: ['default', 'none'], default: 'default' },
+      { name: 'title', label: 'Title', prop: false, type: 'text', default: 'NHPC' },
+      { name: 'meta', label: 'Meta', prop: false, type: 'text', default: 'Delivery • Boost (5x)' },
+    ],
+    render: (v) => {
+      const content = (
+        <>
+          <span className={styles.cardRow}><span className={styles.cardMeta}>{s(v, 'meta')}</span><Tag variant="secondary" color="green" size="md">Buy</Tag></span>
+          <span className={styles.cardTitle}>{s(v, 'title')}</span>
+        </>
+      )
+      const kind = s(v, 'kind')
+      const padding = s(v, 'padding') as 'default' | 'none'
+      return kind === 'static' ? <Card padding={padding}>{content}</Card> : kind === 'link' ? <Card href="#/card" padding={padding}>{content}</Card> : <Card onClick={noop} padding={padding}>{content}</Card>
+    },
+    code: (v) => {
+      const kind = s(v, 'kind')
+      const body = `  <span className={styles.row}>\n    <span className={styles.meta}>${s(v, 'meta')}</span>\n    <Tag variant="secondary" color="green" size="md">Buy</Tag>\n  </span>\n  <span className={styles.title}>${s(v, 'title')}</span>`
+      return jsx('Card', [
+        ['onClick', kind === 'clickable' ? '{openOrder}' : undefined],
+        ['href', kind === 'link' ? '/orders/nhpc' : undefined],
+        ['padding', s(v, 'padding'), 'default'],
+      ], body)
+    },
+  },
+
   'brand-logo': {
     controls: [
       { name: 'brand', type: 'select', options: ['lemonn', 'zing'], default: 'lemonn' },

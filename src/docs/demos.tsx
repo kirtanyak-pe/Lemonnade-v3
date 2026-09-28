@@ -16,8 +16,15 @@ import { Switch } from '../components/Switch'
 import { Tabs } from '../components/Tabs'
 import { BottomNavbar } from '../components/BottomNavbar'
 import { EmptyState } from '../components/EmptyState'
+import { Card } from '../components/Card'
 import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import styles from './Docs.module.css'
+
+/** Demo helper: lifts an Actionbar (elevated) once the scroll area below it has scrolled. */
+function useScrollElevation() {
+  const [elevated, setElevated] = useState(false)
+  return { elevated, onScroll: (e: UIEvent<HTMLElement>) => setElevated(e.currentTarget.scrollTop > 0) }
+}
 
 type Holding = { name: string; segment: string; qty: string; value: string; change: string; up: boolean }
 type Section = 'holdings' | 'positions' | 'orders'
@@ -47,20 +54,29 @@ export function PortfolioDemo() {
   const [segment, setSegment] = useState('all')
   const rows = portfolio[section].filter((r) => segment === 'all' || r.segment === segment)
 
+  const scroll = useScrollElevation()
+
   return (
-    <div className={styles.screen}>
-      <div className={styles.appBar}>Portfolio</div>
-      <Tabs
-        aria-label="Portfolio sections"
-        idPrefix="portfolio"
-        items={[
-          { value: 'holdings', label: 'Holdings' },
-          { value: 'positions', label: 'Positions' },
-          { value: 'orders', label: 'Orders' },
-        ]}
-        value={section}
-        onChange={setSection}
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad}`}>
+      <Actionbar
+        headingLevel={2}
+        title="Portfolio"
+        elevated={scroll.elevated}
+        bottom={
+          <Tabs
+            aria-label="Portfolio sections"
+            idPrefix="portfolio"
+            items={[
+              { value: 'holdings', label: 'Holdings' },
+              { value: 'positions', label: 'Positions' },
+              { value: 'orders', label: 'Orders' },
+            ]}
+            value={section}
+            onChange={setSection}
+          />
+        }
       />
+      <div className={styles.scrollArea} onScroll={scroll.onScroll}>
       <div className={styles.filterRow}>
         <Tabs aria-label="Segment" appearance="pill" size="sm" items={segmentFilters} value={segment} onChange={setSegment} />
       </div>
@@ -83,6 +99,7 @@ export function PortfolioDemo() {
             ))}
           </ul>
         )}
+      </div>
       </div>
     </div>
   )
@@ -514,6 +531,7 @@ export function StockDetailDemo() {
   const [tab, setTab] = useState('overview')
   const [symbol, setSymbol] = useState('RELIANCE')
   const matches = companies.filter((c) => c.includes(query.trim().toUpperCase()))
+  const scroll = useScrollElevation()
 
   return (
     <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad}`}>
@@ -522,6 +540,7 @@ export function StockDetailDemo() {
           onBack={() => { setSearching(false); setQuery('') }}
           backLabel="Close search"
           search={{ value: query, onChange: setQuery, placeholder: 'Search for a company', autoFocus: true }}
+          elevated={scroll.elevated}
         />
       ) : (
         <Actionbar
@@ -534,10 +553,11 @@ export function StockDetailDemo() {
               <ActionbarAction icon={starred ? msStarFill : msStar} label={starred ? 'Remove from watchlist' : 'Add to watchlist'} pressed={starred} onClick={() => setStarred((s) => !s)} />
             </>
           }
+          elevated={scroll.elevated}
           bottom={<Tabs aria-label="Stock sections" items={[{ value: 'overview', label: 'Overview' }, { value: 'financials', label: 'Financials' }, { value: 'news', label: 'News' }]} value={tab} onChange={setTab} />}
         />
       )}
-      <div className={styles.scrollArea}>
+      <div className={styles.scrollArea} onScroll={scroll.onScroll}>
         {searching ? (
           <ul className={styles.list}>
             {matches.map((c) => (
@@ -642,6 +662,76 @@ export function EmptySearchDemo() {
             action={<Button size="sm" variant="primary" iconLeft={<Icon icon={msDeleteForever} size={12} />} onClick={() => setQuery('')}>Clear</Button>}
           />
         )}
+      </div>
+    </div>
+  )
+}
+
+type OrderRow = { id: string; product: string; name: string; qtyLabel?: string; qty: string; ltp: string; priceType: string; price: string; status: [string, 'orange' | 'red' | 'green']; side: [string, 'green' | 'red'] }
+
+const openOrders: OrderRow[] = [
+  { id: 'nhpc', product: 'Delivery • Boost (5x)', name: 'NHPC', qtyLabel: 'Qty', qty: '12', ltp: '₹110.98', priceType: 'At lmt', price: '₹112', status: ['Open', 'orange'], side: ['Buy', 'green'] },
+  { id: 'gold', product: 'Intraday', name: 'Gold Mini', qty: '10', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Failed', 'red'], side: ['Sell', 'red'] },
+  { id: 'tata', product: 'Intraday', name: 'Tata motors', qty: '10/12', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Open', 'orange'], side: ['Buy', 'green'] },
+  { id: 'infy', product: 'Delivery', name: 'INFY', qtyLabel: 'Qty', qty: '5', ltp: '₹1,873.20', priceType: 'At lmt', price: '₹1,850', status: ['Open', 'orange'], side: ['Buy', 'green'] },
+]
+
+/** Portfolio › Orders: Actionbar with tabs in its bottom slot, chip tabs, a static summary card and clickable order cards. */
+export function OrdersDemo() {
+  const [section, setSection] = useState('orders')
+  const [status, setStatus] = useState('open')
+  const [opened, setOpened] = useState<string | null>(null)
+  const scroll = useScrollElevation()
+
+  return (
+    <div className={`${styles.screen} ${styles.fixedScreen} ${styles.noTopPad} ${styles.sheetHost}`}>
+      <Actionbar
+        headingLevel={2}
+        title="Portfolio"
+        elevated={scroll.elevated}
+        actions={<ActionbarAction icon={msSearchIcon} label="Search" onClick={() => {}} />}
+        bottom={<Tabs aria-label="Portfolio" value={section} onChange={setSection} items={[{ value: 'positions', label: 'Positions' }, { value: 'orders', label: 'Orders' }]} />}
+      />
+      <div className={`${styles.scrollArea} ${styles.cardList}`} onScroll={scroll.onScroll}>
+        <Tabs appearance="pill" aria-label="Order status" value={status} onChange={setStatus} items={[{ value: 'open', label: 'Open (4)' }, { value: 'history', label: 'History (2)' }]} />
+        {/* Static (decorative) card: information only, no action. */}
+        <Card as="section" aria-label="Today">
+          <div className={styles.cardRow}>
+            <span className={styles.cardMeta}>Margin used today</span>
+            <Tag variant="secondary" color="discover" size="md">4 orders</Tag>
+          </div>
+          <div className={styles.cardRow}>
+            <strong className={styles.cardValueLg}>₹48,210</strong>
+            <span className={styles.cardMeta}>of ₹1,20,000</span>
+          </div>
+        </Card>
+        {/* Clickable cards: one action each, so the whole card is the tap target. */}
+        <ul className={styles.cardStackList}>
+          {openOrders.map((o) => (
+            <li key={o.id}>
+              <Card onClick={() => setOpened(o.name)}>
+                <span className={styles.cardRow}>
+                  <span className={styles.cardMeta}>{o.product}</span>
+                  <span className={styles.cardTags}>
+                    <Tag variant="secondary" color={o.status[1]} size="md">{o.status[0]}</Tag>
+                    <Tag variant="secondary" color={o.side[1]} size="md">{o.side[0]}</Tag>
+                  </span>
+                </span>
+                <span className={styles.cardRow}>
+                  <span className={styles.cardTitle}>{o.name}</span>
+                  <span className={styles.cardPair}>{o.qtyLabel && <span className={styles.cardMeta}>{o.qtyLabel}</span>}<strong className={styles.cardValueLg}>{o.qty}</strong></span>
+                </span>
+                <span className={styles.cardRow}>
+                  <span className={styles.cardPair}><span className={styles.cardMeta}>LTP</span><strong className={styles.cardValue}>{o.ltp}</strong></span>
+                  <span className={styles.cardPair}><span className={styles.cardMeta}>{o.priceType}</span><strong className={styles.cardValue}>{o.price}</strong></span>
+                </span>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className={styles.toastSlot}>
+        {opened && <Aerobar key={opened} floating emphasis="primary" heading={`${opened} order`} paragraph="Order details would open here." action={{ label: 'Close', onClick: () => setOpened(null) }} />}
       </div>
     </div>
   )

@@ -1,0 +1,40 @@
+/*
+ * L3 System statusbar — every value is an --l3-* token.
+ * Figma: 32px high, 16px side padding, time left, 18px wifi/signal/battery boxes with a 4px gap right.
+ */
+
+.statusbar {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--l3-size-32);
+  padding: 0 var(--l3-spacing-16);
+  background: var(--l3-surface-default);
+  color: var(--l3-content-primary);
+}
+
+.statusbar[data-inverted] {
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+}
+
+/* Figma time frame: glyphs 46×10 inside an 18px-high box (viewBox 54×18). */
+.time {
+  display: block;
+  height: var(--l3-icon-size-18);
+  width: auto;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+}
+
+.glyph {
+  display: block;
+  width: var(--l3-icon-size-18);
+  height: var(--l3-icon-size-18);
+}

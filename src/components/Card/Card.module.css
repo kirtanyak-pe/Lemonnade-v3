@@ -1,0 +1,66 @@
+/*
+ * L3 Card — every value is an --l3-* token.
+ * Cards sit on the screen background (surface/default). In light mode surface/default and surface/primary
+ * are both white, so a card always carries a 1px border/light outline to stay visible.
+ * Clickable cards also get elevation-low and scale to motion/scale/press-default while pressed (local token; xl · l · default · m · sm steps exist).
+ */
+
+.card {
+  --card-border: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  margin: 0;
+  padding: var(--l3-spacing-16);
+  border: 0;
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-primary);
+  box-shadow: var(--card-border);
+  color: var(--l3-content-primary);
+  font: inherit;
+  text-align: inherit;
+  text-decoration: none;
+}
+
+.card[data-padding='none'] {
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ---- Clickable -------------------------------------------------------------- */
+
+.card[data-interactive] {
+  box-shadow: var(--card-border), var(--l3-shadow-elevation-low);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.card[data-interactive]:active {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+
+@media (hover: hover) {
+  .card[data-interactive]:hover {
+    background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover));
+  }
+}
+
+.card[data-interactive]:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card[data-interactive] {
+    transition: none;
+  }
+
+  .card[data-interactive]:active {
+    transform: none;
+  }
+}

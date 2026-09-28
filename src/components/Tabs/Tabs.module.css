@@ -158,6 +158,29 @@
   --tab-font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
 }
 
+/*
+ * Chip tabs are tappable surfaces on the screen background: surface/primary pills keep the
+ * border/light outline and add elevation-low, and every pill scales to motion/scale/press-default while pressed.
+ */
+.tab[data-appearance='pill'] {
+  box-shadow: inset 0 0 0 var(--tab-border-width) var(--tab-border), var(--l3-shadow-elevation-low);
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.tab[data-appearance='pill']:active {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab[data-appearance='pill'] {
+    transition: none;
+  }
+
+  .tab[data-appearance='pill']:active {
+    transform: none;
+  }
+}
+
 /* Selected, primary: filled inverted pill with the light state layer. */
 .tab[data-appearance='pill'][data-emphasis='primary'][aria-selected='true'] {
   --tab-surface: var(--l3-surface-inverted);
@@ -166,6 +189,8 @@
   --tab-layer-default: var(--l3-state-layer-light-default);
   --tab-layer-hover: var(--l3-state-layer-light-hover);
   --tab-layer-pressed: var(--l3-state-layer-light-pressed);
+  /* Not a surface/primary chip, so no elevation. */
+  box-shadow: none;
 }
 
 /*

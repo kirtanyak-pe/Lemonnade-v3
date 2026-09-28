@@ -1,4 +1,4 @@
-import type { ChangeEvent, ReactNode } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from 'react'
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { BackIcon } from '../icons'
@@ -29,8 +29,13 @@ export type ActionbarProps = {
     label?: string
     autoFocus?: boolean
   }
-  /** Stick to the top while the page scrolls. */
+  /** Stick to the top while the page scrolls. The bar gets elevation-low once content has scrolled under it. */
   sticky?: boolean
+  /**
+   * Show the scrolled state (elevation-low) yourself — for layouts where a sibling scroll area moves under
+   * the bar. Overrides the automatic behaviour of `sticky`.
+   */
+  elevated?: boolean
   className?: string
 }
 
@@ -45,12 +50,21 @@ export function Actionbar({
   bottom,
   search,
   sticky = false,
+  elevated,
   className,
 }: ActionbarProps) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
+  const [scrolledUnder, sentinelRef] = useScrolledPast(sticky && elevated === undefined)
+  const showElevation = elevated ?? (sticky && scrolledUnder)
 
   return (
-    <header className={[styles.actionbar, className].filter(Boolean).join(' ')} data-sticky={sticky || undefined}>
+    <>
+    {sticky && elevated === undefined && <span ref={sentinelRef} className={styles.sentinel} aria-hidden="true" />}
+    <header
+      className={[styles.actionbar, className].filter(Boolean).join(' ')}
+      data-sticky={sticky || undefined}
+      data-elevated={showElevation || undefined}
+    >
       <div className={styles.row}>
         {onBack && (
           <button type="button" className={styles.back} onClick={onBack} aria-label={backLabel}>
@@ -80,7 +94,25 @@ export function Actionbar({
       </div>
       {bottom && <div className={styles.bottom}>{bottom}</div>}
     </header>
+    </>
   )
+}
+
+/**
+ * True once a zero-height marker placed just above the sticky bar has scrolled out of view,
+ * i.e. content is now passing under the bar. Works for window and nested scroll containers.
+ */
+function useScrolledPast(enabled: boolean) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [past, setPast] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!enabled || !el) return
+    const observer = new IntersectionObserver(([entry]) => setPast(!entry.isIntersecting))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [enabled])
+  return [past, ref] as const
 }
 
 /** Figma's → content right button: a round 32px icon button (small Secondary Button, border/light). */
