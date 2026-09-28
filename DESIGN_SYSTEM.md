@@ -191,8 +191,11 @@ Components have no outer margin, so spacing between them belongs to the parent (
   surface **must** also have a 1px `border-light` and `shadow-elevation-low`.
 - **Press interaction:** on press, a clickable surface scales down (`--l3-motion-scale-press-default`, 0.98).
   Other steps exist for different text sizes (see 11), but which element uses which step is not defined yet.
-- **Non-clickable cards** are for decoration or information: `surface-primary` + `border-light`, no shadow, no press.
-  <!-- PENDING: confirm the non-clickable card style (currently: no shadow) -->
+- **Non-clickable cards** are for decoration or information. **A card with a border radius and a 1px `border-light`
+  uses `surface-default`**, with no shadow and no press.
+- **Flat cards:** if a card is not rounded and has no border (`variant="flat"`), it has **no background** unless one
+  is set manually (`surface`) — transparent, no border, no shadow. It can still be clickable.
+  <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links.
 

@@ -31,6 +31,15 @@ const iconsMigration = (): Release['changes'][number] => ({
 export const changelog: Record<string, Release[]> = {
   card: [
     {
+      version: '1.1.0', date: '2026-09-29',
+      summary: 'Flat variant',
+      changes: [
+        { kind: 'added', text: 'variant="flat": not rounded, no border, no shadow, transparent background; still clickable.' },
+        { kind: 'added', text: 'surface prop to set a card background manually (surface tokens only).' },
+        { kind: 'changed', text: 'Static cards (rounded + border/light) use surface/default; clickable cards stay surface/primary.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-29',
       summary: 'First release',
       changes: [

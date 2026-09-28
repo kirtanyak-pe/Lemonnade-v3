@@ -89,6 +89,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   card: {
     controls: [
       { name: 'kind', label: 'Kind', prop: 'onClick · href', type: 'select', options: ['clickable', 'link', 'static'], default: 'clickable' },
+      { name: 'variant', type: 'select', options: ['default', 'flat'], default: 'default' },
+      { name: 'surface', label: 'Surface (manual bg)', type: 'select', options: ['none', 'primary', 'secondary', 'tertiary'], default: 'none' },
       { name: 'padding', type: 'select', options: ['default', 'none'], default: 'default' },
       { name: 'title', label: 'Title', prop: false, type: 'text', default: 'NHPC' },
       { name: 'meta', label: 'Meta', prop: false, type: 'text', default: 'Delivery • Boost (5x)' },
@@ -101,8 +103,12 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         </>
       )
       const kind = s(v, 'kind')
-      const padding = s(v, 'padding') as 'default' | 'none'
-      return kind === 'static' ? <Card padding={padding}>{content}</Card> : kind === 'link' ? <Card href="#/card" padding={padding}>{content}</Card> : <Card onClick={noop} padding={padding}>{content}</Card>
+      const common = {
+        padding: s(v, 'padding') as 'default' | 'none',
+        variant: s(v, 'variant') as 'default' | 'flat',
+        surface: s(v, 'surface') === 'none' ? undefined : (s(v, 'surface') as 'primary' | 'secondary' | 'tertiary'),
+      }
+      return kind === 'static' ? <Card {...common}>{content}</Card> : kind === 'link' ? <Card href="#/card" {...common}>{content}</Card> : <Card onClick={noop} {...common}>{content}</Card>
     },
     code: (v) => {
       const kind = s(v, 'kind')
@@ -110,6 +116,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       return jsx('Card', [
         ['onClick', kind === 'clickable' ? '{openOrder}' : undefined],
         ['href', kind === 'link' ? '/orders/nhpc' : undefined],
+        ['variant', s(v, 'variant'), 'default'],
+        ['surface', s(v, 'surface'), 'none'],
         ['padding', s(v, 'padding'), 'default'],
       ], body)
     },

@@ -195,7 +195,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4471:29456',
     source: 'src/components/ButtonGroup',
     exports: ['ButtonGroup'],
-    tokens: ['surface/primary', 'border/light', 'spacing/12 · 16', 'shadow/elevation-high', 'motion/* (local)'],
+    tokens: ['surface/default (static)', 'surface/primary (clickable)', 'border/light', 'spacing/12 · 16', 'shadow/elevation-high', 'motion/* (local)'],
     overview: (
       <>
         <PhoneFrame label="Order review with a vertical button group that lifts while content scrolls under it">
@@ -466,11 +466,15 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Clickable or static</h2>
-          <p>Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A <strong>clickable</strong> card (<code>onClick</code> or <code>href</code>) also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration and has no shadow or press.</p>
+          <p>Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A <strong>clickable</strong> card (<code>onClick</code> or <code>href</code>) also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration: rounded with a border/light outline on surface/default, and no shadow or press.</p>
         </section>
         <section className={styles.section}>
           <h2>One action means a clickable card</h2>
           <p>If a card would hold a single button, make the whole card clickable instead. A clickable card is one tap target, so it can't contain other buttons or links (a development warning flags both cases).</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Flat cards</h2>
+          <p>A card that isn’t rounded and has no border (<code>variant="flat"</code>) has no background unless you set one with <code>surface</code> — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.</p>
         </section>
         <section className={styles.section}>
           <h2>Same rule for chip tabs</h2>
@@ -484,6 +488,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'onClick', type: '() => void', description: 'Makes the whole card a button (clickable card).' },
       { name: 'href', type: 'string', description: 'Makes the whole card a link (clickable card).' },
       { name: 'as', type: "'div' | 'article' | 'section' | 'li'", default: "'div'", description: 'Element for a static card.' },
+      { name: 'variant', type: "'default' | 'flat'", default: "'default'", description: 'flat: not rounded, no border, no shadow, transparent background. Can still be clickable.' },
+      { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
       { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '16px, or none for edge-to-edge content.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
