@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 import { Tag } from '../components/Tag'
+import { changelog, currentVersion } from './changelog'
 import { Guidelines } from './GuidelinesView'
 import { guidelines } from './guidelineData'
 import { figmaUrl } from './pages'
 import { Playground } from './Playground'
 import { playgrounds } from './playgrounds'
 import { PropsTable } from './PropsTable'
+import { ReleaseTimeline } from './ReleaseTimeline'
 import { ThemesGrid } from './ThemesGrid'
 import { tokenHref, useTokenHighlight } from './tokenLinks'
 import type { DocPage } from './types'
@@ -36,6 +38,7 @@ function tabsFor(page: DocPage): Tab[] {
     })
   }
   if (page.props) tabs.push({ id: 'api', label: 'API', content: <PropsTable rows={page.props} /> })
+  if (changelog[page.id]) tabs.push({ id: 'whats-new', label: 'What’s new', content: <ReleaseTimeline releases={changelog[page.id]} /> })
   tabs.push({ id: 'resources', label: 'Resources', content: <Resources page={page} /> })
   return tabs
 }
@@ -56,6 +59,11 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
       <div className={styles.titleRow}>
         <h1>{page.title}</h1>
         {page.status && <Tag variant="secondary" color="green" size="lg">{page.status}</Tag>}
+        {currentVersion(page.id) && (
+          <a className={styles.versionLink} href={href(page.id, 'whats-new')} aria-label={`Version ${currentVersion(page.id)} — see what’s new`}>
+            <Tag variant="secondary" color="neutral" size="lg">v{currentVersion(page.id)}</Tag>
+          </a>
+        )}
         {page.figmaNodeId && (
           <a className={styles.figmaLink} href={figmaUrl(page.figmaNodeId)} target="_blank" rel="noreferrer">
             <span className={styles.figmaMark} aria-hidden="true" />
@@ -78,6 +86,12 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
 
       <div className={styles.tabBody}>
         {active ? active.content : page.content}
+        {!active && changelog[page.id] && (
+          <section className={styles.section}>
+            <h2>What’s new</h2>
+            <ReleaseTimeline releases={changelog[page.id]} />
+          </section>
+        )}
         {active?.id === 'overview' && page.altNames && (
           <section className={styles.section}>
             <h2>Common alternative names</h2>

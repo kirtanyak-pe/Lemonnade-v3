@@ -437,3 +437,20 @@ section > h2 {
 .icons-cell:focus-visible {
   outline: 2px solid var(--l3-border-dark);
 }
+
+/* Brand logo variants preview */
+.logo-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-16);
+  min-height: var(--l3-size-128);
+}
+
+.logo-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--l3-spacing-24);
+}

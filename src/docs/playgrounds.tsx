@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Actionbar, ActionbarAction } from '../components/Actionbar'
 import { Aerobar, type AerobarType } from '../components/Aerobar'
 import { BottomNavbar } from '../components/BottomNavbar'
+import { BrandLogo, type Brand } from '../components/BrandLogo'
 import { BottomSheetHeader, BottomSheetSurface } from '../components/BottomSheet'
 import { Button, type ButtonSize, type ButtonVariant } from '../components/Button'
 import { ButtonGroup, type ButtonGroupDirection } from '../components/ButtonGroup'
@@ -84,6 +85,23 @@ function TextFieldPlay(v: Values) {
 // ---- Definitions ---------------------------------------------------------------
 
 export const playgrounds: Record<string, PlaygroundDef> = {
+  'brand-logo': {
+    controls: [
+      { name: 'brand', type: 'select', options: ['lemonn', 'zing'], default: 'lemonn' },
+      { name: 'variant', type: 'select', options: ['full', 'icon'], default: 'full' },
+      { name: 'size', type: 'select', options: ['24', '32', '40', '48'], default: '40' },
+      { name: 'decorative', type: 'boolean', default: false },
+    ],
+    render: (v) => <BrandLogo brand={s(v, 'brand') as Brand} variant={s(v, 'variant') as 'full' | 'icon'} size={Number(s(v, 'size')) as 24 | 32 | 40 | 48} decorative={b(v, 'decorative')} />,
+    code: (v) =>
+      jsx('BrandLogo', [
+        ['brand', s(v, 'brand')],
+        ['variant', s(v, 'variant'), 'full'],
+        ['size', s(v, 'size') === '24' ? undefined : `{${s(v, 'size')}}`],
+        ['decorative', b(v, 'decorative')],
+      ]),
+  },
+
   button: {
     controls: [
       { name: 'variant', type: 'select', options: buttonVariants, default: 'primary' },

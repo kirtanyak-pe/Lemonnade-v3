@@ -7,7 +7,7 @@
 .layout {
   --rail-width: 272px;
   --header-height: var(--l3-size-64);
-  --content-width: 960px;
+  --content-width: 1300px;
 
   min-height: 100vh;
   background: var(--l3-surface-default);
@@ -1626,4 +1626,131 @@ legend.sectionLabel {
 /* Full-width pieces stay full width inside the centred preview canvases. */
 :is(.playgroundCanvas, .themeCanvas, .cardThumbInner, .guidelineExample) > :is([role='tablist'], .playSheet, header, nav, section) {
   align-self: stretch;
+}
+
+/* ---- What's new: version timeline ------------------------------------------------ */
+
+.versionLink {
+  display: inline-flex;
+  border-radius: var(--l3-radius-08);
+  text-decoration: none;
+}
+
+.versionLink:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+.timeline {
+  --marker: var(--l3-spacing-12);
+
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The progress line joining every version. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: var(--l3-spacing-08);
+  bottom: var(--l3-spacing-08);
+  left: calc((var(--marker) - var(--l3-spacing-02)) / 2);
+  width: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-border-intense);
+}
+
+.release {
+  position: relative;
+  padding: 0 0 var(--l3-spacing-32) calc(var(--marker) + var(--l3-spacing-20));
+}
+
+.release:last-child {
+  padding-bottom: 0;
+}
+
+.releaseMarker {
+  position: absolute;
+  top: var(--l3-spacing-06);
+  left: 0;
+  box-sizing: border-box;
+  width: var(--marker);
+  height: var(--marker);
+  border: var(--l3-spacing-02) solid var(--l3-border-intense);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-default);
+}
+
+.release[data-state='current'] .releaseMarker {
+  border-color: var(--l3-surface-accent-brand-default);
+  background: var(--l3-surface-accent-brand-default);
+  box-shadow: 0 0 0 var(--l3-spacing-04) var(--l3-surface-accent-brand-light);
+}
+
+.release[data-state='upcoming'] .releaseMarker {
+  border-style: dashed;
+}
+
+.releaseHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--l3-spacing-04) var(--l3-spacing-08);
+}
+
+.releaseHeader h3 {
+  margin: 0;
+  font: var(--l3-text-extrabold-16);
+}
+
+.release[data-state='past'] .releaseHeader h3 {
+  color: var(--l3-content-secondary);
+}
+
+.releaseMeta {
+  color: var(--l3-content-tertiary);
+  font: var(--l3-text-medium-12);
+}
+
+.releaseSummary {
+  margin: var(--l3-spacing-04) 0 var(--l3-spacing-08);
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-primary);
+}
+
+.releaseChanges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.releaseChanges li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--l3-spacing-08);
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+}
+
+.releaseChanges li > :first-child {
+  flex: none;
+  min-width: var(--l3-size-96);
+  justify-content: center;
+}
+
+/* Brand logo page hero */
+.logoHero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--l3-spacing-48);
+  padding: var(--l3-spacing-48) var(--l3-spacing-24);
+  border-radius: var(--l3-radius-24);
+  background: var(--l3-surface-secondary);
 }

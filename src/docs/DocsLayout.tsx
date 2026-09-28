@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { defaultPageId, navGroups, pages } from './pages'
 import { DocPageView } from './DocPageView'
+import { BrandLogo } from '../components/BrandLogo'
 import { Search } from './Search'
 import { ThemeControls } from './ThemeControls'
 import { href, useHashRoute } from './useHashRoute'
@@ -65,7 +66,7 @@ export function DocsLayout() {
         </button>
 
         <a className={styles.brand} href={href(defaultPageId)}>
-          <span className={styles.brandMark} aria-hidden="true" />
+          <BrandLogo brand="lemonn" variant="icon" decorative />
           L3
         </a>
 

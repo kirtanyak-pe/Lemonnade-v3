@@ -1,0 +1,36 @@
+/*
+ * L3 Brand logo — every colour is an --l3-* token.
+ * The marks use their own brand ramps (base tokens), not the theme's brand-default: a Lemonn logo must
+ * stay Lemonn-lime even in the CS PRO or Kuber themes. Figma binds the Lemonn leaf to
+ * surface/accent/brand-default, which would recolour it per product — intentionally not followed.
+ * The Lemonn wordmark follows the theme (Figma: surface/inverted) so it reads on light and dark pages.
+ */
+
+.logo {
+  display: block;
+  flex: none;
+  height: var(--logo-height, var(--l3-size-24));
+  width: auto;
+}
+
+/* Lemonn: lemon-leaf mark. Figma raw #779A0A = brand-lemonn-700; front = brand-lemonn-500 (#B1E50E). */
+.lemonnShade {
+  fill: var(--l3-base-hue-brand-lemonn-700);
+}
+
+.lemonnLeaf {
+  fill: var(--l3-base-hue-brand-lemonn-500);
+}
+
+.wordmark {
+  fill: var(--l3-surface-inverted);
+}
+
+/* Zing: honey gradient (Figma raw #F6BC2F → #B97502 = honey-300 → honey-500). */
+.zingStart {
+  stop-color: var(--l3-base-hue-honey-300);
+}
+
+.zingEnd {
+  stop-color: var(--l3-base-hue-honey-500);
+}

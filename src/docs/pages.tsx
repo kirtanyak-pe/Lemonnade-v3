@@ -14,6 +14,8 @@ import { ListCellVariants } from '../preview/ListCellVariants'
 import { ActionbarVariants } from '../preview/ActionbarVariants'
 import { BottomNavbarVariants } from '../preview/BottomNavbarVariants'
 import { EmptyStateVariants } from '../preview/EmptyStateVariants'
+import { BrandLogoVariants } from '../preview/BrandLogoVariants'
+import { BrandLogo } from '../components/BrandLogo'
 import { ColorsPreview } from '../preview/ColorsPreview'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
@@ -81,6 +83,47 @@ import { msWallet, msWalletFill } from './icons/material'
         <IconsBrowserLazy />
       </>
     ),
+  },
+
+  {
+    id: 'brand-logo',
+    title: 'Brand logo',
+    group: 'Foundations',
+    description: 'The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.',
+    status: 'Figma synced',
+    altNames: 'Logo, logotype, wordmark, brand mark, app icon',
+    figmaNodeId: '4735:1466',
+    source: 'src/components/BrandLogo',
+    exports: ['BrandLogo'],
+    tokens: ['base/hue/brand-lemonn-500 · 700 (Lemonn mark)', 'surface/inverted (Lemonn wordmark)', 'base/hue/honey-300 → 500 (Zing gradient)', 'size/24 · 32 · 40 · 48'],
+    overview: (
+      <>
+        <div className={styles.logoHero}>
+          <BrandLogo brand="lemonn" size={48} />
+          <BrandLogo brand="zing" size={48} />
+        </div>
+        <section className={styles.section}>
+          <h2>Full or mark</h2>
+          <p>Use the full logo where there's room: headers, splash, sign-in. Use the mark (<code>variant="icon"</code>) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Colours stay on brand</h2>
+          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand colour, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Accessibility</h2>
+          <p>The logo is announced as its brand name. Pass <code>label</code> for something more specific ("Lemonn home"), or <code>decorative</code> when the name is already written next to it.</p>
+        </section>
+      </>
+    ),
+    variants: <BrandLogoVariants />,
+    props: [
+      { name: 'brand', type: "'lemonn' | 'zing'", description: 'Figma Brand.' },
+      { name: 'variant', type: "'full' | 'icon'", default: "'full'", description: 'Figma isFull: mark + wordmark, or the 24×24 mark.' },
+      { name: 'size', type: '24 | 32 | 40 | 48', default: '24', description: 'Height in px from the size tokens; width keeps the proportions.' },
+      { name: 'label', type: 'string', description: 'Accessible name; defaults to the brand name.' },
+      { name: 'decorative', type: 'boolean', default: 'false', description: 'Hide from screen readers when the name is written next to it.' },
+    ],
   },
 
   // ---- Action ---------------------------------------------------------------

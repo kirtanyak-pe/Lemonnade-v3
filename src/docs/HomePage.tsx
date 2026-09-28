@@ -1,18 +1,13 @@
 import { Button } from '../components/Button'
 import { Tag } from '../components/Tag'
 import { productModes, products } from '../tokens'
+import { recentReleases } from './changelog'
 import { CodeBlock, defaults } from './Playground'
 import { pages } from './pages'
 import { playgrounds } from './playgrounds'
 import { href } from './useHashRoute'
 import styles from './Docs.module.css'
 
-const whatsNew = [
-  { title: 'Empty state', id: 'empty-state', note: 'No-results illustration in theme colours, with a Clear action.' },
-  { title: 'Bottom navbar', id: 'bottom-navbar', note: 'Main nav plus Mutual Fund and F&O sub-navs, with an animated switch.' },
-  { title: 'Actionbar', id: 'actionbar', note: 'Top app bar with a title or search, actions and tabs below.' },
-  { title: 'Icons', id: 'icons', note: 'The full Material Symbols Rounded library, 24dp.' },
-]
 
 const quickStart = `// main.tsx — themes follow the product / mode chosen by the app
 import './tokens'
@@ -100,10 +95,10 @@ export function HomePage() {
       <section className={styles.section}>
         <h2>What’s new</h2>
         <ul className={styles.whatsNew}>
-          {whatsNew.map((w) => (
-            <li key={w.id}>
-              <a href={href(w.id)}>{w.title}</a>
-              <span>{w.note}</span>
+          {recentReleases().map((r) => (
+            <li key={r.pageId}>
+              <a href={href(r.pageId, 'whats-new')}>{pages.find((p) => p.id === r.pageId)?.title} v{r.version}</a>
+              <span>{r.summary}</span>
             </li>
           ))}
         </ul>
