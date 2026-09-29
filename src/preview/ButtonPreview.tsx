@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRightIcon, Button, PlaceholderIcon, type ButtonSize, type ButtonVariant } from '../components/Button'
+import { ArrowRightIcon, Button, PlaceholderIcon, type ButtonProps, type ButtonSize, type ButtonVariant } from '../components/Button'
 
 // Column / row order matches the Figma "L3: Button" frame.
 const variants: { id: ButtonVariant; label: string }[] = [
@@ -20,13 +20,17 @@ const sizes: { id: ButtonSize; label: string }[] = [
 
 export function ButtonPreview() {
   const [label, setLabel] = useState('Label')
+  const [showLabel, setShowLabel] = useState(true)
   const [showLeft, setShowLeft] = useState(true)
   const [showRight, setShowRight] = useState(true)
   const [pending, setPending] = useState<ButtonVariant | null>(null)
 
+  // Figma 👁️ Label / Icon-L / Icon-R: at least one visible; with the label hidden, exactly one icon.
+  const left = showLabel ? showLeft : showLeft || !showRight
+  const right = showLabel ? showRight : !left && showRight
   const icons = {
-    iconLeft: showLeft ? <PlaceholderIcon /> : undefined,
-    iconRight: showRight ? <ArrowRightIcon /> : undefined,
+    iconLeft: left ? <PlaceholderIcon /> : undefined,
+    iconRight: right ? <ArrowRightIcon /> : undefined,
   }
 
   const simulate = (variant: ButtonVariant) => {
@@ -42,6 +46,9 @@ export function ButtonPreview() {
           <input value={label} onChange={(e) => setLabel(e.target.value)} />
         </label>
         <label className="check">
+          <input type="checkbox" checked={showLabel} onChange={(e) => setShowLabel(e.target.checked)} /> label
+        </label>
+        <label className="check">
           <input type="checkbox" checked={showLeft} onChange={(e) => setShowLeft(e.target.checked)} /> icon-l
         </label>
         <label className="check">
@@ -53,10 +60,22 @@ export function ButtonPreview() {
         <h2>Try it — hover, press, click to load</h2>
         <div className="btn-row">
           {variants.map((v) => (
-            <Button key={v.id} variant={v.id} size="md" loading={pending === v.id} onClick={() => simulate(v.id)} {...icons}>
-              {label || v.label}
-            </Button>
+            <Button
+              key={v.id}
+              {...({ variant: v.id, size: 'md', loading: pending === v.id, onClick: () => simulate(v.id), ...icons, ...(showLabel ? { children: label || v.label } : { 'aria-label': v.label }) } as ButtonProps)}
+            />
           ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Icon buttons (label hidden: exactly one icon + aria-label)</h2>
+        <div className="btn-row">
+          {sizes.map((size) =>
+            variants.filter((v) => v.id !== 'secondary').map((v) => (
+              <Button key={size.id + v.id} variant={v.id} size={size.id} aria-label={`${v.label} ${size.label}`} iconLeft={<PlaceholderIcon />} />
+            )),
+          )}
         </div>
       </section>
 
@@ -78,15 +97,8 @@ export function ButtonPreview() {
                     {variants.map((v) => (
                       <td key={v.id}>
                         <Button
-                          variant={v.id}
-                          size={size.id}
-                          loading={state === 'loading'}
-                          disabled={state === 'disabled'}
-                          fullWidth
-                          {...icons}
-                        >
-                          {label}
-                        </Button>
+                          {...({ variant: v.id, size: size.id, loading: state === 'loading', disabled: state === 'disabled', fullWidth: showLabel, ...icons, ...(showLabel ? { children: label || v.label } : { 'aria-label': `${v.label} icon button` }) } as ButtonProps)}
+                        />
                       </td>
                     ))}
                   </tr>

@@ -19,7 +19,7 @@ export type CardProps = {
   href?: string
   /** Element for a static card. */
   as?: 'div' | 'article' | 'section' | 'li'
-  /** `none` for edge-to-edge content (images, lists); default 16px. */
+  /** `none` for edge-to-edge content (images, lists); default 12px. */
   padding?: 'default' | 'none'
   /** `flat`: not rounded, no border, no shadow, transparent background (unless `surface` is set). */
   variant?: 'default' | 'flat'

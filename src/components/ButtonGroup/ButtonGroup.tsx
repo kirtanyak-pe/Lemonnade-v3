@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from 'react'
+import { Children, isValidElement, useEffect, type HTMLAttributes, type ReactNode } from 'react'
 import styles from './ButtonGroup.module.css'
 
 /** Figma "L3: Button Group" (node 4471:29456). */
@@ -9,7 +9,7 @@ export type ButtonGroupProps = HTMLAttributes<HTMLDivElement> & {
   direction?: ButtonGroupDirection
   /** Figma "Scroll indicator": lifts the bar with a shadow while content scrolls underneath it. */
   scrollIndicator?: boolean
-  /** Figma "wrapper" slot — usually two or more <Button size="lg" /> (primary first in vertical, last in horizontal). */
+  /** Figma "wrapper" slot — Large buttons only (primary first in vertical, last in horizontal). */
   children: ReactNode
 }
 
@@ -21,6 +21,15 @@ export function ButtonGroup({
   children,
   ...rest
 }: ButtonGroupProps) {
+  // Buttons in a dock are always Large (Figma Button Dock).
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    Children.forEach(children, (child) => {
+      const size = isValidElement<{ size?: string }>(child) ? child.props.size : undefined
+      if (size && size !== 'lg') console.warn(`[L3] <ButtonGroup> buttons are always size="lg" (found size="${size}").`)
+    })
+  }, [children])
+
   return (
     <div
       role="group"

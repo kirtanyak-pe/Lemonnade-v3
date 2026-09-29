@@ -140,6 +140,9 @@ Waiting for the exact text from your notes on:
 Use a component whenever one exists. Don't restyle a component's internals from outside; use its props.
 Components have no outer margin, so spacing between them belongs to the parent (section 1).
 
+**Usage rules per component** live next to the code in `src/components/<Name>/USAGE.md` (when to use each variant
+and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`.
+
 | Component | Import | Required | Use for |
 |---|---|---|---|
 | `Button` | `components/Button` | label (or `aria-label` if icon-only) | Actions. `variant`: primary · secondary · tertiary · ghost · brand · buy · sell; `size` sm · md · lg |
@@ -189,6 +192,8 @@ Components have no outer margin, so spacing between them belongs to the parent (
 - **Clickable cards, and other tappable elements like chip tabs,** use `surface-primary`, because they sit on the
   screen background `surface-default`. In the light theme both are the same colour (#FFFFFF), so a clickable
   surface **must** also have a 1px `border-light` and `shadow-elevation-low`.
+- **Card spec** (Figma Order card): padding `spacing-12`, radius `radius-12`, rows `spacing-08` apart; cards in a list
+  are `spacing-16` apart.
 - **Press interaction:** on press, a clickable surface scales down (`--l3-motion-scale-press-default`, 0.98).
   Other steps exist for different text sizes (see 11), but which element uses which step is not defined yet.
 - **Non-clickable cards** are for decoration or information. **A card with a border radius and a 1px `border-light`

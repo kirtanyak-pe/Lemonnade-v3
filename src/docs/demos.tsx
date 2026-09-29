@@ -9,7 +9,7 @@ import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
 import { Icon } from '../components/Icon'
 import { Actionbar, ActionbarAction } from '../components/Actionbar'
-import { msAccountBalance, msDeleteForever, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
+import { msAccountBalance, msDeleteForever, msUnfoldMore, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -694,6 +694,11 @@ export function OrdersDemo() {
       />
       <div className={`${styles.scrollArea} ${styles.cardList}`} onScroll={scroll.onScroll}>
         <Tabs appearance="pill" aria-label="Order status" value={status} onChange={setStatus} items={[{ value: 'open', label: 'Open (4)' }, { value: 'history', label: 'History (2)' }]} />
+        {/* Toolbar: sort on the left (bold-16 + 20px icon), filters link with a count badge on the right. */}
+        <div className={styles.cardRow}>
+          <button type="button" className={styles.sortButton}>All Orders <Icon icon={msUnfoldMore} size={20} /></button>
+          <button type="button" className={styles.filterLink}>Filters <Tag variant="primary" color="discover" size="md">2</Tag></button>
+        </div>
         {/* Static (decorative) card: information only, no action. */}
         <Card as="section" aria-label="Today">
           <div className={styles.cardRow}>
@@ -711,10 +716,10 @@ export function OrdersDemo() {
             <li key={o.id}>
               <Card onClick={() => setOpened(o.name)}>
                 <span className={styles.cardRow}>
-                  <span className={styles.cardMeta}>{o.product}</span>
+                  <span className={styles.cardMetaSm}>{o.product}</span>
                   <span className={styles.cardTags}>
-                    <Tag variant="secondary" color={o.status[1]} size="md">{o.status[0]}</Tag>
-                    <Tag variant="secondary" color={o.side[1]} size="md">{o.side[0]}</Tag>
+                    <Tag variant="tertiary" color={o.status[1]} size="md">{o.status[0]}</Tag>
+                    <Tag variant="tertiary" color={o.side[1]} size="md">{o.side[0]}</Tag>
                   </span>
                 </span>
                 <span className={styles.cardRow}>

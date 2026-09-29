@@ -37,6 +37,11 @@ export const guidelines: Record<string, Guideline[]> = {
       dont: { text: 'Put several primary buttons side by side — nothing stands out.', example: <div className={styles.exRow}><Button size="md">Modify</Button><Button size="md">Confirm</Button></div> },
     },
     {
+      title: 'Secondary only beside a stronger button',
+      do: { text: 'Pair secondary with primary, buy, sell or brand — usually in a dock. Alone, use tertiary.', example: <div className={styles.exStack}><ButtonGroup direction="horizontal" aria-label="Confirm"><Button variant="secondary">Cancel</Button><Button>Confirm</Button></ButtonGroup><Button size="md" variant="tertiary">View all</Button></div> },
+      dont: { text: 'Use a secondary button on its own on the page or inside a card.', example: <Button size="md" variant="secondary">View all</Button> },
+    },
+    {
       title: 'Use Buy and Sell only for trades',
       do: { text: 'Buy (green) and Sell (red) are for placing orders.', example: <div className={styles.exRow}><Button size="md" variant="sell">Sell</Button><Button size="md" variant="buy">Buy</Button></div> },
       dont: { text: 'Borrow their colours for unrelated actions like saving settings.', example: <Button size="md" variant="buy">Save settings</Button> },

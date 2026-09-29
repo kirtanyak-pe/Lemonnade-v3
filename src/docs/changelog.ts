@@ -31,6 +31,14 @@ const iconsMigration = (): Release['changes'][number] => ({
 export const changelog: Record<string, Release[]> = {
   card: [
     {
+      version: '1.2.0', date: '2026-09-29',
+      summary: 'Figma card spec',
+      changes: [
+        { kind: 'figma', text: 'Padding 16 → 12 and radius 16 → 12, matching the Figma Order card (row gap stays 8).' },
+        { kind: 'changed', text: 'Orders demo: 16 between cards, Body/12 meta line, Tertiary status tags, sort + filters toolbar.' },
+      ],
+    },
+    {
       version: '1.1.0', date: '2026-09-29',
       summary: 'Flat variant',
       changes: [
@@ -75,6 +83,15 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   button: [
+    {
+      version: '1.4.0', date: '2026-09-30',
+      summary: 'Label & icon rule, usage rules',
+      changes: [
+        { kind: 'changed', text: 'At least one of label / iconLeft / iconRight must show, and icon-only buttons have exactly one icon — enforced in TypeScript, with a runtime fallback (left icon wins).' },
+        { kind: 'added', text: 'Usage rules in src/components/Button/USAGE.md: secondary only next to a stronger button, tertiary when alone (View all), Large only in docks.' },
+        { kind: 'added', text: 'ButtonGroup warns in development when a button isn’t size="lg".' },
+      ],
+    },
     {
       version: '1.3.0', date: '2026-09-26', commit: '2998418',
       summary: 'Material Symbols icons',

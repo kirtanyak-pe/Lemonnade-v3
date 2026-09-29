@@ -5,7 +5,7 @@ import { Aerobar, type AerobarType } from '../components/Aerobar'
 import { BottomNavbar } from '../components/BottomNavbar'
 import { BrandLogo, type Brand } from '../components/BrandLogo'
 import { BottomSheetHeader, BottomSheetSurface } from '../components/BottomSheet'
-import { Button, type ButtonSize, type ButtonVariant } from '../components/Button'
+import { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from '../components/Button'
 import { ButtonGroup, type ButtonGroupDirection } from '../components/ButtonGroup'
 import { Card } from '../components/Card'
 import { Checkbox, Radio } from '../components/Checkbox'
@@ -83,6 +83,19 @@ function TextFieldPlay(v: Values) {
   )
 }
 
+/**
+ * Button content rule: at least one of label / iconLeft / iconRight, and an icon-only button has exactly one icon.
+ * With no label and no icon we show the left icon; with no label and both icons, only the left one.
+ */
+function buttonContent(v: Values) {
+  const label = b(v, 'showLabel') ? s(v, 'label') : ''
+  let left = b(v, 'iconLeft')
+  let right = b(v, 'iconRight')
+  if (!label && left && right) right = false
+  if (!label && !left && !right) left = true
+  return { label, left, right }
+}
+
 // ---- Definitions ---------------------------------------------------------------
 
 export const playgrounds: Record<string, PlaygroundDef> = {
@@ -144,39 +157,44 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'variant', type: 'select', options: buttonVariants, default: 'primary' },
       { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'lg' },
-      { name: 'label', label: 'Label', prop: 'children', type: 'text', default: 'Place order' },
+      { name: 'showLabel', label: 'Show label (off = icon button)', prop: 'children', type: 'boolean', default: true },
+      { name: 'label', label: 'Label', prop: 'children', type: 'text', default: 'Place order', showIf: (v) => v.showLabel === true },
       { name: 'iconLeft', type: 'boolean', default: false },
-      { name: 'iconRight', type: 'boolean', default: false },
+      // Icon buttons show exactly one icon: hide the right toggle when the label is hidden and the left icon is on.
+      { name: 'iconRight', type: 'boolean', default: false, showIf: (v) => v.showLabel === true || v.iconLeft !== true },
       { name: 'loading', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
       { name: 'fullWidth', type: 'boolean', default: false },
     ],
-    render: (v) => (
-      <Button
-        variant={s(v, 'variant') as ButtonVariant}
-        size={s(v, 'size') as ButtonSize}
-        iconLeft={b(v, 'iconLeft') ? <Icon icon={msAdd} /> : undefined}
-        iconRight={b(v, 'iconRight') ? <Icon icon={msArrowForward} /> : undefined}
-        loading={b(v, 'loading')}
-        disabled={b(v, 'disabled')}
-        fullWidth={b(v, 'fullWidth')}
-        aria-label={s(v, 'label') ? undefined : 'Add'}
-      >
-        {s(v, 'label') || undefined}
-      </Button>
-    ),
-    code: (v) =>
-      jsx('Button', [
+    render: (v) => {
+      const c = buttonContent(v)
+      const props = {
+        variant: s(v, 'variant') as ButtonVariant,
+        size: s(v, 'size') as ButtonSize,
+        loading: b(v, 'loading'),
+        disabled: b(v, 'disabled'),
+        fullWidth: b(v, 'fullWidth'),
+        iconLeft: c.left ? <Icon icon={msAdd} /> : undefined,
+        iconRight: c.right ? <Icon icon={msArrowForward} /> : undefined,
+        'aria-label': c.label ? undefined : 'Add',
+        children: c.label || undefined,
+      } as ButtonProps
+      return <Button {...props} />
+    },
+    code: (v) => {
+      const c = buttonContent(v)
+      return jsx('Button', [
         ['variant', s(v, 'variant'), 'primary'],
         ['size', s(v, 'size'), 'lg'],
-        ['iconLeft', b(v, 'iconLeft') ? '{<Icon icon={msAdd} />}' : undefined],
-        ['iconRight', b(v, 'iconRight') ? '{<Icon icon={msArrowForward} />}' : undefined],
+        ['iconLeft', c.left ? '{<Icon icon={msAdd} />}' : undefined],
+        ['iconRight', c.right ? '{<Icon icon={msArrowForward} />}' : undefined],
         ['loading', b(v, 'loading')],
         ['disabled', b(v, 'disabled')],
         ['fullWidth', b(v, 'fullWidth')],
-        ['aria-label', s(v, 'label') ? undefined : 'Add'],
+        ['aria-label', c.label ? undefined : 'Add'],
         ['onClick', '{placeOrder}'],
-      ], s(v, 'label')),
+      ], c.label)
+    },
   },
 
   'button-group': {

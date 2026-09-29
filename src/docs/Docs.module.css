@@ -1583,6 +1583,40 @@ legend.sectionLabel {
   padding: var(--l3-spacing-12) var(--l3-spacing-16);
 }
 
+.cardMetaSm {
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
+.sortButton,
+.filterLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  min-height: var(--l3-size-tap-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.sortButton {
+  font: var(--l3-text-bold-16);
+  color: var(--l3-content-primary);
+}
+
+.filterLink {
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-accent-discover-default);
+}
+
+.sortButton:focus-visible,
+.filterLink:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-04);
+}
+
 .cardTitle {
   font: var(--l3-text-bold-16);
 }
@@ -1781,7 +1815,7 @@ legend.sectionLabel {
 .cardStackList {
   display: flex;
   flex-direction: column;
-  gap: var(--l3-spacing-12);
+  gap: var(--l3-spacing-16); /* Figma Orders list: 16 between cards */
   margin: 0;
   padding: 0;
   list-style: none;

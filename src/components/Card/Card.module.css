@@ -17,9 +17,9 @@
   gap: var(--l3-spacing-08);
   width: 100%;
   margin: 0;
-  padding: var(--l3-spacing-16);
+  padding: var(--l3-spacing-12); /* Figma Order card: padding 12, radius 12, row gap 8 */
   border: 0;
-  border-radius: var(--l3-radius-16);
+  border-radius: var(--l3-radius-12);
   background: var(--card-surface);
   box-shadow: var(--card-border);
   color: var(--l3-content-primary);

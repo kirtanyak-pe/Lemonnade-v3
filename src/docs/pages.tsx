@@ -163,6 +163,14 @@ import { msWallet, msWalletFill } from './icons/material'
           </div>
         </section>
         <section className={styles.section}>
+          <h2>Secondary, tertiary and docks</h2>
+          <p>Secondary (dark border) only appears next to a stronger button — primary, buy, sell or brand — usually in a sheet's button dock. On its own, on the page or inside a card, use tertiary instead (e.g. <em>View all</em> at the end of a list). Buttons in a dock or ButtonGroup are always Large.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Label and icons</h2>
+          <p>Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an <code>aria-label</code>). TypeScript rejects the other combinations.</p>
+        </section>
+        <section className={styles.section}>
           <h2>States</h2>
           <p>Loading keeps the button's width and ignores taps. Disabled uses the theme's disabled tokens.</p>
           <div className={styles.demoRow}>
@@ -178,6 +186,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'lg'", description: 'Figma Size: Small 32, Medium 40, Large 48.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Figma State=♻︎ Loading. Shows the loader, keeps the width, ignores clicks, sets aria-busy.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma State=🚫 Disabled.' },
+      { name: 'children', type: 'ReactNode', description: 'The label (Figma 👁️ Label). Leave it out for an icon button: then pass exactly one icon and aria-label.' },
+      { name: 'aria-label', type: 'string', description: 'Required for an icon button (no label). Names the action, e.g. "Share".' },
       { name: 'iconLeft', type: 'ReactNode', description: 'Figma icon-l slot, sized and coloured by the button.' },
       { name: 'iconRight', type: 'ReactNode', description: 'Figma icon-r slot.' },
       { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch to the container width.' },
@@ -458,7 +468,7 @@ import { msWallet, msWalletFill } from './icons/material'
     altNames: 'Tile, panel, container, list item card',
     source: 'src/components/Card',
     exports: ['Card'],
-    tokens: ['surface/primary', 'border/light', 'shadow/elevation-low (clickable)', 'motion/scale/press-default (local, 0.98)', 'motion/duration-short', 'state-layer/dark/hover', 'radius/16', 'spacing/16 · 08'],
+    tokens: ['surface/primary', 'border/light', 'shadow/elevation-low (clickable)', 'motion/scale/press-default (local, 0.98)', 'motion/duration-short', 'state-layer/dark/hover', 'radius/12', 'spacing/12 · 08'],
     overview: (
       <>
         <PhoneFrame label="Portfolio orders: tabs in the actionbar, chip tabs, a static summary card and clickable order cards">
@@ -490,7 +500,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'as', type: "'div' | 'article' | 'section' | 'li'", default: "'div'", description: 'Element for a static card.' },
       { name: 'variant', type: "'default' | 'flat'", default: "'default'", description: 'flat: not rounded, no border, no shadow, transparent background. Can still be clickable.' },
       { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
-      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '16px, or none for edge-to-edge content.' },
+      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px, or none for edge-to-edge content.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
   },

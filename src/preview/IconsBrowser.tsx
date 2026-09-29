@@ -85,7 +85,7 @@ export function IconsBrowser() {
         ))}
       </ul>
       {results.length > limit && (
-        <Button variant="secondary" size="md" onClick={() => setLimit((l) => l + PAGE)}>
+        <Button variant="tertiary" size="md" onClick={() => setLimit((l) => l + PAGE)}>
           Show more ({results.length - limit} left)
         </Button>
       )}
