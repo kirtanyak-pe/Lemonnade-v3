@@ -128,6 +128,14 @@ export const changelog: Record<string, Release[]> = {
 
   'button-group': [
     {
+      version: '1.1.0', date: '2026-09-30',
+      summary: 'Dock rules',
+      changes: [
+        { kind: 'added', text: 'Usage rules in src/components/ButtonGroup/USAGE.md: what goes in a dock, direction and order, placement, scroll indicator.' },
+        { kind: 'a11y', text: 'Development warnings: non-Large buttons, no strong button (secondary alone), missing aria-label.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-26', commit: 'ffb3ed9',
       summary: 'First release',
       changes: [

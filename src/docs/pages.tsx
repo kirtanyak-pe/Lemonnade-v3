@@ -216,6 +216,10 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>Vertical stacks full-width buttons with the primary on top. Horizontal shares the width equally with the primary on the right — the Order ticket and Filters demos use it.</p>
         </section>
         <section className={styles.section}>
+          <h2>What goes in a dock</h2>
+          <p>The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with <code>aria-label</code>.</p>
+        </section>
+        <section className={styles.section}>
           <h2>Scroll indicator</h2>
           <p>Figma's "Scroll indicator" adds the elevation-high shadow so the bar reads as floating over content. Turn it on while there's more content below — scroll the order above to the end and it fades away.</p>
         </section>

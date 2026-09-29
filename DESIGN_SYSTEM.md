@@ -141,7 +141,7 @@ Use a component whenever one exists. Don't restyle a component's internals from 
 Components have no outer margin, so spacing between them belongs to the parent (section 1).
 
 **Usage rules per component** live next to the code in `src/components/<Name>/USAGE.md` (when to use each variant
-and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`.
+and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`, `ButtonGroup`.
 
 | Component | Import | Required | Use for |
 |---|---|---|---|

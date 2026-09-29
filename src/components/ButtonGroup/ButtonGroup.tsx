@@ -21,14 +21,24 @@ export function ButtonGroup({
   children,
   ...rest
 }: ButtonGroupProps) {
-  // Buttons in a dock are always Large (Figma Button Dock).
+  // Dock rules (see USAGE.md): Large buttons only, at least one strong button, secondary only beside it,
+  // and a name for the group.
+  const ariaLabel = (rest as { 'aria-label'?: string })['aria-label']
+  const labelledBy = (rest as { 'aria-labelledby'?: string })['aria-labelledby']
   useEffect(() => {
     if (!import.meta.env.DEV) return
+    const variants: string[] = []
     Children.forEach(children, (child) => {
-      const size = isValidElement<{ size?: string }>(child) ? child.props.size : undefined
+      if (!isValidElement<{ size?: string; variant?: string }>(child)) return
+      const { size, variant = 'primary' } = child.props
+      variants.push(variant)
       if (size && size !== 'lg') console.warn(`[L3] <ButtonGroup> buttons are always size="lg" (found size="${size}").`)
     })
-  }, [children])
+    if (variants.length && !variants.some((v) => ['primary', 'buy', 'sell', 'brand'].includes(v))) {
+      console.warn('[L3] <ButtonGroup> needs a strong button (primary, buy, sell or brand); secondary only goes next to one.')
+    }
+    if (!ariaLabel && !labelledBy) console.warn('[L3] <ButtonGroup> needs an aria-label naming the task, e.g. "Order actions".')
+  }, [children, ariaLabel, labelledBy])
 
   return (
     <div
