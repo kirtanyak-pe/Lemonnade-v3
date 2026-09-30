@@ -1859,3 +1859,165 @@ legend.sectionLabel {
   font: var(--l3-text-bold-16);
   color: var(--l3-content-primary);
 }
+
+/* ---- Bottom sheet use case: Set Auto TP/SL (Figma 4292:34429) ------------------------------------------ */
+
+.tpslList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+
+.tpslList > section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+}
+
+.tpslHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.tpslTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+
+.tpslTitle {
+  font: var(--l3-text-bold-12);
+  color: var(--l3-content-primary);
+}
+
+/* Inline text action standing in for a dropdown (no Select component yet). */
+.tpslSelect {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-accent-discover-default);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tpslSelect::after {
+  content: '';
+  position: absolute;
+  inset: calc((100% - var(--l3-size-tap-target)) / 2) calc(-1 * var(--l3-spacing-04));
+}
+
+.tpslSelect:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-04);
+}
+
+.tpslSelectNeutral {
+  color: var(--l3-content-primary);
+}
+
+.tpslTrail .tpslSelect {
+  margin-left: auto;
+  font: var(--l3-text-bold-12);
+}
+
+/* Figma inner panel: surface/secondary, 8 · 12 padding, rows 12 apart. */
+.tpslFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+}
+
+.tpslField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.tpslLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-secondary);
+}
+
+/* Figma stepper: surface/default pill, radius 8, 4 padding; value bold 14. */
+.tpslStepper {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-default);
+}
+
+.tpslValue {
+  min-width: var(--l3-size-48);
+  font: var(--l3-text-bold-14);
+  color: var(--l3-content-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tpslDivider,
+.tpslDashed {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--l3-border-light);
+}
+
+.tpslDivider {
+  border-top-color: var(--l3-border-intense); /* Figma border/moderate → nearest L3 token */
+}
+
+.tpslDashed {
+  border-top-style: dashed;
+}
+
+.tpslTarget {
+  margin: 0;
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-secondary);
+}
+
+.tpslTarget strong {
+  font: var(--l3-text-bold-12);
+}
+
+.tpslUp {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+.tpslDown {
+  color: var(--l3-content-accent-indicator-down-default);
+}
+
+.tpslTrail {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  color: var(--l3-content-secondary);
+}
+
+.tpslTrailLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  font: var(--l3-text-bold-12);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}

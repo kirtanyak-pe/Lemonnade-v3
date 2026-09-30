@@ -2,14 +2,14 @@
 import { useState, type UIEvent } from 'react'
 import { Button, PlaceholderIcon } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
-import { BottomSheet, BottomSheetHeader } from '../components/BottomSheet'
+import { BottomSheet, BottomSheetHeader, BottomSheetSurface } from '../components/BottomSheet'
 import { Aerobar } from '../components/Aerobar'
 import { TextField } from '../components/TextField'
 import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
 import { Icon } from '../components/Icon'
 import { Actionbar, ActionbarAction } from '../components/Actionbar'
-import { msAccountBalance, msDeleteForever, msUnfoldMore, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
+import { msAdd, msInfo, msRemove, msAccountBalance, msDeleteForever, msUnfoldMore, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -303,7 +303,8 @@ export function SheetsDemo() {
   const [qty, setQty] = useState(10)
   const [sort, setSort] = useState('Price change')
   const [orderType, setOrderType] = useState('delivery')
-  const close = () => setSheet(null)
+  const [explainer, setExplainer] = useState(false) // 2nd sheet, stacked on the Buy sheet
+  const close = () => { setExplainer(false); setSheet(null) }
 
   return (
     <div ref={setScreen} className={`${styles.screen} ${styles.fixedScreen} ${styles.sheetHost}`}>
@@ -315,7 +316,7 @@ export function SheetsDemo() {
         </div>
         <Button size="sm" variant="tertiary" onClick={() => setSheet('sort')}>Sort: {sort}</Button>
       </div>
-      <p className={`${styles.rowHint} ${styles.finePrint}`}>Tap Buy to open a bottom sheet. Drag it down or tap outside to close. "Sort" opens a top sheet (drag it up to close).</p>
+      <p className={`${styles.rowHint} ${styles.finePrint}`}>Tap Buy to open a bottom sheet; its ⓘ opens a second sheet on top (with back). Drag down or tap outside to close. "Sort" opens a top sheet.</p>
       <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Trade">
         <Button variant="sell" onClick={() => setSheet('order')}>Sell</Button>
         <Button variant="buy" onClick={() => setSheet('order')}>Buy</Button>
@@ -331,6 +332,8 @@ export function SheetsDemo() {
             headingId="order-sheet-title"
             heading="Buy RELIANCE"
             info
+            onInfo={() => setExplainer(true)}
+            infoLabel="About order types"
             description="NSE"
             bottom={<Tabs aria-label="Order type" value={orderType} onChange={setOrderType} items={[{ value: 'delivery', label: 'Delivery' }, { value: 'intraday', label: 'Intraday' }]} />}
           />
@@ -351,6 +354,18 @@ export function SheetsDemo() {
             <Button size="sm" variant="tertiary" onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity">+</Button>
           </span>
         </div>
+      </BottomSheet>
+
+      {/* Second sheet on top of the Buy sheet: it has the back button (the first sheet never does). Max 2 sheets. */}
+      <BottomSheet
+        open={sheet === 'order' && explainer}
+        onClose={() => setExplainer(false)}
+        container={screen}
+        aria-labelledby="order-types-title"
+        header={<BottomSheetHeader headingId="order-types-title" heading="Order types" onBack={() => setExplainer(false)} />}
+      >
+        <ListCell label="Delivery" description="Hold the shares as long as you like. Full amount needed." />
+        <ListCell label="Intraday" description="Buy and sell on the same day. Squared off at 3:20 PM." />
       </BottomSheet>
 
       <BottomSheet
@@ -747,5 +762,116 @@ export function OrdersDemo() {
         {opened && <Aerobar key={opened} floating emphasis="primary" heading={`${opened} order`} paragraph="Order details would open here." action={{ label: 'Close', onClick: () => setOpened(null) }} />}
       </div>
     </div>
+  )
+}
+
+/* ---- Bottom sheet use case: Set Auto TP/SL (Figma "Lm → General / Dev handoff" 4292:34429) ---------------------
+ * Built only from L3 components. Two gaps in the library are stood in for:
+ * – no Stepper: −/+ are small tertiary icon Buttons around the value;
+ * – no Select / dropdown: "LMT ⇅" and "Points ⇅" are inline text actions (content/accent/discover) that cycle options.
+ */
+
+type TpSlUnit = 'pts' | '%'
+
+function TpSlStepper({ label, value, onChange, min = 0 }: { label: string; value: number; onChange: (v: number) => void; min?: number }) {
+  return (
+    <span className={styles.tpslStepper} role="group" aria-label={label}>
+      <Button size="sm" variant="tertiary" aria-label={`Decrease ${label.toLowerCase()}`} disabled={value <= min} onClick={() => onChange(Math.max(min, value - 1))} iconLeft={<Icon icon={msRemove} />} />
+      <span className={styles.tpslValue} aria-live="polite">{value}</span>
+      <Button size="sm" variant="tertiary" aria-label={`Increase ${label.toLowerCase()}`} onClick={() => onChange(value + 1)} iconLeft={<Icon icon={msAdd} />} />
+    </span>
+  )
+}
+
+function TpSlPanel({ kind }: { kind: 'TP' | 'SL' }) {
+  const tp = kind === 'TP'
+  const [enabled, setEnabled] = useState(tp)
+  const [orderType, setOrderType] = useState<'LMT' | 'MKT'>('LMT')
+  const [unit, setUnit] = useState<TpSlUnit>('pts')
+  const [trigger, setTrigger] = useState(tp ? 15 : 10)
+  const [limit, setLimit] = useState(tp ? 17 : 12)
+  const [trail, setTrail] = useState(true)
+  const title = tp ? 'Auto TP' : 'Auto SL'
+  const target = orderType === 'LMT' ? limit : trigger
+  const targetText = `${tp ? '+' : '−'}${target.toFixed(2)}${unit === 'pts' ? ' pts' : '%'}`
+
+  return (
+    <Card as="section" aria-label={title}>
+      <div className={styles.tpslHead}>
+        <span className={styles.tpslTitleRow}>
+          <span className={styles.tpslTitle}>{title}</span>
+          {enabled && (
+            <button type="button" className={styles.tpslSelect} onClick={() => setOrderType((t) => (t === 'LMT' ? 'MKT' : 'LMT'))} aria-label={`Order type: ${orderType === 'LMT' ? 'Limit' : 'Market'}. Change`}>
+              {orderType} <Icon icon={msUnfoldMore} size={12} />
+            </button>
+          )}
+        </span>
+        <Switch aria-label={title} checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
+      </div>
+
+      {enabled && (
+        <>
+          <Card surface="secondary" className={styles.tpslFields}>
+            <div className={styles.tpslField}>
+              <span className={styles.tpslLabel}>
+                Trigger at
+                <button type="button" className={`${styles.tpslSelect} ${styles.tpslSelectNeutral}`} onClick={() => setUnit((u) => (u === 'pts' ? '%' : 'pts'))} aria-label={`Trigger unit: ${unit === 'pts' ? 'points' : 'percent'}. Change`}>
+                  {unit === 'pts' ? 'Points' : 'Percent'} <Icon icon={msUnfoldMore} size={12} />
+                </button>
+              </span>
+              <TpSlStepper label="Trigger" value={trigger} onChange={setTrigger} />
+            </div>
+            {orderType === 'LMT' && (
+              <>
+                <hr className={styles.tpslDivider} />
+                <div className={styles.tpslField}>
+                  <span className={styles.tpslLabel}>
+                    Limit <Icon icon={msInfo} size={16} label="Limit price: the order is placed at this price once the trigger is hit" />
+                  </span>
+                  <TpSlStepper label="Limit" value={limit} onChange={setLimit} />
+                </div>
+              </>
+            )}
+          </Card>
+
+          <p className={styles.tpslTarget}>
+            Target: <strong className={tp ? styles.tpslUp : styles.tpslDown}>{targetText}</strong>
+          </p>
+          <hr className={styles.tpslDashed} />
+          <div className={styles.tpslTrail}>
+            <label className={styles.tpslTrailLabel}>
+              <Checkbox checked={trail} onChange={(e) => setTrail(e.target.checked)} />
+              Trail 1.0 {unit === 'pts' ? 'Pts' : '%'}
+            </label>
+            <Icon icon={msInfo} size={16} label="Trailing: the target moves with the price in steps of 1.0" />
+            <button type="button" className={styles.tpslSelect} aria-label="Edit trail step">Edit</button>
+          </div>
+        </>
+      )}
+    </Card>
+  )
+}
+
+/** The whole "Set Auto TP/SL" sheet: small header with description, two TP / SL cards, a Save dock. */
+export function AutoTpSlSheet() {
+  const [saving, setSaving] = useState(false)
+  const save = () => {
+    setSaving(true)
+    setTimeout(() => setSaving(false), 800)
+  }
+  return (
+    <BottomSheetSurface
+      header={<BottomSheetHeader heading="Set Auto TP/SL" description="Applies to all new orders only." />}
+      footer={
+        <ButtonGroup aria-label="Auto TP/SL">
+          <Button loading={saving} onClick={save}>Save</Button>
+        </ButtonGroup>
+      }
+    >
+      <div className={styles.tpslList}>
+        <TpSlPanel kind="TP" />
+        <TpSlPanel kind="SL" />
+      </div>
+    </BottomSheetSurface>
   )
 }

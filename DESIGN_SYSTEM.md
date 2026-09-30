@@ -251,7 +251,7 @@ There is **no skeleton or spinner component** yet.
   <!-- PENDING: which step each element / text size uses; everything uses `default` today -->
 - **Motion:** only `--l3-motion-duration-short` (150ms), `--l3-motion-duration-medium` (250ms) and `--l3-motion-easing-standard`. Always add a `prefers-reduced-motion: reduce` rule that removes it.
 - **Toasts** with an action don't auto-dismiss; they stay until acted on or replaced.
-- **Bottom sheets** have no drag handle and no visible close button: they close on a backdrop tap or by dragging the sheet down (anywhere on it; the content first scrolls to the top), plus Esc and a visually hidden Close button for screen readers. Focus is trapped inside while one is open, and the page behind is inert.
+- **Bottom sheets** have no drag handle and no visible close button: they close on a backdrop tap or by dragging the sheet down (anywhere on it; the content first scrolls to the top), plus Esc and a visually hidden Close button for screen readers. At most two sheets stack: the first has no back button, a second one on top of it has a back button, never a third. Focus is trapped inside while one is open, and the page behind is inert.
 - **Keyboard:** Tabs move with ← → Home End; the selected tab scrolls into view.
 
 ---

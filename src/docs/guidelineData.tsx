@@ -115,6 +115,11 @@ export const guidelines: Record<string, Guideline[]> = {
   ],
   'bottom-sheet': [
     {
+      title: 'Back only on a stacked sheet',
+      do: { text: 'The first sheet over a screen has no back button. A second sheet on top of it has one, returning to the first. Two sheets at most.', example: <BottomSheetHeader heading="Order types" onBack={noop} /> },
+      dont: { text: 'Put a back button on the first sheet, or open a third sheet on top of two.', example: <BottomSheetHeader heading="Buy RELIANCE" description="First sheet · with a back button" onBack={noop} /> },
+    },
+    {
       title: 'Close by dragging or tapping outside',
       do: { text: 'Keep the header clean: heading, and a back button or one action if needed. The sheet closes by dragging down or tapping the backdrop.', example: <BottomSheetHeader heading="Buy RELIANCE" description="NSE" /> },
       dont: { text: 'Add a ✕ or a drag handle — closing is handled without visible controls.', example: <BottomSheetHeader heading="Buy RELIANCE" description="NSE" trailing={<Button size="sm" variant="ghost" aria-label="Close" iconLeft={<Icon icon={msClose} />} />} /> },

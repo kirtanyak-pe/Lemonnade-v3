@@ -30,7 +30,7 @@ export function BottomSheetVariants() {
       <section>
         <h2>L3: Bottom sheet header</h2>
         <div className="sheet-stack">
-          <p className="grid-note">isSmall=True · Back · Info</p>
+          <p className="grid-note">isSmall=True · Back · Info (back: only on a 2nd sheet stacked on another)</p>
           <BottomSheetHeader heading="Heading" info onBack={noop} />
           <p className="grid-note">isSmall=True · Back · Info · Button</p>
           <BottomSheetHeader heading="Heading" info onBack={noop} trailing={<Button size="sm" variant="tertiary" iconLeft={<SearchIcon />}>Search</Button>} />

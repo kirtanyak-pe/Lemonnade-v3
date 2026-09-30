@@ -535,6 +535,10 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>There is no drag handle and no ✕. People close a sheet by <strong>tapping the backdrop</strong> or <strong>dragging it down</strong> — anywhere on the sheet: the header and footer always, the content once it's scrolled to the top (before that, a swipe scrolls the content). Esc also closes it, and a visually hidden “Close” button is there for screen-reader and keyboard users. The page behind the sheet is inert while it's open.</p>
         </section>
         <section className={styles.section}>
+          <h2>At most two sheets</h2>
+          <p>The first sheet over a screen has <strong>no back button</strong>. A second sheet can open on top of it (e.g. an explainer from the ⓘ) — that one has a back button that returns to the first. Never stack a third: replace the second sheet instead. Try the ⓘ on the Buy sheet above.</p>
+        </section>
+        <section className={styles.section}>
           <h2>Bottom or top</h2>
           <p>Figma's isBottom=False drops the sheet from the top with rounded bottom corners — handy for sort or filter menus tied to the top of the screen.</p>
         </section>
@@ -555,7 +559,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'Header: heading / description', type: 'string', description: 'Heading text and optional description.' },
       { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading (decorative on its own).' },
       { name: 'Header: onInfo / infoLabel', type: "() => void / string", default: "'More information'", description: 'sm: makes the ⓘ a real, labelled button.' },
-      { name: 'Header: onBack / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, or any right-side node (Tag, small Button). There is no close (✕) button.' },
+      { name: 'Header: onBack / trailing', type: '() => void / ReactNode', description: 'sm actions: back button — only on a second sheet stacked on another (hidden on the first sheet over the screen) — or any right-side node (Tag, small Button). There is no close (✕) button.' },
       { name: 'Header: bottom', type: 'ReactNode', description: 'sm: Figma "Content bottom" slot under the header row — e.g. flat Tabs or a search field. Put them here, not as a separate row in the sheet body.' },
       { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
     ],

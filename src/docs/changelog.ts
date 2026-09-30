@@ -292,6 +292,15 @@ export const changelog: Record<string, Release[]> = {
 
   'bottom-sheet': [
     {
+      version: '2.1.0', date: '2026-09-30',
+      summary: 'Stacking rule: back button only on a second sheet',
+      changes: [
+        { kind: 'added', text: 'Rule: at most 2 sheets. The first sheet over a screen has no back button; a second sheet on top of it does. A third warns in development.' },
+        { kind: 'changed', text: 'BottomSheetHeader hides onBack on the first sheet inside a modal BottomSheet (development warning).' },
+        { kind: 'changed', text: 'Demo: the Buy sheet’s ⓘ opens an “Order types” sheet on top, with back. Playground back button is off by default.' },
+      ],
+    },
+    {
       version: '2.0.0', date: '2026-09-30',
       summary: 'Invisible closing, all Figma properties',
       changes: [
@@ -299,6 +308,7 @@ export const changelog: Record<string, Release[]> = {
         { kind: 'added', text: 'The whole sheet drags to dismiss: header and footer always, the content once scrolled to the top. Top sheets drag up.' },
         { kind: 'a11y', text: 'A visually hidden Close button (closeLabel) for screen-reader and keyboard users; Esc still closes.' },
         { kind: 'figma', text: '👁️ Content Slot: leaving out children hides the content area and its padding.' },
+        { kind: 'added', text: 'Playground use case: “Set Auto TP/SL” (Dev handoff 4292:34429) — interactive TP / SL cards, steppers, trail checkbox and a Save dock, built from L3 components.' },
         { kind: 'changed', text: 'Playground covers every Figma property (isBottom, header, description, back, info, right slot, content bottom, H-Icon, header tag, content, buttons, utility). New USAGE.md.' },
       ],
     },

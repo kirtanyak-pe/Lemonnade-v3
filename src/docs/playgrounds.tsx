@@ -19,6 +19,7 @@ import { TextField } from '../components/TextField'
 import { msAdd, msArrowForward, msBlurOn, msChevronRight, msDeleteForever, msSearch, msStar } from '../icons/material'
 import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import { attrs, jsx, type PlaygroundDef, type Values } from './Playground'
+import { AutoTpSlSheet } from './demos'
 import styles from './Docs.module.css'
 
 const noop = () => {}
@@ -103,6 +104,35 @@ function buttonContent(v: Values) {
 }
 
 // ---- Definitions ---------------------------------------------------------------
+
+// Bottom sheet playground: a real use case (Figma "Set Auto TP/SL", Dev handoff 4292:34429) or custom properties.
+const custom = (v: Values) => v.useCase === 'Custom'
+const autoTpSlCode = `<BottomSheet
+  open={open}
+  onClose={close}
+  aria-labelledby="tpsl-heading"
+  header={<BottomSheetHeader headingId="tpsl-heading" heading="Set Auto TP/SL" description="Applies to all new orders only." />}
+  footer={<ButtonGroup aria-label="Auto TP/SL"><Button loading={saving} onClick={save}>Save</Button></ButtonGroup>}
+>
+  <Stack gap={16}>
+    <Card as="section" aria-label="Auto TP">
+      <Row>Auto TP <TextAction>LMT ⇅</TextAction> <Switch aria-label="Auto TP" checked={tp} onChange={…} /></Row>
+      <Card surface="secondary">
+        <Row>Trigger at <TextAction>Points ⇅</TextAction> <Stepper value={15} /></Row>   {/* −/+ = Button sm tertiary */}
+        <hr />
+        <Row>Limit <Icon icon={msInfo} label="…" /> <Stepper value={17} /></Row>
+      </Card>
+      <p>Target: <strong>+17.00 pts</strong></p>   {/* content/accent/indicator-up */}
+      <hr />                                     {/* dashed border-light */}
+      <Row><label><Checkbox checked={trail} /> Trail 1.0 Pts</label> <Icon icon={msInfo} label="…" /> <TextAction>Edit</TextAction></Row>
+    </Card>
+    <Card as="section" aria-label="Auto SL">
+      <Row>Auto SL <Switch aria-label="Auto SL" checked={sl} onChange={…} /></Row>
+    </Card>
+  </Stack>
+</BottomSheet>
+// Stack / Row / TextAction / Stepper are layout stand-ins (see src/docs/demos.tsx → AutoTpSlSheet).
+// There's no Stepper or Select component yet.`
 
 export const playgrounds: Record<string, PlaygroundDef> = {
   card: {
@@ -417,23 +447,25 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   'bottom-sheet': {
     // One control per Figma property: L3: Bottom sheet · L3: Bottom sheet header (Version=Latest).
     controls: [
-      { name: 'placement', label: 'Position (isBottom)', prop: 'placement', type: 'select', options: ['bottom', 'top'], default: 'bottom' },
-      { name: 'header', label: '👁️ Header', prop: 'header', type: 'boolean', default: true },
-      { name: 'size', label: 'Header size (isSmall)', prop: 'BottomSheetHeader size', type: 'select', options: ['sm', 'lg'], default: 'sm', showIf: (v) => v.header !== false },
-      { name: 'heading', label: '✏️ Heading', prop: 'heading', type: 'text', default: 'Buy RELIANCE', showIf: (v) => v.header !== false },
-      { name: 'showDescription', label: '👁️ Description', prop: 'description', type: 'boolean', default: false, showIf: (v) => v.header !== false },
-      { name: 'description', label: '✏️ Description', prop: 'description', type: 'text', default: 'NSE · Delivery', showIf: (v) => v.header !== false && v.showDescription === true },
-      { name: 'back', label: '👁️ Back button', prop: 'onBack', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size !== 'lg' },
-      { name: 'info', label: '👁️ info', prop: 'info', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size !== 'lg' },
-      { name: 'right', label: '👁️ Action - right (right slot)', prop: 'trailing', type: 'select', options: ['none', 'button', 'tag'], default: 'button', showIf: (v) => v.header !== false && v.size !== 'lg' },
-      { name: 'bottom', label: '👁️ Content bottom', prop: 'bottom', type: 'boolean', default: false, showIf: (v) => v.header !== false && v.size !== 'lg' },
-      { name: 'icon', label: '👁️ H-Icon', prop: 'icon', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size === 'lg' },
-      { name: 'tag', label: '👁️ header tag', prop: 'tag', type: 'boolean', default: false, showIf: (v) => v.header !== false && v.size === 'lg' },
-      { name: 'content', label: '👁️ Content slot', prop: 'children', type: 'boolean', default: true },
-      { name: 'footer', label: 'Buttons (dock)', prop: 'footer', type: 'boolean', default: true },
-      { name: 'utility', label: '👁️ Utility slot', prop: 'utility', type: 'boolean', default: false, showIf: (v) => v.placement !== 'top' },
+      { name: 'useCase', label: 'Use case', prop: false, type: 'select', options: ['Auto TP/SL', 'Custom'], default: 'Auto TP/SL' },
+      { name: 'placement', label: 'Position (isBottom)', prop: 'placement', type: 'select', options: ['bottom', 'top'], default: 'bottom', showIf: custom },
+      { name: 'header', label: '👁️ Header', prop: 'header', type: 'boolean', default: true, showIf: custom },
+      { name: 'size', label: 'Header size (isSmall)', prop: 'BottomSheetHeader size', type: 'select', options: ['sm', 'lg'], default: 'sm', showIf: (v) => custom(v) && (v.header !== false) },
+      { name: 'heading', label: '✏️ Heading', prop: 'heading', type: 'text', default: 'Buy RELIANCE', showIf: (v) => custom(v) && (v.header !== false) },
+      { name: 'showDescription', label: '👁️ Description', prop: 'description', type: 'boolean', default: false, showIf: (v) => custom(v) && (v.header !== false) },
+      { name: 'description', label: '✏️ Description', prop: 'description', type: 'text', default: 'NSE · Delivery', showIf: (v) => custom(v) && (v.header !== false && v.showDescription === true) },
+      { name: 'back', label: '👁️ Back button (2nd stacked sheet only)', prop: 'onBack', type: 'boolean', default: false, showIf: (v) => custom(v) && (v.header !== false && v.size !== 'lg') },
+      { name: 'info', label: '👁️ info', prop: 'info', type: 'boolean', default: true, showIf: (v) => custom(v) && (v.header !== false && v.size !== 'lg') },
+      { name: 'right', label: '👁️ Action - right (right slot)', prop: 'trailing', type: 'select', options: ['none', 'button', 'tag'], default: 'button', showIf: (v) => custom(v) && (v.header !== false && v.size !== 'lg') },
+      { name: 'bottom', label: '👁️ Content bottom', prop: 'bottom', type: 'boolean', default: false, showIf: (v) => custom(v) && (v.header !== false && v.size !== 'lg') },
+      { name: 'icon', label: '👁️ H-Icon', prop: 'icon', type: 'boolean', default: true, showIf: (v) => custom(v) && (v.header !== false && v.size === 'lg') },
+      { name: 'tag', label: '👁️ header tag', prop: 'tag', type: 'boolean', default: false, showIf: (v) => custom(v) && (v.header !== false && v.size === 'lg') },
+      { name: 'content', label: '👁️ Content slot', prop: 'children', type: 'boolean', default: true, showIf: custom },
+      { name: 'footer', label: 'Buttons (dock)', prop: 'footer', type: 'boolean', default: true, showIf: custom },
+      { name: 'utility', label: '👁️ Utility slot', prop: 'utility', type: 'boolean', default: false, showIf: (v) => custom(v) && (v.placement !== 'top') },
     ],
     render: (v) => {
+      if (!custom(v)) return <div className={styles.playSheet}><AutoTpSlSheet /></div>
       const lg = s(v, 'size') === 'lg'
       const right = s(v, 'right')
       return (
@@ -469,6 +501,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       )
     },
     code: (v) => {
+      if (!custom(v)) return autoTpSlCode
       const lg = s(v, 'size') === 'lg'
       const right = s(v, 'right')
       const header = jsx('BottomSheetHeader', [
