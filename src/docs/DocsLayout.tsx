@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { defaultPageId, navGroups, pages } from './pages'
 import { DocPageView } from './DocPageView'
 import { BrandLogo } from '../components/BrandLogo'
+import { BuildPage } from '../build/BuildPage'
 import { Search } from './Search'
 import { ThemeControls } from './ThemeControls'
 import { href, useHashRoute } from './useHashRoute'
@@ -10,6 +11,7 @@ import styles from './Docs.module.css'
 export function DocsLayout() {
   const { page: pageId, tab, query } = useHashRoute()
   const page = pages.find((p) => p.id === pageId) ?? pages.find((p) => p.id === defaultPageId)!
+  const isBuild = pageId === 'build'
   // The mobile drawer is open "for" the page it was opened on, so navigating closes it.
   const [railOpenOn, setRailOpenOn] = useState<string | null>(null)
   const railOpen = railOpenOn === page.id
@@ -42,16 +44,18 @@ export function DocsLayout() {
   // New page: jump to top, update the tab title.
   useEffect(() => {
     window.scrollTo(0, 0)
-    document.title = `${page.title} · L3 Design System`
-  }, [page])
+    document.title = isBuild ? 'Build · L3 Design System' : `${page.title} · L3 Design System`
+  }, [page, isBuild])
 
   const section = page.group === 'Foundations' ? 'foundations' : page.group === 'Start' ? 'home' : 'components'
 
   return (
     <div className={styles.layout}>
-      <a className={styles.skipLink} href="#docs-main" onClick={(e) => { e.preventDefault(); mainRef.current?.focus() }}>
-        Skip to content
-      </a>
+      {!isBuild && (
+        <a className={styles.skipLink} href="#docs-main" onClick={(e) => { e.preventDefault(); mainRef.current?.focus() }}>
+          Skip to content
+        </a>
+      )}
       <header className={styles.header}>
         <button
           ref={menuRef}
@@ -77,9 +81,13 @@ export function DocsLayout() {
         <nav className={styles.topNav} aria-label="Sections">
           <a href={href('colors')} aria-current={section === 'foundations' ? 'page' : undefined}>Foundations</a>
           <a href={href('button')} aria-current={section === 'components' ? 'page' : undefined}>Components</a>
+          <a href={href('build')} aria-current={isBuild ? 'page' : undefined}>Build</a>
         </nav>
       </header>
 
+      {isBuild ? (
+        <BuildPage />
+      ) : (
       <div className={styles.body}>
         <nav ref={railRef} id="docs-rail" className={styles.rail} data-open={railOpen || undefined} aria-label="Pages">
           {navGroups.map(({ group, pages: groupPages }) => {
@@ -121,6 +129,7 @@ export function DocsLayout() {
           <DocPageView page={page} tabId={tab} highlightToken={query.get('token')} />
         </main>
       </div>
+      )}
     </div>
   )
 }
