@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Tag, TagChevronIcon, TagPlaceholderIcon, type TagColor, type TagSize, type TagVariant } from '../components/Tag'
 
 // Order matches the Figma "L3: Tags" frame.
-const colors: TagColor[] = ['neutral', 'green', 'purple', 'yellow', 'red', 'indigo', 'teal', 'discover', 'orange']
+const colors: TagColor[] = ['neutral', 'profit', 'loss', 'success', 'error', 'warning', 'discover', 'processing', 'indigo', 'teal', 'purple', 'zing']
 const rows: { label: string; variant: TagVariant; disabled?: boolean }[] = [
   { label: 'Primary', variant: 'primary' },
   { label: 'Secondary', variant: 'secondary' },
@@ -19,6 +19,7 @@ export function TagPreview() {
   const [label, setLabel] = useState('LABEL')
   const [showLeft, setShowLeft] = useState(true)
   const [showRight, setShowRight] = useState(true)
+  const [showLabel, setShowLabel] = useState(true)
 
   const icons = {
     iconLeft: showLeft ? <TagPlaceholderIcon /> : undefined,
@@ -31,6 +32,9 @@ export function TagPreview() {
         <label>
           Label
           <input value={label} onChange={(e) => setLabel(e.target.value)} />
+        </label>
+        <label className="check">
+          <input type="checkbox" checked={showLabel} onChange={(e) => setShowLabel(e.target.checked)} /> label
         </label>
         <label className="check">
           <input type="checkbox" checked={showLeft} onChange={(e) => setShowLeft(e.target.checked)} /> left icon
@@ -59,7 +63,7 @@ export function TagPreview() {
                       <td key={c}>
                         {/* Figma only draws Disabled in Neutral; the prop works for any color. */}
                         {(!row.disabled || c === 'neutral') && (
-                          <Tag variant={row.variant} color={c} size={size.id} disabled={row.disabled} {...icons}>
+                          <Tag variant={row.variant} color={c} size={size.id} disabled={row.disabled} hideLabel={!showLabel} {...icons}>
                             {label}
                           </Tag>
                         )}

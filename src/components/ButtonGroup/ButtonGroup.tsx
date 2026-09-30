@@ -1,7 +1,7 @@
 import { Children, isValidElement, useEffect, type HTMLAttributes, type ReactNode } from 'react'
 import styles from './ButtonGroup.module.css'
 
-/** Figma "L3: Button Group" (node 4471:29456). */
+/** Figma "L3: Button Dock" (node 4471:29456; was "L3: Button Group"). */
 export type ButtonGroupDirection = 'vertical' | 'horizontal'
 
 export type ButtonGroupProps = HTMLAttributes<HTMLDivElement> & {

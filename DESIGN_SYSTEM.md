@@ -127,7 +127,7 @@ Waiting for the exact text from your notes on:
 | Button | lg `bold-16`, md `bold-14`, sm `semibold-12` |
 | EmptyState | title `extrabold-16`, description `semibold-14` |
 | ListCell | label `semibold-14` / `-16`, description `medium-12` |
-| Tabs | labels `semibold-10`–`-14`, selected `extrabold-12` / `-14` |
+| Tabs | labels `semibold-10`–`-14`, selected `extrabold-12` / `-14`, chip sub label `semibold-08` (local) |
 | Tag | `semibold-10` / `-12` / `-14` by size |
 | TextField | label `semibold-12`, input `medium-14`, helper `medium-12` |
 
@@ -141,20 +141,20 @@ Use a component whenever one exists. Don't restyle a component's internals from 
 Components have no outer margin, so spacing between them belongs to the parent (section 1).
 
 **Usage rules per component** live next to the code in `src/components/<Name>/USAGE.md` (when to use each variant
-and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`, `ButtonGroup`.
+and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`, `ButtonGroup`, `BottomSheet`.
 
 | Component | Import | Required | Use for |
 |---|---|---|---|
 | `Button` | `components/Button` | label (or `aria-label` if icon-only) | Actions. `variant`: primary · secondary · tertiary · ghost · brand · buy · sell; `size` sm · md · lg |
-| `ButtonGroup` | `components/ButtonGroup` | Buttons as children, `aria-label` | 1–2 buttons docked at the bottom, or grouped actions |
-| `Tag` | `components/Tag` | text | A static label or status: 3 variants × 9 colours × 3 sizes |
+| `ButtonGroup` | `components/ButtonGroup` | Buttons as children, `aria-label` | The button dock (Figma "L3: Button Dock"): the main action(s) docked at the bottom of a screen or sheet |
+| `Tag` | `components/Tag` | text (also the screen-reader text when `hideLabel`) | A static label or status: 3 variants × 12 colours × 3 sizes. `profit` / `loss` for price moves and P&L, `success` / `error` for outcomes, `processing` for in-progress |
 | `Switch` | `components/Switch` | a `<label>` or `aria-label` | An on/off setting that applies immediately |
 | `Checkbox` / `Radio` | `components/Checkbox` | a `<label>`; radios share a `name` | Multi-select / pick one |
 | `TextField` | `components/TextField` | `label` | Single-line input, or `multiline` text box with a counter |
-| `Tabs` | `components/Tabs` | `items`, `value`, `onChange`, `aria-label` | Section switching (`underline`) and segmented choices (`pill`) |
+| `Tabs` | `components/Tabs` | `items`, `value`, `onChange`, `aria-label` | Section switching (`underline`) and segmented choices (`pill`, optional `subLabel`); icon-only tabs via `hideLabel` |
 | `Actionbar` + `ActionbarAction` | `components/Actionbar` | action: `icon`, `label`, `onClick` | Top bar: back, title, ≤2 actions, search mode, and a `bottom` slot |
 | `BottomNavbar` + `NavIcon` | `components/BottomNavbar` | `items`, `value` | App-level section nav (3–5), including MF / F&O sub-navs with `home` |
-| `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen |
+| `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen. Tabs or search at the top of a sheet go in the header's `bottom` slot |
 | `Aerobar` | `components/Aerobar` | — (`heading` in practice) | A status bar (inline) or toast (`floating`) |
 | `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1) |
 | `ListCell` | `components/ListCell` | `label` | Rows: plain or card, with icons, trailing content, dots |
@@ -251,7 +251,7 @@ There is **no skeleton or spinner component** yet.
   <!-- PENDING: which step each element / text size uses; everything uses `default` today -->
 - **Motion:** only `--l3-motion-duration-short` (150ms), `--l3-motion-duration-medium` (250ms) and `--l3-motion-easing-standard`. Always add a `prefers-reduced-motion: reduce` rule that removes it.
 - **Toasts** with an action don't auto-dismiss; they stay until acted on or replaced.
-- **Bottom sheets** close on Esc, a backdrop tap or dragging down, and must also have a close button. Focus is trapped inside while one is open, and the page behind is inert.
+- **Bottom sheets** have no drag handle and no visible close button: they close on a backdrop tap or by dragging the sheet down (anywhere on it; the content first scrolls to the top), plus Esc and a visually hidden Close button for screen readers. Focus is trapped inside while one is open, and the page behind is inert.
 - **Keyboard:** Tabs move with ← → Home End; the selected tab scrolls into view.
 
 ---
@@ -316,7 +316,7 @@ There is **no skeleton or spinner component** yet.
 | Tabs | Two to four short, parallel labels | Long labels that truncate, or tabs that act like buttons |
 | Actionbar | One or two of the most useful actions | Crowding it with icons |
 | BottomNavbar | Three to five top-level sections, always labelled | Actions (like Buy), or more than five items |
-| BottomSheet | A close button | Relying on drag-down or the backdrop alone |
+| BottomSheet | Close by backdrop tap or dragging down; tabs in the header's `bottom` slot | A ✕ button or a drag handle |
 | Aerobar | Toasts with an action stay until tapped or closed | Important info or undo behind a timer |
 | EmptyState | Say what happened and give a way to recover | A blank screen or dead end |
 | ListCell | Tappable rows get a chevron or trailing control | Tappable rows with nothing to hint at it |

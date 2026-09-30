@@ -71,9 +71,22 @@
   }
 }
 
-/* Follow the finger while dragging the handle. */
+/* The whole sheet drags to dismiss (no handle): follow the finger, don't select text. */
 .root[data-dragging] .dialog {
   transition: none;
+  user-select: none;
+}
+
+/* Screen-reader / keyboard close button: invisible, like the rest of the closing (backdrop tap, drag). */
+.srClose {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -108,26 +121,6 @@
   padding-top: env(safe-area-inset-top, var(--l3-spacing-00));
 }
 
-.handleArea {
-  display: flex;
-  flex: none;
-  justify-content: center;
-  padding-top: var(--l3-spacing-08);
-  touch-action: none; /* we handle the drag */
-  cursor: grab;
-}
-
-/*
- * Figma: 48×4 pill filled with the linked-library variable D2/color/icon/quarternary (#868686)
- * at 50% — not in the L3 tokens, so the nearest themed token (border/intense) is used.
- */
-.handle {
-  width: var(--l3-size-48);
-  height: var(--l3-size-04);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-border-intense);
-}
-
 /* Figma: top space 16 · content slot (16 side padding) · bottom space 24. */
 .content {
   flex: 1 1 auto;
@@ -147,12 +140,25 @@
   border-radius: var(--l3-radius-24) var(--l3-radius-24) 0 0;
 }
 
-/* Figma isSmall=True: 16 · [back 24 · 12] · text (16 top/bottom) · 12 · [action · 16]. */
+/* Figma isSmall=True: header row, then the optional "Content bottom" slot. */
 .header[data-size='sm'] {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   /* Figma: 0.5px border/light hairline under the header (stroke weight has no variable). */
   box-shadow: inset 0 -0.5px 0 var(--l3-border-light);
+}
+
+/* Figma row: 16 · [back 24 · 12] · text (16 top/bottom) · 12 · [action · 16]. */
+.headerRow {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Figma "Content bottom": full width, no padding of its own (tabs bring their own). */
+.headerBottom {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .headerLeading {
@@ -260,13 +266,13 @@
   outline-offset: var(--l3-spacing-02);
 }
 
-/* Figma isSmall=False: centred icon (64) · tag · heading 20 · description 14. */
+/* Figma isSmall=False: centred icon (64) · tag · heading 20 · description 14; no bottom padding (Latest). */
 .header[data-size='lg'] {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--l3-spacing-24);
-  padding: var(--l3-spacing-24) var(--l3-spacing-16);
+  padding: var(--l3-spacing-24) var(--l3-spacing-16) var(--l3-spacing-00);
   text-align: center;
 }
 

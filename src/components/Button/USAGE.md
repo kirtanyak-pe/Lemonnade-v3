@@ -89,7 +89,7 @@ shows only the left one (with a development warning).
 - **Tapping a whole card** → a clickable `Card`, not a Card with a single Button in it.
 - **Inline text action** like *Filters* or *View details* in a toolbar → text in `content/accent/discover` (a real `<button>` or link underneath), not a Button.
 - **Tabs / segmented choices** → `Tabs` (pill for chips).
-- **Status labels** → `Tag` (tags are never tappable).
+- **Status labels** → `Tag` (tags are never tappable). Price moves use `profit` / `loss`, outcomes `success` / `error`.
 
 ---
 

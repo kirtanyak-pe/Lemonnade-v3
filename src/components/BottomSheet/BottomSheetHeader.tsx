@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { BackIcon, CloseIcon, InfoIcon } from '../icons'
+import { BackIcon, InfoIcon } from '../icons'
 import styles from './BottomSheet.module.css'
 
 /** Figma "L3: Bottom sheet header" (node 4543:63897). Figma isSmall → `size="sm"`. */
@@ -18,10 +18,10 @@ export type BottomSheetHeaderProps = {
   infoLabel?: string
   /** sm: Figma action-left "⬅️ Back". Shows the back button. */
   onBack?: () => void
-  /** sm: Figma action-right "❌ Cross". Shows the close button (unless `trailing` is set). */
-  onClose?: () => void
-  /** sm: Figma right slot for "🏷️ Tag" / "🔲 Button" actions, e.g. <Tag> or <Button size="sm">. */
+  /** sm: Figma right slot for "🏷️ Tag" / "🔲 Button" actions (Figma's "❌ Cross" isn't used), e.g. <Tag> or <Button size="sm">. */
   trailing?: ReactNode
+  /** sm: Figma "Content bottom" slot — full-width content under the header row, e.g. <Tabs> or a search field. */
+  bottom?: ReactNode
   /** lg: Figma H-Icon slot (64px). */
   icon?: ReactNode
   /** lg: Figma 👁️ Header tag, usually <Tag size="sm">. */
@@ -38,8 +38,8 @@ export function BottomSheetHeader({
   onInfo,
   infoLabel = 'More information',
   onBack,
-  onClose,
   trailing,
+  bottom,
   icon,
   tag,
   className,
@@ -59,38 +59,38 @@ export function BottomSheetHeader({
     )
   }
 
-  const right = trailing ?? (onClose && (
-    <button type="button" className={styles.iconButton} onClick={onClose} aria-label="Close">
-      <CloseIcon />
-    </button>
-  ))
+  // No ✕: sheets close by dragging or tapping the backdrop (BottomSheet also renders a screen-reader close button).
+  const right = trailing
 
   return (
     <header className={cls} data-size="sm">
-      <div className={styles.headerLeading}>
-        {onBack && (
-          <button type="button" className={styles.iconButton} onClick={onBack} aria-label="Back">
-            <BackIcon />
-          </button>
-        )}
-      </div>
-      <div className={styles.headerText}>
-        <div className={styles.headingRow}>
-          <h2 id={headingId} className={styles.heading}>{heading}</h2>
-          {info && onInfo && (
-            <button type="button" className={`${styles.iconButton} ${styles.infoButton}`} onClick={onInfo} aria-label={infoLabel}>
-              {info === true ? <InfoIcon /> : info}
+      <div className={styles.headerRow}>
+        <div className={styles.headerLeading}>
+          {onBack && (
+            <button type="button" className={styles.iconButton} onClick={onBack} aria-label="Back">
+              <BackIcon />
             </button>
           )}
-          {info && !onInfo && (
-            <span className={styles.info} aria-hidden={info === true || undefined}>{info === true ? <InfoIcon /> : info}</span>
-          )}
         </div>
-        {description && <p className={styles.description}>{description}</p>}
+        <div className={styles.headerText}>
+          <div className={styles.headingRow}>
+            <h2 id={headingId} className={styles.heading}>{heading}</h2>
+            {info && onInfo && (
+              <button type="button" className={`${styles.iconButton} ${styles.infoButton}`} onClick={onInfo} aria-label={infoLabel}>
+                {info === true ? <InfoIcon /> : info}
+              </button>
+            )}
+            {info && !onInfo && (
+              <span className={styles.info} aria-hidden={info === true || undefined}>{info === true ? <InfoIcon /> : info}</span>
+            )}
+          </div>
+          {description && <p className={styles.description}>{description}</p>}
+        </div>
+        <div className={styles.headerTrailing} data-has-action={right ? '' : undefined}>
+          {right}
+        </div>
       </div>
-      <div className={styles.headerTrailing} data-has-action={right ? '' : undefined}>
-        {right}
-      </div>
+      {bottom && <div className={styles.headerBottom}>{bottom}</div>}
     </header>
   )
 }

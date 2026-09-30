@@ -11,15 +11,28 @@ export function TabsVariants() {
   const [pill, setPill] = useState('holdings')
   const [showLeft, setShowLeft] = useState(false)
   const [showRight, setShowRight] = useState(false)
+  const [showLabel, setShowLabel] = useState(true)
+  const [showSub, setShowSub] = useState(false)
+  const hideLabel = !showLabel
   const icons = {
-    iconLeft: showLeft ? <PlaceholderIcon /> : undefined,
+    // Icon-only needs an icon: with the label off, the left icon is always on.
+    iconLeft: showLeft || hideLabel ? <PlaceholderIcon /> : undefined,
     iconRight: showRight ? <PlaceholderIcon /> : undefined,
+    hideLabel,
   }
+  const sub = showSub ? 'Sub label' : undefined
   const items = baseItems.map((item) => ({ ...item, ...icons }))
+  const pillItems = items.map((item) => ({ ...item, subLabel: sub }))
 
   return (
     <>
       <div className="btn-controls">
+        <label className="check">
+          <input type="checkbox" checked={showLabel} onChange={(e) => setShowLabel(e.target.checked)} /> 👁️ Label
+        </label>
+        <label className="check">
+          <input type="checkbox" checked={showSub} onChange={(e) => setShowSub(e.target.checked)} /> 👁️ Sub label (pills)
+        </label>
         <label className="check">
           <input type="checkbox" checked={showLeft} onChange={(e) => setShowLeft(e.target.checked)} /> Icon - l
         </label>
@@ -33,7 +46,7 @@ export function TabsVariants() {
         <p className="grid-note">isPill=False</p>
         <Tabs aria-label="Underline tabs" items={items} value={underline} onChange={setUnderline} />
         <p className="grid-note">isPill=True</p>
-        <Tabs aria-label="Pill tabs" appearance="pill" items={items} value={pill} onChange={setPill} />
+        <Tabs aria-label="Pill tabs" appearance="pill" items={pillItems} value={pill} onChange={setPill} />
       </section>
 
       <section>
@@ -55,15 +68,15 @@ export function TabsVariants() {
               {(['md', 'sm'] as const).map((size) => (
                 <tr key={`p-${size}`}>
                   <th scope="row">Pill · {size === 'md' ? '32' : 'isSmall 24'}</th>
-                  <td><div role="tablist" aria-label={`Pill ${size} selected`}><Tab appearance="pill" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
-                  <td><div role="tablist" aria-label={`Pill ${size} unselected`}><Tab appearance="pill" size={size} {...icons} onClick={noop}>Label</Tab></div></td>
-                  <td><div role="tablist" aria-label={`Pill ${size} secondary selected`}><Tab appearance="pill" emphasis="secondary" size={size} selected {...icons} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} selected`}><Tab appearance="pill" size={size} selected {...icons} subLabel={sub} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} unselected`}><Tab appearance="pill" size={size} {...icons} subLabel={sub} onClick={noop}>Label</Tab></div></td>
+                  <td><div role="tablist" aria-label={`Pill ${size} secondary selected`}><Tab appearance="pill" emphasis="secondary" size={size} selected {...icons} subLabel={sub} onClick={noop}>Label</Tab></div></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="grid-note">Unselected pills look the same for isPrimary True and False, so they're one cell here.</p>
+        <p className="grid-note">Unselected pills look the same for isPrimary True and False, so they're one cell here. Sub label is for pills only; with the label off a tab shows one icon.</p>
       </section>
     </>
   )

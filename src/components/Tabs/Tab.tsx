@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import styles from './Tabs.module.css'
 
 /** Figma "L3: base tab" (node 4543:65889). Figma isChip → `appearance="pill"`, isSmall → `size="sm"`. */
@@ -16,6 +16,13 @@ export type TabProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'role'> & {
   iconLeft?: ReactNode
   /** Figma "Icon - r" slot (16px). */
   iconRight?: ReactNode
+  /** Figma 👁️ Sub label: a second line under the label (8/10). Chip (pill) tabs only. */
+  subLabel?: string
+  /**
+   * Figma 👁️ Label off: icon-only tab. The label (`children`) stays as the accessible name.
+   * Needs exactly one icon — with two, only the left one shows.
+   */
+  hideLabel?: boolean
   children: string
 }
 
@@ -27,10 +34,23 @@ export function Tab({
   size = 'md',
   iconLeft,
   iconRight,
+  subLabel,
+  hideLabel = false,
   className,
   children,
   ...rest
 }: TabProps) {
+  const iconOnly = hideLabel && Boolean(iconLeft || iconRight)
+  const showRight = Boolean(iconRight) && !(iconOnly && iconLeft)
+  const showSub = Boolean(subLabel) && appearance === 'pill' && !iconOnly
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    if (hideLabel && !iconLeft && !iconRight) console.warn(`[L3] <Tab hideLabel> "${children}" needs an icon; showing the label instead.`)
+    if (hideLabel && iconLeft && iconRight) console.warn(`[L3] <Tab hideLabel> "${children}" shows one icon only; iconRight is ignored.`)
+    if (subLabel && appearance !== 'pill') console.warn(`[L3] <Tab subLabel> is for chip (pill) tabs only; ignored on underline tabs.`)
+  }, [hideLabel, iconLeft, iconRight, subLabel, appearance, children])
+
   return (
     <button
       type="button"
@@ -42,13 +62,19 @@ export function Tab({
       data-appearance={appearance}
       data-emphasis={emphasis}
       data-size={size}
+      data-sub-label={showSub || undefined}
+      data-icon-only={iconOnly || undefined}
+      aria-label={iconOnly ? children : rest['aria-label']}
     >
       {iconLeft && <span className={styles.icon}>{iconLeft}</span>}
-      <span className={styles.label}>
-        {/* data-label reserves the bold (selected) width so tabs don't shift when selection changes. */}
-        <span className={styles.labelText} data-label={children}>{children}</span>
-      </span>
-      {iconRight && <span className={styles.icon}>{iconRight}</span>}
+      {!iconOnly && (
+        <span className={styles.label}>
+          {/* data-label reserves the bold (selected) width so tabs don't shift when selection changes. */}
+          <span className={styles.labelText} data-label={children}>{children}</span>
+          {showSub && <span className={styles.subLabel}>{subLabel}</span>}
+        </span>
+      )}
+      {showRight && <span className={styles.icon}>{iconRight}</span>}
       {selected && appearance === 'underline' && <span className={styles.indicator} aria-hidden="true" />}
     </button>
   )

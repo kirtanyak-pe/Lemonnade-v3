@@ -62,7 +62,7 @@ export function HomePage() {
                     <span className={styles.cardTitle}>{p.title}</span>
                     <span className={styles.cardGroup}>{p.group}</span>
                   </div>
-                  {p.status && <Tag className={styles.cardStatus} variant="secondary" color="green" size="sm">{p.status}</Tag>}
+                  {p.status && <Tag className={styles.cardStatus} variant="secondary" color="success" size="sm">{p.status}</Tag>}
                 </a>
               </li>
             )

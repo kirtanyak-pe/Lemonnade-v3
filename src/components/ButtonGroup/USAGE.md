@@ -1,6 +1,6 @@
-# ButtonGroup — usage rules
+# ButtonGroup (Button dock) — usage rules
 
-`import { ButtonGroup } from './components/ButtonGroup'` · Figma: "L3: Button Group" / Button Dock (4471:29456) · Docs: `#/button-group`
+`import { ButtonGroup } from './components/ButtonGroup'` · Figma: "L3: Button Dock" (4471:29456, formerly "L3: Button Group") · Docs: `#/button-group`
 
 The **button dock**: the bar at the bottom of a screen or bottom sheet that holds its main action(s).
 In code it's a `surface-primary` bar with a 1px `border-light` top line, 16px padding, 12px between buttons and

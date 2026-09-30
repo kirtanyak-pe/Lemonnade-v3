@@ -26,12 +26,12 @@ const s = (v: Values, k: string) => v[k] as string
 const b = (v: Values, k: string) => v[k] as boolean
 
 const buttonVariants = ['primary', 'secondary', 'tertiary', 'ghost', 'brand', 'buy', 'sell'] as const
-const tagColors = ['neutral', 'green', 'purple', 'yellow', 'red', 'indigo', 'teal', 'discover', 'orange'] as const
+const tagColors = ['neutral', 'profit', 'loss', 'success', 'error', 'warning', 'discover', 'processing', 'indigo', 'teal', 'purple', 'zing'] as const
 const aerobarTypes = ['primary', 'discover', 'danger', 'success', 'warning'] as const
 
 // ---- Stateful wrappers (the playground render can't hold hooks itself) ----------
 
-function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill'; emphasis: TabEmphasis; size: TabSize; icons: boolean }) {
+function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill'; emphasis: TabEmphasis; size: TabSize; icons: boolean; hideLabel?: boolean; subLabel?: string }) {
   const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, count)
   const [value, setValue] = useState(labels[0])
   return (
@@ -40,7 +40,13 @@ function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' |
       appearance={rest.appearance}
       emphasis={rest.emphasis}
       size={rest.size}
-      items={labels.map((l) => ({ value: l, label: l, iconLeft: rest.icons ? <Icon icon={msBlurOn} size={16} /> : undefined }))}
+      items={labels.map((l) => ({
+        value: l,
+        label: l,
+        iconLeft: rest.icons || rest.hideLabel ? <Icon icon={msBlurOn} size={16} /> : undefined,
+        hideLabel: rest.hideLabel,
+        subLabel: rest.appearance === 'pill' ? rest.subLabel || undefined : undefined,
+      }))}
       value={labels.includes(value) ? value : labels[0]}
       onChange={setValue}
     />
@@ -111,7 +117,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     render: (v) => {
       const content = (
         <>
-          <span className={styles.cardRow}><span className={styles.cardMeta}>{s(v, 'meta')}</span><Tag variant="secondary" color="green" size="md">Buy</Tag></span>
+          <span className={styles.cardRow}><span className={styles.cardMeta}>{s(v, 'meta')}</span><Tag variant="secondary" color="profit" size="md">Buy</Tag></span>
           <span className={styles.cardTitle}>{s(v, 'title')}</span>
         </>
       )
@@ -125,7 +131,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     },
     code: (v) => {
       const kind = s(v, 'kind')
-      const body = `  <span className={styles.row}>\n    <span className={styles.meta}>${s(v, 'meta')}</span>\n    <Tag variant="secondary" color="green" size="md">Buy</Tag>\n  </span>\n  <span className={styles.title}>${s(v, 'title')}</span>`
+      const body = `  <span className={styles.row}>\n    <span className={styles.meta}>${s(v, 'meta')}</span>\n    <Tag variant="secondary" color="profit" size="md">Buy</Tag>\n  </span>\n  <span className={styles.title}>${s(v, 'title')}</span>`
       return jsx('Card', [
         ['onClick', kind === 'clickable' ? '{openOrder}' : undefined],
         ['href', kind === 'link' ? '/orders/nhpc' : undefined],
@@ -229,14 +235,15 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   tag: {
     controls: [
       { name: 'variant', type: 'select', options: ['primary', 'secondary', 'tertiary'], default: 'secondary' },
-      { name: 'color', type: 'select', options: tagColors, default: 'green' },
+      { name: 'color', type: 'select', options: tagColors, default: 'profit' },
       { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'md' },
-      { name: 'label', label: 'Label', prop: 'children', type: 'text', default: '+1.24%' },
+      { name: 'showLabel', label: 'Label', prop: 'hideLabel', type: 'boolean', default: true },
+      { name: 'label', label: 'Label text (screen-reader text when hidden)', prop: 'children', type: 'text', default: '+1.24%' },
       { name: 'iconLeft', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
     ],
     render: (v) => (
-      <Tag variant={s(v, 'variant') as TagVariant} color={s(v, 'color') as TagColor} size={s(v, 'size') as TagSize} disabled={b(v, 'disabled')} iconLeft={b(v, 'iconLeft') ? <Icon icon={msStar} /> : undefined}>
+      <Tag variant={s(v, 'variant') as TagVariant} color={s(v, 'color') as TagColor} size={s(v, 'size') as TagSize} disabled={b(v, 'disabled')} iconLeft={b(v, 'iconLeft') || !b(v, 'showLabel') ? <Icon icon={msStar} /> : undefined} hideLabel={!b(v, 'showLabel')}>
         {s(v, 'label')}
       </Tag>
     ),
@@ -245,7 +252,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['variant', s(v, 'variant'), 'primary'],
         ['color', s(v, 'color'), 'neutral'],
         ['size', s(v, 'size'), 'sm'],
-        ['iconLeft', b(v, 'iconLeft') ? '{<Icon icon={msStar} />}' : undefined],
+        ['iconLeft', b(v, 'iconLeft') || !b(v, 'showLabel') ? '{<Icon icon={msStar} />}' : undefined],
+        ['hideLabel', !b(v, 'showLabel')],
         ['disabled', b(v, 'disabled')],
       ], s(v, 'label')),
   },
@@ -333,15 +341,19 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'emphasis', type: 'select', options: ['primary', 'secondary'], default: 'primary' },
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
       { name: 'count', label: 'Number of tabs', prop: 'items', type: 'select', options: ['2', '3', '4'], default: '3' },
-      { name: 'icons', label: 'Icon left', prop: 'items[].iconLeft', type: 'boolean', default: false },
+      { name: 'showLabel', label: 'Label', prop: 'items[].hideLabel', type: 'boolean', default: true },
+      { name: 'icons', label: 'Icon left', prop: 'items[].iconLeft', type: 'boolean', default: false, showIf: (v) => v.showLabel !== false },
+      { name: 'subLabel', label: 'Sub label', prop: 'items[].subLabel', type: 'text', default: '', showIf: (v) => v.appearance === 'pill' && v.showLabel !== false },
     ],
     render: (v) => (
-      <TabsPlay count={Number(s(v, 'count'))} appearance={s(v, 'appearance') as 'underline' | 'pill'} emphasis={s(v, 'emphasis') as TabEmphasis} size={s(v, 'size') as TabSize} icons={b(v, 'icons')} />
+      <TabsPlay count={Number(s(v, 'count'))} appearance={s(v, 'appearance') as 'underline' | 'pill'} emphasis={s(v, 'emphasis') as TabEmphasis} size={s(v, 'size') as TabSize} icons={b(v, 'icons')} hideLabel={!b(v, 'showLabel')} subLabel={s(v, 'subLabel')} />
     ),
     code: (v) => {
       const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, Number(s(v, 'count')))
-      const icon = b(v, 'icons') ? ', iconLeft: <Icon icon={msBlurOn} size={16} />' : ''
-      const items = labels.map((l) => `    { value: '${l.toLowerCase()}', label: '${l}'${icon} },`).join('\n')
+      const hide = !b(v, 'showLabel')
+      const icon = b(v, 'icons') || hide ? ', iconLeft: <Icon icon={msBlurOn} size={16} />' : ''
+      const extra = (hide ? ', hideLabel: true' : '') + (!hide && s(v, 'appearance') === 'pill' && s(v, 'subLabel') ? `, subLabel: '${s(v, 'subLabel')}'` : '')
+      const items = labels.map((l) => `    { value: '${l.toLowerCase()}', label: '${l}'${icon}${extra} },`).join('\n')
       return `<Tabs\n  ${attrs([['aria-label', 'Sections'], ['appearance', s(v, 'appearance'), 'underline'], ['emphasis', s(v, 'emphasis'), 'primary'], ['size', s(v, 'size'), 'md']])}\n  items={[\n${items}\n  ]}\n  value={tab}\n  onChange={setTab}\n/>`
     },
   },
@@ -403,47 +415,84 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   },
 
   'bottom-sheet': {
+    // One control per Figma property: L3: Bottom sheet · L3: Bottom sheet header (Version=Latest).
     controls: [
-      { name: 'size', label: 'Header size', prop: 'BottomSheetHeader size', type: 'select', options: ['sm', 'lg'], default: 'sm' },
-      { name: 'heading', type: 'text', default: 'Buy RELIANCE' },
-      { name: 'description', type: 'text', default: 'NSE · Delivery', showIf: (v) => v.size === 'lg' },
-      { name: 'back', label: 'Back button', prop: 'onBack', type: 'boolean', default: false, showIf: (v) => v.size === 'sm' },
-      { name: 'info', label: 'Info button', type: 'boolean', default: true, showIf: (v) => v.size === 'sm' },
-      { name: 'close', label: 'Close button', prop: 'onClose', type: 'boolean', default: true },
-      { name: 'dragHandle', label: 'Drag handle', type: 'boolean', default: true },
+      { name: 'placement', label: 'Position (isBottom)', prop: 'placement', type: 'select', options: ['bottom', 'top'], default: 'bottom' },
+      { name: 'header', label: '👁️ Header', prop: 'header', type: 'boolean', default: true },
+      { name: 'size', label: 'Header size (isSmall)', prop: 'BottomSheetHeader size', type: 'select', options: ['sm', 'lg'], default: 'sm', showIf: (v) => v.header !== false },
+      { name: 'heading', label: '✏️ Heading', prop: 'heading', type: 'text', default: 'Buy RELIANCE', showIf: (v) => v.header !== false },
+      { name: 'showDescription', label: '👁️ Description', prop: 'description', type: 'boolean', default: false, showIf: (v) => v.header !== false },
+      { name: 'description', label: '✏️ Description', prop: 'description', type: 'text', default: 'NSE · Delivery', showIf: (v) => v.header !== false && v.showDescription === true },
+      { name: 'back', label: '👁️ Back button', prop: 'onBack', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size !== 'lg' },
+      { name: 'info', label: '👁️ info', prop: 'info', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size !== 'lg' },
+      { name: 'right', label: '👁️ Action - right (right slot)', prop: 'trailing', type: 'select', options: ['none', 'button', 'tag'], default: 'button', showIf: (v) => v.header !== false && v.size !== 'lg' },
+      { name: 'bottom', label: '👁️ Content bottom', prop: 'bottom', type: 'boolean', default: false, showIf: (v) => v.header !== false && v.size !== 'lg' },
+      { name: 'icon', label: '👁️ H-Icon', prop: 'icon', type: 'boolean', default: true, showIf: (v) => v.header !== false && v.size === 'lg' },
+      { name: 'tag', label: '👁️ header tag', prop: 'tag', type: 'boolean', default: false, showIf: (v) => v.header !== false && v.size === 'lg' },
+      { name: 'content', label: '👁️ Content slot', prop: 'children', type: 'boolean', default: true },
+      { name: 'footer', label: 'Buttons (dock)', prop: 'footer', type: 'boolean', default: true },
+      { name: 'utility', label: '👁️ Utility slot', prop: 'utility', type: 'boolean', default: false, showIf: (v) => v.placement !== 'top' },
     ],
-    render: (v) => (
-      <div className={styles.playSheet}>
-        <BottomSheetSurface
-          dragHandle={b(v, 'dragHandle')}
-          header={
-            <BottomSheetHeader
-              size={s(v, 'size') as 'sm' | 'lg'}
-              heading={s(v, 'heading')}
-              description={s(v, 'size') === 'lg' ? s(v, 'description') : undefined}
-              onBack={b(v, 'back') ? noop : undefined}
-              info={b(v, 'info')}
-              onClose={b(v, 'close') ? noop : undefined}
-            />
-          }
-          footer={<Button size="lg" variant="buy" fullWidth>Buy</Button>}
-        >
-          <p className={styles.playSheetBody}>Sheet content goes here.</p>
-        </BottomSheetSurface>
-      </div>
-    ),
+    render: (v) => {
+      const lg = s(v, 'size') === 'lg'
+      const right = s(v, 'right')
+      return (
+        <div className={styles.playSheet}>
+          <BottomSheetSurface
+            placement={s(v, 'placement') as 'bottom' | 'top'}
+            header={
+              b(v, 'header') ? (
+                <BottomSheetHeader
+                  size={lg ? 'lg' : 'sm'}
+                  heading={s(v, 'heading')}
+                  description={b(v, 'showDescription') ? s(v, 'description') : undefined}
+                  onBack={!lg && b(v, 'back') ? noop : undefined}
+                  info={!lg && b(v, 'info')}
+                  trailing={
+                    lg ? undefined
+                    : right === 'button' ? <Button size="sm" variant="ghost" aria-label="Search" iconLeft={<Icon icon={msSearch} />} />
+                    : right === 'tag' ? <Tag variant="tertiary" size="sm">LABEL</Tag>
+                    : undefined
+                  }
+                  bottom={!lg && b(v, 'bottom') ? <TabsPlay count={2} appearance="underline" emphasis="primary" size="md" icons={false} /> : undefined}
+                  icon={lg && b(v, 'icon') ? <Icon icon={msBlurOn} /> : undefined}
+                  tag={lg && b(v, 'tag') ? <Tag size="sm">LABEL</Tag> : undefined}
+                />
+              ) : undefined
+            }
+            footer={b(v, 'footer') ? <ButtonGroup aria-label="Order actions"><Button variant="buy">Buy</Button></ButtonGroup> : undefined}
+            utility={s(v, 'placement') !== 'top' && b(v, 'utility') ? <p className={styles.playSheetBody}>Utility slot</p> : undefined}
+          >
+            {b(v, 'content') ? <p className={styles.playSheetBody}>Sheet content goes here.</p> : undefined}
+          </BottomSheetSurface>
+        </div>
+      )
+    },
     code: (v) => {
       const lg = s(v, 'size') === 'lg'
+      const right = s(v, 'right')
       const header = jsx('BottomSheetHeader', [
         ['size', s(v, 'size'), 'sm'],
         ['heading', s(v, 'heading')],
         ['headingId', 'buy-heading'],
-        ['description', lg ? s(v, 'description') : undefined],
+        ['description', b(v, 'showDescription') ? s(v, 'description') : undefined],
         ['onBack', !lg && b(v, 'back') ? '{goBack}' : undefined],
         ['info', !lg && b(v, 'info')],
-        ['onClose', b(v, 'close') ? '{close}' : undefined],
+        ['trailing', lg ? undefined : right === 'button' ? '{<Button size="sm" variant="ghost" aria-label="Search" iconLeft={<Icon icon={msSearch} />} />}' : right === 'tag' ? '{<Tag variant="tertiary" size="sm">LABEL</Tag>}' : undefined],
+        ['bottom', !lg && b(v, 'bottom') ? '{<Tabs aria-label="Order type" items={orderTypes} value={type} onChange={setType} />}' : undefined],
+        ['icon', lg && b(v, 'icon') ? '{<Icon icon={msBlurOn} />}' : undefined],
+        ['tag', lg && b(v, 'tag') ? '{<Tag size="sm">LABEL</Tag>}' : undefined],
       ])
-      return `<BottomSheet\n  open={open}\n  onClose={close}\n  aria-labelledby="buy-heading"${b(v, 'dragHandle') ? '\n  dragHandle' : ''}\n  header={${header}}\n  footer={<Button size="lg" variant="buy" fullWidth>Buy</Button>}\n>\n  …\n</BottomSheet>`
+      const lines = [
+        'open={open}',
+        'onClose={close}',
+        s(v, 'placement') === 'top' && 'placement="top"',
+        b(v, 'header') ? 'aria-labelledby="buy-heading"' : 'aria-label="Buy RELIANCE"',
+        b(v, 'header') && `header={${header}}`,
+        b(v, 'footer') && 'footer={<ButtonGroup aria-label="Order actions"><Button variant="buy">Buy</Button></ButtonGroup>}',
+        s(v, 'placement') !== 'top' && b(v, 'utility') && 'utility={…}',
+      ].filter(Boolean)
+      return `<BottomSheet\n  ${lines.join('\n  ')}\n>${b(v, 'content') ? '\n  …\n' : ''}</BottomSheet>`
     },
   },
 
@@ -528,7 +577,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
           onClick={s(v, 'as') === 'button' && trailing !== 'switch' ? noop : undefined}
           iconLeft={b(v, 'iconLeft') ? <Icon icon={msBlurOn} /> : undefined}
           iconRight={trailing === 'chevron' ? <Icon icon={msChevronRight} /> : undefined}
-          trailing={trailing === 'tag' ? <Tag variant="secondary" color="green" size="sm">+4.2%</Tag> : trailing === 'switch' ? <Switch defaultChecked /> : undefined}
+          trailing={trailing === 'tag' ? <Tag variant="secondary" color="profit" size="sm">+4.2%</Tag> : trailing === 'switch' ? <Switch defaultChecked /> : undefined}
           dotLeft={b(v, 'dotLeft')}
           dotLabel={b(v, 'dotLeft') ? 'New' : undefined}
         />
@@ -545,7 +594,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['onClick', s(v, 'as') === 'button' && trailing !== 'switch' ? '{openHolding}' : undefined],
         ['iconLeft', b(v, 'iconLeft') ? '{<Icon icon={msBlurOn} />}' : undefined],
         ['iconRight', trailing === 'chevron' ? '{<Icon icon={msChevronRight} />}' : undefined],
-        ['trailing', trailing === 'tag' ? '{<Tag variant="secondary" color="green" size="sm">+4.2%</Tag>}' : trailing === 'switch' ? '{<Switch defaultChecked />}' : undefined],
+        ['trailing', trailing === 'tag' ? '{<Tag variant="secondary" color="profit" size="sm">+4.2%</Tag>}' : trailing === 'switch' ? '{<Switch defaultChecked />}' : undefined],
         ['dotLeft', b(v, 'dotLeft')],
         ['dotLabel', b(v, 'dotLeft') ? 'New' : undefined],
       ])

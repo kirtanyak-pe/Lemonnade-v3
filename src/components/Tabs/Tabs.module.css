@@ -201,6 +201,33 @@
   --tab-border: var(--l3-border-dark);
 }
 
+/*
+ * Figma 👁️ Sub label (chip tabs): label and an 8/10 sub label stacked and centred. The pill keeps its
+ * Figma height (32 / 24), so the block padding shrinks to fit both lines.
+ */
+.tab[data-appearance='pill'][data-sub-label] {
+  --tab-padding-block: var(--l3-spacing-02);
+}
+
+.tab[data-appearance='pill'][data-size='sm'][data-sub-label] {
+  --tab-padding-block: var(--l3-spacing-00);
+}
+
+.tab[data-sub-label] .label {
+  flex-direction: column;
+  align-items: center;
+}
+
+.subLabel {
+  font: var(--l3-text-semibold-08); /* local: Manrope SemiBold 8/10 (Figma sets it without a text style) */
+}
+
+/* Figma 👁️ Label off: icon-only tab — square pill, same padding on every side. */
+.tab[data-appearance='pill'][data-icon-only] {
+  --tab-padding-inline: var(--tab-padding-block);
+  min-width: var(--tab-height);
+}
+
 /* ---- Parts ------------------------------------------------------------------ */
 
 .icon {

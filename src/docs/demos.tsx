@@ -93,7 +93,7 @@ export function PortfolioDemo() {
                 </span>
                 <span className={styles.rowEnd}>
                   <span className={styles.rowValue}>{row.value}</span>
-                  <Tag variant="tertiary" color={row.up ? 'green' : 'red'} size="sm">{row.change}</Tag>
+                  <Tag variant="tertiary" color={row.up ? 'profit' : 'loss'} size="sm">{row.change}</Tag>
                 </span>
               </li>
             ))}
@@ -122,7 +122,7 @@ export function TradeTicketDemo() {
         </div>
         <div className={styles.priceBlock}>
           <div className={styles.price}>24,812.35</div>
-          <Tag variant="secondary" color="green" size="sm">+0.84%</Tag>
+          <Tag variant="secondary" color="profit" size="sm">+0.84%</Tag>
         </div>
       </div>
       <dl className={styles.fields}>
@@ -156,12 +156,12 @@ export function WatchlistDemo() {
               <span className={styles.rowTitle}>{row.name}</span>
               <span className={styles.rowTags}>
                 <Tag variant="tertiary" size="sm">{row.exchange}</Tag>
-                {row.extra && <Tag variant="secondary" color={row.extra === 'F&O' ? 'purple' : 'yellow'} size="sm">{row.extra}</Tag>}
+                {row.extra && <Tag variant="secondary" color={row.extra === 'F&O' ? 'purple' : 'warning'} size="sm">{row.extra}</Tag>}
               </span>
             </div>
             <div className={styles.rowEnd}>
               <span className={styles.rowValue}>{row.price}</span>
-              <Tag variant="primary" color={row.up ? 'green' : 'red'} size="sm">{row.change}</Tag>
+              <Tag variant="primary" color={row.up ? 'profit' : 'loss'} size="sm">{row.change}</Tag>
             </div>
           </li>
         ))}
@@ -281,7 +281,7 @@ export function OrderReviewDemo() {
           </div>
           <div className={styles.priceBlock}>
             <div className={styles.price}>2,947.10</div>
-            <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+            <Tag variant="secondary" color="profit" size="sm">+1.24%</Tag>
           </div>
         </div>
         <dl className={styles.fields}>
@@ -302,6 +302,7 @@ export function SheetsDemo() {
   const [sheet, setSheet] = useState<'order' | 'placed' | 'sort' | null>(null)
   const [qty, setQty] = useState(10)
   const [sort, setSort] = useState('Price change')
+  const [orderType, setOrderType] = useState('delivery')
   const close = () => setSheet(null)
 
   return (
@@ -310,11 +311,11 @@ export function SheetsDemo() {
       <div className={styles.quote}>
         <div>
           <div className={styles.symbol}>2,947.10</div>
-          <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+          <Tag variant="secondary" color="profit" size="sm">+1.24%</Tag>
         </div>
         <Button size="sm" variant="tertiary" onClick={() => setSheet('sort')}>Sort: {sort}</Button>
       </div>
-      <p className={`${styles.rowHint} ${styles.finePrint}`}>Tap Buy to open a bottom sheet. Drag its handle down, tap outside, press Esc or use ✕ to close. "Sort" opens a top sheet.</p>
+      <p className={`${styles.rowHint} ${styles.finePrint}`}>Tap Buy to open a bottom sheet. Drag it down or tap outside to close. "Sort" opens a top sheet (drag it up to close).</p>
       <ButtonGroup direction="horizontal" className={styles.dock} aria-label="Trade">
         <Button variant="sell" onClick={() => setSheet('order')}>Sell</Button>
         <Button variant="buy" onClick={() => setSheet('order')}>Buy</Button>
@@ -324,9 +325,16 @@ export function SheetsDemo() {
         open={sheet === 'order'}
         onClose={close}
         container={screen}
-        dragHandle
         aria-labelledby="order-sheet-title"
-        header={<BottomSheetHeader headingId="order-sheet-title" heading="Buy RELIANCE" info description="NSE · Delivery" onClose={close} />}
+        header={
+          <BottomSheetHeader
+            headingId="order-sheet-title"
+            heading="Buy RELIANCE"
+            info
+            description="NSE"
+            bottom={<Tabs aria-label="Order type" value={orderType} onChange={setOrderType} items={[{ value: 'delivery', label: 'Delivery' }, { value: 'intraday', label: 'Intraday' }]} />}
+          />
+        }
         footer={
           <ButtonGroup aria-label="Order actions">
             <Button variant="buy" onClick={() => setSheet('placed')}>Buy {qty} shares</Button>
@@ -360,7 +368,7 @@ export function SheetsDemo() {
         container={screen}
         placement="top"
         aria-labelledby="sort-sheet-title"
-        header={<BottomSheetHeader headingId="sort-sheet-title" heading="Sort by" onClose={close} />}
+        header={<BottomSheetHeader headingId="sort-sheet-title" heading="Sort by" />}
       >
         {['Price change', 'Price', 'Name'].map((option) => (
           <label key={option} className={styles.optionRow}>
@@ -398,7 +406,7 @@ export function ToastDemo() {
       <div className={styles.quote}>
         <div>
           <div className={styles.symbol}>2,947.10</div>
-          <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+          <Tag variant="secondary" color="profit" size="sm">+1.24%</Tag>
         </div>
       </div>
       <p className={`${styles.rowHint} ${styles.finePrint}`}>Buy and Sell show a new toast above the buttons. Toasts with an action stay until you tap it, so nobody has to race a timer.</p>
@@ -511,7 +519,7 @@ export function AccountDemo() {
           description="Face ID or fingerprint"
           trailing={<Switch checked={biometric} onChange={(e) => setBiometric(e.target.checked)} />}
         />
-        <ListCell iconLeft={<Icon icon={msWorkspacePremium} />} label="Plan" description="Renews 26 Oct" trailing={<Tag variant="secondary" color="green" size="md">PRO</Tag>} />
+        <ListCell iconLeft={<Icon icon={msWorkspacePremium} />} label="Plan" description="Renews 26 Oct" trailing={<Tag variant="secondary" color="success" size="md">PRO</Tag>} />
         <div className={styles.sectionLabel + ' ' + styles.listHeading}>Bank accounts</div>
         <div className={styles.cardStack}>
           <ListCell variant="card" as="button" iconLeft={<Icon icon={msAccountBalance} />} label="HDFC Bank ••4821" description="Primary · Savings" iconRight={<ChevronDownIcon />} onClick={() => {}} />
@@ -577,7 +585,7 @@ export function StockDetailDemo() {
           <div className={styles.quote}>
             <div>
               <div className={styles.symbol}>2,947.10</div>
-              <Tag variant="secondary" color="green" size="sm">+1.24%</Tag>
+              <Tag variant="secondary" color="profit" size="sm">+1.24%</Tag>
             </div>
             <span className={styles.rowHint}>{tab === 'overview' ? 'Overview' : tab === 'financials' ? 'Financials' : 'News'} for {symbol}</span>
           </div>
@@ -667,13 +675,13 @@ export function EmptySearchDemo() {
   )
 }
 
-type OrderRow = { id: string; product: string; name: string; qtyLabel?: string; qty: string; ltp: string; priceType: string; price: string; status: [string, 'orange' | 'red' | 'green']; side: [string, 'green' | 'red'] }
+type OrderRow = { id: string; product: string; name: string; qtyLabel?: string; qty: string; ltp: string; priceType: string; price: string; status: [string, 'processing' | 'error' | 'success']; side: [string, 'profit' | 'loss'] }
 
 const openOrders: OrderRow[] = [
-  { id: 'nhpc', product: 'Delivery • Boost (5x)', name: 'NHPC', qtyLabel: 'Qty', qty: '12', ltp: '₹110.98', priceType: 'At lmt', price: '₹112', status: ['Open', 'orange'], side: ['Buy', 'green'] },
-  { id: 'gold', product: 'Intraday', name: 'Gold Mini', qty: '10', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Failed', 'red'], side: ['Sell', 'red'] },
-  { id: 'tata', product: 'Intraday', name: 'Tata motors', qty: '10/12', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Open', 'orange'], side: ['Buy', 'green'] },
-  { id: 'infy', product: 'Delivery', name: 'INFY', qtyLabel: 'Qty', qty: '5', ltp: '₹1,873.20', priceType: 'At lmt', price: '₹1,850', status: ['Open', 'orange'], side: ['Buy', 'green'] },
+  { id: 'nhpc', product: 'Delivery • Boost (5x)', name: 'NHPC', qtyLabel: 'Qty', qty: '12', ltp: '₹110.98', priceType: 'At lmt', price: '₹112', status: ['Open', 'processing'], side: ['Buy', 'profit'] },
+  { id: 'gold', product: 'Intraday', name: 'Gold Mini', qty: '10', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Failed', 'error'], side: ['Sell', 'loss'] },
+  { id: 'tata', product: 'Intraday', name: 'Tata motors', qty: '10/12', ltp: '₹110.98', priceType: 'Mkt', price: '₹659.27', status: ['Open', 'processing'], side: ['Buy', 'profit'] },
+  { id: 'infy', product: 'Delivery', name: 'INFY', qtyLabel: 'Qty', qty: '5', ltp: '₹1,873.20', priceType: 'At lmt', price: '₹1,850', status: ['Open', 'processing'], side: ['Buy', 'profit'] },
 ]
 
 /** Portfolio › Orders: Actionbar with tabs in its bottom slot, chip tabs, a static summary card and clickable order cards. */

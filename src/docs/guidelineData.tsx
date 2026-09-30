@@ -14,7 +14,7 @@ import { Switch } from '../components/Switch'
 import { Tabs } from '../components/Tabs'
 import { Tag } from '../components/Tag'
 import { TextField } from '../components/TextField'
-import { msChevronRight, msDeleteForever, msSearch, msShare, msStar } from '../icons/material'
+import { msChevronRight, msClose, msDeleteForever, msSearch, msShare, msStar } from '../icons/material'
 import { mainNavItems } from '../preview/BottomNavbarVariants'
 import type { Guideline } from './GuidelinesView'
 import styles from './Docs.module.css'
@@ -26,7 +26,7 @@ export const guidelines: Record<string, Guideline[]> = {
   card: [
     {
       title: 'One action? Make the whole card clickable',
-      do: { text: 'The card itself is the tap target — elevation-low, press scale.', example: <Card onClick={noop}><span className={styles.cardRow}><span className={styles.cardTitle}>NHPC</span><Tag variant="secondary" color="orange" size="md">Open</Tag></span></Card> },
+      do: { text: 'The card itself is the tap target — elevation-low, press scale.', example: <Card onClick={noop}><span className={styles.cardRow}><span className={styles.cardTitle}>NHPC</span><Tag variant="secondary" color="processing" size="md">Open</Tag></span></Card> },
       dont: { text: 'Put a single button inside a static card.', example: <Card><span className={styles.cardRow}><span className={styles.cardTitle}>NHPC</span><Button size="sm" variant="secondary">View</Button></span></Card> },
     },
   ],
@@ -57,7 +57,7 @@ export const guidelines: Record<string, Guideline[]> = {
   tag: [
     {
       title: 'Keep tags short and static',
-      do: { text: 'One or two words that label or show status.', example: <div className={styles.exRow}><Tag variant="secondary" color="green" size="sm">+1.24%</Tag><Tag size="sm">NSE</Tag></div> },
+      do: { text: 'One or two words that label or show status.', example: <div className={styles.exRow}><Tag variant="secondary" color="profit" size="sm">+1.24%</Tag><Tag size="sm">NSE</Tag></div> },
       dont: { text: 'Use a tag as a button or for sentences.', example: <Tag variant="secondary" color="discover" size="md">Tap here to see all your open orders</Tag> },
     },
   ],
@@ -115,9 +115,9 @@ export const guidelines: Record<string, Guideline[]> = {
   ],
   'bottom-sheet': [
     {
-      title: 'Always give a way to close',
-      do: { text: 'Include a close button — not everyone can swipe or tap outside.', example: <BottomSheetHeader heading="Buy RELIANCE" onClose={noop} /> },
-      dont: { text: 'Rely on drag-down or the backdrop alone.', example: <BottomSheetHeader heading="Buy RELIANCE" /> },
+      title: 'Close by dragging or tapping outside',
+      do: { text: 'Keep the header clean: heading, and a back button or one action if needed. The sheet closes by dragging down or tapping the backdrop.', example: <BottomSheetHeader heading="Buy RELIANCE" description="NSE" /> },
+      dont: { text: 'Add a ✕ or a drag handle — closing is handled without visible controls.', example: <BottomSheetHeader heading="Buy RELIANCE" description="NSE" trailing={<Button size="sm" variant="ghost" aria-label="Close" iconLeft={<Icon icon={msClose} />} />} /> },
     },
   ],
   aerobar: [

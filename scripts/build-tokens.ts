@@ -86,8 +86,17 @@ const themeBlocks = themeTokens.map(({ theme, tokens }) => {
 })
 
 // ---- typography.css -------------------------------------------------------
-const fontTokens = flatten(readJson('source/base.typography.json'))
-const textStyles = flatten(readJson('source/text-styles.json'))
+// local.typography.json: values Figma uses without a text style (e.g. the 8/10 chip tab sub label).
+const localTypography = flatten(readJson('source/local.typography.json'))
+const isTextStyle = (path: string) => path.startsWith('text.')
+const fontTokens = new Map([
+  ...flatten(readJson('source/base.typography.json')),
+  ...[...localTypography].filter(([path]) => !isTextStyle(path)),
+])
+const textStyles = new Map([
+  ...flatten(readJson('source/text-styles.json')),
+  ...[...localTypography].filter(([path]) => isTextStyle(path)),
+])
 
 const fontRef = (value: string) => {
   const target = refPath(value)
@@ -156,7 +165,7 @@ export const textStyles = [
 ${[...textStyles].map(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
   const [, weight, size] = path.split('.')
-  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${size}, lineHeight: ${parseFloat(v.lineHeight)} },`
+  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${Number(size)}, lineHeight: ${parseFloat(v.lineHeight)} },`
 }).join('\n')}
 ] as const
 

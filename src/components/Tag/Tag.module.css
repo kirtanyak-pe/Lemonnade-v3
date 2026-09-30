@@ -8,7 +8,7 @@
   /* Palette per color (below); variants pick from it. */
   --tag-solid: var(--l3-surface-inverted);
   --tag-on-solid: var(--l3-content-inverted);
-  --tag-soft: var(--l3-surface-tertiary);
+  --tag-soft: var(--l3-surface-secondary);
   --tag-soft-border: var(--l3-border-intense);
   --tag-soft-content: var(--l3-content-primary);
 
@@ -60,35 +60,58 @@
   --tag-icon-size: var(--l3-icon-size-18);
 }
 
-/* ---- Colors (Figma name → token accent) ---------------------------------- */
+/* ---- Colors (Figma Color → token accent) --------------------------------- */
 
-.tag[data-color='green'] {
+.tag[data-color='profit'] { /* 🟩 Profit: indicator/up, white text on solid */
+  --tag-solid: var(--l3-surface-accent-indicator-up-default);
+  --tag-on-solid: var(--l3-static-white);
+  --tag-soft: var(--l3-surface-accent-indicator-up-light);
+  --tag-soft-border: var(--l3-border-accent-indicator-up-light);
+  --tag-soft-content: var(--l3-content-accent-indicator-up-default);
+}
+
+.tag[data-color='loss'] { /* 🟥 Loss: indicator/down, white text on solid */
+  --tag-solid: var(--l3-surface-accent-indicator-down-default);
+  --tag-on-solid: var(--l3-static-white);
+  --tag-soft: var(--l3-surface-accent-indicator-down-light);
+  --tag-soft-border: var(--l3-border-accent-indicator-down-light);
+  --tag-soft-content: var(--l3-content-accent-indicator-down-default);
+}
+
+.tag[data-color='success'] {
   --tag-solid: var(--l3-surface-accent-success-default);
   --tag-soft: var(--l3-surface-accent-success-light);
   --tag-soft-border: var(--l3-border-accent-success-light);
   --tag-soft-content: var(--l3-content-accent-success-default);
 }
 
-.tag[data-color='purple'] {
-  --tag-solid: var(--l3-surface-accent-purple-default);
-  --tag-soft: var(--l3-surface-accent-purple-light);
-  --tag-soft-border: var(--l3-border-accent-purple-light);
-  --tag-soft-content: var(--l3-content-accent-purple-default);
+.tag[data-color='error'] {
+  --tag-solid: var(--l3-surface-accent-error-default);
+  --tag-soft: var(--l3-surface-accent-error-light);
+  --tag-soft-border: var(--l3-border-accent-error-light);
+  --tag-soft-content: var(--l3-content-accent-error-default);
 }
 
-.tag[data-color='yellow'] {
+.tag[data-color='warning'] { /* ⚠️ Warning: black text on solid */
   --tag-solid: var(--l3-surface-accent-warning-default);
-  --tag-on-solid: var(--l3-static-black); /* Figma: yellow is the one solid tag with black text */
+  --tag-on-solid: var(--l3-static-black);
   --tag-soft: var(--l3-surface-accent-warning-light);
   --tag-soft-border: var(--l3-border-accent-warning-light);
   --tag-soft-content: var(--l3-content-accent-warning-default);
 }
 
-.tag[data-color='red'] {
-  --tag-solid: var(--l3-surface-accent-error-default);
-  --tag-soft: var(--l3-surface-accent-error-light);
-  --tag-soft-border: var(--l3-border-accent-error-light);
-  --tag-soft-content: var(--l3-content-accent-error-default);
+.tag[data-color='discover'] {
+  --tag-solid: var(--l3-surface-accent-discover-default);
+  --tag-soft: var(--l3-surface-accent-discover-light);
+  --tag-soft-border: var(--l3-border-accent-discover-light);
+  --tag-soft-content: var(--l3-content-accent-discover-default);
+}
+
+.tag[data-color='processing'] { /* 🟠 Processing: orange */
+  --tag-solid: var(--l3-surface-accent-orange-default);
+  --tag-soft: var(--l3-surface-accent-orange-light);
+  --tag-soft-border: var(--l3-border-accent-orange-light);
+  --tag-soft-content: var(--l3-content-accent-orange-default);
 }
 
 .tag[data-color='indigo'] {
@@ -105,18 +128,18 @@
   --tag-soft-content: var(--l3-content-accent-teal-default);
 }
 
-.tag[data-color='discover'] {
-  --tag-solid: var(--l3-surface-accent-discover-default);
-  --tag-soft: var(--l3-surface-accent-discover-light);
-  --tag-soft-border: var(--l3-border-accent-discover-light);
-  --tag-soft-content: var(--l3-content-accent-discover-default);
+.tag[data-color='purple'] {
+  --tag-solid: var(--l3-surface-accent-purple-default);
+  --tag-soft: var(--l3-surface-accent-purple-light);
+  --tag-soft-border: var(--l3-border-accent-purple-light);
+  --tag-soft-content: var(--l3-content-accent-purple-default);
 }
 
-.tag[data-color='orange'] {
-  --tag-solid: var(--l3-surface-accent-orange-default);
-  --tag-soft: var(--l3-surface-accent-orange-light);
-  --tag-soft-border: var(--l3-border-accent-orange-light);
-  --tag-soft-content: var(--l3-content-accent-orange-default);
+.tag[data-color='zing'] { /* ⚡ Zing */
+  --tag-solid: var(--l3-surface-accent-zing-default);
+  --tag-soft: var(--l3-surface-accent-zing-light);
+  --tag-soft-border: var(--l3-border-accent-zing-light);
+  --tag-soft-content: var(--l3-content-accent-zing-default);
 }
 
 /* ---- Variants ------------------------------------------------------------ */
@@ -162,5 +185,21 @@
 .labelText {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Icon-only (Figma 👁️ Label off): square, text kept for screen readers ---- */
+
+.tag[data-icon-only] {
+  width: var(--tag-height);
+  padding: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }

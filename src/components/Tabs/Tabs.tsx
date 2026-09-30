@@ -7,6 +7,10 @@ export type TabItem<V extends string = string> = {
   label: string
   iconLeft?: ReactNode
   iconRight?: ReactNode
+  /** Chip (pill) tabs: second line under the label (Figma 👁️ Sub label). */
+  subLabel?: string
+  /** Icon-only tab (Figma 👁️ Label off); `label` stays as its accessible name. Needs one icon. */
+  hideLabel?: boolean
 }
 
 /** Figma "L3: Tabs" (node 4543:65938). Figma isPill → `appearance="pill"`. */
@@ -87,6 +91,8 @@ export function Tabs<V extends string>({
           size={size}
           iconLeft={item.iconLeft}
           iconRight={item.iconRight}
+          subLabel={item.subLabel}
+          hideLabel={item.hideLabel}
           onClick={() => onChange(item.value)}
         >
           {item.label}

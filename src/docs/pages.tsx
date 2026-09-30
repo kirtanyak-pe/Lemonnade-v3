@@ -197,11 +197,11 @@ import { msWallet, msWalletFill } from './icons/material'
 
   {
     id: 'button-group',
-    title: 'Button group',
+    title: 'Button dock',
     group: 'Action',
     description: 'A bar at the bottom of a screen or sheet that holds its main actions — stacked full-width, or side by side.',
     status: 'Figma synced',
-    altNames: 'Button dock, action bar, sticky footer, CTA bar',
+    altNames: 'Button group, ButtonGroup, action bar, sticky footer, CTA bar',
     figmaNodeId: '4471:29456',
     source: 'src/components/ButtonGroup',
     exports: ['ButtonGroup'],
@@ -367,7 +367,7 @@ import { msWallet, msWalletFill } from './icons/material'
     ),
     variants: <TabsVariants />,
     props: [
-      { name: 'items', type: 'TabItem[]', description: 'Tabs: { value, label, iconLeft?, iconRight? }.' },
+      { name: 'items', type: 'TabItem[]', description: 'Tabs: { value, label, iconLeft?, iconRight?, subLabel?, hideLabel? }.' },
       { name: 'value', type: 'string', description: 'Tabs: the selected item value.' },
       { name: 'onChange', type: '(value) => void', description: 'Tabs: called on tap and on arrow / Home / End keys.' },
       { name: 'appearance', type: "'underline' | 'pill'", default: "'underline'", description: 'Figma isPill (Tabs) / isChip (base tab).' },
@@ -376,6 +376,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, coloured with the label.' },
+      { name: 'subLabel', type: 'string', description: 'Figma 👁️ Sub label: a second 8/10 line under the label. Chip (pill) tabs only.' },
+      { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only tab. Needs one icon; the label stays as its accessible name.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
     ],
   },
@@ -526,11 +528,11 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Three pieces</h2>
-          <p><strong>BottomSheet</strong> is the modal: the Figma "L3: Overlay" backdrop, slide-in, focus trap, Esc / backdrop / drag-down to close. <strong>BottomSheetHeader</strong> is Figma's header in small (back · heading · ⓘ · close or any action) and large (icon · tag · heading · description) sizes. <strong>BottomSheetSurface</strong> is the panel alone, for embedding or static layouts.</p>
+          <p><strong>BottomSheet</strong> is the modal: the Figma "L3: Overlay" backdrop, slide-in, focus trap, backdrop tap / drag down / Esc to close. <strong>BottomSheetHeader</strong> is Figma's header in small (back · heading · ⓘ · any action) and large (icon · tag · heading · description) sizes. <strong>BottomSheetSurface</strong> is the panel alone, for embedding or static layouts.</p>
         </section>
         <section className={styles.section}>
-          <h2>Always give it a close button</h2>
-          <p>Backdrop tap, Esc and drag-down all close the sheet, but screen-reader and switch users on touch devices rely on a real button — pass <code>onClose</code> to the header (or put a Cancel button in the footer). The page behind the sheet is made inert while it is open.</p>
+          <h2>Closing is invisible</h2>
+          <p>There is no drag handle and no ✕. People close a sheet by <strong>tapping the backdrop</strong> or <strong>dragging it down</strong> — anywhere on the sheet: the header and footer always, the content once it's scrolled to the top (before that, a swipe scrolls the content). Esc also closes it, and a visually hidden “Close” button is there for screen-reader and keyboard users. The page behind the sheet is inert while it's open.</p>
         </section>
         <section className={styles.section}>
           <h2>Bottom or top</h2>
@@ -540,20 +542,21 @@ import { msWallet, msWalletFill } from './icons/material'
     ),
     variants: <BottomSheetVariants />,
     props: [
-      { name: 'open / onClose', type: 'boolean / () => void', description: 'BottomSheet: visibility; onClose fires on backdrop tap, Esc and drag-down.' },
+      { name: 'open / onClose', type: 'boolean / () => void', description: 'BottomSheet: visibility; onClose fires on backdrop tap, drag down (up for top sheets), Esc and the screen-reader close button.' },
       { name: 'placement', type: "'bottom' | 'top'", default: "'bottom'", description: 'Figma isBottom.' },
       { name: 'header', type: 'ReactNode', description: 'Figma 👁️ Header — usually <BottomSheetHeader />.' },
       { name: 'children', type: 'ReactNode', description: 'Figma content slot; scrolls if the sheet would be taller than the screen.' },
       { name: 'footer', type: 'ReactNode', description: 'Figma "Buttons" — usually <ButtonGroup>.' },
       { name: 'utility', type: 'ReactNode', description: 'Figma Utility slot, below the buttons.' },
-      { name: 'dragHandle', type: 'boolean', default: 'false', description: 'Figma 👁️ Drag handle; also enables drag-down to dismiss.' },
+      { name: 'closeLabel', type: 'string', default: "'Close'", description: 'Name of the visually hidden close button (screen readers / keyboard). There is no visible close button or drag handle; the whole sheet drags to dismiss.' },
       { name: 'container', type: 'HTMLElement | null', default: 'document.body', description: 'Render inside another element instead of covering the page.' },
       { name: 'aria-labelledby', type: 'string', description: 'Point at the header heading (headingId) to name the dialog.' },
       { name: 'Header: size', type: "'sm' | 'lg'", default: "'sm'", description: 'Figma isSmall.' },
       { name: 'Header: heading / description', type: 'string', description: 'Heading text and optional description.' },
       { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading (decorative on its own).' },
       { name: 'Header: onInfo / infoLabel', type: "() => void / string", default: "'More information'", description: 'sm: makes the ⓘ a real, labelled button.' },
-      { name: 'Header: onBack / onClose / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, close button, or any right-side node (Tag, small Button).' },
+      { name: 'Header: onBack / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, or any right-side node (Tag, small Button). There is no close (✕) button.' },
+      { name: 'Header: bottom', type: 'ReactNode', description: 'sm: Figma "Content bottom" slot under the header row — e.g. flat Tabs or a search field. Put them here, not as a separate row in the sheet body.' },
       { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
     ],
   },
@@ -692,7 +695,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4464:27218',
     source: 'src/components/Tag',
     exports: ['Tag'],
-    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/inverted', 'static/black', 'text-semibold-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
+    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-semibold-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
     overview: (
       <>
         <PhoneFrame label="Watchlist using tags for exchange, segment and price change">
@@ -702,9 +705,9 @@ import { msWallet, msWalletFill } from './icons/material'
           <h2>Types</h2>
           <p>Primary is solid, Secondary is soft with a border, Tertiary is soft without one.</p>
           <div className={styles.demoRow}>
-            <Tag variant="primary" color="green" size="md">Primary</Tag>
-            <Tag variant="secondary" color="green" size="md">Secondary</Tag>
-            <Tag variant="tertiary" color="green" size="md">Tertiary</Tag>
+            <Tag variant="primary" color="success" size="md">Primary</Tag>
+            <Tag variant="secondary" color="success" size="md">Secondary</Tag>
+            <Tag variant="tertiary" color="success" size="md">Tertiary</Tag>
             <Tag size="md" disabled>Disabled</Tag>
           </div>
         </section>
@@ -713,10 +716,11 @@ import { msWallet, msWalletFill } from './icons/material'
     variants: <TagPreview />,
     props: [
       { name: 'variant', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma Type (Tertiory → tertiary).' },
-      { name: 'color', type: "'neutral' | 'green' | 'purple' | 'yellow' | 'red' | 'indigo' | 'teal' | 'discover' | 'orange'", default: "'neutral'", description: 'Figma Color. Green/yellow/red use the success/warning/error tokens.' },
+      { name: 'color', type: "'neutral' | 'profit' | 'loss' | 'success' | 'error' | 'warning' | 'discover' | 'processing' | 'indigo' | 'teal' | 'purple' | 'zing'", default: "'neutral'", description: 'Figma Color. profit / loss = indicator up / down (price moves, P&L); success / error = outcomes; processing = orange. v1 names green, red, yellow, orange still work (→ success, error, warning, processing).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'sm'", description: 'Figma Size: 16, 20, 24.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma Type=Disabled; overrides variant and color.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and coloured by the tag.' },
+      { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only (square) tag. Needs one icon; children stay as the screen-reader text.' },
     ],
   },
 ]

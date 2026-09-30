@@ -48,6 +48,7 @@
   --l3-font-size-extrabold-700: 28px;
   --l3-font-size-extrabold-800: 32px;
   --l3-font-size-extrabold-900: 36px;
+  --l3-font-size-local-08: 8px;
 
   /* L3/extrabold - Heading/10 */
   --l3-text-extrabold-10-weight: var(--l3-font-weight-extrabold);
@@ -301,4 +302,10 @@
   --l3-text-regular-20-line-height: 26px;
   --l3-text-regular-20-letter-spacing: 0px;
   --l3-text-regular-20: var(--l3-font-weight-regular) var(--l3-font-size-regular-500)/26px var(--l3-font-family-manrope);
+  /* local — chip tab sub label (8/10) */
+  --l3-text-semibold-08-weight: var(--l3-font-weight-semibold);
+  --l3-text-semibold-08-size: var(--l3-font-size-local-08);
+  --l3-text-semibold-08-line-height: 10px;
+  --l3-text-semibold-08-letter-spacing: 0px;
+  --l3-text-semibold-08: var(--l3-font-weight-semibold) var(--l3-font-size-local-08)/10px var(--l3-font-family-manrope);
 }

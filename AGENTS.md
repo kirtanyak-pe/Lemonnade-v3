@@ -9,7 +9,7 @@ component, or a Figma design — follow this file.
 1. **`DESIGN_SYSTEM.md`** — spacing scale, layout primitives, token rules, card/actionbar rules, states, a11y,
    theming, icons, responsive rules, Do/Don't.
 2. **`src/components/<Name>/USAGE.md`** for every component you use — which variant/size to pick, labels, placement,
-   states. (Written so far: `Button`, `ButtonGroup`. For others, use the component's docs page / playground in `src/docs`.)
+   states. (Written so far: `Button`, `ButtonGroup`, `BottomSheet`. For others, use the component's docs page / playground in `src/docs`.)
 3. The component's props (`src/components/<Name>/<Name>.tsx`). TypeScript enforces several rules — if a combination
    doesn't compile, it's not allowed; don't cast around it.
 
@@ -34,9 +34,17 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
   usually in a dock; standalone actions like "View all" are `tertiary`; buttons in a dock / `ButtonGroup` are always
   `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`.
-- **ButtonGroup (dock):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
+- **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
   button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
 - **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
+- **BottomSheet:** no drag handle and no ✕ — it closes by tapping the backdrop or dragging the sheet down (the
+  component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
+  `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`.
+- **Tag colours:** `profit` / `loss` for price moves, P&L and buy/sell side; `success` / `error` for outcomes (placed,
+  failed); `processing` for in-progress (open, pending); `warning`, `discover`, `zing` as named. Don't use the old
+  names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.
+- **Icon-only Tag / Tab:** `hideLabel` + exactly one icon; the label text is still required (it's the accessible name).
+  `subLabel` is for chip (pill) tabs only.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
   is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow.
 

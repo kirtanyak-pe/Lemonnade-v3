@@ -1,0 +1,25 @@
+{
+  "$description": "Not in Figma as a text style — values Figma uses unbound. Merged into typography.css.",
+  "font": {
+    "size": {
+      "local": {
+        "08": { "$type": "dimension", "$value": "8px", "$description": "Chip tab sub label (Figma L3: base tab, 👁️ Sub label: Manrope SemiBold 8/10, no text style)." }
+      }
+    }
+  },
+  "text": {
+    "semibold": {
+      "08": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family.manrope}",
+          "fontWeight": "{font.weight.semibold}",
+          "fontSize": "{font.size.local.08}",
+          "lineHeight": "10px",
+          "letterSpacing": "0px"
+        },
+        "$extensions": { "l3.figmaStyle": "local — chip tab sub label (8/10)" }
+      }
+    }
+  }
+}

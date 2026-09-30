@@ -58,7 +58,7 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
       </div>
       <div className={styles.titleRow}>
         <h1>{page.title}</h1>
-        {page.status && <Tag variant="secondary" color="green" size="lg">{page.status}</Tag>}
+        {page.status && <Tag variant="secondary" color="success" size="lg">{page.status}</Tag>}
         {currentVersion(page.id) && (
           <a className={styles.versionLink} href={href(page.id, 'whats-new')} aria-label={`Version ${currentVersion(page.id)} — see what’s new`}>
             <Tag variant="secondary" color="neutral" size="lg">v{currentVersion(page.id)}</Tag>

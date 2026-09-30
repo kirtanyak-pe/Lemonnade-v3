@@ -6,7 +6,7 @@ const noop = () => {}
 function Content({ title, meta }: { title: string; meta: string }) {
   return (
     <>
-      <span className="card-demo-row"><span className="card-demo-meta">{meta}</span><Tag variant="secondary" color="green" size="md">Buy</Tag></span>
+      <span className="card-demo-row"><span className="card-demo-meta">{meta}</span><Tag variant="secondary" color="profit" size="md">Buy</Tag></span>
       <span className="card-demo-title">{title}</span>
     </>
   )

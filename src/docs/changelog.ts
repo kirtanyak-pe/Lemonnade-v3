@@ -128,6 +128,13 @@ export const changelog: Record<string, Release[]> = {
 
   'button-group': [
     {
+      version: '1.1.1', date: '2026-09-30',
+      summary: 'Renamed to Button dock',
+      changes: [
+        { kind: 'figma', text: 'Figma renamed "L3: Button Group" to "L3: Button Dock"; the docs page is now "Button dock". The code name ButtonGroup is unchanged.' },
+      ],
+    },
+    {
       version: '1.1.0', date: '2026-09-30',
       summary: 'Dock rules',
       changes: [
@@ -220,6 +227,15 @@ export const changelog: Record<string, Release[]> = {
 
   tabs: [
     {
+      version: '1.2.0', date: '2026-09-30',
+      summary: 'Sub label and icon-only tabs',
+      changes: [
+        { kind: 'figma', text: 'subLabel (Figma 👁️ Sub label): an 8/10 second line under the label on chip (pill) tabs. New local text token text-semibold-08.' },
+        { kind: 'added', text: 'hideLabel (Figma 👁️ Label): icon-only tab; the label stays as its accessible name.' },
+        { kind: 'changed', text: 'Variants: 👁️ Label and 👁️ Sub label toggles for every tab.' },
+      ],
+    },
+    {
       version: '1.1.0', date: '2026-09-29',
       summary: 'Chip tabs are tappable surfaces',
       changes: [
@@ -275,6 +291,26 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'bottom-sheet': [
+    {
+      version: '2.0.0', date: '2026-09-30',
+      summary: 'Invisible closing, all Figma properties',
+      changes: [
+        { kind: 'changed', text: 'Removed the drag handle (dragHandle prop) and the header close button (BottomSheetHeader onClose). Sheets close by tapping the backdrop or dragging.' },
+        { kind: 'added', text: 'The whole sheet drags to dismiss: header and footer always, the content once scrolled to the top. Top sheets drag up.' },
+        { kind: 'a11y', text: 'A visually hidden Close button (closeLabel) for screen-reader and keyboard users; Esc still closes.' },
+        { kind: 'figma', text: '👁️ Content Slot: leaving out children hides the content area and its padding.' },
+        { kind: 'changed', text: 'Playground covers every Figma property (isBottom, header, description, back, info, right slot, content bottom, H-Icon, header tag, content, buttons, utility). New USAGE.md.' },
+      ],
+    },
+    {
+      version: '1.3.0', date: '2026-09-30',
+      summary: 'Header content-bottom slot (Figma Latest)',
+      changes: [
+        { kind: 'figma', text: 'BottomSheetHeader bottom: Figma "Content bottom" slot under the small header row, for tabs or search.' },
+        { kind: 'figma', text: 'Large header: bottom padding 24 → 0, matching Version=Latest.' },
+        { kind: 'changed', text: 'Docs: the Buy sheet demo puts Delivery / Intraday tabs in the header slot; the playground footer is a Button dock; Variants shows the Content bottom header.' },
+      ],
+    },
     {
       version: '1.2.0', date: '2026-09-26', commit: '2998418',
       summary: 'Material Symbols icons',
@@ -360,6 +396,18 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   tag: [
+    {
+      version: '2.0.0', date: '2026-09-30',
+      summary: 'Figma colour set: profit, loss, zing, processing',
+      changes: [
+        { kind: 'figma', text: 'Colours follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing.' },
+        { kind: 'added', text: 'profit / loss use indicator/up·down tokens (white text on solid); zing uses the zing accent.' },
+        { kind: 'changed', text: 'Renamed green → success, red → error, yellow → warning, orange → processing. The old names still work (deprecated).' },
+        { kind: 'figma', text: 'Neutral Secondary / Tertiary background: surface/tertiary → surface/secondary.' },
+        { kind: 'added', text: 'hideLabel (Figma 👁️ Label): icon-only square tag; the label stays as screen-reader text.' },
+        { kind: 'changed', text: 'Docs demos: price changes and Buy/Sell sides use profit / loss, order status uses processing / error.' },
+      ],
+    },
     {
       version: '1.2.0', date: '2026-09-26', commit: '2998418',
       summary: 'Material Symbols icons',

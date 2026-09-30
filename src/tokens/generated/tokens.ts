@@ -454,6 +454,7 @@ export const textStyles = [
   { figmaName: 'L3/Regular/16', cssVar: '--l3-text-regular-16', weight: 'regular', fontSize: 16, lineHeight: 22 },
   { figmaName: 'L3/Regular/18', cssVar: '--l3-text-regular-18', weight: 'regular', fontSize: 18, lineHeight: 24 },
   { figmaName: 'L3/Regular/20', cssVar: '--l3-text-regular-20', weight: 'regular', fontSize: 20, lineHeight: 26 },
+  { figmaName: 'local — chip tab sub label (8/10)', cssVar: '--l3-text-semibold-08', weight: 'semibold', fontSize: 8, lineHeight: 10 },
 ] as const
 
 export type ThemeToken = keyof typeof themeTokenVars

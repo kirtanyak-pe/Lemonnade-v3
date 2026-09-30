@@ -3,9 +3,9 @@ import { changeKindLabels, type ChangeKind, type Release } from './changelog'
 import styles from './Docs.module.css'
 
 const kindColors: Record<ChangeKind, TagColor> = {
-  added: 'green',
+  added: 'success',
   changed: 'discover',
-  fixed: 'orange',
+  fixed: 'processing',
   figma: 'purple',
   a11y: 'teal',
 }
@@ -34,7 +34,7 @@ export function ReleaseTimeline({ releases }: { releases: Release[] }) {
               <span className={styles.releaseMarker} aria-hidden="true" />
               <div className={styles.releaseHeader}>
                 <h3>{state === 'upcoming' ? 'In progress' : `v${r.version}`}</h3>
-                {state === 'current' && <Tag variant="primary" color="green" size="sm">Current</Tag>}
+                {state === 'current' && <Tag variant="primary" color="success" size="sm">Current</Tag>}
                 {state === 'upcoming' && <Tag variant="secondary" color="neutral" size="sm">Not in code yet</Tag>}
                 <span className={styles.releaseMeta}>
                   <time dateTime={r.date}>{formatDate(r.date)}</time>
