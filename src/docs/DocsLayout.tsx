@@ -5,6 +5,7 @@ import { BrandLogo } from '../components/BrandLogo'
 import { BuildPage } from '../build/BuildPage'
 import { Search } from './Search'
 import { ThemeControls } from './ThemeControls'
+import { ProductChooser } from './ProductChooser'
 import { href, useHashRoute } from './useHashRoute'
 import styles from './Docs.module.css'
 
@@ -56,6 +57,7 @@ export function DocsLayout() {
           Skip to content
         </a>
       )}
+      <ProductChooser />
       <header className={styles.header}>
         <button
           ref={menuRef}

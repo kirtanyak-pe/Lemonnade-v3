@@ -1,4 +1,4 @@
-// Data for the Colors foundation page: token groups, usage notes and the alias (base colour + opacity)
+// Data for the Colors foundation page: token groups, usage notes and the alias (base color + opacity)
 // each theme token resolves to, read from the DTCG sources in src/tokens/source.
 import { baseColorVars, themeTokenVars, type ThemeToken } from '../../tokens'
 
@@ -84,9 +84,9 @@ export const statics: Role[] = [
 export type AccentGroupId = 'brand' | 'market' | 'status' | 'subbrand' | 'misc'
 export type Accent = { id: string; label: string; use: string; path: string; group: AccentGroupId }
 
-/** Accent families grouped by meaning. Pick the group first, then the colour. */
+/** Accent families grouped by meaning. Pick the group first, then the color. */
 export const accentGroups: { id: AccentGroupId; label: string; use: string }[] = [
-  { id: 'brand', label: 'Brand', use: 'The product colour — changes with the brand (Lemonn lime, CS PRO gold, Kuber green).' },
+  { id: 'brand', label: 'Brand', use: 'The product color — changes with the brand (Lemonn lime, CS PRO gold, Kuber green).' },
   { id: 'market', label: 'Market indicators', use: 'Price direction only: up / down, P&L, buy / sell side. Never for success or error.' },
   { id: 'status', label: 'Status', use: 'Outcomes and system states: done, needs attention, failed, info, in progress.' },
   { id: 'subbrand', label: 'Sub-brands', use: 'Products and segments with their own identity (US stocks, Zing). Use only inside that product or segment.' },
@@ -96,13 +96,13 @@ export const accentGroups: { id: AccentGroupId; label: string; use: string }[] =
 /** `path` is the token segment after surface/accent/, content/accent/, border/accent/. */
 export const accents: Accent[] = [
   { id: 'brand', group: 'brand', label: 'Brand', path: 'brand', use: 'Brand moments, brand button, onboarding and promotions.' },
-  { id: 'up', group: 'market', label: 'Profit (indicator up)', path: 'indicator/up', use: 'Price up, positive P&L, buy side. Tag colour “profit”.' },
-  { id: 'down', group: 'market', label: 'Loss (indicator down)', path: 'indicator/down', use: 'Price down, negative P&L, sell side. Tag colour “loss”.' },
+  { id: 'up', group: 'market', label: 'Profit (indicator up)', path: 'indicator/up', use: 'Price up, positive P&L, buy side. Tag color “profit”.' },
+  { id: 'down', group: 'market', label: 'Loss (indicator down)', path: 'indicator/down', use: 'Price down, negative P&L, sell side. Tag color “loss”.' },
   { id: 'success', group: 'status', label: 'Success', path: 'success', use: 'Done: order placed, verified, saved.' },
   { id: 'warning', group: 'status', label: 'Warning', path: 'warning', use: 'Needs attention, not blocking. Solid fill takes static/black text.' },
   { id: 'error', group: 'status', label: 'Error', path: 'error', use: 'Failed or blocking: rejected, invalid.' },
   { id: 'discover', group: 'status', label: 'Discover (info)', path: 'discover', use: 'Information, tips, links and inline text actions.' },
-  { id: 'orange', group: 'status', label: 'Orange (processing)', path: 'orange', use: 'In progress: open, pending. Tag colour “processing”.' },
+  { id: 'orange', group: 'status', label: 'Orange (processing)', path: 'orange', use: 'In progress: open, pending. Tag color “processing”.' },
   { id: 'us-stock', group: 'subbrand', label: 'US stocks', path: 'us-stock', use: 'US stocks segment. Still mostly identical to discover (known gap).' },
   { id: 'zing', group: 'subbrand', label: 'Zing', path: 'zing', use: 'The Zing product.' },
   { id: 'purple', group: 'misc', label: 'Purple', path: 'purple', use: 'Exceptional categorical use only.' },

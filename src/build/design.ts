@@ -14,7 +14,7 @@ export type Weight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold'
 
 /**
  * Ids are `<node>` for a node and `<node>:<part>` for a part of a button (its label or icon). Parts follow the button's
- * style until they are given their own colour.
+ * style until they are given their own color.
  */
 export type DesignNode = {
   id: string

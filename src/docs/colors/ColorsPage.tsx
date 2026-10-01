@@ -4,7 +4,7 @@ import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
 import { Tag } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
-import { msSearch } from '../../icons/material'
+import { msAccountTree, msSearch, msViewList } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
 import {
@@ -14,10 +14,11 @@ import {
 import styles from './ColorsPage.module.css'
 import { TokenNaming } from './TokenNaming'
 import { TokenFlow } from './TokenFlow'
+import { SemanticTree } from './SemanticTree'
 
 // ---- Helpers -------------------------------------------------------------------------------------
 
-/** Computed colour → "#RRGGBB" (+ alpha %). Handles rgb(), rgba() and color(srgb …) from color-mix. */
+/** Computed color → "#RRGGBB" (+ alpha %). Handles rgb(), rgba() and color(srgb …) from color-mix. */
 function toHex(css: string): string {
   const nums = css.match(/[\d.]+/g)?.map(Number) ?? []
   if (!nums.length) return ''
@@ -36,7 +37,7 @@ function useThemeKey() {
 /** Border tokens are previewed as an outline, everything else as a fill. */
 const isBorder = (token: string) => token.startsWith('border/') || /\/border(-|$)/.test(token)
 
-/** Chip colour goes in `color` (painted with currentColor as a fill or an outline); read back after every theme change. */
+/** Chip color goes in `color` (painted with currentColor as a fill or an outline); read back after every theme change. */
 function useResolved(theme: string) {
   const ref = useRef<HTMLSpanElement>(null)
   const [value, setValue] = useState('')
@@ -120,7 +121,7 @@ function MiniChip({ token, theme, copy, label }: { token: ThemeToken; theme: Ret
 // ---- Sections ---------------------------------------------------------------------------------------
 
 const sections = [
-  { id: 'how', label: 'How colour works' },
+  { id: 'how', label: 'How colors are mapped' },
   { id: 'naming', label: 'Token naming' },
   { id: 'surface', label: 'Surface' },
   { id: 'content', label: 'Content' },
@@ -145,7 +146,7 @@ function Section({ id, title, lede, children }: { id: string; title: string; led
 /** One real token followed through the three layers, live for the current theme. */
 function HowItWorks({ theme }: { theme: ReturnType<typeof useThemeKey> }) {
   return (
-    <Section id="how" title="How colour works" lede="Three token layers feed the UI. Build UI with semantic tokens. Hover any box to trace its path.">
+    <Section id="how" title="How colors are mapped" lede="Pick a color to see every token it feeds in the current theme, the components that use them, and the result. Build UI with semantic tokens.">
       <div className={styles.legend}>
         <span><strong>Base</strong> <Tag size="sm" variant="tertiary" color="error">Don't use</Tag></span>
         <span><strong>Semantic</strong> <Tag size="sm" variant="tertiary" color="success">Use in UI</Tag></span>
@@ -199,7 +200,7 @@ const onSolid = (id: string): ThemeToken => (id === 'warning' ? 'static/black' :
 function AccentMatrix({ filter, theme, copy }: { filter: string; theme: ReturnType<typeof useThemeKey>; copy: CopyApi }) {
   const rows = accents.filter((a) => matches(filter, a.id, a.label, a.use, a.group, accentGroups.find((g) => g.id === a.group)?.label ?? '', ...accentSlots.map((s) => s.make(a.path))))
   return (
-    <Section id="accents" title="Accents" lede="13 accent colours in 5 groups. Pick the group by meaning first, then the colour. Every colour has the same five slots: soft (light) pairs for tags and banners, default for solid fills and text.">
+    <Section id="accents" title="Accents" lede="13 accent colors in 5 groups. Pick the group by meaning first, then the color. Every color has the same five slots: soft (light) pairs for tags and banners, default for solid fills and text.">
       {rows.length === 0 && <p className={styles.empty}>No tokens match.</p>}
       {accentGroups.map((g) => {
         const groupRows = rows.filter((a) => a.group === g.id)
@@ -215,7 +216,7 @@ function AccentMatrix({ filter, theme, copy }: { filter: string; theme: ReturnTy
                 <caption className={styles.visuallyHidden}>{g.label} accent tokens</caption>
                 <thead>
                   <tr>
-                    <th scope="col">Colour</th>
+                    <th scope="col">Color</th>
                     {accentSlots.map((s) => <th key={s.id} scope="col">{s.label}</th>)}
                     <th scope="col">Soft · solid</th>
                   </tr>
@@ -420,7 +421,7 @@ function CompareThemes({ filter }: { filter: string }) {
   const tokens = (compareGroups.find((g) => g.value === group)?.tokens ?? []).filter((t) => matches(filter, t))
   return (
     <Section id="compare" title="Compare themes" lede="One token across all 10 themes, including the ♿ Accessible versions.">
-      <Tabs aria-label="Token group" appearance="pill" size="sm" items={compareGroups.map(({ value, label }) => ({ value, label }))} value={group} onChange={setGroup} />
+      <Tabs aria-label="Token group" appearance="pill" size="md" items={compareGroups.map(({ value, label }) => ({ value, label }))} value={group} onChange={setGroup} />
       <div className={styles.tableScroll}>
         <table className={`${styles.matrix} ${styles.compare}`}>
           <thead>
@@ -457,6 +458,12 @@ export function ColorsPage() {
   const theme = useThemeKey()
   const copy = useCopy()
   const [query, setQuery] = useState('')
+  const [view, setView] = useState<'list' | 'tree'>(() => {
+    try { return localStorage.getItem('l3-colors-view') === 'tree' ? 'tree' : 'list' } catch { return 'list' }
+  })
+  useEffect(() => {
+    try { localStorage.setItem('l3-colors-view', view) } catch { /* storage unavailable */ }
+  }, [view])
   const filter = query.trim().toLowerCase()
   const goTo = (id: string) => {
     document.getElementById(`colors-${id}`)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
@@ -466,7 +473,7 @@ export function ColorsPage() {
     <div className={styles.page}>
       <div className={styles.toolbar}>
         <TextField
-          aria-label="Filter colour tokens"
+          aria-label="Filter color tokens"
           placeholder="Filter tokens — e.g. border, profit, overlay"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -474,7 +481,7 @@ export function ColorsPage() {
         />
         <p className={styles.current}>
           Values shown for <strong>{theme.contrast === 'accessible' ? '♿ ' : ''}{productLabels[theme.product]} · {theme.mode === 'light' ? 'Light' : 'Dark'}</strong>.
-          Change brand, mode or ♿ in the header. Click any colour to copy its variable.
+          Change brand, mode or ♿ in the header. Click any color to copy its variable.
         </p>
         <nav className={styles.jump} aria-label="On this page">
           {sections.map((s) => (
@@ -484,18 +491,46 @@ export function ColorsPage() {
       </div>
 
       <HowItWorks theme={theme} />
-      <Section id="naming" title="Token naming" lede="Every name is built from the same parts, in the same order. Read a name left to right: what it paints, then which colour, then how strong.">
+      <Section id="naming" title="Token naming" lede="Every name is built from the same parts, in the same order. Read a name left to right: what it paints, then which color, then how strong.">
         <TokenNaming />
       </Section>
-      <Section id="surface" title="Surface" lede="Fills behind content, from the page background up to the most emphatic fill.">
-        <RoleList roles={surfaces} filter={filter} theme={theme} copy={copy} />
-      </Section>
-      <Section id="content" title="Content" lede="Text and icons. Pick by importance, not by colour.">
-        <RoleList roles={contents} filter={filter} theme={theme} copy={copy} />
-      </Section>
-      <Section id="border" title="Border" lede="Hairlines (1px) and outlines.">
-        <RoleList roles={borders} filter={filter} theme={theme} copy={copy} />
-      </Section>
+      <div className={styles.viewToggle}>
+        <div className={styles.viewText}>
+          <span className={styles.viewLabel}>Surface, content, border & accents</span>
+          <span className={styles.viewHint}>{view === 'list' ? 'Every token with its role, value and usage.' : 'How the roles branch into tokens.'}</span>
+        </div>
+        <Tabs
+          aria-label="Semantic tokens view"
+          appearance="pill"
+          size="md"
+          items={[
+            { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
+            { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
+          ]}
+          value={view}
+          onChange={setView}
+        />
+      </div>
+      {view === 'list' ? (
+        <>
+          <Section id="surface" title="Surface" lede="Fills behind content, from the page background up to the most emphatic fill.">
+            <RoleList roles={surfaces} filter={filter} theme={theme} copy={copy} />
+          </Section>
+          <Section id="content" title="Content" lede="Text and icons. Pick by importance, not by color.">
+            <RoleList roles={contents} filter={filter} theme={theme} copy={copy} />
+          </Section>
+          <Section id="border" title="Border" lede="Hairlines (1px) and outlines.">
+            <RoleList roles={borders} filter={filter} theme={theme} copy={copy} />
+          </Section>
+        </>
+      ) : (
+        <Section id="surface" title="Semantic tokens" lede="Every neutral color token starts from one of four roles. Icons and text share the same content tokens. Hover a box to trace it; click a token to copy it.">
+          {/* Jump targets for the Content / Border buttons in the toolbar. */}
+          <span id="colors-content" aria-hidden="true" />
+          <span id="colors-border" aria-hidden="true" />
+          <SemanticTree filter={filter} copied={copy.copied} onCopy={copy.copy} />
+        </Section>
+      )}
       <AccentMatrix filter={filter} theme={theme} copy={copy} />
       <ComponentTokens filter={filter} theme={theme} copy={copy} />
       <MoreTokens filter={filter} theme={theme} copy={copy} />

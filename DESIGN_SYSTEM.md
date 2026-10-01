@@ -98,12 +98,12 @@ This is the de facto **16px screen gutter**.
 
 ### 3.1 Accent groups
 
-Accent colours (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come in **5 groups**. Pick the group by
-**meaning** first, then the colour inside it. Never borrow a colour from another group because it "looks right".
+Accent colors (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come in **5 groups**. Pick the group by
+**meaning** first, then the color inside it. Never borrow a color from another group because it "looks right".
 
 | Group | Accents | Use for |
 |---|---|---|
-| **Brand** | `brand` | The product colour (Lemonn lime, CS PRO gold, Kuber green): brand moments, the brand button. |
+| **Brand** | `brand` | The product color (Lemonn lime, CS PRO gold, Kuber green): brand moments, the brand button. |
 | **Market indicators** | `indicator/up` (profit), `indicator/down` (loss) | Price direction only: price up / down, P&L, buy / sell side. Never for success or error. |
 | **Status** | `success`, `warning`, `error`, `discover` (info), `orange` (processing) | Outcomes and system states: done, needs attention, failed, info / links, in progress. |
 | **Sub-brands** | `us-stock`, `zing` | Products or segments with their own identity. Use only inside that product or segment. |
@@ -125,7 +125,7 @@ Every token name is built from the same parts, **in this order**:
 |---|---|
 | Namespace | `l3` — always first in CSS (`--l3-…`) |
 | Property | `surface` (fills) · `content` (text, icons) · `border` (outlines) |
-| Group | `accent` for accent colours; none for neutrals (base palette: `hue` / `neutral`) |
+| Group | `accent` for accent colors; none for neutrals (base palette: `hue` / `neutral`) |
 | Intent | `brand` · `indicator-up` · `indicator-down` · `success` · `warning` · `error` · `discover` · `orange` · `us-stock` · `zing` · `purple` · `indigo` · `teal` (see 3.1) |
 | Modifier | Neutrals: `default` · `primary` · `secondary` · `tertiary` · `quaternary` · `inverted` · `disabled` · `overlay`. Accents: `light` · `default` |
 | Component · Variant | Component tokens only: `button` + `primary` … `sell`; `state-layer` + `light` / `dark` |
@@ -136,7 +136,7 @@ Examples: `--l3-surface-secondary`, `--l3-surface-accent-success-light`, `--l3-b
 
 - **Lowercase, words joined with dashes.** Figma separates parts with `/` (`L3/color/surface/accent/success-light`),
   CSS with `-` (`--l3-surface-accent-success-light`), TS uses the Figma path (`token('surface/accent/success-light')`).
-- **Name by role, never by colour** (`content-secondary`, not `grey-60`). Only the base palette names colours.
+- **Name by role, never by color** (`content-secondary`, not `grey-60`). Only the base palette names colors.
 - **Leave out what's default:** no state = default state; neutrals have no group or intent.
 
 <!-- PENDING: paste verbatim from notes -->
@@ -187,7 +187,7 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 |---|---|---|---|
 | `Button` | `components/Button` | label (or `aria-label` if icon-only) | Actions. `variant`: primary · secondary · tertiary · ghost · brand · buy · sell; `size` sm · md · lg |
 | `ButtonGroup` | `components/ButtonGroup` | Buttons as children, `aria-label` | The button dock (Figma "L3: Button Dock"): the main action(s) docked at the bottom of a screen or sheet |
-| `Tag` | `components/Tag` | text (also the screen-reader text when `hideLabel`) | A static label or status: 3 variants × 12 colours × 3 sizes. `profit` / `loss` for price moves and P&L, `success` / `error` for outcomes, `processing` for in-progress |
+| `Tag` | `components/Tag` | text (also the screen-reader text when `hideLabel`) | A static label or status: 3 variants × 12 colors × 3 sizes. `profit` / `loss` for price moves and P&L, `success` / `error` for outcomes, `processing` for in-progress |
 | `Switch` | `components/Switch` | a `<label>` or `aria-label` | An on/off setting that applies immediately |
 | `Checkbox` / `Radio` | `components/Checkbox` | a `<label>`; radios share a `name` | Multi-select / pick one |
 | `TextField` | `components/TextField` | `label` | Single-line input, or `multiline` text box with a counter |
@@ -230,7 +230,7 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 ### 7.1 Card
 
 - **Clickable cards, and other tappable elements like chip tabs,** use `surface-primary`, because they sit on the
-  screen background `surface-default`. In the light theme both are the same colour (#FFFFFF), so a clickable
+  screen background `surface-default`. In the light theme both are the same color (#FFFFFF), so a clickable
   surface **must** also have a 1px `border-light` and `shadow-elevation-low`.
 - **Card spec** (Figma Order card): padding `spacing-12`, radius `radius-12`, rows `spacing-08` apart; cards in a list
   are `spacing-16` apart.
@@ -260,7 +260,7 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 
 ## 8. Trading semantics
 
-<!-- PENDING: buy/sell usage, price up/down vs success/error, order-status colours, number and currency formatting -->
+<!-- PENDING: buy/sell usage, price up/down vs success/error, order-status colors, number and currency formatting -->
 
 ---
 
@@ -333,10 +333,10 @@ There is **no skeleton or spinner component** yet.
 
 - **Only Material Symbols Rounded,** weight 400, grade 0, **optical size 24dp.** Never the 48px set, and never another icon family.
 - Import one icon at a time: `import { msWallet, msWalletFill } from './icons/material'`, then render `<Icon icon={msWallet} size={24} />`.
-- **Sizes:** `--l3-icon-size-*` 12–24. Default 24; 16 inside small buttons and tabs. The icon takes the text colour.
+- **Sizes:** `--l3-icon-size-*` 12–24. Default 24; 16 inside small buttons and tabs. The icon takes the text color.
 - **Filled variants** exist for every icon (`ms<Name>Fill`).
   <!-- PENDING: when to use filled vs outlined -->
-- **Not Material:** the bottom-nav icons (`NavIcon`), brand logos (`BrandLogo`), and the Empty state illustration are Figma artwork. Don't redraw or recolour them.
+- **Not Material:** the bottom-nav icons (`NavIcon`), brand logos (`BrandLogo`), and the Empty state illustration are Figma artwork. Don't redraw or recolor them.
 
 ---
 
@@ -355,7 +355,7 @@ There is **no skeleton or spinner component** yet.
 | Component | Do | Don't |
 |---|---|---|
 | Button | One primary action per screen, paired with secondary actions | Several primary buttons side by side |
-| Button | Buy (green) and Sell (red) only for placing orders | Buy/Sell colours for unrelated actions |
+| Button | Buy (green) and Sell (red) only for placing orders | Buy/Sell colors for unrelated actions |
 | ButtonGroup | Horizontal: primary on the right. Vertical: primary on top | Flip the order between screens |
 | Tag | One or two words that label or show status | A tag as a button, or for sentences |
 | Switch | Settings that take effect as soon as they flip | Inside a form that needs Save (use a checkbox) |

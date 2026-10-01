@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import styles from './BrandLogo.module.css'
 
-// SVG artwork exported from Figma "L3 → Brand logo" (node 4735:1466). Colours are CSS tokens (see the CSS).
+// SVG artwork exported from Figma "L3 → Brand logo" (node 4735:1466). Colors are CSS tokens (see the CSS).
 
 /** Lemonn mark: lemon-leaf shade (back) + leaf (front). */
 export function LemonnMark() {

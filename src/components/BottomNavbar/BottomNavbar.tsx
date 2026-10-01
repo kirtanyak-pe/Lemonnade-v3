@@ -5,7 +5,7 @@ import styles from './BottomNavbar.module.css'
 export type BottomNavbarItem = {
   value: string
   label: string
-  /** 24px icon. Coloured content/tertiary; a <NavIcon> or any <Icon>/<MaskIcon>. */
+  /** 24px icon. Colored content/tertiary; a <NavIcon> or any <Icon>/<MaskIcon>. */
   icon: ReactNode
   /** Shown when selected (e.g. <NavIcon selected />). Falls back to `icon` in content/accent/success. */
   selectedIcon?: ReactNode

@@ -46,7 +46,7 @@ export const pages: DocPage[] = [
     id: 'colors',
     title: 'Colors',
     group: 'Foundations',
-    description: 'How Lemonnade colour works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).',
+    description: 'How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).',
     content: <ColorsPage />,
   },
   {
@@ -79,7 +79,7 @@ import { msWallet, msWalletFill } from './icons/material'
 <Icon icon={msWallet} size={24} />            // decorative
 <Icon icon={msWalletFill} label="Wallet" />    // meaningful → announced
 <Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`}</code></pre>
-          <p>Only the icons you import end up in the app. Colour comes from the surrounding text colour; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
+          <p>Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
         </section>
         <IconsBrowserLazy />
       </>
@@ -108,8 +108,8 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>Use the full logo where there's room: headers, splash, sign-in. Use the mark (<code>variant="icon"</code>) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p>
         </section>
         <section className={styles.section}>
-          <h2>Colours stay on brand</h2>
-          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand colour, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
+          <h2>Colors stay on brand</h2>
+          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
@@ -146,7 +146,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Types</h2>
-          <p>Seven types. Buy and Sell carry trade actions; Brand follows the product colour (Lemonn lime, CS PRO gold, Kuber green).</p>
+          <p>Seven types. Buy and Sell carry trade actions; Brand follows the product color (Lemonn lime, CS PRO gold, Kuber green).</p>
           <div className={styles.demoRow}>
             {buttonVariants.map((v) => (
               <Button key={v} variant={v} size="md">{v[0].toUpperCase() + v.slice(1)}</Button>
@@ -188,7 +188,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma State=🚫 Disabled.' },
       { name: 'children', type: 'ReactNode', description: 'The label (Figma 👁️ Label). Leave it out for an icon button: then pass exactly one icon and aria-label.' },
       { name: 'aria-label', type: 'string', description: 'Required for an icon button (no label). Names the action, e.g. "Share".' },
-      { name: 'iconLeft', type: 'ReactNode', description: 'Figma icon-l slot, sized and coloured by the button.' },
+      { name: 'iconLeft', type: 'ReactNode', description: 'Figma icon-l slot, sized and colored by the button.' },
       { name: 'iconRight', type: 'ReactNode', description: 'Figma icon-r slot.' },
       { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch to the container width.' },
       { name: '…button props', type: 'ButtonHTMLAttributes', description: 'onClick, type (defaults to "button"), aria-*, etc.' },
@@ -375,7 +375,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
-      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, coloured with the label.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, colored with the label.' },
       { name: 'subLabel', type: 'string', description: 'Figma 👁️ Sub label: a second 8/10 line under the label. Chip (pill) tabs only.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only tab. Needs one icon; the label stays as its accessible name.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
@@ -446,7 +446,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Nav icons</h2>
-          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one colour, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colours, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
+          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
@@ -596,18 +596,18 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Soft or solid</h2>
-          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid colour (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
+          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
         </section>
       </>
     ),
     variants: <AerobarVariants />,
     props: [
       { name: 'type', type: "'primary' | 'discover' | 'danger' | 'success' | 'warning'", default: "'primary'", description: 'Figma Type.' },
-      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'secondary'", description: 'Figma isPrimary: solid colour (primary) or light tint (secondary).' },
+      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'secondary'", description: 'Figma isPrimary: solid color (primary) or light tint (secondary).' },
       { name: 'floating', type: 'boolean', default: 'false', description: 'Figma isFloating: toast card with shadow and a rise-in animation.' },
       { name: 'heading / paragraph', type: 'ReactNode', description: 'Figma Headline text / Paragraph text (hidden when not passed).' },
       { name: 'icon', type: 'ReactNode | false', default: 'info icon', description: 'Figma icon-L slot (24px); false hides it.' },
-      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small Ghost button in a 48px slot; its label follows the bar colour.' },
+      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small Ghost button in a 48px slot; its label follows the bar color.' },
     ],
   },
 
@@ -634,7 +634,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Illustration</h2>
-          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand colour. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
+          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
         </section>
         <section className={styles.section}>
           <h2>Layout and accessibility</h2>
@@ -723,7 +723,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'color', type: "'neutral' | 'profit' | 'loss' | 'success' | 'error' | 'warning' | 'discover' | 'processing' | 'indigo' | 'teal' | 'purple' | 'zing'", default: "'neutral'", description: 'Figma Color. profit / loss = indicator up / down (price moves, P&L); success / error = outcomes; processing = orange. v1 names green, red, yellow, orange still work (→ success, error, warning, processing).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'sm'", description: 'Figma Size: 16, 20, 24.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma Type=Disabled; overrides variant and color.' },
-      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and coloured by the tag.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and colored by the tag.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only (square) tag. Needs one icon; children stay as the screen-reader text.' },
     ],
   },

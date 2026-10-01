@@ -25,7 +25,7 @@ export const changeKindLabels: Record<ChangeKind, string> = {
 
 const iconsMigration = (): Release['changes'][number] => ({
   kind: 'changed',
-  text: 'Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text colour.',
+  text: 'Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.',
 })
 
 export const changelog: Record<string, Release[]> = {
@@ -37,12 +37,16 @@ export const changelog: Record<string, Release[]> = {
         { kind: 'added', text: '5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with data-contrast="accessible" or the ♿ button in the header.' },
         { kind: 'figma', text: 'New surface/overlay (the brand’s darkest neutral at 80%) and gradient-stop-0/static/white · black.' },
         { kind: 'figma', text: 'surface/accent/us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover.' },
-        { kind: 'changed', text: 'New Colors page: how the three colour layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy.' },
+        { kind: 'changed', text: 'New Colors page: how the three color layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy.' },
         { kind: 'added', text: 'Accent groups: Brand · Market indicators (profit / loss) · Status (success, warning, error, discover, orange) · Sub-brands (US stocks, Zing) · Miscellaneous (purple, indigo, teal — exceptional cases only). Also in DESIGN_SYSTEM.md 3.1.' },
         { kind: 'changed', text: 'Accents are shown as one table per group, and border tokens are previewed as outlines instead of fills.' },
-        { kind: 'changed', text: '“How colour works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface/content/border, Button and Tag — with hover-to-trace, plus four illustrated rule cards.' },
+        { kind: 'changed', text: '“How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface/content/border, Button and Tag — with hover-to-trace, plus four illustrated rule cards.' },
         { kind: 'added', text: 'Token naming: anatomy of semantic, accent, component and base names (namespace · property · group · intent · modifier · state), the same token in Figma / CSS / TS, naming rules and a parts glossary. Also in DESIGN_SYSTEM.md 3.2.' },
         { kind: 'changed', text: 'Token names shown with dashes plus a role in brackets, e.g. surface-default (Screen BG) — display only.' },
+        { kind: 'added', text: 'List / Tree toggle for surface, content and border. Tree view: Colors → Surface · Icon · Text · Border, with Icon + Text merging into Content, then each role’s tokens (hover to trace, click to copy). The choice is remembered.' },
+        { kind: 'added', text: 'Tree view: accents branch off the root in the brand color, then fan out into the 5 accent groups and their colors. Clearer List / Tree switch with icons.' },
+        { kind: 'changed', text: '“How colors are mapped” (was “How colour works”): pick any base color to see every semantic token it feeds in the current theme (gradient stops skipped), the components that use them (found from their styles) and live previews — e.g. the input field in its success or error state.' },
+        { kind: 'changed', text: 'US spelling (“color”) across the docs.' },
       ],
     },
   ],
@@ -81,8 +85,8 @@ export const changelog: Record<string, Release[]> = {
       summary: 'First release',
       changes: [
         { kind: 'added', text: 'Lemonn and Zing logos, full or mark only, 24–48px high.' },
-        { kind: 'figma', text: 'Artwork exported from Figma; every colour is a token (Lemonn and honey brand ramps, theme wordmark).' },
-        { kind: 'changed', text: 'The lemon leaf stays on the Lemonn ramp in every product theme (Figma binds it to the theme brand colour).' },
+        { kind: 'figma', text: 'Artwork exported from Figma; every color is a token (Lemonn and honey brand ramps, theme wordmark).' },
+        { kind: 'changed', text: 'The lemon leaf stays on the Lemonn ramp in every product theme (Figma binds it to the theme brand color).' },
       ],
     },
   ],
@@ -137,7 +141,7 @@ export const changelog: Record<string, Release[]> = {
     {
       version: '1.1.0', date: '2026-09-26', commit: '294656a',
       summary: 'Shared icon rendering',
-      changes: [{ kind: 'changed', text: 'Icon slots use the shared MaskIcon, so icons always match the label colour.' }],
+      changes: [{ kind: 'changed', text: 'Icon slots use the shared MaskIcon, so icons always match the label color.' }],
     },
     {
       version: '1.0.0', date: '2026-09-25', commit: 'f48b8a6',
@@ -378,7 +382,7 @@ export const changelog: Record<string, Release[]> = {
   aerobar: [
     {
       version: '1.3.0', date: '2026-09-28', commit: '1718d5d',
-      summary: 'Figma colour update',
+      summary: 'Figma color update',
       changes: [
         { kind: 'figma', text: 'Soft bars: paragraph is content/secondary at 60%.' },
         { kind: 'figma', text: 'Solid Danger and Success use static white text (stays white in dark mode).' },
@@ -439,9 +443,9 @@ export const changelog: Record<string, Release[]> = {
   tag: [
     {
       version: '2.0.0', date: '2026-09-30',
-      summary: 'Figma colour set: profit, loss, zing, processing',
+      summary: 'Figma color set: profit, loss, zing, processing',
       changes: [
-        { kind: 'figma', text: 'Colours follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing.' },
+        { kind: 'figma', text: 'Colors follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing.' },
         { kind: 'added', text: 'profit / loss use indicator/up·down tokens (white text on solid); zing uses the zing accent.' },
         { kind: 'changed', text: 'Renamed green → success, red → error, yellow → warning, orange → processing. The old names still work (deprecated).' },
         { kind: 'figma', text: 'Neutral Secondary / Tertiary background: surface/tertiary → surface/secondary.' },
@@ -467,7 +471,7 @@ export const changelog: Record<string, Release[]> = {
     {
       version: '1.0.0', date: '2026-09-26', commit: '294656a',
       summary: 'First release',
-      changes: [{ kind: 'added', text: 'Primary, secondary and tertiary × 9 colours × 3 sizes, plus disabled.' }],
+      changes: [{ kind: 'added', text: 'Primary, secondary and tertiary × 9 colors × 3 sizes, plus disabled.' }],
     },
   ],
 }

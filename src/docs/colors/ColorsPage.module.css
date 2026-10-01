@@ -24,6 +24,33 @@
   gap: var(--l3-spacing-08);
 }
 
+.viewToggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-16);
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-secondary);
+}
+
+.viewText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+}
+
+.viewLabel {
+  font: var(--l3-text-extrabold-16);
+  color: var(--l3-content-primary);
+}
+
+.viewHint {
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
 .section {
   display: flex;
   flex-direction: column;
@@ -73,7 +100,7 @@
   white-space: nowrap;
 }
 
-/* ---- How colour works: legend + token flow + four rule cards -------------------------------------- */
+/* ---- How color works: legend + token flow + four rule cards -------------------------------------- */
 
 .legend {
   display: flex;

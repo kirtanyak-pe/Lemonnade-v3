@@ -1,7 +1,7 @@
 /*
  * L3 input field & text Box — every value is an --l3-* token.
  * Figma state → CSS: Typing = :focus-within, Typed = has a value, Error/Success = data-status,
- * Disabled = data-disabled. The typing caret (Figma's blinking indicator) is the native caret, coloured.
+ * Disabled = data-disabled. The typing caret (Figma's blinking indicator) is the native caret, colored.
  */
 
 .field {
@@ -157,7 +157,7 @@
   height: var(--l3-icon-size-14);
 }
 
-/* The neutral ⓘ is content/secondary; status icons use the message colour. */
+/* The neutral ⓘ is content/secondary; status icons use the message color. */
 .field:not([data-status]) .helperIcon {
   color: var(--l3-content-secondary);
 }

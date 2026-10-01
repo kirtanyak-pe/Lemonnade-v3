@@ -44,7 +44,7 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Accent groups** (DESIGN_SYSTEM.md 3.1): Brand · Market indicators (profit/loss) · Status (success, warning, error,
   discover, orange) · Sub-brands (us-stock, zing) · Miscellaneous (purple, indigo, teal — exceptional cases only).
   Choose by meaning, never by look.
-- **Tag colours:** `profit` / `loss` for price moves, P&L and buy/sell side; `success` / `error` for outcomes (placed,
+- **Tag colors:** `profit` / `loss` for price moves, P&L and buy/sell side; `success` / `error` for outcomes (placed,
   failed); `processing` for in-progress (open, pending); `warning`, `discover`, `zing` as named. Don't use the old
   names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.
 - **Icon-only Tag / Tab:** `hideLabel` + exactly one icon; the label text is still required (it's the accessible name).
@@ -62,7 +62,7 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
    `src/docs/pages.tsx`). Use real-looking content and cover empty / loading / error states.
 3. **Verify** before saying you're done:
    - `npx tsc -b --noEmit` and `npm run build` pass.
-   - No raw colours in your CSS: `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' <your css>` returns nothing (except
+   - No raw colors in your CSS: `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' <your css>` returns nothing (except
      `rgb(from var(--l3-…))`).
    - Look at it at 360 / 392 / 412 in light and dark (`npm run dev`, then the docs page or demo).
 4. **Report** what you built, what you verified, and any rule you had to bend or any `PENDING` decision you hit.

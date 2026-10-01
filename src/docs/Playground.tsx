@@ -118,7 +118,7 @@ function ControlInput({ control, value, onChange }: { control: Control; value: s
         <span className={styles.controlLabel} aria-hidden="true">{label}{propName && <> {propName}</>}</span>
         <Tabs
           appearance="pill"
-          size="sm"
+          size="md"
           className={styles.controlChoices}
           aria-label={label}
           items={control.options.map((o) => ({ value: o, label: o }))}

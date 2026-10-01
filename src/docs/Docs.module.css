@@ -1,5 +1,5 @@
 /*
- * Docs site chrome (not a product component). Colours, type, spacing and radius
+ * Docs site chrome (not a product component). Colors, type, spacing and radius
  * are --l3-* tokens so it follows the theme switcher; the few layout widths
  * (rail, content column, phone frame) are page-layout constants.
  */
@@ -234,7 +234,7 @@
   cursor: pointer;
 }
 
-/* Three-line menu icon drawn with the current text colour. */
+/* Three-line menu icon drawn with the current text color. */
 .menuIcon {
   width: var(--l3-size-20);
   height: var(--l3-spacing-02);
@@ -831,6 +831,16 @@ legend.sectionLabel {
 /* ---- Small screens: rail becomes a drawer ---------------------------------- */
 
 @media (max-width: 900px) {
+  /* The sidebar is a drawer from here down and has the same links, so drop the top nav to fit the header. */
+  .topNav {
+    display: none;
+  }
+
+  /* Brand switcher shows just its color dot (the menu names the brands). */
+  .brandTriggerLabel {
+    display: none;
+  }
+
   .body {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -882,10 +892,6 @@ legend.sectionLabel {
   .header {
     padding: 0 var(--l3-spacing-16);
     gap: var(--l3-spacing-12);
-  }
-
-  .topNav {
-    display: none;
   }
 
   .themeControls {
@@ -1028,7 +1034,7 @@ legend.sectionLabel {
   outline-offset: var(--l3-spacing-02);
 }
 
-/* Figma's mark as three stacked dots of brand colour — decorative. */
+/* Figma's mark as three stacked dots of brand color — decorative. */
 .figmaMark {
   width: var(--l3-spacing-12);
   height: var(--l3-spacing-12);
@@ -1596,7 +1602,7 @@ legend.sectionLabel {
 .hero {
   padding: var(--l3-spacing-32);
   border-radius: var(--l3-radius-24);
-  /* Large container: page colour + hairline; only the small cards inside are grey. */
+  /* Large container: page color + hairline; only the small cards inside are grey. */
   background: var(--l3-surface-default);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }

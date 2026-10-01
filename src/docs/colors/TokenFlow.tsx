@@ -1,17 +1,21 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { Button } from '../../components/Button'
-import { Icon } from '../../components/Icon'
-import { Tag } from '../../components/Tag'
-import { msCheckCircle } from '../../icons/material'
-import type { ThemeToken } from '../../tokens'
-import { aliasOf, baseVar, cssVar, displayName } from './colorData'
+import { Aerobar, type AerobarType } from '../../components/Aerobar'
+import { Button, type ButtonVariant } from '../../components/Button'
+import { Tabs } from '../../components/Tabs'
+import { Tag, type TagColor } from '../../components/Tag'
+import { TextField } from '../../components/TextField'
+import { baseColorVars, themeTokenVars, type ThemeToken } from '../../tokens'
+import { defaults } from '../Playground'
+import { playgrounds } from '../playgrounds'
+import { aliasOf, allTokens, baseVar, cssVar, displayName, isToken } from './colorData'
 import styles from './TokenFlow.module.css'
 
-// Token flow: base → semantic → component → UI, live for the current theme. Built around green, which
-// both the market indicator (profit) and the status (success) accents use.
+// "How colors are mapped": pick a base color and see, for the current theme, every semantic token that
+// resolves to it (gradient-stop-0 skipped), the components whose styles use those tokens (found by scanning
+// src/components/**/*.module.css), and a live preview. Base → Semantic → Component → UI.
 
 type Col = 'base' | 'semantic' | 'component' | 'ui'
-type Node = { id: string; col: Col; label: string; note?: string; swatch?: string; kind?: 'fill' | 'border'; ui?: ReactNode; group?: string }
+type Node = { id: string; col: Col; label: string; note?: string; swatch?: string; kind?: 'fill' | 'border'; ui?: ReactNode }
 type Edge = { from: string; to: string }
 
 const columns: { id: Col; label: string }[] = [
@@ -21,66 +25,191 @@ const columns: { id: Col; label: string }[] = [
   { id: 'ui', label: 'UI' },
 ]
 
-/** Semantic tokens in the example — surface, content and border for profit (indicator up) and success. */
-const semanticTokens: { token: ThemeToken; group: string }[] = [
-  { token: 'surface/accent/indicator/up-default', group: 'Market indicator' },
-  { token: 'content/accent/indicator/up-default', group: 'Market indicator' },
-  { token: 'surface/accent/success-light', group: 'Status' },
-  { token: 'content/accent/success-default', group: 'Status' },
-  { token: 'border/accent/success-light', group: 'Status' },
-]
+// ---- Which tokens each component's CSS reads -------------------------------------------------------------
 
-const baseCss = (alias: string) => {
-  const name = alias.split(' ')[0]
-  return baseVar(/^(charcoal|slate|sage|white|black)\//.test(name) ? `neutral/${name}` : `hue/${name}`)
+const cssSources = import.meta.glob<string>('../../components/**/*.module.css', { query: '?raw', import: 'default', eager: true })
+const varToToken = new Map<string, ThemeToken>(Object.entries(themeTokenVars).map(([t, v]) => [v as string, t as ThemeToken]))
+const componentPages: Record<string, { label: string; page: string }> = {
+  Actionbar: { label: 'Actionbar', page: 'actionbar' },
+  Aerobar: { label: 'Aerobar', page: 'aerobar' },
+  BottomNavbar: { label: 'Bottom navbar', page: 'bottom-navbar' },
+  BottomSheet: { label: 'Bottom sheet', page: 'bottom-sheet' },
+  Button: { label: 'Button', page: 'button' },
+  ButtonGroup: { label: 'Button dock', page: 'button-group' },
+  Card: { label: 'Card', page: 'card' },
+  Checkbox: { label: 'Checkbox & radio', page: 'checkbox' },
+  EmptyState: { label: 'Empty state', page: 'empty-state' },
+  ListCell: { label: 'List cell', page: 'list-cell' },
+  Switch: { label: 'Toggle switch', page: 'switch' },
+  Tabs: { label: 'Tabs', page: 'tabs' },
+  Tag: { label: 'Tag', page: 'tag' },
+  TextField: { label: 'Input field', page: 'text-field' },
+}
+const componentUses: { folder: string; tokens: Set<ThemeToken> }[] = Object.entries(cssSources).flatMap(([path, css]) => {
+  const folder = path.split('/').slice(-2, -1)[0]
+  if (!componentPages[folder]) return []
+  const tokens = new Set<ThemeToken>()
+  for (const m of css.matchAll(/--l3-[a-z0-9-]+/g)) {
+    const t = varToToken.get(m[0])
+    if (t) tokens.add(t)
+  }
+  return [{ folder, tokens }]
+})
+
+// ---- Resolving a token down to its base color ----------------------------------------------------------------
+
+/** Follows aliases (e.g. surface/disabled → surface/inverted → charcoal/900) to the base color path. */
+function resolveBase(token: ThemeToken, theme: string): string | null {
+  let current: string = token
+  for (let i = 0; i < 6; i++) {
+    const next = aliasOf(current, theme).split(' ')[0]
+    if (!next) return null
+    if (isToken(next)) { current = next; continue }
+    return next
+  }
+  return null
+}
+const hueOf = (base: string) => (base.startsWith('brand/') ? base.split('/').slice(0, 2).join('/') : base.split('/')[0])
+
+const baseCss = (base: string) =>
+  baseVar(/^(charcoal|slate|sage|white|black)\//.test(base) ? `neutral/${base}` : `hue/${base}`)
+
+// ---- Color choices -----------------------------------------------------------------------------------------
+
+const hueLabels: Record<string, string> = {
+  'brand/lemonn': 'Lemonn', 'brand/cspro': 'CS PRO', 'brand/cskuber': 'Kuber',
+  green: 'Green', red: 'Red', blue: 'Blue', yellow: 'Yellow', honey: 'Honey', tangerine: 'Orange',
+  purple: 'Purple', indigo: 'Indigo', teal: 'Teal',
+  charcoal: 'Charcoal', slate: 'Slate', sage: 'Sage', white: 'White', black: 'Black',
+}
+const allHues = Object.keys(hueLabels)
+
+/** A representative swatch for the picker (step 500, or the single step). */
+const hueSwatch = (hue: string) => {
+  const name = Object.keys(baseColorVars).find((n) => n.replace(/^(hue|neutral)\//, '').startsWith(hue + '/') && /\/(500|base)$/.test(n))
+  return name ? `var(${(baseColorVars as Record<string, string>)[name]})` : undefined
 }
 
-function buildGraph(themeId: string) {
+// ---- Previews ------------------------------------------------------------------------------------------------
+
+const familyOf = (token: string) => /\/accent\/(.+)-(light|default)$/.exec(token)?.[1]
+const tagColorOf: Record<string, TagColor> = {
+  'indicator/up': 'profit', 'indicator/down': 'loss', success: 'success', error: 'error', warning: 'warning',
+  discover: 'discover', orange: 'processing', zing: 'zing', purple: 'purple', indigo: 'indigo', teal: 'teal',
+}
+const aerobarTypeOf: Record<string, AerobarType> = { success: 'success', error: 'danger', warning: 'warning', discover: 'discover' }
+
+function preview(folder: string, tokens: ThemeToken[], buttonVariants: string[]): ReactNode {
+  const families = [...new Set(tokens.map(familyOf).filter(Boolean))] as string[]
+  if (folder === 'Tag') {
+    const colors = families.map((f) => tagColorOf[f]).filter(Boolean).slice(0, 3)
+    const list: TagColor[] = colors.length ? colors : ['neutral']
+    return <span className={styles.pair}>{list.map((c) => <Tag key={c} size="md" variant="secondary" color={c}>{c}</Tag>)}</span>
+  }
+  if (folder === 'Button' && buttonVariants.length) {
+    return <span className={styles.pair}>{buttonVariants.slice(0, 3).map((v) => <Button key={v} size="sm" variant={v as ButtonVariant} tabIndex={-1}>{v[0].toUpperCase() + v.slice(1)}</Button>)}</span>
+  }
+  if (folder === 'Aerobar') {
+    const type = families.map((f) => aerobarTypeOf[f]).find(Boolean) ?? 'primary'
+    return <span className={styles.toast}><Aerobar type={type} heading="Order placed" /></span>
+  }
+  // Input field: show the state that actually uses this color — success (green) or error (red).
+  if (folder === 'TextField') {
+    const status = families.includes('success') ? 'success' : families.includes('error') ? 'error' : undefined
+    if (status) {
+      return (
+        <span className={styles.field}>
+          <TextField
+            label="PAN"
+            defaultValue={status === 'success' ? 'ABCDE1234F' : 'ABCDE123'}
+            status={status}
+            helperText={status === 'success' ? 'PAN verified' : 'Enter a valid 10-character PAN'}
+            readOnly
+            tabIndex={-1}
+          />
+        </span>
+      )
+    }
+  }
+  const def = playgrounds[componentPages[folder].page]
+  if (!def) return componentPages[folder].label
+  return <span className={styles.thumb} inert><span className={styles.thumbInner}>{def.render({ ...defaults(def), ...def.thumbnail })}</span></span>
+}
+
+// ---- Graph -------------------------------------------------------------------------------------------------
+
+function buildGraph(themeId: string, hue: string) {
   const nodes: Node[] = []
   const edges: Edge[] = []
   const add = (n: Node) => { if (!nodes.some((x) => x.id === n.id)) nodes.push(n) }
 
-  // The Buy button's surface points at a semantic token that differs per brand (Lemonn: brand lime).
-  const buyToken = 'component/button/buy/surface' as ThemeToken
-  const buySemantic = aliasOf(buyToken, themeId).split(' ')[0] as ThemeToken
-  const semantics = [...semanticTokens]
-  if (!semantics.some((s) => s.token === buySemantic)) semantics.unshift({ token: buySemantic, group: 'Brand' })
+  // Semantic tokens (and component tokens, kept for the Button) that resolve to this hue.
+  const semantic: ThemeToken[] = []
+  const componentTokens: ThemeToken[] = []
+  for (const t of allTokens) {
+    if (t.startsWith('gradient-stop-0/')) continue
+    const base = resolveBase(t, themeId)
+    if (!base || hueOf(base) !== hue) continue
+    if (t.startsWith('component/')) componentTokens.push(t)
+    else semantic.push(t)
+  }
+  const order = ['surface/', 'content/', 'border/', 'static/', 'extra/']
+  semantic.sort((a, b) => order.findIndex((p) => a.startsWith(p)) - order.findIndex((p) => b.startsWith(p)))
 
-  for (const { token, group } of semantics) {
-    const base = aliasOf(token, themeId).split(' ')[0]
-    const baseId = `base:${base}`
-    add({ id: baseId, col: 'base', label: base.replaceAll('/', '-'), swatch: `var(${baseCss(base)})` })
-    add({ id: token, col: 'semantic', label: displayName(token), note: group, swatch: `var(${cssVar(token)})`, kind: token.startsWith('border/') ? 'border' : 'fill' })
-    edges.push({ from: baseId, to: token })
+  for (const t of semantic) {
+    const base = resolveBase(t, themeId)!
+    const alias = aliasOf(t, themeId)
+    const direct = alias.split(' ')[0]
+    const via = isToken(direct) ? `via ${displayName(direct)}` : alias.includes('·') ? alias.split(' · ')[1] : undefined
+    add({ id: `base:${base}`, col: 'base', label: base.replaceAll('/', '-'), swatch: `var(${baseCss(base)})` })
+    add({ id: t, col: 'semantic', label: displayName(t), note: via, swatch: `var(${cssVar(t)})`, kind: t.startsWith('border/') ? 'border' : 'fill' })
+    edges.push({ from: `base:${base}`, to: t })
   }
 
-  // Component layer
-  add({ id: 'cmp:buy', col: 'component', label: 'button-buy-surface', note: 'Button · buy', swatch: `var(${cssVar(buyToken)})` })
-  edges.push({ from: buySemantic, to: 'cmp:buy' })
-  add({ id: 'cmp:tag-profit', col: 'component', label: 'Tag · profit (solid)', note: 'Tag', swatch: `var(${cssVar('surface/accent/indicator/up-default')})` })
-  edges.push({ from: 'surface/accent/indicator/up-default', to: 'cmp:tag-profit' })
-  add({ id: 'cmp:tag-success', col: 'component', label: 'Tag · success (soft)', note: 'Tag', swatch: `var(${cssVar('surface/accent/success-light')})` })
-  for (const t of ['surface/accent/success-light', 'content/accent/success-default', 'border/accent/success-light']) edges.push({ from: t, to: 'cmp:tag-success' })
+  // Components that read those tokens directly, or (Button) through its component tokens.
+  const semanticSet = new Set(semantic)
+  for (const { folder, tokens } of componentUses) {
+    const used = [...tokens].filter((t) => semanticSet.has(t))
+    const viaComponent = [...tokens].filter((t) => componentTokens.includes(t))
+    const sources = new Set<ThemeToken>(used)
+    for (const ct of viaComponent) {
+      const target = aliasOf(ct, themeId).split(' ')[0]
+      if (isToken(target) && semanticSet.has(target)) sources.add(target)
+    }
+    if (!sources.size) continue
+    const variants = [...new Set(viaComponent.map((t) => t.split('/')[2]))].filter(Boolean)
+    const id = `cmp:${folder}`
+    add({
+      id, col: 'component', label: componentPages[folder].label,
+      note: folder === 'Button' && variants.length ? `variants: ${variants.join(' · ')}` : `${sources.size} token${sources.size > 1 ? 's' : ''}`,
+    })
+    for (const s of sources) edges.push({ from: s, to: id })
+    const ui = `ui:${folder}`
+    add({ id: ui, col: 'ui', label: componentPages[folder].label, ui: preview(folder, [...sources], variants) })
+    edges.push({ from: id, to: ui })
+  }
 
-  // UI layer — components, plus text that uses a semantic token directly (no component in between).
-  add({ id: 'ui:buy', col: 'ui', label: 'Buy button', ui: <Button size="sm" variant="buy" tabIndex={-1}>Buy</Button> })
-  edges.push({ from: 'cmp:buy', to: 'ui:buy' })
-  add({ id: 'ui:tag-profit', col: 'ui', label: 'Profit tag', ui: <Tag size="md" variant="primary" color="profit">+2.4%</Tag> })
-  edges.push({ from: 'cmp:tag-profit', to: 'ui:tag-profit' })
-  add({ id: 'ui:tag-success', col: 'ui', label: 'Success tag', ui: <Tag size="md" variant="secondary" color="success">Placed</Tag> })
-  edges.push({ from: 'cmp:tag-success', to: 'ui:tag-success' })
-  add({ id: 'ui:price', col: 'ui', label: 'Price change text', ui: <span className={styles.priceText}>+₹1,240.50</span> })
-  edges.push({ from: 'content/accent/indicator/up-default', to: 'ui:price' })
-  add({ id: 'ui:done', col: 'ui', label: 'Success message', ui: <span className={styles.doneText}><Icon icon={msCheckCircle} size={16} /> Order placed</span> })
-  edges.push({ from: 'content/accent/success-default', to: 'ui:done' })
+  return { nodes, edges, count: semantic.length }
+}
 
-  return { nodes, edges }
+/** Hues that appear in the current theme (so the picker only offers colors that are actually mapped). */
+function usedHues(themeId: string) {
+  const used = new Set<string>()
+  for (const t of allTokens) {
+    if (t.startsWith('gradient-stop-0/')) continue
+    const base = resolveBase(t, themeId)
+    if (base) used.add(hueOf(base))
+  }
+  return allHues.filter((h) => used.has(h))
 }
 
 type Path = { d: string; from: string; to: string; ui: boolean }
 
 export function TokenFlow({ themeId, themeKey }: { themeId: string; themeKey: string }) {
-  const { nodes, edges } = useMemo(() => buildGraph(themeId), [themeId])
+  const hues = useMemo(() => usedHues(themeId), [themeId])
+  const [picked, setPicked] = useState('green')
+  const hue = hues.includes(picked) ? picked : hues[0]
+  const { nodes, edges, count } = useMemo(() => buildGraph(themeId, hue), [themeId, hue])
   const wrap = useRef<HTMLDivElement>(null)
   const [paths, setPaths] = useState<Path[]>([])
   const [size, setSize] = useState({ w: 0, h: 0 })
@@ -110,68 +239,76 @@ export function TokenFlow({ themeId, themeKey }: { themeId: string; themeKey: st
     return () => ro.disconnect()
   }, [measure, themeKey])
 
-  // Everything upstream and downstream of the hovered node.
+  // The hovered node, everything it comes from (upstream) and everything built on it (downstream).
   const lit = useMemo(() => {
     if (!active) return null
     const set = new Set([active])
-    let grew = true
-    while (grew) {
-      grew = false
+    const walk = (id: string, dir: 'up' | 'down') => {
       for (const e of edges) {
-        if (set.has(e.from) && !set.has(e.to) && !e.from.startsWith('base:')) { set.add(e.to); grew = true }
-        if (set.has(e.to) && !set.has(e.from) && !e.to.startsWith('ui:')) { set.add(e.from); grew = true }
+        const next = dir === 'up' ? (e.to === id ? e.from : null) : (e.from === id ? e.to : null)
+        if (next && !set.has(next)) { set.add(next); walk(next, dir) }
       }
     }
-    // From a base node, follow everything downstream.
-    if (active.startsWith('base:')) {
-      grew = true
-      while (grew) {
-        grew = false
-        for (const e of edges) if (set.has(e.from) && !set.has(e.to)) { set.add(e.to); grew = true }
-      }
-    }
+    walk(active, 'up')
+    walk(active, 'down')
     return set
   }, [active, edges])
 
   return (
-    <div className={styles.scroll}>
-      <div ref={wrap} className={styles.flow} data-has-active={lit ? '' : undefined}>
-        <svg className={styles.lines} width={size.w} height={size.h} aria-hidden="true">
-          {paths.map((p, i) => (
-            <path key={i} d={p.d} className={styles.line} data-ui={p.ui || undefined} data-lit={lit && lit.has(p.from) && lit.has(p.to) ? '' : undefined} />
+    <div className={styles.wrapAll}>
+      <div className={styles.picker}>
+        <span className={styles.pickerLabel}>Color</span>
+        <Tabs
+          aria-label="Base color"
+          appearance="pill"
+          size="md"
+          items={hues.map((h) => ({ value: h, label: hueLabels[h], iconLeft: <span className={styles.pickerDot} style={{ background: hueSwatch(h) }} /> }))}
+          value={hue}
+          onChange={setPicked}
+        />
+        <span className={styles.pickerCount}>{count} semantic token{count === 1 ? '' : 's'} · {nodes.filter((n) => n.col === 'component').length} components</span>
+      </div>
+
+      <div className={styles.scroll}>
+        <div ref={wrap} className={styles.flow} data-has-active={lit ? '' : undefined}>
+          <svg className={styles.lines} width={size.w} height={size.h} aria-hidden="true">
+            {paths.map((p, i) => (
+              <path key={i} d={p.d} className={styles.line} data-ui={p.ui || undefined} data-lit={lit && lit.has(p.from) && lit.has(p.to) ? '' : undefined} />
+            ))}
+          </svg>
+          {columns.map((c) => (
+            <div key={c.id} className={styles.column}>
+              <span className={styles.colLabel}>{c.label}</span>
+              <ul className={styles.nodes}>
+                {nodes.filter((n) => n.col === c.id).map((n) => (
+                  <li
+                    key={n.id}
+                    data-node={n.id}
+                    className={c.id === 'ui' ? styles.uiNode : styles.node}
+                    data-lit={lit?.has(n.id) ? '' : undefined}
+                    onPointerEnter={() => setActive(n.id)}
+                    onPointerLeave={() => setActive(null)}
+                    onFocus={() => setActive(n.id)}
+                    onBlur={() => setActive(null)}
+                    tabIndex={0}
+                    aria-label={n.label}
+                  >
+                    {n.ui ?? (
+                      <>
+                        {n.swatch && <span className={styles.swatch} data-kind={n.kind ?? 'fill'} style={{ color: n.swatch }} aria-hidden="true" />}
+                        <span className={styles.nodeText}>
+                          <code className={styles.nodeLabel}>{n.label}</code>
+                          {n.note && <span className={styles.nodeNote}>{n.note}</span>}
+                        </span>
+                      </>
+                    )}
+                  </li>
+                ))}
+                {c.id === 'component' && !nodes.some((n) => n.col === 'component') && <li className={styles.emptyNote}>No component uses these tokens yet.</li>}
+              </ul>
+            </div>
           ))}
-        </svg>
-        {columns.map((c) => (
-          <div key={c.id} className={styles.column}>
-            <span className={styles.colLabel}>{c.label}</span>
-            <ul className={styles.nodes}>
-              {nodes.filter((n) => n.col === c.id).map((n) => (
-                <li
-                  key={n.id}
-                  data-node={n.id}
-                  className={c.id === 'ui' ? styles.uiNode : styles.node}
-                  data-lit={lit?.has(n.id) ? '' : undefined}
-                  onPointerEnter={() => setActive(n.id)}
-                  onPointerLeave={() => setActive(null)}
-                  onFocus={() => setActive(n.id)}
-                  onBlur={() => setActive(null)}
-                  tabIndex={0}
-                  aria-label={n.label}
-                >
-                  {n.ui ?? (
-                    <>
-                      <span className={styles.swatch} data-kind={n.kind ?? 'fill'} style={{ color: n.swatch }} aria-hidden="true" />
-                      <span className={styles.nodeText}>
-                        <code className={styles.nodeLabel}>{n.label}</code>
-                        {n.note && <span className={styles.nodeNote}>{n.note}</span>}
-                      </span>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        </div>
       </div>
     </div>
   )

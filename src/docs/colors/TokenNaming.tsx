@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Tabs } from '../../components/Tabs'
 import styles from './TokenNaming.module.css'
 
-// Token naming anatomy for the Colors page. Parts are coloured with the Miscellaneous accents
+// Token naming anatomy for the Colors page. Parts are colored with the Miscellaneous accents
 // (categorical use is exactly what that group is for).
 
 type PartKind = 'namespace' | 'tier' | 'property' | 'group' | 'intent' | 'modifier' | 'component' | 'variant' | 'state'
@@ -80,7 +80,7 @@ const examples: Example[] = [
 const glossary: { kind: PartKind; values: string; note: string }[] = [
   { kind: 'namespace', values: 'l3', note: 'Every Lemonnade V3 token starts with it (--l3-…), so it never clashes with other CSS.' },
   { kind: 'property', values: 'surface · content · border', note: 'What it paints: a fill, text and icons, or an outline.' },
-  { kind: 'group', values: 'accent (semantic) · hue / neutral (base)', note: 'Optional. Marks a colour family; neutrals have none.' },
+  { kind: 'group', values: 'accent (semantic) · hue / neutral (base)', note: 'Optional. Marks a color family; neutrals have none.' },
   { kind: 'intent', values: 'brand · indicator-up · indicator-down · success · warning · error · discover · orange · us-stock · zing · purple · indigo · teal', note: 'The meaning — see Accent groups.' },
   { kind: 'modifier', values: 'neutrals: default · primary · secondary · tertiary · quaternary · inverted · disabled · overlay — accents: light · default', note: 'Level or emphasis within the property.' },
   { kind: 'component', values: 'button · state-layer', note: 'Component tokens only.' },
@@ -115,7 +115,7 @@ export function TokenNaming() {
 
   return (
     <div className={styles.wrap}>
-      <Tabs aria-label="Token type" appearance="pill" size="sm" items={examples.map(({ value, label }) => ({ value, label }))} value={value} onChange={setValue} />
+      <Tabs aria-label="Token type" appearance="pill" size="md" items={examples.map(({ value, label }) => ({ value, label }))} value={value} onChange={setValue} />
 
       <div className={styles.card}>
         <Anatomy example={example} />
@@ -130,7 +130,7 @@ export function TokenNaming() {
       <ul className={styles.rules}>
         <li><strong>Order is fixed:</strong> namespace · (component · variant) · property · (group · intent) · modifier · (state).</li>
         <li><strong>Lowercase, words joined by dashes.</strong> Figma separates parts with “/”, CSS with “-”.</li>
-        <li><strong>Name by role, never by colour:</strong> <code>content-secondary</code>, not <code>grey-60</code>. Only the base palette names colours.</li>
+        <li><strong>Name by role, never by color:</strong> <code>content-secondary</code>, not <code>grey-60</code>. Only the base palette names colors.</li>
         <li><strong>Leave out what's default:</strong> no state = default state; neutrals have no group or intent.</li>
       </ul>
 

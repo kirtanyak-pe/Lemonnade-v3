@@ -39,7 +39,7 @@
   align-items: flex-start;
 }
 
-/* Each part: the text in a soft box, a stick, and its label — coloured by kind (Miscellaneous accents). */
+/* Each part: the text in a soft box, a stick, and its label — colored by kind (Miscellaneous accents). */
 .part {
   --part-soft: var(--l3-surface-secondary);
   --part-border: var(--l3-border-intense);

@@ -44,7 +44,7 @@ function ContrastToggle() {
 
 /**
  * The brand's own accent, rendered inside that brand's theme (data-product) so the token resolves
- * to its colour — no hard-coded brand hexes.
+ * to its color — no hard-coded brand hexes.
  */
 function BrandSwatch({ product }: { product: Product }) {
   return <span className={styles.brandSwatch} data-product={product} data-mode={productModes[product][0]} aria-hidden="true" />

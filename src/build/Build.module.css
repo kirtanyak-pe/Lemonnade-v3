@@ -415,7 +415,7 @@
   outline-offset: 2px;
 }
 
-/* Parts sit on a coloured button, so they use the discover accent to stay visible on any button style. */
+/* Parts sit on a colored button, so they use the discover accent to stay visible on any button style. */
 .part {
   display: inline-flex;
   align-items: center;
@@ -454,7 +454,7 @@
   color: var(--l3-content-primary);
 }
 
-/* Colour styles: one swatch per Lemonnade variant, painted with that variant's own tokens. */
+/* Color styles: one swatch per Lemonnade variant, painted with that variant's own tokens. */
 .swatchDot {
   width: var(--l3-size-20);
   height: var(--l3-size-20);
