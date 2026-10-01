@@ -53,26 +53,29 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
 
   return (
     <article className={styles.article}>
-      <div className={styles.breadcrumb}>
-        {page.group} / {page.title}
-      </div>
-      <div className={styles.titleRow}>
-        <h1>{page.title}</h1>
-        {page.status && <Tag variant="secondary" color="success" size="lg">{page.status}</Tag>}
-        {currentVersion(page.id) && (
-          <a className={styles.versionLink} href={href(page.id, 'whats-new')} aria-label={`Version ${currentVersion(page.id)} — see what’s new`}>
-            <Tag variant="secondary" color="neutral" size="lg">v{currentVersion(page.id)}</Tag>
-          </a>
-        )}
-        {page.figmaNodeId && (
-          <a className={styles.figmaLink} href={figmaUrl(page.figmaNodeId)} target="_blank" rel="noreferrer">
-            <span className={styles.figmaMark} aria-hidden="true" />
-            Open in Figma
-            <span className={styles.visuallyHidden}> (opens in a new tab)</span>
-          </a>
-        )}
-      </div>
-      <p className={styles.lede}>{page.description}</p>
+      {/* Inverted header card: focuses the page on its title. */}
+      <header className={styles.pageHeader}>
+        <div className={styles.breadcrumb}>
+          {page.group} / {page.title}
+        </div>
+        <div className={styles.titleRow}>
+          <h1>{page.title}</h1>
+          {page.status && <Tag variant="secondary" color="success" size="lg">{page.status}</Tag>}
+          {currentVersion(page.id) && (
+            <a className={styles.versionLink} href={href(page.id, 'whats-new')} aria-label={`Version ${currentVersion(page.id)} — see what’s new`}>
+              <Tag variant="secondary" color="neutral" size="lg">v{currentVersion(page.id)}</Tag>
+            </a>
+          )}
+          {page.figmaNodeId && (
+            <a className={styles.figmaLink} href={figmaUrl(page.figmaNodeId)} target="_blank" rel="noreferrer">
+              <span className={styles.figmaMark} aria-hidden="true" />
+              Open in Figma
+              <span className={styles.visuallyHidden}> (opens in a new tab)</span>
+            </a>
+          )}
+        </div>
+        <p className={styles.lede}>{page.description}</p>
+      </header>
 
       {tabs.length > 0 && (
         <nav className={styles.pageTabs} aria-label={`${page.title} sections`}>

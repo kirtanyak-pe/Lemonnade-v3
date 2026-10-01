@@ -334,6 +334,46 @@
   margin: 0 auto;
 }
 
+/* Page header: an inverted card (surface/inverted + content/inverted) on every docs page. */
+.pageHeader {
+  padding: var(--l3-spacing-32);
+  border-radius: var(--l3-radius-24);
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+}
+
+.pageHeader .breadcrumb,
+.pageHeader .lede {
+  color: var(--l3-content-inverted-secondary);
+}
+
+.pageHeader .titleRow h1 {
+  color: var(--l3-content-inverted);
+}
+
+.pageHeader .figmaLink {
+  box-shadow: inset 0 0 0 1px var(--l3-content-inverted-secondary);
+  color: var(--l3-content-inverted);
+}
+
+@media (hover: hover) {
+  .pageHeader .figmaLink:hover {
+    background: var(--l3-state-layer-light-hover);
+    box-shadow: inset 0 0 0 1px var(--l3-content-inverted);
+  }
+}
+
+.pageHeader :is(.figmaLink, .versionLink):focus-visible {
+  outline-color: var(--l3-content-inverted);
+}
+
+@media (max-width: 640px) {
+  .pageHeader {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+    border-radius: var(--l3-radius-16);
+  }
+}
+
 .breadcrumb {
   font: var(--l3-text-semibold-14);
   color: var(--l3-content-secondary);
