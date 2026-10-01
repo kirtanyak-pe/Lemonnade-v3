@@ -41,38 +41,42 @@ export const allTokens = Object.keys(themeTokenVars) as ThemeToken[]
 
 // ---- Semantic roles ---------------------------------------------------------------------------
 
-export type Role = { token: ThemeToken; use: string }
+/** `role` is a short display label shown in brackets after the name — presentation only, not part of the token. */
+export type Role = { token: ThemeToken; role: string; use: string }
+
+/** Display form of a token name: dashes instead of slashes (surface/default → surface-default). */
+export const displayName = (token: string) => token.replaceAll('/', '-')
 
 export const surfaces: Role[] = [
-  { token: 'surface/default', use: 'Screen background — the page everything sits on.' },
-  { token: 'surface/primary', use: 'Raised surfaces: clickable cards, sheets, bars, chips. Same as default in light mode — add border/light.' },
-  { token: 'surface/secondary', use: 'Subtle fills inside a surface: inner panels, input wells, neutral soft tags.' },
-  { token: 'surface/tertiary', use: 'Stronger subtle fill: selected or pressed neutral areas.' },
-  { token: 'surface/quaternary', use: 'Strongest neutral fill, e.g. an off switch track.' },
-  { token: 'surface/inverted', use: 'High-emphasis fill: primary button, solid neutral tag, selected chip.' },
-  { token: 'surface/disabled', use: 'Fill of disabled controls.' },
-  { token: 'surface/overlay', use: 'Backdrop behind bottom sheets and dialogs.' },
+  { token: 'surface/default', role: 'Screen BG', use: 'Screen background — the page everything sits on.' },
+  { token: 'surface/primary', role: 'Card', use: 'Raised surfaces: clickable cards, sheets, bars, chips. Same as default in light mode — add border/light.' },
+  { token: 'surface/secondary', role: 'Tags / targeted emphasis inside a card', use: 'Tags and targeted emphasis inside a card: inner panels, input wells, neutral soft tags.' },
+  { token: 'surface/tertiary', role: 'Selected / pressed', use: 'Stronger subtle fill: selected or pressed neutral areas.' },
+  { token: 'surface/quaternary', role: 'Strongest fill', use: 'Strongest neutral fill, e.g. an off switch track.' },
+  { token: 'surface/inverted', role: 'Emphasis fill', use: 'High-emphasis fill: primary button, solid neutral tag, selected chip.' },
+  { token: 'surface/disabled', role: 'Disabled', use: 'Fill of disabled controls.' },
+  { token: 'surface/overlay', role: 'Backdrop', use: 'Backdrop behind bottom sheets and dialogs.' },
 ]
 
 export const contents: Role[] = [
-  { token: 'content/primary', use: 'Body text, headings and icons.' },
-  { token: 'content/secondary', use: 'Supporting text: descriptions, labels, meta.' },
-  { token: 'content/tertiary', use: 'Placeholders, hints, least important meta.' },
-  { token: 'content/inverted', use: 'Text and icons on inverted surfaces.' },
-  { token: 'content/inverted-secondary', use: 'Supporting text on inverted surfaces.' },
-  { token: 'content/disabled', use: 'Disabled text and icons.' },
+  { token: 'content/primary', role: 'Text & icons', use: 'Body text, headings and icons.' },
+  { token: 'content/secondary', role: 'Supporting text', use: 'Supporting text: descriptions, labels, meta.' },
+  { token: 'content/tertiary', role: 'Hints & placeholders', use: 'Placeholders, hints, least important meta.' },
+  { token: 'content/inverted', role: 'On inverted', use: 'Text and icons on inverted surfaces.' },
+  { token: 'content/inverted-secondary', role: 'Supporting, on inverted', use: 'Supporting text on inverted surfaces.' },
+  { token: 'content/disabled', role: 'Disabled', use: 'Disabled text and icons.' },
 ]
 
 export const borders: Role[] = [
-  { token: 'border/light', use: 'Default hairline: card outlines, dividers, bar edges.' },
-  { token: 'border/intense', use: 'Stronger outline: inputs, tertiary button, neutral secondary tag.' },
-  { token: 'border/dark', use: 'Highest-emphasis outline: secondary button, focus ring, selected outline.' },
-  { token: 'border/disabled', use: 'Outline of disabled controls.' },
+  { token: 'border/light', role: 'Hairline', use: 'Default hairline: card outlines, dividers, bar edges.' },
+  { token: 'border/intense', role: 'Input & outline', use: 'Stronger outline: inputs, tertiary button, neutral secondary tag.' },
+  { token: 'border/dark', role: 'Emphasis & focus', use: 'Highest-emphasis outline: secondary button, focus ring, selected outline.' },
+  { token: 'border/disabled', role: 'Disabled', use: 'Outline of disabled controls.' },
 ]
 
 export const statics: Role[] = [
-  { token: 'static/white', use: 'Always white, in every theme — e.g. text on profit / loss / sell fills.' },
-  { token: 'static/black', use: 'Always black — e.g. text on the warning fill.' },
+  { token: 'static/white', role: 'Always white', use: 'Always white, in every theme — e.g. text on profit / loss / sell fills.' },
+  { token: 'static/black', role: 'Always black', use: 'Always black — e.g. text on the warning fill.' },
 ]
 
 // ---- Accent families ----------------------------------------------------------------------------

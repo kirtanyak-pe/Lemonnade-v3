@@ -73,66 +73,167 @@
   white-space: nowrap;
 }
 
-/* ---- How colour works -------------------------------------------------------------------------- */
+/* ---- How colour works: a live token chain + four rule cards ------------------------------------- */
 
-.layers {
+.chain {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--l3-size-56) * 4)), 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--l3-spacing-24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chainStep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+/* The semantic layer is the one to use: give it the stronger outline. */
+.chainStep[data-layer='2'] {
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) var(--l3-border-dark);
+}
+
+.chainTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.chainLayer {
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-secondary);
+}
+
+.chainSwatch {
+  height: var(--l3-size-48);
+  border-radius: var(--l3-radius-08);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.chainToken {
+  font: var(--l3-text-bold-14);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+  overflow-wrap: anywhere;
+}
+
+.chainNote {
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
+.chainArrow {
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * var(--l3-spacing-24));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--l3-spacing-24);
+  color: var(--l3-content-tertiary);
+  transform: translateY(-50%);
+}
+
+@media (max-width: 1000px) {
+  .ruleCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .chain {
+    grid-template-columns: 1fr;
+  }
+
+  .chainArrow {
+    top: auto;
+    right: auto;
+    bottom: calc(-1 * var(--l3-spacing-24));
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+}
+
+.ruleCards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--l3-spacing-12);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.layers li {
+.ruleCard {
   display: flex;
-  gap: var(--l3-spacing-12);
-  padding: var(--l3-spacing-16);
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-12);
   border-radius: var(--l3-radius-12);
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-medium-12);
   color: var(--l3-content-secondary);
 }
 
-.layers strong {
+.ruleCard strong {
+  font: var(--l3-text-bold-14);
   color: var(--l3-content-primary);
 }
 
-.layers li > div {
+.ruleVisual {
   display: flex;
-  flex-direction: column;
-  gap: var(--l3-spacing-08);
-}
-
-.layers p {
-  margin: 0;
-}
-
-.layerTag {
-  display: inline-flex;
-  flex: none;
   align-items: center;
-  justify-content: center;
-  width: var(--l3-size-24);
-  height: var(--l3-size-24);
-  border-radius: var(--l3-radius-full);
-  background: var(--l3-surface-inverted);
-  color: var(--l3-content-inverted);
-  font: var(--l3-text-bold-12);
-}
-
-.rules {
-  display: flex;
-  flex-direction: column;
   gap: var(--l3-spacing-08);
-  margin: 0;
-  padding-left: var(--l3-spacing-20);
-  font: var(--l3-text-medium-14);
-  color: var(--l3-content-secondary);
+  height: var(--l3-size-56);
+  margin-bottom: var(--l3-spacing-04);
+  padding: 0 var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-default);
 }
 
-.rules strong {
+.pairDemo {
+  font: var(--l3-text-extrabold-20);
   color: var(--l3-content-primary);
+}
+
+/* White card on the white page, separated only by border/light. */
+.raisedDemo span {
+  width: var(--l3-size-80);
+  height: var(--l3-size-32);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low);
+}
+
+.overlayDemo {
+  position: relative;
+  overflow: hidden;
+  /* Stand-in page content under the backdrop, so the dimming is visible in both modes. */
+  background: repeating-linear-gradient(var(--l3-surface-quaternary) 0 var(--l3-spacing-08), var(--l3-surface-default) 0 var(--l3-spacing-16));
+}
+
+.overlayDemo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--l3-surface-overlay);
+}
+
+.overlayDemo span {
+  position: absolute;
+  right: var(--l3-spacing-12);
+  bottom: 0;
+  left: var(--l3-spacing-12);
+  height: var(--l3-size-24);
+  border-radius: var(--l3-radius-08) var(--l3-radius-08) 0 0;
+  background: var(--l3-surface-primary);
 }
 
 /* ---- Role rows (surface / content / border / static) ------------------------------------------- */
@@ -203,6 +304,11 @@
 .tokenName {
   font: var(--l3-text-bold-14);
   color: var(--l3-content-primary);
+}
+
+.roleTag {
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-secondary);
 }
 
 .use {

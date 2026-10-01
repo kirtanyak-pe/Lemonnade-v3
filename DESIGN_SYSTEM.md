@@ -115,6 +115,30 @@ Accent colours (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come 
   banners), `surface default` for solid fills, `border default` for strong outlines.
 - Text on solid fills: `static/black` on warning, `static/white` on profit / loss, `content/inverted` on the rest.
 
+### 3.2 Token naming
+
+Every token name is built from the same parts, **in this order**:
+
+`--l3` · *(component · variant)* · **property** · *(group · intent)* · **modifier** · *(state)*
+
+| Part | Values |
+|---|---|
+| Namespace | `l3` — always first in CSS (`--l3-…`) |
+| Property | `surface` (fills) · `content` (text, icons) · `border` (outlines) |
+| Group | `accent` for accent colours; none for neutrals (base palette: `hue` / `neutral`) |
+| Intent | `brand` · `indicator-up` · `indicator-down` · `success` · `warning` · `error` · `discover` · `orange` · `us-stock` · `zing` · `purple` · `indigo` · `teal` (see 3.1) |
+| Modifier | Neutrals: `default` · `primary` · `secondary` · `tertiary` · `quaternary` · `inverted` · `disabled` · `overlay`. Accents: `light` · `default` |
+| Component · Variant | Component tokens only: `button` + `primary` … `sell`; `state-layer` + `light` / `dark` |
+| State | Optional: `loading` · `disabled` (state layers: `default` · `hover` · `pressed`). No suffix = default state |
+
+Examples: `--l3-surface-secondary`, `--l3-surface-accent-success-light`, `--l3-button-buy-surface-disabled`,
+`--l3-base-hue-green-500`.
+
+- **Lowercase, words joined with dashes.** Figma separates parts with `/` (`L3/color/surface/accent/success-light`),
+  CSS with `-` (`--l3-surface-accent-success-light`), TS uses the Figma path (`token('surface/accent/success-light')`).
+- **Name by role, never by colour** (`content-secondary`, not `grey-60`). Only the base palette names colours.
+- **Leave out what's default:** no state = default state; neutrals have no group or intent.
+
 <!-- PENDING: paste verbatim from notes -->
 Still waiting for the exact text from your notes on:
 - `surface/*` elevation scale

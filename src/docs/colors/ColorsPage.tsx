@@ -2,15 +2,17 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import { Button } from '../../components/Button'
 import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
+import { Tag } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
-import { msSearch } from '../../icons/material'
+import { msArrowForward, msSearch } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
 import {
   accentGroups, accentSlots, accents, aliasOf, allTokens, baseVar, borders, buttonParts, buttonStates, buttonVariants,
-  contents, cssVar, isToken, opacityScale, ramps, stateLayers, statics, surfaces, themeId, type Role,
+  contents, cssVar, displayName, isToken, opacityScale, ramps, stateLayers, statics, surfaces, themeId, type Role,
 } from './colorData'
 import styles from './ColorsPage.module.css'
+import { TokenNaming } from './TokenNaming'
 
 // ---- Helpers -------------------------------------------------------------------------------------
 
@@ -69,14 +71,16 @@ const matches = (filter: string, ...texts: string[]) => !filter || texts.some((t
 function TokenRow({ role, filter, theme, copy }: { role: Role; filter: string; theme: ReturnType<typeof useThemeKey>; copy: CopyApi }) {
   const [ref, hex] = useResolved(theme.key)
   const v = cssVar(role.token)
-  if (!matches(filter, role.token, role.use)) return null
+  if (!matches(filter, role.token, displayName(role.token), role.role, role.use)) return null
   const copied = copy.copied === `var(${v})`
   return (
     <li className={styles.row} data-token={role.token}>
       <button type="button" className={styles.rowButton} onClick={() => copy.copy(`var(${v})`)} aria-label={`Copy var(${v})`}>
         <span ref={ref} className={styles.chip} data-kind={isBorder(role.token) ? 'border' : 'fill'} style={{ color: `var(${v})` }} aria-hidden="true" />
         <span className={styles.rowText}>
-          <span className={styles.tokenName}>{role.token}</span>
+          <span className={styles.tokenName}>
+            {displayName(role.token)} <span className={styles.roleTag}>({role.role})</span>
+          </span>
           <span className={styles.use}>{role.use}</span>
         </span>
         <span className={styles.rowMeta}>
@@ -89,7 +93,7 @@ function TokenRow({ role, filter, theme, copy }: { role: Role; filter: string; t
 }
 
 function RoleList({ roles, ...rest }: { roles: Role[]; filter: string; theme: ReturnType<typeof useThemeKey>; copy: CopyApi }) {
-  const visible = roles.filter((r) => matches(rest.filter, r.token, r.use))
+  const visible = roles.filter((r) => matches(rest.filter, r.token, displayName(r.token), r.role, r.use))
   if (!visible.length) return <p className={styles.empty}>No tokens match.</p>
   return <ul className={styles.rows}>{roles.map((r) => <TokenRow key={r.token} role={r} {...rest} />)}</ul>
 }
@@ -116,6 +120,7 @@ function MiniChip({ token, theme, copy, label }: { token: ThemeToken; theme: Ret
 
 const sections = [
   { id: 'how', label: 'How colour works' },
+  { id: 'naming', label: 'Token naming' },
   { id: 'surface', label: 'Surface' },
   { id: 'content', label: 'Content' },
   { id: 'border', label: 'Border' },
@@ -136,37 +141,64 @@ function Section({ id, title, lede, children }: { id: string; title: string; led
   )
 }
 
-function HowItWorks() {
+/** One real token followed through the three layers, live for the current theme. */
+function HowItWorks({ theme }: { theme: ReturnType<typeof useThemeKey> }) {
+  // surface/inverted → its base step in this theme (e.g. charcoal/900), and the button token built on it.
+  const baseName = aliasOf('surface/inverted', theme.id).split(' ')[0]
+  const baseCss = baseVar(baseName.startsWith('brand/') ? `hue/${baseName}` : /^(charcoal|slate|sage|white|black)\//.test(baseName) ? `neutral/${baseName}` : `hue/${baseName}`)
+  const steps = [
+    { n: 1, layer: 'Base', token: baseName, cssVar: baseCss, tag: <Tag size="sm" variant="tertiary" color="error">Don't use</Tag>, note: 'Raw ramps. Same in every theme.' },
+    { n: 2, layer: 'Semantic', token: 'surface/inverted', cssVar: cssVar('surface/inverted'), tag: <Tag size="sm" variant="tertiary" color="success">Use in UI</Tag>, note: 'Named by role. Each theme picks the base colour.' },
+    { n: 3, layer: 'Component', token: 'button/primary/surface', cssVar: cssVar('component/button/primary/surface'), tag: <Tag size="sm" variant="tertiary" color="discover">Components only</Tag>, note: 'What a component uses inside.' },
+  ]
   return (
-    <Section id="how" title="How colour works" lede="Three layers, each built from the one below. UI code uses only the middle and top layers.">
-      <ol className={styles.layers}>
-        <li>
-          <span className={styles.layerTag}>1</span>
-          <div>
-            <p><strong>Base palette</strong> — raw ramps (charcoal 50–900, green 50–900…). <em>Never use directly</em>; they don't change with the theme.</p>
-            <code className={styles.inline}>--l3-base-hue-green-500</code>
-          </div>
-        </li>
-        <li>
-          <span className={styles.layerTag}>2</span>
-          <div>
-            <p><strong>Semantic tokens</strong> — named by role (surface, content, border, accent). Each theme points them at different base colours. <em>Use these.</em></p>
-            <code className={styles.inline}>--l3-content-secondary</code>
-          </div>
-        </li>
-        <li>
-          <span className={styles.layerTag}>3</span>
-          <div>
-            <p><strong>Component tokens</strong> — what a component uses internally (button fills, state layers). Use them only when building that component.</p>
-            <code className={styles.inline}>--l3-button-buy-surface</code>
-          </div>
-        </li>
+    <Section id="how" title="How colour works" lede="Three layers. Build UI with semantic tokens.">
+      <ol className={styles.chain} aria-label="Example: how the primary button colour is built">
+        {steps.map((st, i) => (
+          <li key={st.n} className={styles.chainStep} data-layer={st.n}>
+            <div className={styles.chainTop}>
+              <span className={styles.chainLayer}>{st.n} · {st.layer}</span>
+              {st.tag}
+            </div>
+            <span className={styles.chainSwatch} style={{ background: `var(${st.cssVar})` }} aria-hidden="true" />
+            <code className={styles.chainToken}>{displayName(st.token)}</code>
+            <span className={styles.chainNote}>{st.note}</span>
+            {i < steps.length - 1 && <span className={styles.chainArrow} aria-hidden="true"><Icon icon={msArrowForward} size={20} /></span>}
+          </li>
+        ))}
       </ol>
-      <ul className={styles.rules}>
-        <li><strong>Pair by role:</strong> <code>content/*</code> text on <code>surface/*</code> fills; an accent's <code>content</code> on its own <code>surface light</code>.</li>
-        <li><strong>Price vs outcome:</strong> profit / loss (indicator) for price moves and P&amp;L; success / error for results.</li>
-        <li><strong>Light mode:</strong> surface/default and surface/primary are both white — a raised surface needs <code>border/light</code>.</li>
-        <li><strong>Overlays:</strong> backdrops use <code>surface/overlay</code>, never a hand-mixed black.</li>
+
+      <ul className={styles.ruleCards}>
+        <li className={styles.ruleCard}>
+          <div className={styles.ruleVisual} aria-hidden="true">
+            <span className={styles.pairDemo}>Aa</span>
+            <Tag size="sm" variant="secondary" color="discover">Info</Tag>
+          </div>
+          <strong>Pair by role</strong>
+          <span>content on surface · an accent's content on its own light surface</span>
+        </li>
+        <li className={styles.ruleCard}>
+          <div className={styles.ruleVisual} aria-hidden="true">
+            <Tag size="sm" variant="secondary" color="profit">+2.4%</Tag>
+            <Tag size="sm" variant="secondary" color="success">Placed</Tag>
+          </div>
+          <strong>Price ≠ outcome</strong>
+          <span>profit / loss for prices · success / error for results</span>
+        </li>
+        <li className={styles.ruleCard}>
+          <div className={`${styles.ruleVisual} ${styles.raisedDemo}`} aria-hidden="true">
+            <span />
+          </div>
+          <strong>Raised = border</strong>
+          <span>light mode: default and primary are both white — add border/light</span>
+        </li>
+        <li className={styles.ruleCard}>
+          <div className={`${styles.ruleVisual} ${styles.overlayDemo}`} aria-hidden="true">
+            <span />
+          </div>
+          <strong>Overlays</strong>
+          <span>backdrops use surface/overlay</span>
+        </li>
       </ul>
     </Section>
   )
@@ -323,7 +355,7 @@ function MoreTokens({ filter, theme, copy }: { filter: string; theme: ReturnType
           return (
             <div key={n} className={styles.fade} data-token={stop}>
               <span style={{ backgroundImage: `linear-gradient(90deg, var(${cssVar(stop)}), var(${cssVar(end)}))` }} />
-              <code>{stop}</code>
+              <code>{displayName(stop)}</code>
             </div>
           )
         })}
@@ -332,7 +364,7 @@ function MoreTokens({ filter, theme, copy }: { filter: string; theme: ReturnType
         <details className={styles.details}>
           <summary>All {gradients.length} gradient stops</summary>
           <div className={styles.miniGrid}>
-            {gradients.map((t) => <div key={t} className={styles.miniLabelled}><MiniChip token={t} theme={theme} copy={copy} /><code>{t.replace('gradient-stop-0/', '')}</code></div>)}
+            {gradients.map((t) => <div key={t} className={styles.miniLabelled}><MiniChip token={t} theme={theme} copy={copy} /><code>{displayName(t.replace('gradient-stop-0/', ''))}</code></div>)}
           </div>
         </details>
       )}
@@ -415,7 +447,7 @@ function CompareThemes({ filter }: { filter: string }) {
           <tbody>
             {tokens.map((tok) => (
               <tr key={tok}>
-                <th scope="row"><code className={styles.var}>{tok}</code></th>
+                <th scope="row"><code className={styles.var}>{displayName(tok)}</code></th>
                 {allThemes.map((t) => (
                   <td key={`${t.product}-${t.mode}-${t.accessible}`} data-product={t.product} data-mode={t.mode} data-contrast={t.accessible ? 'accessible' : undefined} className={styles.compareCell}>
                     <span className={styles.compareChip} data-kind={isBorder(tok) ? 'border' : 'fill'} style={{ color: `var(${cssVar(tok)})` }} title={`${tok} · ${aliasOf(tok, themeId(t.product, t.mode, t.accessible ? 'accessible' : 'default'))}`} />
@@ -462,7 +494,10 @@ export function ColorsPage() {
         </nav>
       </div>
 
-      <HowItWorks />
+      <HowItWorks theme={theme} />
+      <Section id="naming" title="Token naming" lede="Every name is built from the same parts, in the same order. Read a name left to right: what it paints, then which colour, then how strong.">
+        <TokenNaming />
+      </Section>
       <Section id="surface" title="Surface" lede="Fills behind content, from the page background up to the most emphatic fill.">
         <RoleList roles={surfaces} filter={filter} theme={theme} copy={copy} />
       </Section>

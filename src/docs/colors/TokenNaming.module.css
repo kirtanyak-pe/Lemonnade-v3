@@ -1,0 +1,210 @@
+/* Token naming anatomy — tokens only (1px hairlines are the one literal). */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+
+.card {
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.anatomyScroll {
+  overflow-x: auto;
+  padding: var(--l3-spacing-32) var(--l3-spacing-24) var(--l3-spacing-24);
+}
+
+.anatomy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: max-content;
+  min-width: 100%;
+  margin: 0 auto;
+}
+
+.prefix,
+.sep {
+  padding-top: var(--l3-spacing-04);
+  font: var(--l3-text-bold-20);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-tertiary);
+}
+
+.partGroup {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Each part: the text in a soft box, a stick, and its label — coloured by kind (Miscellaneous accents). */
+.part {
+  --part-soft: var(--l3-surface-secondary);
+  --part-border: var(--l3-border-intense);
+  --part-content: var(--l3-content-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.part[data-kind='property'],
+.dot[data-kind='property'] { --part-soft: var(--l3-surface-accent-discover-light); --part-border: var(--l3-border-accent-discover-default); --part-content: var(--l3-content-accent-discover-default); }
+.part[data-kind='group'],
+.dot[data-kind='group'] { --part-soft: var(--l3-surface-accent-teal-light); --part-border: var(--l3-border-accent-teal-default); --part-content: var(--l3-content-accent-teal-default); }
+.part[data-kind='intent'],
+.dot[data-kind='intent'] { --part-soft: var(--l3-surface-accent-purple-light); --part-border: var(--l3-border-accent-purple-default); --part-content: var(--l3-content-accent-purple-default); }
+.part[data-kind='modifier'],
+.dot[data-kind='modifier'] { --part-soft: var(--l3-surface-accent-orange-light); --part-border: var(--l3-border-accent-orange-default); --part-content: var(--l3-content-accent-orange-default); }
+.part[data-kind='component'],
+.dot[data-kind='component'] { --part-soft: var(--l3-surface-accent-indigo-light); --part-border: var(--l3-border-accent-indigo-default); --part-content: var(--l3-content-accent-indigo-default); }
+.part[data-kind='variant'],
+.dot[data-kind='variant'] { --part-soft: var(--l3-surface-accent-zing-light); --part-border: var(--l3-border-accent-zing-default); --part-content: var(--l3-content-accent-zing-default); }
+.part[data-kind='state'],
+.dot[data-kind='state'] { --part-soft: var(--l3-surface-accent-error-light); --part-border: var(--l3-border-accent-error-default); --part-content: var(--l3-content-accent-error-default); }
+.part[data-kind='tier'],
+.dot[data-kind='tier'] { --part-soft: var(--l3-surface-accent-warning-light); --part-border: var(--l3-border-accent-warning-default); --part-content: var(--l3-content-accent-warning-default); }
+
+.partText {
+  padding: var(--l3-spacing-04) var(--l3-spacing-08);
+  border-radius: var(--l3-radius-08);
+  background: var(--part-soft);
+  box-shadow: inset 0 0 0 1px var(--part-border);
+  font: var(--l3-text-bold-20);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--part-content);
+  white-space: nowrap;
+}
+
+/* Dot at the top, line down to the label. */
+.stick {
+  position: relative;
+  width: var(--l3-spacing-02);
+  height: var(--l3-size-32);
+  margin-top: var(--l3-spacing-12);
+  background: var(--part-border);
+}
+
+.stick::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--l3-spacing-04));
+  left: 50%;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  border-radius: var(--l3-radius-full);
+  background: var(--part-border);
+  transform: translateX(-50%);
+}
+
+.partLabel {
+  padding: var(--l3-spacing-04) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+/* ---- Same token in Figma / CSS / TS ---------------------------------------------------------- */
+
+.forms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--l3-spacing-12);
+  margin: 0;
+}
+
+.forms > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  padding: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+}
+
+.forms dt {
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-secondary);
+}
+
+.forms dd {
+  margin: 0;
+}
+
+.forms code,
+.rules code,
+.glossary code {
+  font: var(--l3-text-semibold-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .forms {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Rules & glossary --------------------------------------------------------------------------- */
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  padding-left: var(--l3-spacing-20);
+  font: var(--l3-text-medium-14);
+  color: var(--l3-content-secondary);
+}
+
+.rules strong {
+  color: var(--l3-content-primary);
+}
+
+.details summary {
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-accent-discover-default);
+  cursor: pointer;
+}
+
+.glossary {
+  width: 100%;
+  margin-top: var(--l3-spacing-12);
+  border-collapse: collapse;
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
+.glossary th,
+.glossary td {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-bottom: 1px solid var(--l3-border-light);
+  text-align: left;
+  vertical-align: top;
+}
+
+.glossary thead th {
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-secondary);
+}
+
+.glossary tbody th {
+  font: var(--l3-text-bold-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+.dot {
+  display: inline-block;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  margin-right: var(--l3-spacing-08);
+  border-radius: var(--l3-radius-full);
+  background: var(--part-border, var(--l3-border-intense));
+}
