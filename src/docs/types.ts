@@ -15,6 +15,8 @@ export type DocPage = {
   overview?: ReactNode
   variants?: ReactNode
   props?: PropRow[]
+  /** Component pages: the options as a tree (Tree tab). */
+  tree?: import('./ComponentTree').ComponentTreeSpec
   figmaNodeId?: string
   source?: string
   /** Named exports to show in the import snippet. */
