@@ -204,7 +204,23 @@
 
 .pair {
   display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--l3-spacing-08);
+}
+
+.uiWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+}
+
+.uiCaption {
+  font: var(--l3-text-medium-10);
+  color: var(--l3-content-secondary);
+  text-align: center;
 }
 
 .field {

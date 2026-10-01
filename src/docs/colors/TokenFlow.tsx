@@ -4,6 +4,7 @@ import { Button, type ButtonVariant } from '../../components/Button'
 import { Tabs } from '../../components/Tabs'
 import { Tag, type TagColor } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
+import { ListCell } from '../../components/ListCell'
 import { baseColorVars, themeTokenVars, type ThemeToken } from '../../tokens'
 import { defaults } from '../Playground'
 import { playgrounds } from '../playgrounds'
@@ -15,7 +16,7 @@ import styles from './TokenFlow.module.css'
 // src/components/**/*.module.css), and a live preview. Base → Semantic → Component → UI.
 
 type Col = 'base' | 'semantic' | 'component' | 'ui'
-type Node = { id: string; col: Col; label: string; note?: string; swatch?: string; kind?: 'fill' | 'border'; ui?: ReactNode }
+type Node = { id: string; col: Col; label: string; note?: string; title?: string; swatch?: string; kind?: 'fill' | 'border'; ui?: ReactNode }
 type Edge = { from: string; to: string }
 
 const columns: { id: Col; label: string }[] = [
@@ -45,15 +46,52 @@ const componentPages: Record<string, { label: string; page: string }> = {
   Tag: { label: 'Tag', page: 'tag' },
   TextField: { label: 'Input field', page: 'text-field' },
 }
-const componentUses: { folder: string; tokens: Set<ThemeToken> }[] = Object.entries(cssSources).flatMap(([path, css]) => {
+/** What a CSS property does, in plain words (custom props like --tf-caret use their last word). */
+const propWord = (prop: string) => {
+  if (prop.startsWith('--')) {
+    const last = prop.split('-').filter(Boolean).slice(1).join(' ')
+    return last.replace(/^(tag|ab|tf|tab|btn|card|sheet|nav|lc|cb|sw) /, '')
+  }
+  if (prop === 'color') return 'text / icon'
+  if (prop.startsWith('background')) return 'fill'
+  if (prop === 'fill') return 'illustration fill'
+  if (prop === 'caret-color') return 'caret'
+  if (prop.startsWith('outline')) return 'focus ring'
+  if (prop.startsWith('border') || prop === 'box-shadow') return 'border'
+  return prop
+}
+/** `.tag[data-color='success'][data-variant='secondary']:hover` → "color=success · variant=secondary". */
+const selectorWords = (sel: string) => {
+  const first = sel.split(',')[0].trim()
+  const attrs = [...first.matchAll(/\[data-([a-z-]+)(?:='([^']*)')?\]/g)].map((m) => (m[2] ? `${m[1]}=${m[2]}` : m[1]))
+  const cls = /^\.([a-zA-Z]+)/.exec(first)?.[1]
+  const state = /:(hover|active|focus-visible|checked|disabled)/.exec(first)?.[1]
+  return [cls, ...attrs, state].filter(Boolean).join(' · ')
+}
+
+const componentUses: { folder: string; tokens: Set<ThemeToken>; usage: Map<ThemeToken, string[]> }[] = Object.entries(cssSources).flatMap(([path, css]) => {
   const folder = path.split('/').slice(-2, -1)[0]
   if (!componentPages[folder]) return []
   const tokens = new Set<ThemeToken>()
-  for (const m of css.matchAll(/--l3-[a-z0-9-]+/g)) {
-    const t = varToToken.get(m[0])
-    if (t) tokens.add(t)
+  const usage = new Map<ThemeToken, string[]>()
+  const clean = css.replace(/\/\*[\s\S]*?\*\//g, '') // comments mention token names; skip them
+  for (const rule of clean.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const where = selectorWords(rule[1])
+    for (const decl of rule[2].split(';')) {
+      const [prop, ...rest] = decl.split(':')
+      const value = rest.join(':')
+      for (const m of value.matchAll(/--l3-[a-z0-9-]+/g)) {
+        const t = varToToken.get(m[0])
+        if (!t) continue
+        tokens.add(t)
+        const label = `${propWord(prop.trim())}${where ? ` (${where})` : ''}`
+        const list = usage.get(t) ?? []
+        if (!list.includes(label)) list.push(label)
+        usage.set(t, list)
+      }
+    }
   }
-  return [{ folder, tokens }]
+  return [{ folder, tokens, usage }]
 })
 
 // ---- Resolving a token down to its base color ----------------------------------------------------------------
@@ -101,35 +139,49 @@ const aerobarTypeOf: Record<string, AerobarType> = { success: 'success', error: 
 
 function preview(folder: string, tokens: ThemeToken[], buttonVariants: string[]): ReactNode {
   const families = [...new Set(tokens.map(familyOf).filter(Boolean))] as string[]
+  const has = (t: string) => tokens.includes(t as ThemeToken)
   if (folder === 'Tag') {
-    const colors = families.map((f) => tagColorOf[f]).filter(Boolean).slice(0, 3)
-    const list: TagColor[] = colors.length ? colors : ['neutral']
-    return <span className={styles.pair}>{list.map((c) => <Tag key={c} size="md" variant="secondary" color={c}>{c}</Tag>)}</span>
+    // Solid tag when the color reaches it as a solid fill (or its text), soft when only light tokens do.
+    const list = families.map((f) => tagColorOf[f]).filter(Boolean).slice(0, 3)
+    if (!list.length) {
+      const solid = has('surface/inverted') || has('content/inverted')
+      return <Tag size="md" variant={solid ? 'primary' : 'secondary'} color="neutral">{solid ? 'Solid' : 'Soft'}</Tag>
+    }
+    return (
+      <span className={styles.pair}>
+        {families.filter((f) => tagColorOf[f]).slice(0, 2).flatMap((f) => [
+          has(`surface/accent/${f}-default`) && <Tag key={`${f}-solid`} size="md" variant="primary" color={tagColorOf[f]}>{tagColorOf[f]}</Tag>,
+          (has(`surface/accent/${f}-light`) || has(`border/accent/${f}-light`)) && <Tag key={`${f}-soft`} size="md" variant="secondary" color={tagColorOf[f]}>{tagColorOf[f]}</Tag>,
+        ].filter(Boolean))}
+      </span>
+    )
   }
   if (folder === 'Button' && buttonVariants.length) {
     return <span className={styles.pair}>{buttonVariants.slice(0, 3).map((v) => <Button key={v} size="sm" variant={v as ButtonVariant} tabIndex={-1}>{v[0].toUpperCase() + v.slice(1)}</Button>)}</span>
   }
   if (folder === 'Aerobar') {
-    const type = families.map((f) => aerobarTypeOf[f]).find(Boolean) ?? 'primary'
-    return <span className={styles.toast}><Aerobar type={type} heading="Order placed" /></span>
+    const f = families.find((x) => aerobarTypeOf[x])
+    const type = f ? aerobarTypeOf[f] : 'primary'
+    const solid = f ? has(`surface/accent/${f}-default`) : true
+    return <span className={styles.toast}><Aerobar type={type} emphasis={solid ? 'primary' : 'secondary'} heading="Order placed" /></span>
   }
-  // Input field: show the state that actually uses this color — success (green) or error (red).
   if (folder === 'TextField') {
     const status = families.includes('success') ? 'success' : families.includes('error') ? 'error' : undefined
-    if (status) {
-      return (
-        <span className={styles.field}>
-          <TextField
-            label="PAN"
-            defaultValue={status === 'success' ? 'ABCDE1234F' : 'ABCDE123'}
-            status={status}
-            helperText={status === 'success' ? 'PAN verified' : 'Enter a valid 10-character PAN'}
-            readOnly
-            tabIndex={-1}
-          />
-        </span>
-      )
-    }
+    return (
+      <span className={styles.field}>
+        <TextField
+          label="PAN"
+          defaultValue={status === 'error' ? 'ABCDE123' : 'ABCDE1234F'}
+          status={status}
+          helperText={status === 'success' ? 'PAN verified' : status === 'error' ? 'Enter a valid 10-character PAN' : 'As on your PAN card'}
+          readOnly
+          tabIndex={-1}
+        />
+      </span>
+    )
+  }
+  if (folder === 'ListCell' && has('content/accent/discover-default')) {
+    return <span className={styles.field}><ListCell label="Price alerts" description="2 new" dotRight dotLabel="New" /></span>
   }
   const def = playgrounds[componentPages[folder].page]
   if (!def) return componentPages[folder].label
@@ -168,7 +220,7 @@ function buildGraph(themeId: string, hue: string) {
 
   // Components that read those tokens directly, or (Button) through its component tokens.
   const semanticSet = new Set(semantic)
-  for (const { folder, tokens } of componentUses) {
+  for (const { folder, tokens, usage } of componentUses) {
     const used = [...tokens].filter((t) => semanticSet.has(t))
     const viaComponent = [...tokens].filter((t) => componentTokens.includes(t))
     const sources = new Set<ThemeToken>(used)
@@ -177,15 +229,26 @@ function buildGraph(themeId: string, hue: string) {
       if (isToken(target) && semanticSet.has(target)) sources.add(target)
     }
     if (!sources.size) continue
-    const variants = [...new Set(viaComponent.map((t) => t.split('/')[2]))].filter(Boolean)
+    const variants = [...new Set(viaComponent.filter((t) => t.startsWith('component/button/')).map((t) => t.split('/')[2]))]
+    // Where in the component this color shows up, read from its stylesheet.
+    const uses = [...new Set([...used, ...viaComponent].flatMap((t) => usage.get(t) ?? []))]
     const id = `cmp:${folder}`
     add({
       id, col: 'component', label: componentPages[folder].label,
-      note: folder === 'Button' && variants.length ? `variants: ${variants.join(' · ')}` : `${sources.size} token${sources.size > 1 ? 's' : ''}`,
+      note: folder === 'Button' && variants.length ? `variants: ${variants.join(' · ')}` : uses.slice(0, 2).join(' · ') + (uses.length > 2 ? ` · +${uses.length - 2}` : ''),
+      title: uses.join('\n'),
     })
     for (const s of sources) edges.push({ from: s, to: id })
     const ui = `ui:${folder}`
-    add({ id: ui, col: 'ui', label: componentPages[folder].label, ui: preview(folder, [...sources], variants) })
+    add({
+      id: ui, col: 'ui', label: componentPages[folder].label,
+      ui: (
+        <span className={styles.uiWrap}>
+          {preview(folder, [...sources], variants)}
+          <span className={styles.uiCaption}>{uses.slice(0, 2).join(' · ')}{uses.length > 2 ? ` · +${uses.length - 2} more` : ''}</span>
+        </span>
+      ),
+    })
     edges.push({ from: id, to: ui })
   }
 
@@ -292,6 +355,7 @@ export function TokenFlow({ themeId, themeKey }: { themeId: string; themeKey: st
                     onBlur={() => setActive(null)}
                     tabIndex={0}
                     aria-label={n.label}
+                    title={n.title}
                   >
                     {n.ui ?? (
                       <>
