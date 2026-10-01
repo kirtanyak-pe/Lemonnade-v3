@@ -11,6 +11,7 @@ import { ReleaseTimeline } from './ReleaseTimeline'
 import { ThemesGrid } from './ThemesGrid'
 import { tokenHref, useTokenHighlight } from './tokenLinks'
 import { ComponentTree } from './ComponentTree'
+import { componentTrees } from './trees/componentTrees'
 import type { DocPage } from './types'
 import { href } from './useHashRoute'
 import styles from './Docs.module.css'
@@ -25,14 +26,15 @@ function tabsFor(page: DocPage): Tab[] {
   if (page.overview) tabs.push({ id: 'overview', label: 'Overview', content: <>{page.overview}{rules && <Guidelines items={rules} />}</> })
   if (playground) tabs.push({ id: 'playground', label: 'Playground', content: <Playground key={page.id} def={playground} /> })
   if (page.variants) tabs.push({ id: 'variants', label: 'Variants', content: page.variants })
-  if (page.tree) {
+  const tree = page.tree ?? componentTrees[page.id]
+  if (tree) {
     tabs.push({
       id: 'tree',
       label: 'Tree',
       content: (
         <>
           <p className={styles.tabIntro}>Every option of {page.title}, as a tree: pick a branch, then the option that fits. Hover a box to trace it.</p>
-          <ComponentTree spec={page.tree} />
+          <ComponentTree spec={tree} />
         </>
       ),
     })

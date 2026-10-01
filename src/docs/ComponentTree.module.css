@@ -128,6 +128,20 @@
   padding-left: var(--l3-spacing-32);
 }
 
+/* Phone-width components shown at half size (zoom shrinks layout too, so no empty space is left). */
+.mini {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.miniInner {
+  flex: none;
+  width: calc(var(--l3-size-40) * 9);
+  zoom: 0.5;
+}
+
 /* ---- Leaves (live examples) ------------------------------------------------------------------------- */
 
 .leaf {

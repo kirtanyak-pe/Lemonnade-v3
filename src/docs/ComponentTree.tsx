@@ -12,6 +12,11 @@ export type ComponentTreeSpec = { title: string; note?: string; branches: TreeBr
 
 type Link = { from: string; to: string; kind: 'top' | 'indent' }
 
+/** A full-width (360px) component — Actionbar, nav bar, sheet — scaled down to fit a tree leaf. */
+export function Mini({ children }: { children: ReactNode }) {
+  return <span className={styles.mini}><span className={styles.miniInner}>{children}</span></span>
+}
+
 export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [paths, setPaths] = useState<{ d: string; from: string; to: string }[]>([])

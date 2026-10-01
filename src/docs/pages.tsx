@@ -18,7 +18,6 @@ import { BrandLogoVariants } from '../preview/BrandLogoVariants'
 import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
 import { ColorsPage } from './colors/ColorsPage'
-import { buttonTree } from './trees/buttonTree'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
@@ -181,7 +180,6 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
       </>
     ),
-    tree: buttonTree,
     variants: <ButtonPreview />,
     props: [
       { name: 'variant', type: "'primary' | 'secondary' | 'tertiary' | 'ghost' | 'brand' | 'buy' | 'sell'", default: "'primary'", description: 'Figma Type.' },
