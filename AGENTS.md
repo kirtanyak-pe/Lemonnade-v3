@@ -41,6 +41,9 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
   `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. At most 2 sheets stacked: the first sheet has
   no back button, only a second sheet on top of it has one. Never open a third.
+- **Accent groups** (DESIGN_SYSTEM.md 3.1): Brand · Market indicators (profit/loss) · Status (success, warning, error,
+  discover, orange) · Sub-brands (us-stock, zing) · Miscellaneous (purple, indigo, teal — exceptional cases only).
+  Choose by meaning, never by look.
 - **Tag colours:** `profit` / `loss` for price moves, P&L and buy/sell side; `success` / `error` for outcomes (placed,
   failed); `processing` for in-progress (open, pending); `warning`, `discover`, `zing` as named. Don't use the old
   names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.

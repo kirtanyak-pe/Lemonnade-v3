@@ -863,6 +863,11 @@ legend.sectionLabel {
     gap: var(--l3-spacing-04);
   }
 
+  /* Room for the ♿ toggle at 360px: the switch alone says light/dark. */
+  .modeIcon {
+    display: none;
+  }
+
   .brand {
     font: var(--l3-text-extrabold-16);
   }
@@ -878,6 +883,16 @@ legend.sectionLabel {
   .resources > div {
     grid-template-columns: 1fr;
     gap: var(--l3-spacing-04);
+  }
+}
+
+@media (max-width: 400px) {
+  .header {
+    padding: 0 var(--l3-spacing-12);
+  }
+
+  .brand {
+    font: var(--l3-text-extrabold-14);
   }
 }
 

@@ -31,7 +31,7 @@ export function HomePage() {
     <div className={styles.home}>
       <section className={styles.hero}>
         <p className={styles.heroEyebrow}>Lemonnade V3 · L3 design system</p>
-        <h1 className={styles.heroTitle}>Build trading screens that look and behave the same everywhere.</h1>
+        <h1 className={styles.heroTitle}>Simplifying investment</h1>
         <p className={styles.heroLede}>
           React components built from the Figma library, themed with L3 tokens for Lemonn, CS Pro and Kuber, and made for phones first.
         </p>

@@ -96,15 +96,31 @@ This is the de facto **16px screen gutter**.
 
 ## 3. Semantic token rules
 
+### 3.1 Accent groups
+
+Accent colours (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come in **5 groups**. Pick the group by
+**meaning** first, then the colour inside it. Never borrow a colour from another group because it "looks right".
+
+| Group | Accents | Use for |
+|---|---|---|
+| **Brand** | `brand` | The product colour (Lemonn lime, CS PRO gold, Kuber green): brand moments, the brand button. |
+| **Market indicators** | `indicator/up` (profit), `indicator/down` (loss) | Price direction only: price up / down, P&L, buy / sell side. Never for success or error. |
+| **Status** | `success`, `warning`, `error`, `discover` (info), `orange` (processing) | Outcomes and system states: done, needs attention, failed, info / links, in progress. |
+| **Sub-brands** | `us-stock`, `zing` | Products or segments with their own identity. Use only inside that product or segment. |
+| **Miscellaneous** | `purple`, `indigo`, `teal` | **Exceptional cases only**, e.g. telling categories apart when no other group fits. They carry no meaning. |
+
+- Profit / loss and success / error can look alike (both green / red) but are **not interchangeable**: a price that
+  went up is `profit`, an order that went through is `success`.
+- Every accent has the same five slots: `surface light` + `border light` + `content` for soft fills (tags,
+  banners), `surface default` for solid fills, `border default` for strong outlines.
+- Text on solid fills: `static/black` on warning, `static/white` on profit / loss, `content/inverted` on the rest.
+
 <!-- PENDING: paste verbatim from notes -->
-Waiting for the exact text from your notes on:
+Still waiting for the exact text from your notes on:
 - `surface/*` elevation scale
 - `static/black`, `static/white`
 - `content/tertiary`
-- indicator vs success/error
-- zing / us-stock / discover
 - `extra/gold`
-- purple / indigo / teal / orange
 
 ---
 

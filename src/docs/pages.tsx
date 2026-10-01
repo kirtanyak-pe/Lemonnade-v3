@@ -17,7 +17,7 @@ import { EmptyStateVariants } from '../preview/EmptyStateVariants'
 import { BrandLogoVariants } from '../preview/BrandLogoVariants'
 import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
-import { ColorsPreview } from '../preview/ColorsPreview'
+import { ColorsPage } from './colors/ColorsPage'
 import { TypographyPreview } from '../preview/TypographyPreview'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
@@ -46,8 +46,8 @@ export const pages: DocPage[] = [
     id: 'colors',
     title: 'Colors',
     group: 'Foundations',
-    description: 'Theme tokens from the Figma "🎨 L3 → Theme" collection. Switch product and mode in the header to see every theme.',
-    content: <ColorsPreview />,
+    description: 'How Lemonnade colour works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).',
+    content: <ColorsPage />,
   },
   {
     id: 'typography',

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Tag, TagChevronIcon, TagPlaceholderIcon, type TagColor, type TagSize, type TagVariant } from '../components/Tag'
 
 // Order matches the Figma "L3: Tags" frame.
-const colors: TagColor[] = ['neutral', 'profit', 'loss', 'success', 'error', 'warning', 'discover', 'processing', 'indigo', 'teal', 'purple', 'zing']
+const colors: TagColor[] = ['neutral', 'profit', 'loss', 'success', 'warning', 'error', 'discover', 'processing', 'zing', 'purple', 'indigo', 'teal'] // by accent group (DESIGN_SYSTEM 3.1)
 const rows: { label: string; variant: TagVariant; disabled?: boolean }[] = [
   { label: 'Primary', variant: 'primary' },
   { label: 'Secondary', variant: 'secondary' },

@@ -27,7 +27,7 @@ const s = (v: Values, k: string) => v[k] as string
 const b = (v: Values, k: string) => v[k] as boolean
 
 const buttonVariants = ['primary', 'secondary', 'tertiary', 'ghost', 'brand', 'buy', 'sell'] as const
-const tagColors = ['neutral', 'profit', 'loss', 'success', 'error', 'warning', 'discover', 'processing', 'indigo', 'teal', 'purple', 'zing'] as const
+const tagColors = ['neutral', 'profit', 'loss', 'success', 'warning', 'error', 'discover', 'processing', 'zing', 'purple', 'indigo', 'teal'] as const // by accent group: market · status · sub-brand · misc
 const aerobarTypes = ['primary', 'discover', 'danger', 'success', 'warning'] as const
 
 // ---- Stateful wrappers (the playground render can't hold hooks itself) ----------
