@@ -194,8 +194,8 @@ function HowItWorks({ theme }: { theme: ReturnType<typeof useThemeKey> }) {
   )
 }
 
-/** Text on a solid accent fill, as the Tag component does: black on warning, white on profit / loss. */
-const onSolid = (id: string): ThemeToken => (id === 'warning' ? 'static/black' : id === 'up' || id === 'down' ? 'static/white' : 'content/inverted')
+/** Text on a solid accent fill, as the Tag component does: black on warning, white on profit / loss / success / error. */
+const onSolid = (id: string): ThemeToken => (id === 'warning' ? 'static/black' : ['up', 'down', 'success', 'error'].includes(id) ? 'static/white' : 'content/inverted')
 
 function AccentMatrix({ filter, theme, copy }: { filter: string; theme: ReturnType<typeof useThemeKey>; copy: CopyApi }) {
   const rows = accents.filter((a) => matches(filter, a.id, a.label, a.use, a.group, accentGroups.find((g) => g.id === a.group)?.label ?? '', ...accentSlots.map((s) => s.make(a.path))))

@@ -195,7 +195,7 @@ function preview(folder: string, tokens: ThemeToken[], buttonVariants: string[])
 type State = { id: string; label: string; tokens: string[]; ui: ReactNode }
 
 const tagFamilies = Object.keys(tagColorOf)
-const tagOnSolid = (f: string) => (f === 'indicator/up' || f === 'indicator/down' ? 'static/white' : f === 'warning' ? 'static/black' : 'content/inverted')
+const tagOnSolid = (f: string) => (['indicator/up', 'indicator/down', 'success', 'error'].includes(f) ? 'static/white' : f === 'warning' ? 'static/black' : 'content/inverted')
 const aerobarFamilies: Record<string, AerobarType> = { success: 'success', error: 'danger', warning: 'warning', discover: 'discover' }
 const aerobarOnSolid = (f: string) => (f === 'success' || f === 'error' ? 'static/white' : f === 'warning' ? 'static/black' : 'content/inverted')
 

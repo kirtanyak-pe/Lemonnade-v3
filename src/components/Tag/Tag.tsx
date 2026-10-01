@@ -83,5 +83,5 @@ export function Tag({
 /** Figma's default left icon (placeholder, blur_on). */
 export const TagPlaceholderIcon = PlaceholderIcon
 
-/** Figma's default right icon (keyboard_arrow_down). */
+/** Figma's default right icon (expand_more — the same glyph as keyboard_arrow_down in Material Symbols). */
 export const TagChevronIcon = ChevronDownIcon

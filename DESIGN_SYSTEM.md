@@ -113,7 +113,7 @@ Accent colors (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come i
   went up is `profit`, an order that went through is `success`.
 - Every accent has the same five slots: `surface light` + `border light` + `content` for soft fills (tags,
   banners), `surface default` for solid fills, `border default` for strong outlines.
-- Text on solid fills: `static/black` on warning, `static/white` on profit / loss, `content/inverted` on the rest.
+- Text on solid fills: `static/black` on warning, `static/white` on profit / loss / success / error, `content/inverted` on the rest.
 
 ### 3.2 Token naming
 

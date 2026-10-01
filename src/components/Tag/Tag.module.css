@@ -80,6 +80,7 @@
 
 .tag[data-color='success'] {
   --tag-solid: var(--l3-surface-accent-success-default);
+  --tag-on-solid: var(--l3-static-white); /* Figma: white on solid success, like profit / loss */
   --tag-soft: var(--l3-surface-accent-success-light);
   --tag-soft-border: var(--l3-border-accent-success-light);
   --tag-soft-content: var(--l3-content-accent-success-default);
@@ -87,6 +88,7 @@
 
 .tag[data-color='error'] {
   --tag-solid: var(--l3-surface-accent-error-default);
+  --tag-on-solid: var(--l3-static-white); /* Figma: white on solid error */
   --tag-soft: var(--l3-surface-accent-error-light);
   --tag-soft-border: var(--l3-border-accent-error-light);
   --tag-soft-content: var(--l3-content-accent-error-default);

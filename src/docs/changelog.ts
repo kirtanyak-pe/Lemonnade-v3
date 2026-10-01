@@ -444,6 +444,14 @@ export const changelog: Record<string, Release[]> = {
 
   tag: [
     {
+      version: '2.1.0', date: '2026-10-02',
+      summary: 'White text on solid success and error',
+      changes: [
+        { kind: 'figma', text: 'Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode).' },
+        { kind: 'figma', text: 'Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).' },
+      ],
+    },
+    {
       version: '2.0.0', date: '2026-09-30',
       summary: 'Figma color set: profit, loss, zing, processing',
       changes: [
