@@ -25,7 +25,7 @@ ask, or list it under "Open questions" in your answer.
   `npm run tokens`, and say so.
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
   inside `@media (hover: hover)`.
-- **Both themes.** Check light and dark; only semantic tokens (`surface`, `content`, `border`, `component`).
+- **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
 - **Don't invent patterns or components.** If something you need doesn't exist (e.g. a select, stepper, chart,
   skeleton), say so and ask — don't build a one-off lookalike inside a screen.

@@ -71,10 +71,13 @@ function cssValue(leaf: Leaf, tokens: Map<string, Leaf>, themeId: string, path: 
 
 function selectorFor(theme: (typeof themes)[number]) {
   // Single-mode products match on product alone, so any requested mode resolves.
-  const sel = productModes[theme.product].length === 1
+  let sel = productModes[theme.product].length === 1
     ? `[data-product="${theme.product}"]`
     : `[data-product="${theme.product}"][data-mode="${theme.mode}"]`
-  return theme.product === defaultProduct && theme.mode === defaultMode ? `:root,\n${sel}` : sel
+  // ♿ Accessible themes add [data-contrast="accessible"]: more specific, so they win over the standard block.
+  const accessible = 'contrast' in theme && theme.contrast === 'accessible'
+  if (accessible) sel += '[data-contrast="accessible"]'
+  return !accessible && theme.product === defaultProduct && theme.mode === defaultMode ? `:root,\n${sel}` : sel
 }
 
 const themeBlocks = themeTokens.map(({ theme, tokens }) => {

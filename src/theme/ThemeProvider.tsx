@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { defaultProduct, isProduct, productModes, resolveMode, type Mode, type Product } from '../tokens/themes.ts'
+import { defaultProduct, isContrast, isProduct, productModes, resolveMode, type Contrast, type Mode, type Product } from '../tokens/themes.ts'
 import { STORAGE_KEY, ThemeContext, type ModePreference, type ThemeContextValue } from './themeContext.ts'
 
-type Stored = { product: Product; mode: ModePreference }
+type Stored = { product: Product; mode: ModePreference; contrast: Contrast }
 
 const darkQuery = '(prefers-color-scheme: dark)'
 
@@ -12,9 +12,10 @@ function readStored(): Stored {
     return {
       product: isProduct(parsed.product) ? parsed.product : defaultProduct,
       mode: parsed.mode === 'light' || parsed.mode === 'dark' ? parsed.mode : 'system',
+      contrast: isContrast(parsed.contrast) ? parsed.contrast : 'default',
     }
   } catch {
-    return { product: defaultProduct, mode: 'system' }
+    return { product: defaultProduct, mode: 'system', contrast: 'default' }
   }
 }
 
@@ -29,7 +30,7 @@ function useSystemMode(): Mode {
   return mode
 }
 
-/** Applies `data-product` / `data-mode` to <html>, which selects a block in generated/themes.css. */
+/** Applies `data-product` / `data-mode` / `data-contrast` to <html>, which selects a block in generated/themes.css. */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [stored, setStored] = useState(readStored)
   const systemMode = useSystemMode()
@@ -39,7 +40,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement
     root.dataset.product = stored.product
     root.dataset.mode = mode
-  }, [stored.product, mode])
+    if (stored.contrast === 'accessible') root.dataset.contrast = 'accessible'
+    else delete root.dataset.contrast
+  }, [stored.product, mode, stored.contrast])
 
   useEffect(() => {
     try {
@@ -57,6 +60,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       availableModes: productModes[stored.product],
       setProduct: (product) => setStored((s) => ({ ...s, product })),
       setModePreference: (modePreference) => setStored((s) => ({ ...s, mode: modePreference })),
+      contrast: stored.contrast,
+      setContrast: (contrast) => setStored((s) => ({ ...s, contrast })),
     }),
     [stored, mode],
   )

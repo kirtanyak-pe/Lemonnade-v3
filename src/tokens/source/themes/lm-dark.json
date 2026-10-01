@@ -31,6 +31,14 @@
         "l3.opacity": "{opacity.5}"
       }
     },
+    "overlay": {
+      "$type": "color",
+      "$value": "{base.neutral.charcoal.900}",
+      "$description": "L3: Overlay backdrop behind sheets and dialogs.",
+      "$extensions": {
+        "l3.opacity": "{opacity.80}"
+      }
+    },
     "accent": {
       "indicator": {
         "down-light": {
@@ -136,7 +144,7 @@
       },
       "us-stock-default": {
         "$type": "color",
-        "$value": "{base.hue.blue.400}"
+        "$value": "{base.hue.blue.500}"
       }
     }
   },
@@ -710,6 +718,22 @@
       "us-stock-light": {
         "$type": "color",
         "$value": "{base.hue.blue.900}",
+        "$extensions": {
+          "l3.opacity": "{opacity.0}"
+        }
+      }
+    },
+    "static": {
+      "white": {
+        "$type": "color",
+        "$value": "{static.white}",
+        "$extensions": {
+          "l3.opacity": "{opacity.0}"
+        }
+      },
+      "black": {
+        "$type": "color",
+        "$value": "{static.black}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }

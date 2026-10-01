@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { Mode, Product } from '../tokens/themes.ts'
+import type { Contrast, Mode, Product } from '../tokens/themes.ts'
 
 export type ModePreference = Mode | 'system'
 
@@ -11,6 +11,9 @@ export type ThemeContextValue = {
   availableModes: readonly Mode[]
   setProduct: (product: Product) => void
   setModePreference: (mode: ModePreference) => void
+  /** ♿ Accessible (Figma "♿ Accessible" modes) or default contrast. Applied as data-contrast on <html>. */
+  contrast: Contrast
+  setContrast: (contrast: Contrast) => void
 }
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)

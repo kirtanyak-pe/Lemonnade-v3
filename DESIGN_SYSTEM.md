@@ -267,14 +267,15 @@ There is **no skeleton or spinner component** yet.
   - `BottomSheet` is `role="dialog"`.
 - **Current location:** `BottomNavbar` marks the current section with `aria-current="page"`. `Tabs` use `role="tablist"` / `tab` with `aria-selected`.
 - **Dots and badges** carry screen-reader text (`ListCell dotLabel`, default "New").
-- **Contrast:** failures in the default themes are accepted; the "♿ Accessible" theme modes (not yet in the tokens) handle high contrast.
+- **Contrast:** failures in the default themes are accepted; the **♿ Accessible** themes (`data-contrast="accessible"`, see 13) handle high contrast. Check new UI in both.
 
 ---
 
 ## 13. Theming
 
 - **5 themes:** Lemonn light and dark, CS PRO dark (dark only), Kuber light and dark. They're selected by `data-product` + `data-mode` on `<html>`, or on any wrapper to theme just that part.
-- `ThemeProvider` applies the theme, and `useTheme()` reads or changes it. The saved theme (`localStorage` key `l3-theme`) is applied before the first paint. Asking CS PRO for light mode falls back to dark.
+- **♿ Accessible contrast:** each of the 5 has an Accessible version (Figma "♿ Accessible" modes — 10 theme modes in total), turned on with `data-contrast="accessible"` next to `data-product` / `data-mode` (`useTheme().setContrast('accessible')`, saved with the theme). It raises secondary/tertiary text opacity, strengthens dark-mode borders and moves accents one step for contrast. Components need no changes — they use the same semantic tokens.
+- `ThemeProvider` applies the theme, and `useTheme()` reads or changes it (`product`, `mode`, `contrast`). The saved theme (`localStorage` key `l3-theme`) is applied before the first paint. Asking CS PRO for light mode falls back to dark.
 - Style with **semantic** tokens (`surface`, `content`, `border`, `component`). **Never use `--l3-base-*`** except in brand artwork: `BrandLogo` keeps the Lemonn and honey ramps in every theme.
 - Check every screen in light and dark.
 
@@ -329,7 +330,7 @@ There is **no skeleton or spinner component** yet.
 
 | Gap | What's in the tokens today |
 |---|---|
-| **us-stock and discover have not diverged** | Every `us-stock` token points to the same blue ramp as `discover` (surface light/default, content, border light/default, gradient stops), for example both are `hue-blue-500`. |
+| **us-stock and discover have mostly not diverged** | `us-stock` tokens still point to the same blue ramp as `discover`; the only difference so far is `surface/accent/us-stock-default` in Lemonn / Kuber dark (blue-500 vs discover's blue-400). |
 | **surface/default = surface/primary in light mode** | In LM Light both are `neutral-white-base`, so a "raised" surface doesn't separate from the page. |
 | **extra/gold duplicates the honey ramp** | `extra/gold/*` aliases the `hue/honey` ramp (for example gold-100 → honey-100 in light, honey-800 in dark). It has no values of its own. |
 

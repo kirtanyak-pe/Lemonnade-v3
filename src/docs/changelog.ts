@@ -29,6 +29,17 @@ const iconsMigration = (): Release['changes'][number] => ({
 })
 
 export const changelog: Record<string, Release[]> = {
+  colors: [
+    {
+      version: '1.1.0', date: '2026-10-01',
+      summary: '♿ Accessible themes and Figma token sync',
+      changes: [
+        { kind: 'added', text: '5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with data-contrast="accessible" or the ♿ button in the header.' },
+        { kind: 'figma', text: 'New surface/overlay (the brand’s darkest neutral at 80%) and gradient-stop-0/static/white · black.' },
+        { kind: 'figma', text: 'surface/accent/us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover.' },
+      ],
+    },
+  ],
   card: [
     {
       version: '1.2.0', date: '2026-09-29',
@@ -83,6 +94,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   button: [
+    {
+      version: '1.4.1', date: '2026-10-01',
+      summary: 'CS PRO primary is gold',
+      changes: [
+        { kind: 'figma', text: 'CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.' },
+      ],
+    },
     {
       version: '1.4.0', date: '2026-09-30',
       summary: 'Label & icon rule, usage rules',
@@ -291,6 +309,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'bottom-sheet': [
+    {
+      version: '2.1.1', date: '2026-10-01',
+      summary: 'Overlay token',
+      changes: [
+        { kind: 'figma', text: 'The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.' },
+      ],
+    },
     {
       version: '2.1.0', date: '2026-09-30',
       summary: 'Stacking rule: back button only on a second sheet',

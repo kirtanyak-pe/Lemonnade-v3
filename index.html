@@ -21,6 +21,7 @@
         if (p === 'cspro') m = 'dark';
         document.documentElement.dataset.product = p;
         document.documentElement.dataset.mode = m;
+        if (s.contrast === 'accessible') document.documentElement.dataset.contrast = 'accessible';
       })();
     </script>
   </head>

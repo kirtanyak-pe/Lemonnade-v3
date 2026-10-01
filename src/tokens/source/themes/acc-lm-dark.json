@@ -1,4 +1,5 @@
 {
+  "$description": "♿ Accessible lm-dark: Figma \"♿ Accessible\" mode — the lm-dark theme with 12 higher-contrast overrides.",
   "surface": {
     "default": {
       "$type": "color",
@@ -6,23 +7,23 @@
     },
     "primary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.900}"
+      "$value": "{base.neutral.charcoal.900}"
     },
     "secondary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.800}"
+      "$value": "{base.neutral.charcoal.800}"
     },
     "tertiary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.700}"
+      "$value": "{base.neutral.charcoal.700}"
     },
     "quaternary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.600}"
+      "$value": "{base.neutral.charcoal.600}"
     },
     "inverted": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}"
+      "$value": "{base.neutral.charcoal.100}"
     },
     "disabled": {
       "$type": "color",
@@ -33,7 +34,7 @@
     },
     "overlay": {
       "$type": "color",
-      "$value": "{base.neutral.sage.900}",
+      "$value": "{base.neutral.charcoal.900}",
       "$description": "L3: Overlay backdrop behind sheets and dialogs.",
       "$extensions": {
         "l3.opacity": "{opacity.80}"
@@ -47,7 +48,7 @@
         },
         "down-default": {
           "$type": "color",
-          "$value": "{base.hue.red.500}"
+          "$value": "{base.hue.red.400}"
         },
         "up-light": {
           "$type": "color",
@@ -55,16 +56,16 @@
         },
         "up-default": {
           "$type": "color",
-          "$value": "{base.hue.green.500}"
+          "$value": "{base.hue.green.400}"
         }
       },
       "brand-light": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.900}"
+        "$value": "{base.hue.brand.lemonn.900}"
       },
       "brand-default": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.500}"
+        "$value": "{base.hue.brand.lemonn.500}"
       },
       "error-light": {
         "$type": "color",
@@ -144,27 +145,27 @@
       },
       "us-stock-default": {
         "$type": "color",
-        "$value": "{base.hue.blue.500}"
+        "$value": "{base.hue.blue.400}"
       }
     }
   },
   "content": {
     "primary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}"
+      "$value": "{base.neutral.charcoal.100}"
     },
     "secondary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}",
+      "$value": "{base.neutral.charcoal.100}",
       "$extensions": {
-        "l3.opacity": "{opacity.60}"
+        "l3.opacity": "{opacity.55}"
       }
     },
     "tertiary": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}",
+      "$value": "{base.neutral.charcoal.100}",
       "$extensions": {
-        "l3.opacity": "{opacity.35}"
+        "l3.opacity": "{opacity.55}"
       }
     },
     "inverted": {
@@ -175,21 +176,21 @@
       "$type": "color",
       "$value": "{base.neutral.black.base}",
       "$extensions": {
-        "l3.opacity": "{opacity.60}"
+        "l3.opacity": "{opacity.75}"
       }
     },
     "disabled": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}",
+      "$value": "{base.neutral.charcoal.100}",
       "$extensions": {
-        "l3.opacity": "{opacity.25}"
+        "l3.opacity": "{opacity.30}"
       }
     },
     "accent": {
       "indicator": {
         "down-default": {
           "$type": "color",
-          "$value": "{base.hue.red.500}"
+          "$value": "{base.hue.red.400}"
         },
         "up-default": {
           "$type": "color",
@@ -198,19 +199,19 @@
       },
       "brand-default": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.500}"
+        "$value": "{base.hue.brand.lemonn.500}"
       },
       "error-default": {
         "$type": "color",
-        "$value": "{base.hue.red.500}"
+        "$value": "{base.hue.red.400}"
       },
       "success-default": {
         "$type": "color",
-        "$value": "{base.hue.green.500}"
+        "$value": "{base.hue.green.400}"
       },
       "warning-default": {
         "$type": "color",
-        "$value": "{base.hue.yellow.300}"
+        "$value": "{base.hue.yellow.400}"
       },
       "discover-default": {
         "$type": "color",
@@ -245,15 +246,15 @@
   "border": {
     "light": {
       "$type": "color",
-      "$value": "{base.neutral.sage.800}"
+      "$value": "{base.neutral.charcoal.700}"
     },
     "intense": {
       "$type": "color",
-      "$value": "{base.neutral.sage.700}"
+      "$value": "{base.neutral.charcoal.600}"
     },
     "dark": {
       "$type": "color",
-      "$value": "{base.neutral.sage.100}"
+      "$value": "{base.neutral.charcoal.100}"
     },
     "disabled": {
       "$type": "color",
@@ -265,11 +266,11 @@
     "accent": {
       "brand-light": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.800}"
+        "$value": "{base.hue.brand.lemonn.800}"
       },
       "brand-default": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.500}"
+        "$value": "{base.hue.brand.lemonn.500}"
       },
       "indicator": {
         "down-light": {
@@ -436,35 +437,35 @@
       },
       "primary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.900}",
+        "$value": "{base.neutral.charcoal.900}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "secondary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.800}",
+        "$value": "{base.neutral.charcoal.800}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "tertiary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.700}",
+        "$value": "{base.neutral.charcoal.700}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "quaternary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.600}",
+        "$value": "{base.neutral.charcoal.600}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "inverted": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
@@ -473,21 +474,21 @@
     "content": {
       "primary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "secondary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "tertiary": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
@@ -501,7 +502,7 @@
       },
       "disabled": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
@@ -510,21 +511,21 @@
     "border": {
       "light": {
         "$type": "color",
-        "$value": "{base.neutral.sage.800}",
+        "$value": "{base.neutral.charcoal.700}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "intense": {
         "$type": "color",
-        "$value": "{base.neutral.sage.700}",
+        "$value": "{base.neutral.charcoal.600}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "dark": {
         "$type": "color",
-        "$value": "{base.neutral.sage.100}",
+        "$value": "{base.neutral.charcoal.100}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
@@ -540,14 +541,14 @@
     "accent": {
       "brand-light": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.900}",
+        "$value": "{base.hue.brand.lemonn.900}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
       },
       "brand-default": {
         "$type": "color",
-        "$value": "{base.hue.brand.cskuber.500}",
+        "$value": "{base.hue.brand.lemonn.500}",
         "$extensions": {
           "l3.opacity": "{opacity.0}"
         }
@@ -749,7 +750,7 @@
         },
         "content": {
           "$type": "color",
-          "$value": "{static.white}"
+          "$value": "{static.black}"
         },
         "surface-loading": {
           "$type": "color",
@@ -801,7 +802,7 @@
         },
         "content": {
           "$type": "color",
-          "$value": "{static.white}"
+          "$value": "{static.black}"
         },
         "surface-loading": {
           "$type": "color",

@@ -1,8 +1,9 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { Button } from '../components/Button'
 import { Icon } from '../components/Icon'
 import { ListCell } from '../components/ListCell'
 import { Switch } from '../components/Switch'
-import { msCheck, msDarkMode, msKeyboardArrowDown, msLightMode } from '../icons/material'
+import { msAccessibilityNew, msCheck, msDarkMode, msKeyboardArrowDown, msLightMode } from '../icons/material'
 import { productLabels, productModes, products, type Product } from '../tokens'
 import { useTheme } from '../theme'
 import styles from './Docs.module.css'
@@ -13,13 +14,31 @@ const productNotes: Record<Product, string> = {
   kuber: 'Light & dark',
 }
 
-/** Header theme controls: brand menu (ListCell rows) + light/dark Switch. */
+/** Header theme controls: brand menu (ListCell rows) + light/dark Switch + ♿ Accessible contrast. */
 export function ThemeControls() {
   return (
     <div className={styles.themeControls}>
       <BrandMenu />
       <ModeToggle />
+      <ContrastToggle />
     </div>
+  )
+}
+
+/** Figma "♿ Accessible" modes: higher-contrast text, borders and accents for the current brand and mode. */
+function ContrastToggle() {
+  const { contrast, setContrast } = useTheme()
+  const on = contrast === 'accessible'
+  return (
+    <Button
+      size="sm"
+      variant={on ? 'primary' : 'tertiary'}
+      aria-label="Accessible (high contrast) theme"
+      aria-pressed={on}
+      title={on ? 'Accessible contrast: on' : 'Accessible contrast: off'}
+      iconLeft={<Icon icon={msAccessibilityNew} />}
+      onClick={() => setContrast(on ? 'default' : 'accessible')}
+    />
   )
 }
 

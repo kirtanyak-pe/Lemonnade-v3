@@ -22,11 +22,11 @@
   justify-content: flex-end;
 }
 
-/* Figma "L3: Overlay": black at 80%. */
+/* Figma "L3: Overlay": surface/overlay (the product's darkest neutral at 80%). */
 .backdrop {
   position: absolute;
   inset: 0;
-  background: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+  background: var(--l3-surface-overlay);
   opacity: 0;
   transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
 }
