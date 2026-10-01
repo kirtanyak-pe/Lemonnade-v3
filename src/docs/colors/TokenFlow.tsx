@@ -188,6 +188,46 @@ function preview(folder: string, tokens: ThemeToken[], buttonVariants: string[])
   return <span className={styles.thumb} inert><span className={styles.thumbInner}>{def.render({ ...defaults(def), ...def.thumbnail })}</span></span>
 }
 
+// ---- Per-state token sets (Tag, Aerobar) ------------------------------------------------------------
+// These two components pick different tokens per state, so the diagram links each token only to the state
+// that really reads it (e.g. a soft success toast uses success-light + content-primary, not success-default).
+
+type State = { id: string; label: string; tokens: string[]; ui: ReactNode }
+
+const tagFamilies = Object.keys(tagColorOf)
+const tagOnSolid = (f: string) => (f === 'indicator/up' || f === 'indicator/down' ? 'static/white' : f === 'warning' ? 'static/black' : 'content/inverted')
+const aerobarFamilies: Record<string, AerobarType> = { success: 'success', error: 'danger', warning: 'warning', discover: 'discover' }
+const aerobarOnSolid = (f: string) => (f === 'success' || f === 'error' ? 'static/white' : f === 'warning' ? 'static/black' : 'content/inverted')
+
+function tagStates(): { solid: State[]; soft: State[] } {
+  const solid: State[] = tagFamilies.map((f) => ({
+    id: `tag-solid:${f}`, label: tagColorOf[f], tokens: [`surface/accent/${f}-default`, tagOnSolid(f)],
+    ui: <Tag key={f} size="md" variant="primary" color={tagColorOf[f]}>{tagColorOf[f]}</Tag>,
+  }))
+  solid.push({ id: 'tag-solid:neutral', label: 'neutral', tokens: ['surface/inverted', 'content/inverted'], ui: <Tag key="n" size="md" variant="primary" color="neutral">neutral</Tag> })
+  const soft: State[] = tagFamilies.map((f) => ({
+    id: `tag-soft:${f}`, label: tagColorOf[f], tokens: [`surface/accent/${f}-light`, `border/accent/${f}-light`, `content/accent/${f}-default`],
+    ui: <Tag key={f} size="md" variant="secondary" color={tagColorOf[f]}>{tagColorOf[f]}</Tag>,
+  }))
+  soft.push({ id: 'tag-soft:neutral', label: 'neutral', tokens: ['surface/secondary', 'border/intense', 'content/primary'], ui: <Tag key="n" size="md" variant="secondary" color="neutral">neutral</Tag> })
+  return { solid, soft }
+}
+
+function aerobarStates(): { solid: State[]; soft: State[] } {
+  const entries = Object.entries(aerobarFamilies)
+  const solid: State[] = entries.map(([f, type]) => ({
+    id: `ab-solid:${f}`, label: type, tokens: [`surface/accent/${f}-default`, aerobarOnSolid(f)],
+    ui: <Aerobar key={f} type={type} emphasis="primary" heading="Order placed" />,
+  }))
+  solid.push({ id: 'ab-solid:primary', label: 'primary', tokens: ['surface/inverted', 'content/inverted'], ui: <Aerobar key="p" type="primary" emphasis="primary" heading="Order placed" /> })
+  const soft: State[] = entries.map(([f, type]) => ({
+    id: `ab-soft:${f}`, label: type, tokens: [`surface/accent/${f}-light`, 'content/primary'],
+    ui: <Aerobar key={f} type={type} emphasis="secondary" heading="Order placed" />,
+  }))
+  soft.push({ id: 'ab-soft:primary', label: 'primary', tokens: ['surface/tertiary', 'content/primary'], ui: <Aerobar key="p" type="primary" emphasis="secondary" heading="Order placed" /> })
+  return { solid, soft }
+}
+
 // ---- Graph -------------------------------------------------------------------------------------------------
 
 function buildGraph(themeId: string, hue: string) {
@@ -220,7 +260,28 @@ function buildGraph(themeId: string, hue: string) {
 
   // Components that read those tokens directly, or (Button) through its component tokens.
   const semanticSet = new Set(semantic)
+  // Tag and Aerobar: one component node per state, linked only to the tokens that state reads.
+  // A state joins when any token it reads (fill, border or text) resolves to this hue.
+  const stateGroups: { key: string; label: string; states: State[] }[] = [
+    { key: 'Tag-solid', label: 'Tag · solid', states: tagStates().solid },
+    { key: 'Tag-soft', label: 'Tag · soft', states: tagStates().soft },
+    { key: 'Aerobar-solid', label: 'Aerobar · solid', states: aerobarStates().solid },
+    { key: 'Aerobar-soft', label: 'Aerobar · soft', states: aerobarStates().soft },
+  ]
+  for (const g of stateGroups) {
+    const hits = g.states.filter((st) => st.tokens.some((t) => isToken(t) && semanticSet.has(t as ThemeToken)))
+    if (!hits.length) continue
+    const id = `cmp:${g.key}`
+    const linked = [...new Set(hits.flatMap((st) => st.tokens.filter((t) => isToken(t) && semanticSet.has(t as ThemeToken))))]
+    add({ id, col: 'component', label: g.label, note: hits.slice(0, 3).map((h) => h.label).join(' · ') + (hits.length > 3 ? ` · +${hits.length - 3}` : ''), title: hits.map((h) => `${h.label}: ${h.tokens.map(displayName).join(', ')}`).join('\n') })
+    for (const t of linked) edges.push({ from: t, to: id })
+    const ui = `ui:${g.key}`
+    add({ id: ui, col: 'ui', label: g.label, ui: <span className={g.key.startsWith('Aerobar') ? styles.toastStack : styles.pair}>{hits.slice(0, 3).map((h) => h.ui)}</span> })
+    edges.push({ from: id, to: ui })
+  }
+
   for (const { folder, tokens, usage } of componentUses) {
+    if (folder === 'Tag' || folder === 'Aerobar') continue
     const used = [...tokens].filter((t) => semanticSet.has(t))
     const viaComponent = [...tokens].filter((t) => componentTokens.includes(t))
     const sources = new Set<ThemeToken>(used)

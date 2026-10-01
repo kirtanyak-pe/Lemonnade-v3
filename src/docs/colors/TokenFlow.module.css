@@ -209,6 +209,13 @@
   gap: var(--l3-spacing-08);
 }
 
+.toastStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+}
+
 .uiWrap {
   display: flex;
   flex-direction: column;

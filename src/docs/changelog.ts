@@ -48,6 +48,7 @@ export const changelog: Record<string, Release[]> = {
         { kind: 'changed', text: '“How colors are mapped” (was “How colour works”): pick any base color to see every semantic token it feeds in the current theme (gradient stops skipped), the components that use them (found from their styles) and live previews — e.g. the input field in its success or error state.' },
         { kind: 'changed', text: 'US spelling (“color”) across the docs.' },
         { kind: 'fixed', text: 'Color mapping: each component now says where it uses the color (read from its stylesheet, e.g. “caret (search)”, “message (status=success)”), and previews show that state — solid vs soft tags, Aerobar type and emphasis, input field success / error, list cell dot.' },
+        { kind: 'fixed', text: 'Tag and Aerobar are split into solid and soft nodes, each linked only to the tokens that state reads — e.g. the soft success toast links to success-light (its text is content-primary), not success-default.' },
       ],
     },
   ],
