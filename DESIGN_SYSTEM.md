@@ -244,7 +244,15 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links.
 
-### 7.2 Other patterns
+### 7.2 Containers & grey fills
+
+- **Large containers** (a hero, a section panel, a showcase, a preview stage) use **`surface-default` + a 1px
+  `border-light`** — never a grey fill over the whole block.
+- **Small informative cards inside a container** (stats, key-value tiles, hints, inner panels) may use
+  **`surface-secondary`** (grey), so they read as grouped content inside the container.
+- Don't nest grey in grey: a grey card goes on `surface-default`, not on another grey surface.
+
+### 7.3 Other patterns
 
 <!-- PENDING: form, list and other patterns not yet defined, do not infer -->
 

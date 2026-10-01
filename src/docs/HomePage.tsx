@@ -6,6 +6,7 @@ import { CodeBlock, defaults } from './Playground'
 import { pages } from './pages'
 import { playgrounds } from './playgrounds'
 import { href } from './useHashRoute'
+import { foundationThumbs } from './FoundationThumbs'
 import styles from './Docs.module.css'
 
 
@@ -26,9 +27,30 @@ export function HomePage() {
   const components = pages.filter((p) => p.group !== 'Foundations' && p.group !== 'Start')
   const foundations = pages.filter((p) => p.group === 'Foundations')
   const themeCount = products.reduce((n, p) => n + productModes[p].length, 0)
+  const latest = recentReleases(3)
+  const lastUpdated = latest[0] && new Date(latest[0].date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 
   return (
     <div className={styles.home}>
+      {latest.length > 0 && (
+        <aside className={styles.updates} aria-label="Latest updates">
+          <Tag size="sm" variant="secondary" color="discover">What’s new</Tag>
+          <span className={styles.updatesDate}>Updated {lastUpdated}</span>
+          <ul className={styles.updatesList}>
+            {latest.map((r) => (
+              <li key={r.pageId}>
+                <a href={href(r.pageId, 'whats-new')}>
+                  <strong>{pages.find((p) => p.id === r.pageId)?.title}</strong> {r.summary}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a className={styles.updatesAll} href="#home-whats-new" onClick={(e) => { e.preventDefault(); document.getElementById('home-whats-new')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }}>
+            See all
+          </a>
+        </aside>
+      )}
+
       <section className={styles.hero}>
         <p className={styles.heroEyebrow}>Lemonnade V3 · L3 design system</p>
         <h1 className={styles.heroTitle}>Simplifying investment</h1>
@@ -41,7 +63,7 @@ export function HomePage() {
         </div>
         <dl className={styles.stats}>
           <div><dt>Components</dt><dd>{components.length}</dd></div>
-          <div><dt>Themes</dt><dd>{themeCount}</dd></div>
+          <div><dt>Themes</dt><dd>{themeCount} + {themeCount} ♿</dd></div>
           <div><dt>Icons</dt><dd>3,900+</dd></div>
           <div><dt>Preview widths</dt><dd>360 · 392 · 412</dd></div>
         </dl>
@@ -56,7 +78,7 @@ export function HomePage() {
               <li key={p.id}>
                 <a className={styles.componentCard} href={href(p.id)}>
                   <div className={styles.cardThumb} inert aria-hidden="true">
-                    <div className={styles.cardThumbInner}>{def ? def.render(defaults(def)) : null}</div>
+                    <div className={styles.cardThumbInner}>{def ? def.render({ ...defaults(def), ...def.thumbnail }) : null}</div>
                   </div>
                   <div className={styles.cardBody}>
                     <span className={styles.cardTitle}>{p.title}</span>
@@ -72,12 +94,15 @@ export function HomePage() {
 
       <section className={styles.section}>
         <h2>Foundations</h2>
-        <ul className={styles.foundationGrid}>
+        <ul className={styles.cardGrid}>
           {foundations.map((p) => (
             <li key={p.id}>
-              <a className={styles.foundationCard} href={href(p.id)}>
-                <span className={styles.cardTitle}>{p.title}</span>
-                <span className={styles.cardGroup}>{p.description}</span>
+              <a className={styles.componentCard} href={href(p.id)}>
+                <div className={styles.cardThumb} aria-hidden="true">{foundationThumbs[p.id]?.thumb}</div>
+                <div className={styles.cardBody}>
+                  <span className={styles.cardTitle}>{p.title}</span>
+                  <span className={styles.cardGroup}>{foundationThumbs[p.id]?.meta ?? p.group}</span>
+                </div>
               </a>
             </li>
           ))}
@@ -92,7 +117,7 @@ export function HomePage() {
         </p>
       </section>
 
-      <section className={styles.section}>
+      <section className={styles.section} id="home-whats-new">
         <h2>What’s new</h2>
         <ul className={styles.whatsNew}>
           {recentReleases().map((r) => (

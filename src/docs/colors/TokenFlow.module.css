@@ -1,0 +1,164 @@
+/* Token flow diagram — tokens only (1px hairlines are the one literal). */
+
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--l3-spacing-48);
+  min-width: calc(var(--l3-size-128) * 7);
+  padding: var(--l3-spacing-24);
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.line {
+  fill: none;
+  stroke: var(--l3-border-intense);
+  stroke-width: var(--l3-spacing-02);
+  stroke-dasharray: var(--l3-spacing-06) var(--l3-spacing-04);
+  transition: stroke var(--l3-motion-duration-short) var(--l3-motion-easing-standard), opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* Into the UI: solid, like the reference. */
+.line[data-ui] {
+  stroke-dasharray: none;
+}
+
+.flow[data-has-active] .line {
+  opacity: var(--l3-opacity-25);
+}
+
+.flow[data-has-active] .line[data-lit] {
+  opacity: 1;
+  stroke: var(--l3-content-primary);
+}
+
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  min-width: 0;
+}
+
+.colLabel {
+  font: var(--l3-text-extrabold-12);
+  text-transform: uppercase;
+  color: var(--l3-content-accent-discover-default);
+}
+
+.nodes {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: var(--l3-spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.node,
+.uiNode {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  min-height: var(--l3-size-48);
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.uiNode {
+  justify-content: center;
+  min-height: var(--l3-size-56);
+  background: var(--l3-surface-default);
+}
+
+.node:focus-visible,
+.uiNode:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+.flow[data-has-active] :is(.node, .uiNode) {
+  opacity: var(--l3-opacity-40);
+}
+
+.flow[data-has-active] :is(.node, .uiNode)[data-lit] {
+  opacity: 1;
+  box-shadow: inset 0 0 0 1px var(--l3-border-dark);
+}
+
+.swatch {
+  flex: none;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+  border-radius: var(--l3-radius-04);
+}
+
+.swatch[data-kind='fill'] {
+  background: currentColor;
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.swatch[data-kind='border'] {
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) currentColor;
+}
+
+.nodeText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+}
+
+.nodeLabel {
+  font: var(--l3-text-semibold-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+  overflow-wrap: anywhere;
+}
+
+.nodeNote {
+  font: var(--l3-text-medium-10);
+  color: var(--l3-content-secondary);
+}
+
+.priceText {
+  font: var(--l3-text-bold-16);
+  font-variant-numeric: tabular-nums;
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+.doneText {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-accent-success-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .node,
+  .uiNode {
+    transition: none;
+  }
+}

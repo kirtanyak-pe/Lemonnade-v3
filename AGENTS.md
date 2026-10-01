@@ -49,6 +49,8 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.
 - **Icon-only Tag / Tab:** `hideLabel` + exactly one icon; the label text is still required (it's the accessible name).
   `subLabel` is for chip (pill) tabs only.
+- **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
+  `surface-secondary` (grey). Never fill a whole section grey.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
   is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow.
 

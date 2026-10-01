@@ -445,6 +445,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   },
 
   'bottom-sheet': {
+    thumbnail: { useCase: 'Custom', content: false, footer: false },
     // One control per Figma property: L3: Bottom sheet · L3: Bottom sheet header (Version=Latest).
     controls: [
       { name: 'useCase', label: 'Use case', prop: false, type: 'select', options: ['Auto TP/SL', 'Custom'], default: 'Auto TP/SL' },

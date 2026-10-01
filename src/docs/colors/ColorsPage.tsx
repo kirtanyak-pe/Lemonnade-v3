@@ -4,7 +4,7 @@ import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
 import { Tag } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
-import { msArrowForward, msSearch } from '../../icons/material'
+import { msSearch } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
 import {
@@ -13,6 +13,7 @@ import {
 } from './colorData'
 import styles from './ColorsPage.module.css'
 import { TokenNaming } from './TokenNaming'
+import { TokenFlow } from './TokenFlow'
 
 // ---- Helpers -------------------------------------------------------------------------------------
 
@@ -143,30 +144,18 @@ function Section({ id, title, lede, children }: { id: string; title: string; led
 
 /** One real token followed through the three layers, live for the current theme. */
 function HowItWorks({ theme }: { theme: ReturnType<typeof useThemeKey> }) {
-  // surface/inverted → its base step in this theme (e.g. charcoal/900), and the button token built on it.
-  const baseName = aliasOf('surface/inverted', theme.id).split(' ')[0]
-  const baseCss = baseVar(baseName.startsWith('brand/') ? `hue/${baseName}` : /^(charcoal|slate|sage|white|black)\//.test(baseName) ? `neutral/${baseName}` : `hue/${baseName}`)
-  const steps = [
-    { n: 1, layer: 'Base', token: baseName, cssVar: baseCss, tag: <Tag size="sm" variant="tertiary" color="error">Don't use</Tag>, note: 'Raw ramps. Same in every theme.' },
-    { n: 2, layer: 'Semantic', token: 'surface/inverted', cssVar: cssVar('surface/inverted'), tag: <Tag size="sm" variant="tertiary" color="success">Use in UI</Tag>, note: 'Named by role. Each theme picks the base colour.' },
-    { n: 3, layer: 'Component', token: 'button/primary/surface', cssVar: cssVar('component/button/primary/surface'), tag: <Tag size="sm" variant="tertiary" color="discover">Components only</Tag>, note: 'What a component uses inside.' },
-  ]
   return (
-    <Section id="how" title="How colour works" lede="Three layers. Build UI with semantic tokens.">
-      <ol className={styles.chain} aria-label="Example: how the primary button colour is built">
-        {steps.map((st, i) => (
-          <li key={st.n} className={styles.chainStep} data-layer={st.n}>
-            <div className={styles.chainTop}>
-              <span className={styles.chainLayer}>{st.n} · {st.layer}</span>
-              {st.tag}
-            </div>
-            <span className={styles.chainSwatch} style={{ background: `var(${st.cssVar})` }} aria-hidden="true" />
-            <code className={styles.chainToken}>{displayName(st.token)}</code>
-            <span className={styles.chainNote}>{st.note}</span>
-            {i < steps.length - 1 && <span className={styles.chainArrow} aria-hidden="true"><Icon icon={msArrowForward} size={20} /></span>}
-          </li>
-        ))}
-      </ol>
+    <Section id="how" title="How colour works" lede="Three token layers feed the UI. Build UI with semantic tokens. Hover any box to trace its path.">
+      <div className={styles.legend}>
+        <span><strong>Base</strong> <Tag size="sm" variant="tertiary" color="error">Don't use</Tag></span>
+        <span><strong>Semantic</strong> <Tag size="sm" variant="tertiary" color="success">Use in UI</Tag></span>
+        <span><strong>Component</strong> <Tag size="sm" variant="tertiary" color="discover">Components only</Tag></span>
+      </div>
+      <TokenFlow themeId={theme.id} themeKey={theme.key} />
+      <p className={styles.lede}>
+        One green feeds two meanings — profit (market indicator) and success (status) — through different semantic tokens.
+        The Buy button follows the brand, so its path changes with the brand you pick in the header.
+      </p>
 
       <ul className={styles.ruleCards}>
         <li className={styles.ruleCard}>

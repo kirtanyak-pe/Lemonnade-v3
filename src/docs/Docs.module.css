@@ -428,7 +428,8 @@
   overflow: hidden;
   padding: var(--l3-spacing-48) var(--l3-spacing-16);
   border-radius: var(--l3-radius-24);
-  background-color: var(--l3-surface-secondary);
+  background-color: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
   background-image: radial-gradient(var(--l3-border-intense) 1px, transparent 1px);
   background-size: var(--l3-spacing-20) var(--l3-spacing-20);
 }
@@ -592,7 +593,8 @@
   flex-direction: column;
   max-width: 400px;
   border-radius: var(--l3-radius-16);
-  background: var(--l3-surface-secondary);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 .toastSlot {
@@ -1475,10 +1477,88 @@ legend.sectionLabel {
 
 /* ---- Home ---------------------------------------------------------------------- */
 
+/* Slim "What's new" strip above the hero — latest releases from changelog.ts. */
+.updates {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  min-width: 0;
+  margin-bottom: var(--l3-spacing-16);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
+.updatesDate {
+  flex: none;
+  color: var(--l3-content-tertiary);
+}
+
+.updatesList {
+  display: flex;
+  flex: 1;
+  gap: var(--l3-spacing-16);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.updatesList li {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.updatesList li + li::before {
+  content: '·';
+  margin-right: var(--l3-spacing-16);
+  color: var(--l3-content-tertiary);
+}
+
+.updatesList a,
+.updatesAll {
+  color: inherit;
+  text-decoration: none;
+}
+
+.updatesList strong {
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-primary);
+}
+
+@media (hover: hover) {
+  .updatesList a:hover,
+  .updatesAll:hover {
+    text-decoration: underline;
+  }
+}
+
+.updatesAll {
+  flex: none;
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-accent-discover-default);
+}
+
+/* Phones: one update, no date. */
+@media (max-width: 640px) {
+  .updatesDate,
+  .updatesList li + li {
+    display: none;
+  }
+}
+
 .hero {
   padding: var(--l3-spacing-32);
   border-radius: var(--l3-radius-24);
-  background: var(--l3-surface-secondary);
+  /* Large container: page colour + hairline; only the small cards inside are grey. */
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 .heroEyebrow {
@@ -1517,7 +1597,7 @@ legend.sectionLabel {
 .stats div {
   padding: var(--l3-spacing-12) var(--l3-spacing-16);
   border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-default);
+  background: var(--l3-surface-secondary);
 }
 
 .stats dt {
@@ -1815,7 +1895,8 @@ legend.sectionLabel {
   gap: var(--l3-spacing-48);
   padding: var(--l3-spacing-48) var(--l3-spacing-24);
   border-radius: var(--l3-radius-24);
-  background: var(--l3-surface-secondary);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 /* ---- Card demo (Portfolio › Orders) ---------------------------------------------- */

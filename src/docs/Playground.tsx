@@ -30,6 +30,8 @@ export type PlaygroundDef = {
   controls: Control[]
   render: (v: Values) => ReactNode
   code: (v: Values) => string
+  /** Overrides for the home-page card preview (e.g. a simpler variant than the playground's default). */
+  thumbnail?: Values
 }
 
 export const defaults = (def: PlaygroundDef): Values => Object.fromEntries(def.controls.map((c) => [c.name, c.default]))
