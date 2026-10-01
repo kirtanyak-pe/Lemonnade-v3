@@ -459,7 +459,7 @@ export function ColorsPage() {
   const copy = useCopy()
   const [query, setQuery] = useState('')
   const [view, setView] = useState<'list' | 'tree'>(() => {
-    try { return localStorage.getItem('l3-colors-view') === 'tree' ? 'tree' : 'list' } catch { return 'list' }
+    try { return localStorage.getItem('l3-colors-view') === 'list' ? 'list' : 'tree' } catch { return 'tree' }
   })
   useEffect(() => {
     try { localStorage.setItem('l3-colors-view', view) } catch { /* storage unavailable */ }
@@ -524,7 +524,7 @@ export function ColorsPage() {
           </Section>
         </>
       ) : (
-        <Section id="surface" title="Semantic tokens" lede="Every neutral color token starts from one of four roles. Icons and text share the same content tokens. Hover a box to trace it; click a token to copy it.">
+        <Section id="surface" title="Color roles" lede="Every neutral color token starts from one of four roles. Icons and text share the same content tokens. Hover a box to trace it; click a token to copy it.">
           {/* Jump targets for the Content / Border buttons in the toolbar. */}
           <span id="colors-content" aria-hidden="true" />
           <span id="colors-border" aria-hidden="true" />
