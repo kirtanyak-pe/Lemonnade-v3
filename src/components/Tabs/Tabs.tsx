@@ -19,7 +19,7 @@ export type TabsProps<V extends string = string> = {
   value: V
   onChange: (value: V) => void
   appearance?: 'underline' | 'pill'
-  /** Pills only: filled (primary) or outlined (secondary) selected pill. */
+  /** Pills only (Figma Type): the chip style for the whole row — primary, secondary or tertiary. */
   emphasis?: TabEmphasis
   size?: TabSize
   /** Accessible name for the tab list, e.g. "Portfolio sections". */

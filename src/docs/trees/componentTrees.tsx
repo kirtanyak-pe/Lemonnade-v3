@@ -162,7 +162,9 @@ const tabs: ComponentTreeSpec = {
     {
       id: 'pill', label: 'Pill options', note: 'Chip tabs only',
       leaves: [
-        { id: 'p-em', label: 'emphasis: secondary', note: 'Outlined selected pill instead of filled.', preview: <Tabs aria-label="Secondary" appearance="pill" emphasis="secondary" items={tabItems} value="a" onChange={noop} /> },
+        { id: 'p-pri', label: 'emphasis: primary', note: 'Default. Black fill when selected, light border when not.', preview: <Tabs aria-label="Primary" appearance="pill" items={tabItems} value="a" onChange={noop} /> },
+        { id: 'p-em', label: 'emphasis: secondary', note: 'Dark outline when selected — inside cards and sheets.', preview: <Tabs aria-label="Secondary" appearance="pill" emphasis="secondary" items={tabItems} value="a" onChange={noop} /> },
+        { id: 'p-ter', label: 'emphasis: tertiary', note: 'Subtle fill, no border when unselected — quiet, dense rows.', preview: <Tabs aria-label="Tertiary" appearance="pill" emphasis="tertiary" items={tabItems} value="a" onChange={noop} /> },
         { id: 'p-sub', label: 'subLabel', note: 'A second 8/10 line under the label.', preview: <Tabs aria-label="Sub" appearance="pill" items={[{ value: 'a', label: '25 Sep', subLabel: 'Weekly' }, { value: 'b', label: '30 Oct', subLabel: 'Monthly' }]} value="a" onChange={noop} /> },
         { id: 'p-icon', label: 'hideLabel', note: 'Icon-only tab; the label stays as its name.', preview: <Tabs aria-label="Icons" appearance="pill" items={[{ value: 'a', label: 'Favourites', hideLabel: true, iconLeft: <Icon icon={msStar} size={16} /> }, { value: 'b', label: 'Search', hideLabel: true, iconLeft: <Icon icon={msSearch} size={16} /> }]} value="a" onChange={noop} /> },
       ],

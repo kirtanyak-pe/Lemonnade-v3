@@ -384,7 +384,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   tabs: {
     controls: [
       { name: 'appearance', type: 'select', options: ['underline', 'pill'], default: 'underline' },
-      { name: 'emphasis', type: 'select', options: ['primary', 'secondary'], default: 'primary' },
+      { name: 'emphasis', label: 'Chip style', type: 'select', options: ['primary', 'secondary', 'tertiary'], default: 'primary', showIf: (v) => v.appearance === 'pill' },
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
       { name: 'count', label: 'Number of tabs', prop: 'items', type: 'select', options: ['2', '3', '4'], default: '3' },
       { name: 'showLabel', label: 'Label', prop: 'items[].hideLabel', type: 'boolean', default: true },
@@ -569,7 +569,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
   aerobar: {
     controls: [
       { name: 'type', type: 'select', options: aerobarTypes, default: 'success' },
-      { name: 'emphasis', type: 'select', options: ['primary', 'secondary'], default: 'primary' },
+      { name: 'emphasis', label: 'Chip style', type: 'select', options: ['primary', 'secondary', 'tertiary'], default: 'primary', showIf: (v) => v.appearance === 'pill' },
       { name: 'floating', label: 'Floating (toast)', type: 'boolean', default: true },
       { name: 'heading', type: 'text', default: 'Order placed' },
       { name: 'paragraph', type: 'text', default: 'Buy 10 RELIANCE at market' },

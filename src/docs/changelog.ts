@@ -269,6 +269,15 @@ export const changelog: Record<string, Release[]> = {
 
   tabs: [
     {
+      version: '1.3.0', date: '2026-10-02',
+      summary: 'Tertiary chips',
+      changes: [
+        { kind: 'figma', text: 'Figma Type is now Primary · Secondary · Tertiary, each with a selected and an unselected look (Ghost removed, typos fixed).' },
+        { kind: 'added', text: 'emphasis="tertiary": selected black fill, unselected subtle fill (surface/secondary) with no border or elevation.' },
+        { kind: 'changed', text: 'Switching between views moved to the new Segmented control; pill tabs are for filtering.' },
+      ],
+    },
+    {
       version: '1.2.0', date: '2026-09-30',
       summary: 'Sub label and icon-only tabs',
       changes: [

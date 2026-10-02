@@ -181,8 +181,8 @@
   }
 }
 
-/* Selected, primary: filled inverted pill with the light state layer. */
-.tab[data-appearance='pill'][data-emphasis='primary'][aria-selected='true'] {
+/* Selected, primary / tertiary: filled inverted pill with the light state layer. */
+.tab[data-appearance='pill']:is([data-emphasis='primary'], [data-emphasis='tertiary'])[aria-selected='true'] {
   --tab-surface: var(--l3-surface-inverted);
   --tab-content: var(--l3-content-inverted);
   --tab-border: transparent;
@@ -199,6 +199,13 @@
  */
 .tab[data-appearance='pill'][data-emphasis='secondary'][aria-selected='true'] {
   --tab-border: var(--l3-border-dark);
+}
+
+/* Unselected, tertiary: subtle fill, no border — not a surface/primary chip, so no elevation either. */
+.tab[data-appearance='pill'][data-emphasis='tertiary'][aria-selected='false'] {
+  --tab-surface: var(--l3-surface-secondary);
+  --tab-border: transparent;
+  box-shadow: none;
 }
 
 /*

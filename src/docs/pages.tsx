@@ -350,7 +350,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65938',
     source: 'src/components/Tabs',
     exports: ['Tabs', 'Tab'],
-    tokens: ['content/primary · secondary · inverted', 'surface/primary · inverted', 'border/light · dark', 'state-layer/*', 'text-semibold-10 · 12 · 14', 'text-extrabold-12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
+    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'text-semibold-10 · 12 · 14', 'text-extrabold-12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Portfolio screen with underline section tabs and pill filters">
@@ -372,7 +372,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'value', type: 'string', description: 'Tabs: the selected item value.' },
       { name: 'onChange', type: '(value) => void', description: 'Tabs: called on tap and on arrow / Home / End keys.' },
       { name: 'appearance', type: "'underline' | 'pill'", default: "'underline'", description: 'Figma isPill (Tabs) / isChip (base tab).' },
-      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'primary'", description: 'Figma isPrimary: selected pill filled (primary) or outlined (secondary).' },
+      { name: 'emphasis', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma Type, pills only — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
