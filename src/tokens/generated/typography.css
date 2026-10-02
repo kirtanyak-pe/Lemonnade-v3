@@ -62,199 +62,199 @@
   --l3-text-extrabold-12-line-height: 16px;
   --l3-text-extrabold-12-letter-spacing: 0px;
   --l3-text-extrabold-12: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-100)/16px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/14 */
+  /* L3/Display - EB/14 · L3/Heading - B/Section */
   --l3-text-extrabold-14-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-14-size: var(--l3-font-size-extrabold-200);
   --l3-text-extrabold-14-line-height: 20px;
   --l3-text-extrabold-14-letter-spacing: 0px;
   --l3-text-extrabold-14: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-200)/20px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/16 */
+  /* L3/Display - EB/16 */
   --l3-text-extrabold-16-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-16-size: var(--l3-font-size-extrabold-300);
   --l3-text-extrabold-16-line-height: 22px;
   --l3-text-extrabold-16-letter-spacing: 0px;
   --l3-text-extrabold-16: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-300)/22px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/18 */
+  /* L3/Display - EB/18 */
   --l3-text-extrabold-18-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-18-size: var(--l3-font-size-extrabold-400);
   --l3-text-extrabold-18-line-height: 24px;
   --l3-text-extrabold-18-letter-spacing: 0px;
   --l3-text-extrabold-18: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-400)/24px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/20 */
+  /* L3/Display - EB/20 */
   --l3-text-extrabold-20-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-20-size: var(--l3-font-size-extrabold-500);
   --l3-text-extrabold-20-line-height: 26px;
   --l3-text-extrabold-20-letter-spacing: 0px;
   --l3-text-extrabold-20: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-500)/26px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/24 */
+  /* L3/Display - EB/24 */
   --l3-text-extrabold-24-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-24-size: var(--l3-font-size-extrabold-600);
   --l3-text-extrabold-24-line-height: 30px;
   --l3-text-extrabold-24-letter-spacing: 0px;
   --l3-text-extrabold-24: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-600)/30px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/28 */
+  /* L3/Display - EB/28 */
   --l3-text-extrabold-28-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-28-size: var(--l3-font-size-extrabold-700);
   --l3-text-extrabold-28-line-height: 36px;
   --l3-text-extrabold-28-letter-spacing: 0px;
   --l3-text-extrabold-28: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-700)/36px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/32 */
+  /* L3/Display - EB/32 */
   --l3-text-extrabold-32-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-32-size: var(--l3-font-size-extrabold-800);
   --l3-text-extrabold-32-line-height: 42px;
   --l3-text-extrabold-32-letter-spacing: 0px;
   --l3-text-extrabold-32: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-800)/42px var(--l3-font-family-manrope);
-  /* L3/extrabold - Heading/36 */
+  /* L3/Display - EB/36 */
   --l3-text-extrabold-36-weight: var(--l3-font-weight-extrabold);
   --l3-text-extrabold-36-size: var(--l3-font-size-extrabold-900);
   --l3-text-extrabold-36-line-height: 46px;
   --l3-text-extrabold-36-letter-spacing: 0px;
   --l3-text-extrabold-36: var(--l3-font-weight-extrabold) var(--l3-font-size-extrabold-900)/46px var(--l3-font-family-manrope);
-  /* L3/bold/10 */
+  /* L3/Heading - B/10 */
   --l3-text-bold-10-weight: var(--l3-font-weight-bold);
   --l3-text-bold-10-size: var(--l3-font-size-bold-50);
   --l3-text-bold-10-line-height: 12px;
   --l3-text-bold-10-letter-spacing: 0px;
   --l3-text-bold-10: var(--l3-font-weight-bold) var(--l3-font-size-bold-50)/12px var(--l3-font-family-manrope);
-  /* L3/bold/12 */
+  /* L3/Heading - B/12 */
   --l3-text-bold-12-weight: var(--l3-font-weight-bold);
   --l3-text-bold-12-size: var(--l3-font-size-bold-100);
   --l3-text-bold-12-line-height: 16px;
   --l3-text-bold-12-letter-spacing: 0px;
   --l3-text-bold-12: var(--l3-font-weight-bold) var(--l3-font-size-bold-100)/16px var(--l3-font-family-manrope);
-  /* L3/bold/14 */
+  /* L3/Heading - B/14 */
   --l3-text-bold-14-weight: var(--l3-font-weight-bold);
   --l3-text-bold-14-size: var(--l3-font-size-bold-200);
   --l3-text-bold-14-line-height: 20px;
   --l3-text-bold-14-letter-spacing: 0px;
   --l3-text-bold-14: var(--l3-font-weight-bold) var(--l3-font-size-bold-200)/20px var(--l3-font-family-manrope);
-  /* L3/bold/16 */
+  /* L3/Heading - B/16 */
   --l3-text-bold-16-weight: var(--l3-font-weight-bold);
   --l3-text-bold-16-size: var(--l3-font-size-bold-300);
   --l3-text-bold-16-line-height: 22px;
   --l3-text-bold-16-letter-spacing: 0px;
   --l3-text-bold-16: var(--l3-font-weight-bold) var(--l3-font-size-bold-300)/22px var(--l3-font-family-manrope);
-  /* L3/bold/18 */
+  /* L3/Heading - B/18 */
   --l3-text-bold-18-weight: var(--l3-font-weight-bold);
   --l3-text-bold-18-size: var(--l3-font-size-bold-400);
   --l3-text-bold-18-line-height: 24px;
   --l3-text-bold-18-letter-spacing: 0px;
   --l3-text-bold-18: var(--l3-font-weight-bold) var(--l3-font-size-bold-400)/24px var(--l3-font-family-manrope);
-  /* L3/bold/20 */
+  /* L3/Heading - B/20 */
   --l3-text-bold-20-weight: var(--l3-font-weight-bold);
   --l3-text-bold-20-size: var(--l3-font-size-bold-500);
   --l3-text-bold-20-line-height: 26px;
   --l3-text-bold-20-letter-spacing: 0px;
   --l3-text-bold-20: var(--l3-font-weight-bold) var(--l3-font-size-bold-500)/26px var(--l3-font-family-manrope);
-  /* L3/bold/24 */
+  /* L3/Heading - B/24 */
   --l3-text-bold-24-weight: var(--l3-font-weight-bold);
   --l3-text-bold-24-size: var(--l3-font-size-bold-600);
   --l3-text-bold-24-line-height: 30px;
   --l3-text-bold-24-letter-spacing: 0px;
   --l3-text-bold-24: var(--l3-font-weight-bold) var(--l3-font-size-bold-600)/30px var(--l3-font-family-manrope);
-  /* L3/bold/28 */
+  /* L3/Heading - B/28 */
   --l3-text-bold-28-weight: var(--l3-font-weight-bold);
   --l3-text-bold-28-size: var(--l3-font-size-bold-700);
   --l3-text-bold-28-line-height: 36px;
   --l3-text-bold-28-letter-spacing: 0px;
   --l3-text-bold-28: var(--l3-font-weight-bold) var(--l3-font-size-bold-700)/36px var(--l3-font-family-manrope);
-  /* L3/bold/32 */
+  /* L3/Heading - B/32 */
   --l3-text-bold-32-weight: var(--l3-font-weight-bold);
   --l3-text-bold-32-size: var(--l3-font-size-bold-800);
   --l3-text-bold-32-line-height: 42px;
   --l3-text-bold-32-letter-spacing: 0px;
   --l3-text-bold-32: var(--l3-font-weight-bold) var(--l3-font-size-bold-800)/42px var(--l3-font-family-manrope);
-  /* L3/bold/36 */
+  /* L3/Heading - B/36 */
   --l3-text-bold-36-weight: var(--l3-font-weight-bold);
   --l3-text-bold-36-size: var(--l3-font-size-bold-900);
   --l3-text-bold-36-line-height: 46px;
   --l3-text-bold-36-letter-spacing: 0px;
   --l3-text-bold-36: var(--l3-font-weight-bold) var(--l3-font-size-bold-900)/46px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/10 */
+  /* L3/Label - SB/10 */
   --l3-text-semibold-10-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-10-size: var(--l3-font-size-semibold-50);
   --l3-text-semibold-10-line-height: 12px;
   --l3-text-semibold-10-letter-spacing: 0px;
   --l3-text-semibold-10: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-50)/12px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/12 */
+  /* L3/Label - SB/12 */
   --l3-text-semibold-12-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-12-size: var(--l3-font-size-semibold-100);
   --l3-text-semibold-12-line-height: 16px;
   --l3-text-semibold-12-letter-spacing: 0px;
   --l3-text-semibold-12: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-100)/16px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/14 */
+  /* L3/Label - SB/14 */
   --l3-text-semibold-14-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-14-size: var(--l3-font-size-semibold-200);
   --l3-text-semibold-14-line-height: 20px;
   --l3-text-semibold-14-letter-spacing: 0px;
   --l3-text-semibold-14: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-200)/20px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/16 */
+  /* L3/Label - SB/16 */
   --l3-text-semibold-16-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-16-size: var(--l3-font-size-semibold-300);
   --l3-text-semibold-16-line-height: 22px;
   --l3-text-semibold-16-letter-spacing: 0px;
   --l3-text-semibold-16: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-300)/22px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/18 */
+  /* L3/Label - SB/18 */
   --l3-text-semibold-18-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-18-size: var(--l3-font-size-semibold-400);
   --l3-text-semibold-18-line-height: 24px;
   --l3-text-semibold-18-letter-spacing: 0px;
   --l3-text-semibold-18: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-400)/24px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/20 */
+  /* L3/Label - SB/20 */
   --l3-text-semibold-20-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-20-size: var(--l3-font-size-semibold-500);
   --l3-text-semibold-20-line-height: 26px;
   --l3-text-semibold-20-letter-spacing: 0px;
   --l3-text-semibold-20: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-500)/26px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/24 */
+  /* L3/Label - SB/24 */
   --l3-text-semibold-24-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-24-size: var(--l3-font-size-semibold-600);
   --l3-text-semibold-24-line-height: 30px;
   --l3-text-semibold-24-letter-spacing: 0px;
   --l3-text-semibold-24: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-600)/30px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/28 */
+  /* L3/Label - SB/28 */
   --l3-text-semibold-28-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-28-size: var(--l3-font-size-semibold-700);
   --l3-text-semibold-28-line-height: 36px;
   --l3-text-semibold-28-letter-spacing: 0px;
   --l3-text-semibold-28: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-700)/36px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/32 */
+  /* L3/Label - SB/32 */
   --l3-text-semibold-32-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-32-size: var(--l3-font-size-semibold-800);
   --l3-text-semibold-32-line-height: 42px;
   --l3-text-semibold-32-letter-spacing: 0px;
   --l3-text-semibold-32: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-800)/42px var(--l3-font-family-manrope);
-  /* L3/semibold - Label/36 */
+  /* L3/Label - SB/36 */
   --l3-text-semibold-36-weight: var(--l3-font-weight-semibold);
   --l3-text-semibold-36-size: var(--l3-font-size-semibold-900);
   --l3-text-semibold-36-line-height: 46px;
   --l3-text-semibold-36-letter-spacing: 0px;
   --l3-text-semibold-36: var(--l3-font-weight-semibold) var(--l3-font-size-semibold-900)/46px var(--l3-font-family-manrope);
-  /* L3/Medium - Body/10 */
+  /* L3/Paragraph - M/10 */
   --l3-text-medium-10-weight: var(--l3-font-weight-medium);
   --l3-text-medium-10-size: var(--l3-font-size-medium-50);
   --l3-text-medium-10-line-height: 12px;
   --l3-text-medium-10-letter-spacing: 0px;
   --l3-text-medium-10: var(--l3-font-weight-medium) var(--l3-font-size-medium-50)/12px var(--l3-font-family-manrope);
-  /* L3/Medium - Body/12 */
+  /* L3/Paragraph - M/12 */
   --l3-text-medium-12-weight: var(--l3-font-weight-medium);
   --l3-text-medium-12-size: var(--l3-font-size-medium-100);
   --l3-text-medium-12-line-height: 16px;
   --l3-text-medium-12-letter-spacing: 0px;
   --l3-text-medium-12: var(--l3-font-weight-medium) var(--l3-font-size-medium-100)/16px var(--l3-font-family-manrope);
-  /* L3/Medium - Body/14 */
+  /* L3/Paragraph - M/14 */
   --l3-text-medium-14-weight: var(--l3-font-weight-medium);
   --l3-text-medium-14-size: var(--l3-font-size-medium-200);
   --l3-text-medium-14-line-height: 20px;
   --l3-text-medium-14-letter-spacing: 0px;
   --l3-text-medium-14: var(--l3-font-weight-medium) var(--l3-font-size-medium-200)/20px var(--l3-font-family-manrope);
-  /* L3/Medium - Body/16 */
+  /* L3/Paragraph - M/16 */
   --l3-text-medium-16-weight: var(--l3-font-weight-medium);
   --l3-text-medium-16-size: var(--l3-font-size-medium-300);
   --l3-text-medium-16-line-height: 22px;
   --l3-text-medium-16-letter-spacing: 0px;
   --l3-text-medium-16: var(--l3-font-weight-medium) var(--l3-font-size-medium-300)/22px var(--l3-font-family-manrope);
-  /* L3/Medium - Body/18 */
+  /* L3/Paragraph - M/18 */
   --l3-text-medium-18-weight: var(--l3-font-weight-medium);
   --l3-text-medium-18-size: var(--l3-font-size-medium-400);
   --l3-text-medium-18-line-height: 24px;
@@ -308,4 +308,40 @@
   --l3-text-semibold-08-line-height: 10px;
   --l3-text-semibold-08-letter-spacing: 0px;
   --l3-text-semibold-08: var(--l3-font-weight-semibold) var(--l3-font-size-local-08)/10px var(--l3-font-family-manrope);
+
+  /* Figma roles — aliases of the styles above */
+  --l3-text-display-14: var(--l3-text-extrabold-14);
+  --l3-text-heading-section: var(--l3-text-extrabold-14);
+  --l3-text-display-16: var(--l3-text-extrabold-16);
+  --l3-text-display-18: var(--l3-text-extrabold-18);
+  --l3-text-display-20: var(--l3-text-extrabold-20);
+  --l3-text-display-24: var(--l3-text-extrabold-24);
+  --l3-text-display-28: var(--l3-text-extrabold-28);
+  --l3-text-display-32: var(--l3-text-extrabold-32);
+  --l3-text-display-36: var(--l3-text-extrabold-36);
+  --l3-text-heading-10: var(--l3-text-bold-10);
+  --l3-text-heading-12: var(--l3-text-bold-12);
+  --l3-text-heading-14: var(--l3-text-bold-14);
+  --l3-text-heading-16: var(--l3-text-bold-16);
+  --l3-text-heading-18: var(--l3-text-bold-18);
+  --l3-text-heading-20: var(--l3-text-bold-20);
+  --l3-text-heading-24: var(--l3-text-bold-24);
+  --l3-text-heading-28: var(--l3-text-bold-28);
+  --l3-text-heading-32: var(--l3-text-bold-32);
+  --l3-text-heading-36: var(--l3-text-bold-36);
+  --l3-text-label-10: var(--l3-text-semibold-10);
+  --l3-text-label-12: var(--l3-text-semibold-12);
+  --l3-text-label-14: var(--l3-text-semibold-14);
+  --l3-text-label-16: var(--l3-text-semibold-16);
+  --l3-text-label-18: var(--l3-text-semibold-18);
+  --l3-text-label-20: var(--l3-text-semibold-20);
+  --l3-text-label-24: var(--l3-text-semibold-24);
+  --l3-text-label-28: var(--l3-text-semibold-28);
+  --l3-text-label-32: var(--l3-text-semibold-32);
+  --l3-text-label-36: var(--l3-text-semibold-36);
+  --l3-text-paragraph-10: var(--l3-text-medium-10);
+  --l3-text-paragraph-12: var(--l3-text-medium-12);
+  --l3-text-paragraph-14: var(--l3-text-medium-14);
+  --l3-text-paragraph-16: var(--l3-text-medium-16);
+  --l3-text-paragraph-18: var(--l3-text-medium-18);
 }

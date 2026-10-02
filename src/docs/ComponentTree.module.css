@@ -114,6 +114,48 @@
   color: var(--l3-content-primary);
 }
 
+/* Group boxes are buttons: tap to collapse / expand their leaves. */
+.group {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  min-height: var(--l3-size-tap-target);
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.groupText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+}
+
+.groupChevron {
+  flex: none;
+  color: var(--l3-content-secondary);
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* Chevron points up while expanded (tap to collapse), down while collapsed (tap to expand). */
+.group[aria-expanded='true'] .groupChevron {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .group:hover .groupChevron {
+    color: var(--l3-content-primary);
+  }
+}
+
+.children[hidden] {
+  display: none;
+}
+
 /* Children hang to the right of their parent's spine (the spine runs 16px in from the parent's left). */
 .children {
   display: flex;
@@ -200,6 +242,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .groupChevron,
   .line,
   .branch,
   .group,

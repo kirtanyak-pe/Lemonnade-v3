@@ -22,10 +22,10 @@ const TypographyThumb = () => (
   <div className={styles.type}>
     <span className={styles.typeBig}>Aa</span>
     <span className={styles.typeScale}>
-      <span style={{ font: 'var(--l3-text-extrabold-14)' }}>Display</span>
-      <span style={{ font: 'var(--l3-text-bold-14)' }}>Heading</span>
-      <span style={{ font: 'var(--l3-text-semibold-14)' }}>Label</span>
-      <span style={{ font: 'var(--l3-text-medium-14)' }}>Paragraph</span>
+      <span style={{ font: 'var(--l3-text-display-14)' }}>Display</span>
+      <span style={{ font: 'var(--l3-text-heading-14)' }}>Heading</span>
+      <span style={{ font: 'var(--l3-text-label-14)' }}>Label</span>
+      <span style={{ font: 'var(--l3-text-paragraph-14)' }}>Paragraph</span>
     </span>
   </div>
 )
@@ -51,7 +51,7 @@ const LogoThumb = () => (
 
 export const foundationThumbs: Record<string, { thumb: ReactNode; meta: string }> = {
   colors: { thumb: <ColorsThumb />, meta: `${themeTokenCount} tokens · 10 themes` },
-  typography: { thumb: <TypographyThumb />, meta: `Manrope · ${textStyles.length} styles` },
+  typography: { thumb: <TypographyThumb />, meta: `Manrope · 4 roles · ${textStyles.filter((s) => s.roles.length).length} styles` },
   spacing: { thumb: <SpacingThumb />, meta: `${Object.keys(numberVars).length} spacing, radius & size tokens` },
   icons: { thumb: <IconsThumb />, meta: 'Material Symbols · 3,900+' },
   'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing' },

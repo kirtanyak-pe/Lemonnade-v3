@@ -18,7 +18,7 @@ import { BrandLogoVariants } from '../preview/BrandLogoVariants'
 import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
 import { ColorsPage } from './colors/ColorsPage'
-import { TypographyPreview } from '../preview/TypographyPreview'
+import { TypographyPage } from './typography/TypographyPage'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
@@ -58,8 +58,8 @@ export const pages: DocPage[] = [
     progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
-    description: 'The 42 Manrope text styles from Figma, each available as a single font token.',
-    content: <TypographyPreview />,
+    description: 'Manrope in four roles — Display, Heading, Label and Paragraph — from the 34 Figma text styles. Each is a single font token.',
+    content: <TypographyPage />,
   },
   {
     id: 'spacing',

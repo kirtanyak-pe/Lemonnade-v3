@@ -11,7 +11,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/10"
+          "l3.figmaStyle": "L3/extrabold - Heading/10",
+          "l3.legacy": "No Figma text style any more (was L3/extrabold - Heading/10). Kept for code that still uses it."
         }
       },
       "12": {
@@ -24,7 +25,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/12"
+          "l3.figmaStyle": "L3/extrabold - Heading/12",
+          "l3.legacy": "No Figma text style any more (was L3/extrabold - Heading/12). Kept for code that still uses it."
         }
       },
       "14": {
@@ -37,7 +39,11 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/14"
+          "l3.figmaStyle": "L3/Display - EB/14 · L3/Heading - B/Section",
+          "l3.roles": [
+            "display/14",
+            "heading/section"
+          ]
         }
       },
       "16": {
@@ -50,7 +56,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/16"
+          "l3.figmaStyle": "L3/Display - EB/16",
+          "l3.roles": [
+            "display/16"
+          ]
         }
       },
       "18": {
@@ -63,7 +72,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/18"
+          "l3.figmaStyle": "L3/Display - EB/18",
+          "l3.roles": [
+            "display/18"
+          ]
         }
       },
       "20": {
@@ -76,7 +88,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/20"
+          "l3.figmaStyle": "L3/Display - EB/20",
+          "l3.roles": [
+            "display/20"
+          ]
         }
       },
       "24": {
@@ -89,7 +104,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/24"
+          "l3.figmaStyle": "L3/Display - EB/24",
+          "l3.roles": [
+            "display/24"
+          ]
         }
       },
       "28": {
@@ -102,7 +120,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/28"
+          "l3.figmaStyle": "L3/Display - EB/28",
+          "l3.roles": [
+            "display/28"
+          ]
         }
       },
       "32": {
@@ -115,7 +136,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/32"
+          "l3.figmaStyle": "L3/Display - EB/32",
+          "l3.roles": [
+            "display/32"
+          ]
         }
       },
       "36": {
@@ -128,7 +152,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/extrabold - Heading/36"
+          "l3.figmaStyle": "L3/Display - EB/36",
+          "l3.roles": [
+            "display/36"
+          ]
         }
       }
     },
@@ -143,7 +170,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/10"
+          "l3.figmaStyle": "L3/Heading - B/10",
+          "l3.roles": [
+            "heading/10"
+          ]
         }
       },
       "12": {
@@ -156,7 +186,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/12"
+          "l3.figmaStyle": "L3/Heading - B/12",
+          "l3.roles": [
+            "heading/12"
+          ]
         }
       },
       "14": {
@@ -169,7 +202,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/14"
+          "l3.figmaStyle": "L3/Heading - B/14",
+          "l3.roles": [
+            "heading/14"
+          ]
         }
       },
       "16": {
@@ -182,7 +218,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/16"
+          "l3.figmaStyle": "L3/Heading - B/16",
+          "l3.roles": [
+            "heading/16"
+          ]
         }
       },
       "18": {
@@ -195,7 +234,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/18"
+          "l3.figmaStyle": "L3/Heading - B/18",
+          "l3.roles": [
+            "heading/18"
+          ]
         }
       },
       "20": {
@@ -208,7 +250,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/20"
+          "l3.figmaStyle": "L3/Heading - B/20",
+          "l3.roles": [
+            "heading/20"
+          ]
         }
       },
       "24": {
@@ -221,7 +266,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/24"
+          "l3.figmaStyle": "L3/Heading - B/24",
+          "l3.roles": [
+            "heading/24"
+          ]
         }
       },
       "28": {
@@ -234,7 +282,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/28"
+          "l3.figmaStyle": "L3/Heading - B/28",
+          "l3.roles": [
+            "heading/28"
+          ]
         }
       },
       "32": {
@@ -247,7 +298,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/32"
+          "l3.figmaStyle": "L3/Heading - B/32",
+          "l3.roles": [
+            "heading/32"
+          ]
         }
       },
       "36": {
@@ -260,7 +314,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/bold/36"
+          "l3.figmaStyle": "L3/Heading - B/36",
+          "l3.roles": [
+            "heading/36"
+          ]
         }
       }
     },
@@ -275,7 +332,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/10"
+          "l3.figmaStyle": "L3/Label - SB/10",
+          "l3.roles": [
+            "label/10"
+          ]
         }
       },
       "12": {
@@ -288,7 +348,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/12"
+          "l3.figmaStyle": "L3/Label - SB/12",
+          "l3.roles": [
+            "label/12"
+          ]
         }
       },
       "14": {
@@ -301,7 +364,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/14"
+          "l3.figmaStyle": "L3/Label - SB/14",
+          "l3.roles": [
+            "label/14"
+          ]
         }
       },
       "16": {
@@ -314,7 +380,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/16"
+          "l3.figmaStyle": "L3/Label - SB/16",
+          "l3.roles": [
+            "label/16"
+          ]
         }
       },
       "18": {
@@ -327,7 +396,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/18"
+          "l3.figmaStyle": "L3/Label - SB/18",
+          "l3.roles": [
+            "label/18"
+          ]
         }
       },
       "20": {
@@ -340,7 +412,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/20"
+          "l3.figmaStyle": "L3/Label - SB/20",
+          "l3.roles": [
+            "label/20"
+          ]
         }
       },
       "24": {
@@ -353,7 +428,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/24"
+          "l3.figmaStyle": "L3/Label - SB/24",
+          "l3.roles": [
+            "label/24"
+          ]
         }
       },
       "28": {
@@ -366,7 +444,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/28"
+          "l3.figmaStyle": "L3/Label - SB/28",
+          "l3.roles": [
+            "label/28"
+          ]
         }
       },
       "32": {
@@ -379,7 +460,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/32"
+          "l3.figmaStyle": "L3/Label - SB/32",
+          "l3.roles": [
+            "label/32"
+          ]
         }
       },
       "36": {
@@ -392,7 +476,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/semibold - Label/36"
+          "l3.figmaStyle": "L3/Label - SB/36",
+          "l3.roles": [
+            "label/36"
+          ]
         }
       }
     },
@@ -407,7 +494,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/10"
+          "l3.figmaStyle": "L3/Paragraph - M/10",
+          "l3.roles": [
+            "paragraph/10"
+          ]
         }
       },
       "12": {
@@ -420,7 +510,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/12"
+          "l3.figmaStyle": "L3/Paragraph - M/12",
+          "l3.roles": [
+            "paragraph/12"
+          ]
         }
       },
       "14": {
@@ -433,7 +526,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/14"
+          "l3.figmaStyle": "L3/Paragraph - M/14",
+          "l3.roles": [
+            "paragraph/14"
+          ]
         }
       },
       "16": {
@@ -446,7 +542,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/16"
+          "l3.figmaStyle": "L3/Paragraph - M/16",
+          "l3.roles": [
+            "paragraph/16"
+          ]
         }
       },
       "18": {
@@ -459,7 +558,10 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/18"
+          "l3.figmaStyle": "L3/Paragraph - M/18",
+          "l3.roles": [
+            "paragraph/18"
+          ]
         }
       },
       "20": {
@@ -472,7 +574,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Medium - Body/20"
+          "l3.figmaStyle": "L3/Medium - Body/20",
+          "l3.legacy": "No Figma text style any more (was L3/Medium - Body/20). Kept for code that still uses it."
         }
       }
     },
@@ -487,7 +590,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/10"
+          "l3.figmaStyle": "L3/Regular/10",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/10). Kept for code that still uses it."
         }
       },
       "12": {
@@ -500,7 +604,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/12"
+          "l3.figmaStyle": "L3/Regular/12",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/12). Kept for code that still uses it."
         }
       },
       "14": {
@@ -513,7 +618,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/14"
+          "l3.figmaStyle": "L3/Regular/14",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/14). Kept for code that still uses it."
         }
       },
       "16": {
@@ -526,7 +632,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/16"
+          "l3.figmaStyle": "L3/Regular/16",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/16). Kept for code that still uses it."
         }
       },
       "18": {
@@ -539,7 +646,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/18"
+          "l3.figmaStyle": "L3/Regular/18",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/18). Kept for code that still uses it."
         }
       },
       "20": {
@@ -552,7 +660,8 @@
           "letterSpacing": "0px"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Regular/20"
+          "l3.figmaStyle": "L3/Regular/20",
+          "l3.legacy": "No Figma text style any more (was L3/Regular/20). Kept for code that still uses it."
         }
       }
     }

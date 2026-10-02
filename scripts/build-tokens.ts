@@ -124,6 +124,13 @@ const styleLines = [...textStyles].flatMap(([path, leaf]) => {
   ]
 })
 
+// Figma role names (Display · Heading · Label · Paragraph) as aliases of the weight-named styles above.
+// A style lists its roles in $extensions["l3.roles"], e.g. ["display/14", "heading/section"].
+const rolesOf = (leaf: { $extensions?: Record<string, unknown> }) => (leaf.$extensions?.['l3.roles'] as string[] | undefined) ?? []
+const textRoles = [...textStyles].flatMap(([path, leaf]) =>
+  rolesOf(leaf).map((role) => ({ role, cssVar: `--l3-text-${role.replace('/', '-')}`, alias: varName(path) })))
+const roleLines = textRoles.map(({ cssVar, alias }) => `  ${cssVar}: var(${alias});`)
+
 // ---- effects.css ----------------------------------------------------------
 const shadows = flatten(readJson('source/effect-styles.json'))
 const shadowLines = [...shadows].flatMap(([path, leaf]) => {
@@ -168,20 +175,27 @@ export const textStyles = [
 ${[...textStyles].map(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
   const [, weight, size] = path.split('.')
-  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${Number(size)}, lineHeight: ${parseFloat(v.lineHeight)} },`
+  const legacy = leaf.$extensions?.['l3.legacy'] ? `, legacy: ${JSON.stringify(leaf.$extensions['l3.legacy'])}` : ''
+  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${Number(size)}, lineHeight: ${parseFloat(v.lineHeight)}, roles: ${JSON.stringify(rolesOf(leaf))}${legacy} },`
 }).join('\n')}
+] as const
+
+/** Figma role name → CSS custom property (an alias of a weight-named style). Use as \`font: var(--l3-text-label-12)\`. */
+export const textRoles = [
+${textRoles.map(({ role, cssVar, alias }) => `  { role: '${role}', cssVar: '${cssVar}', alias: '${alias}' },`).join('\n')}
 ] as const
 
 export type ThemeToken = keyof typeof themeTokenVars
 export type BaseColor = keyof typeof baseColorVars
 export type NumberToken = keyof typeof numberVars
 export type TextStyle = (typeof textStyles)[number]['cssVar']
+export type TextRole = (typeof textRoles)[number]['cssVar']
 `,
 )
-writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n}\n`)
+writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n\n  /* Figma roles — aliases of the styles above */\n${roleLines.join('\n')}\n}\n`)
 writeFileSync(
   root + 'generated/effects.css',
   `${header}:root {\n${shadowLines.join('\n')}\n\n  /* Motion — local tokens, not in Figma yet (source/local.motion.json) */\n${motionLines.join('\n')}\n}\n`,
 )
 
-console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles, ${shadows.size} shadows, ${motion.size} motion (local)`)
+console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles (${textRoles.length} role aliases), ${shadows.size} shadows, ${motion.size} motion (local)`)

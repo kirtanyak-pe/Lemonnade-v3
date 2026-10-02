@@ -1,4 +1,6 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Icon } from '../components/Icon'
+import { msKeyboardArrowDown } from '../icons/material'
 import styles from './ComponentTree.module.css'
 
 // A component's options as a top-to-bottom tree: the component at the top, one branch per property
@@ -17,11 +19,15 @@ export function Mini({ children }: { children: ReactNode }) {
   return <span className={styles.mini}><span className={styles.miniInner}>{children}</span></span>
 }
 
-export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
+/** `showPreviews={false}` hides every leaf's live example, leaving just the name and note. */
+export function ComponentTree({ spec, showPreviews = true }: { spec: ComponentTreeSpec; showPreviews?: boolean }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [paths, setPaths] = useState<{ d: string; from: string; to: string }[]>([])
   const [size, setSize] = useState({ w: 0, h: 0 })
   const [active, setActive] = useState<string | null>(null)
+  // Collapsed groups: their leaves (and connectors) are hidden; the ResizeObserver redraws the lines.
+  const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set())
+  const toggle = (id: string) => setCollapsed((c) => { const n = new Set(c); if (n.has(id)) n.delete(id); else n.add(id); return n })
 
   const links = useMemo(() => {
     const out: Link[] = []
@@ -47,7 +53,8 @@ export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
     setPaths(links.flatMap((l) => {
       const a = rect(l.from)
       const b = rect(l.to)
-      if (!a || !b) return []
+      // Hidden (collapsed) nodes measure as empty boxes — draw nothing to them.
+      if (!a || !b || !b.width || !a.width) return []
       if (l.kind === 'top' && !stacked) {
         // Root → branch: elbow from the root's bottom centre to the branch's top centre.
         const x1 = a.left + a.width / 2 - box.left, y1 = a.bottom - box.top
@@ -69,6 +76,9 @@ export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
     if (wrap.current) ro.observe(wrap.current)
     return () => ro.disconnect()
   }, [measure])
+
+  // Collapsing a group may not resize the tree (a taller column sets its height), so redraw explicitly.
+  useLayoutEffect(measure, [collapsed, showPreviews, measure])
 
   // Hovered node, its ancestors and its descendants.
   const lit = useMemo(() => {
@@ -94,7 +104,7 @@ export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
   const leaf = (l: TreeLeaf) => (
     <li key={l.id}>
       <div className={styles.leaf} {...hover(l.id)} aria-label={`${l.label}${l.note ? ': ' + l.note : ''}`}>
-        <div className={styles.preview} inert>{l.preview}</div>
+        {showPreviews && <div className={styles.preview} inert>{l.preview}</div>}
         <div className={styles.leafText}>
           <code className={styles.leafLabel}>{l.label}</code>
           {l.note && <span className={styles.leafNote}>{l.note}</span>}
@@ -128,11 +138,21 @@ export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
             <ul className={styles.children}>
               {(b.groups ?? []).map((g) => (
                 <li key={g.id}>
-                  <div className={styles.group} {...hover(g.id)}>
-                    <span className={styles.groupTitle}>{g.label}</span>
-                    {g.note && <span className={styles.groupNote}>{g.note}</span>}
-                  </div>
-                  <ul className={styles.children}>{g.leaves.map(leaf)}</ul>
+                  <button
+                    type="button"
+                    className={styles.group}
+                    {...hover(g.id)}
+                    aria-expanded={!collapsed.has(g.id)}
+                    aria-controls={`tree-${g.id}`}
+                    onClick={() => toggle(g.id)}
+                  >
+                    <span className={styles.groupText}>
+                      <span className={styles.groupTitle}>{g.label}</span>
+                      {g.note && <span className={styles.groupNote}>{g.note}</span>}
+                    </span>
+                    <Icon icon={msKeyboardArrowDown} size={16} className={styles.groupChevron} />
+                  </button>
+                  <ul id={`tree-${g.id}`} className={styles.children} hidden={collapsed.has(g.id)}>{g.leaves.map(leaf)}</ul>
                 </li>
               ))}
               {(b.leaves ?? []).map(leaf)}
