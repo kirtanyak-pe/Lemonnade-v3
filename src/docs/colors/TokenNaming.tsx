@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { Tabs } from '../../components/Tabs'
 import styles from './TokenNaming.module.css'
 
@@ -89,18 +89,51 @@ const glossary: { kind: PartKind; values: string; note: string }[] = [
   { kind: 'tier', values: 'base', note: 'Primitives. Never used in UI.' },
 ]
 
+/**
+ * Labels never widen their part (so every gap between parts is the same). When a label would touch
+ * the one before it, it drops to the next row on a longer stick.
+ */
+function useLabelRows(count: number, key: string) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [rows, setRows] = useState<number[]>([])
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const place = () => {
+      const labels = [...el.querySelectorAll<HTMLElement>('[data-label]')]
+      const gap = parseFloat(getComputedStyle(el).getPropertyValue('--label-gap')) || 0
+      const rowEnds: number[] = []
+      setRows(labels.map((l) => {
+        const { left, right } = l.getBoundingClientRect()
+        let row = rowEnds.findIndex((end) => left >= end + gap)
+        if (row < 0) row = rowEnds.length
+        rowEnds[row] = right
+        return row
+      }))
+    }
+    place()
+    const ro = new ResizeObserver(place)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [count, key])
+  return [ref, rows] as const
+}
+
 function Anatomy({ example }: { example: Example }) {
+  const [ref, rows] = useLabelRows(example.parts.length, example.parts.map((p) => p.text).join('-'))
+  const maxRow = Math.max(0, ...rows)
   return (
     <div className={styles.anatomyScroll}>
-      <div className={styles.anatomy} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
+      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
         <span className={styles.prefix} aria-hidden="true">--</span>
         {example.parts.map((p, i) => (
           <span key={i} className={styles.partGroup} aria-hidden="true">
             {i > 0 && <span className={styles.sep}>-</span>}
-            <span className={styles.part} data-kind={p.kind}>
+            <span className={styles.part} data-kind={p.kind} style={{ '--row': rows[i] ?? 0 } as CSSProperties}>
               <code className={styles.partText}>{p.text}</code>
-              <span className={styles.stick} />
-              <span className={styles.partLabel}>{partLabels[p.kind]}</span>
+              <span className={styles.stick}>
+                <span className={styles.partLabel} data-label>{partLabels[p.kind]}</span>
+              </span>
             </span>
           </span>
         ))}

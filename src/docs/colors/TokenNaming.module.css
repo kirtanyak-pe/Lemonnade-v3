@@ -17,13 +17,22 @@
   padding: var(--l3-spacing-32) var(--l3-spacing-24) var(--l3-spacing-24);
 }
 
+/*
+ * Labels hang off the stick (absolutely positioned) so they never widen a part. --row (set per part from
+ * JS) lengthens the stick to drop a label a row when it would touch its neighbor; --rows reserves room below.
+ */
 .anatomy {
+  --stick-height: var(--l3-size-32);
+  --label-height: var(--l3-size-24);
+  --row-step: var(--l3-size-28);
+  --label-gap: var(--l3-spacing-08);
   display: flex;
   align-items: flex-start;
   justify-content: center;
   width: max-content;
   min-width: 100%;
   margin: 0 auto;
+  padding-bottom: calc(var(--label-height) + var(--rows, 0) * var(--row-step));
 }
 
 .prefix,
@@ -81,7 +90,7 @@
 .stick {
   position: relative;
   width: var(--l3-spacing-02);
-  height: var(--l3-size-32);
+  height: calc(var(--stick-height) + var(--row, 0) * var(--row-step));
   margin-top: var(--l3-spacing-12);
   background: var(--part-border);
 }
@@ -99,6 +108,10 @@
 }
 
 .partLabel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   padding: var(--l3-spacing-04) var(--l3-spacing-12);
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-secondary);
@@ -130,15 +143,19 @@
     border-radius: var(--l3-radius-06);
   }
 
+  .anatomy {
+    --stick-height: var(--l3-size-20);
+    --label-height: var(--l3-size-16);
+    --row-step: var(--l3-size-20);
+    --label-gap: var(--l3-spacing-04);
+  }
+
   .stick {
-    height: var(--l3-size-20);
     margin-top: var(--l3-spacing-08);
   }
 
-  /* Labels may reach a little past their part (into the separator) so they don't set the row's width. */
   .partLabel {
-    margin-inline: calc(-1 * var(--l3-spacing-08));
-    padding: var(--l3-spacing-02) var(--l3-spacing-04);
+    padding: var(--l3-spacing-02) var(--l3-spacing-06);
     border-radius: var(--l3-radius-06);
     font: var(--l3-text-semibold-10);
   }
