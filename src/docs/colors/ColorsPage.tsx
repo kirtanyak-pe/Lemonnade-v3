@@ -498,18 +498,23 @@ export function ColorsPage() {
           ? 'Color tokens start from one of four roles — surface, icon, text and border — with icons and text sharing the content tokens. Accents branch off on their own.'
           : 'Every neutral color token, by role: surface, content (text and icons) and border. Accents are covered further down.'}>
         <div className={styles.viewToggle}>
+          <div className={styles.viewSwitch}>
+            <span className={styles.viewLabel}>View as</span>
+            <div className={styles.viewTrack}>
+              <Tabs
+                aria-label="Color roles view"
+                appearance="pill"
+                size="md"
+                items={[
+                  { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
+                  { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
+                ]}
+                value={view}
+                onChange={setView}
+              />
+            </div>
+          </div>
           <span className={styles.viewHint}>{view === 'list' ? 'Every token with its role, value and usage.' : 'How the roles branch into tokens. Hover a box to trace it; click a token to copy it.'}</span>
-          <Tabs
-            aria-label="Color roles view"
-            appearance="pill"
-            size="md"
-            items={[
-              { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
-              { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
-            ]}
-            value={view}
-            onChange={setView}
-          />
         </div>
         {view === 'tree' ? (
           <SemanticTree filter={filter} copied={copy.copied} onCopy={copy.copy} />
