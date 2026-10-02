@@ -51,7 +51,7 @@ const LogoThumb = () => (
 
 export const foundationThumbs: Record<string, { thumb: ReactNode; meta: string }> = {
   colors: { thumb: <ColorsThumb />, meta: `${themeTokenCount} tokens · 10 themes` },
-  typography: { thumb: <TypographyThumb />, meta: `Manrope · 4 roles · ${textStyles.filter((s) => s.roles.length).length} styles` },
+  typography: { thumb: <TypographyThumb />, meta: `Manrope · 5 roles · ${textStyles.filter((s) => s.roles.length).length} styles` },
   spacing: { thumb: <SpacingThumb />, meta: `${Object.keys(numberVars).length} spacing, radius & size tokens` },
   icons: { thumb: <IconsThumb />, meta: 'Material Symbols · 3,900+' },
   'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing' },

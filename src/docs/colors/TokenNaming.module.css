@@ -107,6 +107,43 @@
   white-space: nowrap;
 }
 
+/* Phones: smaller anatomy so more of the name fits before it scrolls. */
+@media (max-width: 640px) {
+  .anatomyScroll {
+    padding: var(--l3-spacing-20) var(--l3-spacing-08) var(--l3-spacing-16);
+  }
+
+  .prefix,
+  .sep,
+  .partText {
+    font: var(--l3-text-bold-12);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .prefix,
+  .sep {
+    padding-top: var(--l3-spacing-02);
+  }
+
+  .partText {
+    padding: var(--l3-spacing-02) var(--l3-spacing-06);
+    border-radius: var(--l3-radius-06);
+  }
+
+  .stick {
+    height: var(--l3-size-20);
+    margin-top: var(--l3-spacing-08);
+  }
+
+  /* Labels may reach a little past their part (into the separator) so they don't set the row's width. */
+  .partLabel {
+    margin-inline: calc(-1 * var(--l3-spacing-08));
+    padding: var(--l3-spacing-02) var(--l3-spacing-04);
+    border-radius: var(--l3-radius-06);
+    font: var(--l3-text-semibold-10);
+  }
+}
+
 /* ---- Same token in Figma / CSS / TS ---------------------------------------------------------- */
 
 .forms {

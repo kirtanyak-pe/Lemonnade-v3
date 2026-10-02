@@ -58,7 +58,7 @@ export const pages: DocPage[] = [
     progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
-    description: 'Manrope in four roles — Display, Heading, Label and Paragraph — from the 34 Figma text styles. Each is a single font token.',
+    description: 'Manrope in five roles — Display, Heading, Label, Label secondary (coming) and Paragraph — from the 34 Figma text styles. Each is a single font token.',
     content: <TypographyPage />,
   },
   {

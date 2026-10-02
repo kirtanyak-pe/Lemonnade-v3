@@ -8,12 +8,13 @@ import styles from './TypographyPage.module.css'
 // in code each is an alias of a weight-named style (--l3-text-label-12 → --l3-text-semibold-12).
 // The roles are still a draft in Figma — guidance below will change.
 
-type RoleId = 'display' | 'heading' | 'label' | 'paragraph'
+type RoleId = 'display' | 'heading' | 'label' | 'label-secondary' | 'paragraph'
 
-const roles: { id: RoleId; title: string; weight: string; note: string; use: string; example: string }[] = [
+const roles: { id: RoleId; title: string; weight: string; note: string; use: string; example: string; pending?: boolean }[] = [
   { id: 'display', title: 'Display', weight: 'ExtraBold 800', note: 'Numbers & big titles', use: 'Data people look for first: prices, P&L, balances, the main number on a screen. Larger sizes for screen titles.', example: '₹24,812.35' },
   { id: 'heading', title: 'Heading', weight: 'Bold 700', note: 'Section titles', use: 'Titles of sections and cards. Heading / Section (ExtraBold 14) is the standard section heading on a screen.', example: 'Open positions' },
   { id: 'label', title: 'Label', weight: 'SemiBold 600', note: 'UI text', use: 'Text on and around controls: buttons, tabs, tags, list titles, field labels. Label 10 for small roles and meta.', example: 'Buy · NIFTY 50' },
+  { id: 'label-secondary', title: 'Label secondary', weight: 'Styles coming', note: 'Not defined yet', use: 'A secondary label style. Its styles are still being defined in Figma.', example: '', pending: true },
   { id: 'paragraph', title: 'Paragraph', weight: 'Medium 500', note: 'Reading text', use: 'Descriptions, helper text and anything people read as sentences. 10–18 only.', example: 'Orders placed after 3:30 pm go through the next trading day.' },
 ]
 
@@ -45,7 +46,7 @@ export function TypographyPage() {
 
   const tree = useMemo<ComponentTreeSpec>(() => ({
     title: 'Typography',
-    note: 'Manrope · 4 roles · 34 styles',
+    note: 'Manrope · 5 roles · 34 styles',
     branches: roles.map((r) => {
       const groups: TreeGroup[] = scales
         .map((sc) => ({
@@ -64,6 +65,7 @@ export function TypographyPage() {
           }),
         }))
         .filter((g) => g.leaves.length > 0)
+      if (r.pending) return { id: r.id, label: r.title, note: r.note, leaves: [] }
       const section = r.id === 'heading' ? roleVar('heading', 'section') : undefined
       if (section) groups.unshift({ id: 'heading-special', label: 'Section', note: 'ExtraBold 14/20', leaves: [{ id: section.cssVar, label: 'heading-section', note: 'Standard section heading', preview: <span className={styles.treeSample} style={{ font: `var(${section.cssVar})` }}>{sample}</span> }] })
       return { id: r.id, label: r.title, note: r.weight, groups }
@@ -97,8 +99,10 @@ export function TypographyPage() {
       <Section id="use" title="Which role to use" lede="Pick the role by what the text does, then the size by how important it is. Draft guidance from the Figma annotations.">
         <ul className={styles.roleCards}>
           {roles.map((r) => (
-            <li key={r.id} className={styles.roleCard}>
-              <span className={styles.roleExample} style={{ font: `var(--l3-text-${r.id === 'paragraph' ? 'paragraph-14' : r.id === 'heading' ? 'heading-section' : r.id === 'display' ? 'display-24' : 'label-14'})` }}>{r.example}</span>
+            <li key={r.id} className={styles.roleCard} data-pending={r.pending || undefined}>
+              {r.pending
+                ? <span className={styles.rolePending}>Styles coming soon</span>
+                : <span className={styles.roleExample} style={{ font: `var(--l3-text-${r.id === 'paragraph' ? 'paragraph-14' : r.id === 'heading' ? 'heading-section' : r.id === 'display' ? 'display-24' : 'label-14'})` }}>{r.example}</span>}
               <span className={styles.roleTitle}>{r.title} <span className={styles.roleWeight}>{r.weight}</span></span>
               <span className={styles.roleUse}>{r.use}</span>
             </li>

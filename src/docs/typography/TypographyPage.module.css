@@ -126,6 +126,18 @@
   color: var(--l3-content-primary);
 }
 
+/* Role without styles yet (Label secondary): dashed outline and a placeholder line. */
+.roleCard[data-pending] {
+  box-shadow: none;
+  outline: 1px dashed var(--l3-border-intense);
+  outline-offset: -1px;
+}
+
+.rolePending {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-tertiary);
+}
+
 .roleTitle {
   margin-top: var(--l3-spacing-08);
   font: var(--l3-text-heading-14);
