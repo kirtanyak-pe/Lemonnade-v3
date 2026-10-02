@@ -45,6 +45,25 @@
   background: var(--l3-surface-secondary);
 }
 
+/* width="hug": the track wraps its pills, even inside a stretching flex/grid parent. */
+.tabs[data-appearance='pill-group'][data-width='hug'] {
+  width: fit-content;
+}
+
+/* width="fill": tabs share the row. A pill group's track goes full width and its pills are equal. */
+.tabs[data-width='fill'] {
+  width: 100%;
+}
+
+.tabs[data-width='fill'] > .tab {
+  flex: 1 0 auto;
+}
+
+.tabs[data-appearance='pill-group'][data-width='fill'] > .tab {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 /* ---- Tab ------------------------------------------------------------------ */
 
 .tab {

@@ -32,7 +32,7 @@ const aerobarTypes = ['primary', 'discover', 'danger', 'success', 'warning'] as 
 
 // ---- Stateful wrappers (the playground render can't hold hooks itself) ----------
 
-function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill' | 'pill-group'; emphasis: TabEmphasis; size: TabSize; icons: boolean; hideLabel?: boolean; subLabel?: string }) {
+function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill' | 'pill-group'; emphasis: TabEmphasis; size: TabSize; width?: 'hug' | 'fill'; icons: boolean; hideLabel?: boolean; subLabel?: string }) {
   const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, count)
   const [value, setValue] = useState(labels[0])
   return (
@@ -41,6 +41,7 @@ function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' |
       appearance={rest.appearance}
       emphasis={rest.emphasis}
       size={rest.size}
+      width={rest.width}
       items={labels.map((l) => ({
         value: l,
         label: l,
@@ -370,13 +371,14 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'appearance', type: 'select', options: ['underline', 'pill', 'pill-group'], default: 'underline' },
       { name: 'emphasis', label: 'Chip style', type: 'select', options: ['primary', 'secondary', 'tertiary'], default: 'primary', showIf: (v) => v.appearance === 'pill' },
       { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
+      { name: 'width', type: 'select', options: ['hug', 'fill'], default: 'hug' },
       { name: 'count', label: 'Number of tabs', prop: 'items', type: 'select', options: ['2', '3', '4'], default: '3' },
       { name: 'showLabel', label: 'Label', prop: 'items[].hideLabel', type: 'boolean', default: true },
       { name: 'icons', label: 'Icon left', prop: 'items[].iconLeft', type: 'boolean', default: false, showIf: (v) => v.showLabel !== false },
       { name: 'subLabel', label: 'Sub label', prop: 'items[].subLabel', type: 'text', default: '', showIf: (v) => v.appearance !== 'underline' && v.showLabel !== false },
     ],
     render: (v) => (
-      <TabsPlay count={Number(s(v, 'count'))} appearance={s(v, 'appearance') as 'underline' | 'pill' | 'pill-group'} emphasis={s(v, 'emphasis') as TabEmphasis} size={s(v, 'size') as TabSize} icons={b(v, 'icons')} hideLabel={!b(v, 'showLabel')} subLabel={s(v, 'subLabel')} />
+      <TabsPlay count={Number(s(v, 'count'))} appearance={s(v, 'appearance') as 'underline' | 'pill' | 'pill-group'} emphasis={s(v, 'emphasis') as TabEmphasis} size={s(v, 'size') as TabSize} width={s(v, 'width') as 'hug' | 'fill'} icons={b(v, 'icons')} hideLabel={!b(v, 'showLabel')} subLabel={s(v, 'subLabel')} />
     ),
     code: (v) => {
       const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, Number(s(v, 'count')))
@@ -384,7 +386,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       const icon = b(v, 'icons') || hide ? ', iconLeft: <Icon icon={msBlurOn} size={16} />' : ''
       const extra = (hide ? ', hideLabel: true' : '') + (!hide && s(v, 'appearance') !== 'underline' && s(v, 'subLabel') ? `, subLabel: '${s(v, 'subLabel')}'` : '')
       const items = labels.map((l) => `    { value: '${l.toLowerCase()}', label: '${l}'${icon}${extra} },`).join('\n')
-      return `<Tabs\n  ${attrs([['aria-label', 'Sections'], ['appearance', s(v, 'appearance'), 'underline'], ['emphasis', s(v, 'appearance') === 'pill' ? s(v, 'emphasis') : undefined, 'primary'], ['size', s(v, 'size'), 'md']])}\n  items={[\n${items}\n  ]}\n  value={tab}\n  onChange={setTab}\n/>`
+      return `<Tabs\n  ${attrs([['aria-label', 'Sections'], ['appearance', s(v, 'appearance'), 'underline'], ['emphasis', s(v, 'appearance') === 'pill' ? s(v, 'emphasis') : undefined, 'primary'], ['size', s(v, 'size'), 'md'], ['width', s(v, 'width'), 'hug']])}\n  items={[\n${items}\n  ]}\n  value={tab}\n  onChange={setTab}\n/>`
     },
   },
 

@@ -257,6 +257,14 @@ export const changelog: Record<string, Release[]> = {
 
   tabs: [
     {
+      version: '1.5.0', date: '2026-10-02',
+      summary: 'Hug or fill width',
+      changes: [
+        { kind: 'added', text: 'width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group\'s track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills.' },
+        { kind: 'fixed', text: 'A pill group no longer stretches across a flex or grid parent when it should hug.' },
+      ],
+    },
+    {
       version: '1.4.0', date: '2026-10-02',
       summary: 'Pill group',
       changes: [

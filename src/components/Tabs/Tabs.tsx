@@ -29,6 +29,11 @@ export type TabsProps<V extends string = string> = {
   /** `pill` only (Figma base tab Type): the chip style for the whole row — primary, secondary or tertiary. */
   emphasis?: TabEmphasis
   size?: TabSize
+  /**
+   * `hug` (default): tabs are as wide as their labels; a pill group's track wraps them.
+   * `fill`: tabs stretch to fill the row; a pill group's track goes full width with equal pills.
+   */
+  width?: 'hug' | 'fill'
   /** Accessible name for the tab list, e.g. "Portfolio sections". */
   'aria-label': string
   /** Prefix for tab/panel ids so a panel can use aria-labelledby={`${idPrefix}-tab-${value}`}. */
@@ -47,6 +52,7 @@ export function Tabs<V extends string>({
   appearance = 'underline',
   emphasis = 'primary',
   size = 'md',
+  width = 'hug',
   idPrefix,
   className,
   'aria-label': ariaLabel,
@@ -88,6 +94,7 @@ export function Tabs<V extends string>({
       aria-label={ariaLabel}
       className={[styles.tabs, className].filter(Boolean).join(' ')}
       data-appearance={appearance}
+      data-width={width}
       onKeyDown={onKeyDown}
     >
       {items.map((item) => (

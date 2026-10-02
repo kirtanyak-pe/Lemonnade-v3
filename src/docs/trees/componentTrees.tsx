@@ -160,6 +160,13 @@ const tabs: ComponentTreeSpec = {
       ],
     },
     {
+      id: 'width', label: 'Width',
+      leaves: [
+        { id: 'w-hug', label: 'hug', note: 'Default. Tabs as wide as their labels.', preview: <Tabs aria-label="Hug" appearance="pill-group" items={[{ value: 'a', label: 'Tree' }, { value: 'b', label: 'List' }]} value="a" onChange={noop} /> },
+        { id: 'w-fill', label: 'fill', note: 'Tabs share the row; pill group pills become equal.', preview: <Tabs aria-label="Fill" appearance="pill-group" width="fill" items={[{ value: 'a', label: 'Tree' }, { value: 'b', label: 'List' }]} value="a" onChange={noop} /> },
+      ],
+    },
+    {
       id: 'pill', label: 'Pill options', note: 'Chip tabs only',
       leaves: [
         { id: 'p-pri', label: 'emphasis: primary', note: 'Default. Black fill when selected, light border when not.', preview: <Tabs aria-label="Primary" appearance="pill" items={tabItems} value="a" onChange={noop} /> },

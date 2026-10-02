@@ -381,6 +381,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'appearance', type: "'underline' | 'pill' | 'pill-group'", default: "'underline'", description: 'Figma Tabs group Type: Flat tabs / Pill tabs / Pill group. A Tab alone takes underline | pill (Figma isPill).' },
       { name: 'emphasis', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma base tab Type, appearance="pill" only (pill-group is always tertiary) — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
+      { name: 'width', type: "'hug' | 'fill'", default: "'hug'", description: 'Tabs: hug = tabs as wide as their labels (a pill group\'s track wraps them); fill = tabs stretch to fill the row (a pill group goes full width with equal pills).' },
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, colored with the label.' },
