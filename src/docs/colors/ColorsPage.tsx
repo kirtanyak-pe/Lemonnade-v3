@@ -4,6 +4,7 @@ import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
 import { Tag } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
+import { SegmentedControl } from '../../components/SegmentedControl'
 import { msAccountTree, msSearch, msViewList } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
@@ -500,19 +501,15 @@ export function ColorsPage() {
         <div className={styles.viewToggle}>
           <div className={styles.viewSwitch}>
             <span className={styles.viewLabel}>View as</span>
-            <div className={styles.viewTrack}>
-              <Tabs
-                aria-label="Color roles view"
-                appearance="pill"
-                size="md"
-                items={[
-                  { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
-                  { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
-                ]}
-                value={view}
-                onChange={setView}
-              />
-            </div>
+            <SegmentedControl
+              aria-label="Color roles view"
+              items={[
+                { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
+                { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
+              ]}
+              value={view}
+              onChange={setView}
+            />
           </div>
           <span className={styles.viewHint}>{view === 'list' ? 'Every token with its role, value and usage.' : 'How the roles branch into tokens. Hover a box to trace it; click a token to copy it.'}</span>
         </div>

@@ -255,6 +255,18 @@ export const changelog: Record<string, Release[]> = {
     },
   ],
 
+  'segmented-control': [
+    {
+      version: '1.0.0', date: '2026-10-02',
+      summary: 'First release',
+      changes: [
+        { kind: 'figma', text: 'New Figma components “L3: Segmented control” and “L3: base segment”, split out of the Tabs “Pill group”.' },
+        { kind: 'added', text: 'md / sm sizes, fullWidth, icon-only segments. Selected: black fill; unselected: no fill on a surface/primary track.' },
+        { kind: 'a11y', text: 'role="radiogroup" with arrow / Home / End keys; small segments keep a 32px tap target.' },
+      ],
+    },
+  ],
+
   tabs: [
     {
       version: '1.2.0', date: '2026-09-30',

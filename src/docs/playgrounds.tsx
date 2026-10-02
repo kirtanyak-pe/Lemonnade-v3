@@ -12,6 +12,7 @@ import { Checkbox, Radio } from '../components/Checkbox'
 import { EmptyState } from '../components/EmptyState'
 import { Icon } from '../components/Icon'
 import { ListCell } from '../components/ListCell'
+import { SegmentedControl, type SegmentedSize } from '../components/SegmentedControl'
 import { Switch, type SwitchSize } from '../components/Switch'
 import { Tabs, type TabEmphasis, type TabSize } from '../components/Tabs'
 import { Tag, type TagColor, type TagSize, type TagVariant } from '../components/Tag'
@@ -31,6 +32,21 @@ const tagColors = ['neutral', 'profit', 'loss', 'success', 'warning', 'error', '
 const aerobarTypes = ['primary', 'discover', 'danger', 'success', 'warning'] as const
 
 // ---- Stateful wrappers (the playground render can't hold hooks itself) ----------
+
+function SegmentedPlay({ count, size, fullWidth, icons, hideLabel }: { count: number; size: SegmentedSize; fullWidth: boolean; icons: boolean; hideLabel: boolean }) {
+  const labels = ['Day', 'Week', 'Month', 'Year'].slice(0, count)
+  const [value, setValue] = useState(labels[0])
+  return (
+    <SegmentedControl
+      aria-label="Period"
+      size={size}
+      fullWidth={fullWidth}
+      items={labels.map((l) => ({ value: l, label: l, hideLabel, iconLeft: icons || hideLabel ? <Icon icon={msBlurOn} size={16} /> : undefined }))}
+      value={labels.includes(value) ? value : labels[0]}
+      onChange={setValue}
+    />
+  )
+}
 
 function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill'; emphasis: TabEmphasis; size: TabSize; icons: boolean; hideLabel?: boolean; subLabel?: string }) {
   const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, count)
@@ -385,6 +401,26 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       const extra = (hide ? ', hideLabel: true' : '') + (!hide && s(v, 'appearance') === 'pill' && s(v, 'subLabel') ? `, subLabel: '${s(v, 'subLabel')}'` : '')
       const items = labels.map((l) => `    { value: '${l.toLowerCase()}', label: '${l}'${icon}${extra} },`).join('\n')
       return `<Tabs\n  ${attrs([['aria-label', 'Sections'], ['appearance', s(v, 'appearance'), 'underline'], ['emphasis', s(v, 'emphasis'), 'primary'], ['size', s(v, 'size'), 'md']])}\n  items={[\n${items}\n  ]}\n  value={tab}\n  onChange={setTab}\n/>`
+    },
+  },
+
+  'segmented-control': {
+    controls: [
+      { name: 'size', type: 'select', options: ['md', 'sm'], default: 'md' },
+      { name: 'count', label: 'Number of options', prop: 'items', type: 'select', options: ['2', '3', '4'], default: '3' },
+      { name: 'fullWidth', label: 'Full width', type: 'boolean', default: false },
+      { name: 'showLabel', label: 'Label', prop: 'items[].hideLabel', type: 'boolean', default: true },
+      { name: 'icons', label: 'Icon left', prop: 'items[].iconLeft', type: 'boolean', default: false, showIf: (v) => v.showLabel !== false },
+    ],
+    render: (v) => (
+      <SegmentedPlay count={Number(s(v, 'count'))} size={s(v, 'size') as SegmentedSize} fullWidth={b(v, 'fullWidth')} icons={b(v, 'icons')} hideLabel={!b(v, 'showLabel')} />
+    ),
+    code: (v) => {
+      const labels = ['Day', 'Week', 'Month', 'Year'].slice(0, Number(s(v, 'count')))
+      const hide = !b(v, 'showLabel')
+      const icon = b(v, 'icons') || hide ? ', iconLeft: <Icon icon={msBlurOn} size={16} />' : ''
+      const items = labels.map((l) => `    { value: '${l.toLowerCase()}', label: '${l}'${icon}${hide ? ', hideLabel: true' : ''} },`).join('\n')
+      return `<SegmentedControl\n  ${attrs([['aria-label', 'Period'], ['size', s(v, 'size'), 'md'], ['fullWidth', b(v, 'fullWidth')]])}\n  items={[\n${items}\n  ]}\n  value={period}\n  onChange={setPeriod}\n/>`
     },
   },
 
