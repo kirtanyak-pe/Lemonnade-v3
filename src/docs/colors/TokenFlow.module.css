@@ -40,6 +40,19 @@
   color: var(--l3-content-secondary);
 }
 
+/* Phones / small tablets: label + count on one line, the color tabs get their own full-width row below. */
+@media (max-width: 720px) {
+  .picker {
+    justify-content: space-between;
+    row-gap: var(--l3-spacing-08);
+  }
+
+  .picker > [role='tablist'] {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+
 /* Scaled playground preview for components without a curated example. */
 .thumb {
   display: flex;
