@@ -90,8 +90,8 @@ const glossary: { kind: PartKind; values: string; note: string }[] = [
 ]
 
 /**
- * Labels never widen their part (so every gap between parts is the same). When a label would touch
- * the one before it, it drops to the next row on a longer stick.
+ * Labels never widen their part (so every gap between parts is the same). When two labels would touch,
+ * the wider one drops to the next row on a longer stick.
  */
 function useLabelRows(count: number, key: string) {
   const ref = useRef<HTMLDivElement>(null)
@@ -102,14 +102,19 @@ function useLabelRows(count: number, key: string) {
     const place = () => {
       const labels = [...el.querySelectorAll<HTMLElement>('[data-label]')]
       const gap = parseFloat(getComputedStyle(el).getPropertyValue('--label-gap')) || 0
-      const rowEnds: number[] = []
-      setRows(labels.map((l) => {
-        const { left, right } = l.getBoundingClientRect()
-        let row = rowEnds.findIndex((end) => left >= end + gap)
-        if (row < 0) row = rowEnds.length
-        rowEnds[row] = right
-        return row
-      }))
+      // Narrowest labels claim the top row first, so when two collide the wider one drops down.
+      const rects = labels.map((l) => l.getBoundingClientRect())
+      const order = rects.map((_, i) => i).sort((x, y) => rects[x].width - rects[y].width || x - y)
+      const placed: { left: number; right: number }[][] = []
+      const next: number[] = []
+      for (const i of order) {
+        const { left, right } = rects[i]
+        let row = placed.findIndex((r) => r.every((o) => right + gap <= o.left || left >= o.right + gap))
+        if (row < 0) row = placed.push([]) - 1
+        placed[row].push({ left, right })
+        next[i] = row
+      }
+      setRows(next)
     }
     place()
     const ro = new ResizeObserver(place)
