@@ -379,6 +379,23 @@
   color: var(--l3-content-secondary);
 }
 
+.breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+}
+
+.breadcrumb a:focus-visible {
+  outline: var(--l3-spacing-02) solid currentColor;
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-04);
+}
+
 .titleRow {
   display: flex;
   flex-wrap: wrap;
@@ -400,12 +417,30 @@
 }
 
 .pageTabs {
+  /* Sticky under the site header, so switching section never needs a scroll back up. */
+  position: sticky;
+  top: var(--header-height);
+  z-index: 10;
   display: flex;
   gap: var(--l3-spacing-32);
   margin-top: var(--l3-spacing-40);
   border-bottom: 1px solid var(--l3-border-light);
+  background: var(--l3-surface-default);
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+.pageTabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Small screens: the tab row scrolls; fade its edges so it's clear there's more. */
+@media (max-width: 900px) {
+  .pageTabs {
+    gap: var(--l3-spacing-24);
+    mask-image: linear-gradient(90deg, transparent, var(--l3-static-black) var(--l3-spacing-16), var(--l3-static-black) calc(100% - var(--l3-spacing-32)), transparent);
+    padding-right: var(--l3-spacing-32);
+  }
 }
 
 .pageTabs a {
@@ -1345,7 +1380,9 @@ legend.sectionLabel {
 }
 
 .controlCell {
-  width: 100%;
+  /* Inset by the panel's 1px border so row fills don't paint over it. */
+  width: calc(100% - 2px);
+  margin-inline: 1px;
 }
 
 .codeWrap {
@@ -2162,4 +2199,86 @@ legend.sectionLabel {
   font: var(--l3-text-bold-12);
   color: var(--l3-content-primary);
   cursor: pointer;
+}
+
+/* ---- Previous / next pager ------------------------------------------------------------------------- */
+
+.pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--l3-spacing-12);
+  margin-top: var(--l3-spacing-64);
+  padding-top: var(--l3-spacing-24);
+  border-top: 1px solid var(--l3-border-light);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: var(--l3-content-primary);
+  text-decoration: none;
+}
+
+.pagerLink[data-dir='next'] {
+  grid-column: 2;
+  align-items: flex-end;
+  text-align: right;
+}
+
+@media (hover: hover) {
+  .pagerLink:hover {
+    box-shadow: inset 0 0 0 1px var(--l3-border-dark);
+  }
+}
+
+.pagerLink:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+.pagerHint {
+  font: var(--l3-text-medium-12);
+  color: var(--l3-content-secondary);
+}
+
+.pagerTitle {
+  font: var(--l3-text-bold-16);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Phones: tighter previews and home ------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  /* The phone preview is scaled to fit on a phone, so the width picker can't change what you see. */
+  .viewportPicker {
+    display: none;
+  }
+
+  .stage {
+    padding: var(--l3-spacing-16) var(--l3-spacing-08);
+    border-radius: var(--l3-radius-16);
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+  .pageHeader {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+  .pager {
+    margin-top: var(--l3-spacing-40);
+  }
 }

@@ -42,9 +42,18 @@ export function DocsLayout() {
     }
   }, [railOpen])
 
-  // New page: jump to top, update the tab title.
+  // New page: jump to top, update the tab title, and keep the current page visible in the sidebar.
   useEffect(() => {
     window.scrollTo(0, 0)
+    // Desktop only: on small screens the sidebar is a closed drawer.
+    if (matchMedia('(min-width: 901px)').matches) {
+      const rail = railRef.current
+      const current = rail?.querySelector<HTMLElement>('a[aria-current="page"]')
+      if (rail && current) {
+        const top = current.offsetTop - rail.offsetTop
+        if (top < rail.scrollTop || top + current.offsetHeight > rail.scrollTop + rail.clientHeight) rail.scrollTo({ top: top - rail.clientHeight / 3 })
+      }
+    }
     document.title = isBuild ? 'Build · L3 Design System' : `${page.title} · L3 Design System`
   }, [page, isBuild])
 

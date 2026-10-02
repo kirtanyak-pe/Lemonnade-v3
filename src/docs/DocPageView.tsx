@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { Tag } from '../components/Tag'
 import { changelog, currentVersion } from './changelog'
 import { Guidelines } from './GuidelinesView'
 import { guidelines } from './guidelineData'
-import { figmaUrl } from './pages'
+import { figmaUrl, navGroups } from './pages'
 import { Playground } from './Playground'
 import { playgrounds } from './playgrounds'
 import { PropsTable } from './PropsTable'
@@ -58,10 +58,32 @@ function tabsFor(page: DocPage): Tab[] {
   return tabs
 }
 
+/** Previous / next page in sidebar order (skips Home). */
+function neighbours(page: DocPage) {
+  const order = navGroups.flatMap((g) => g.pages).filter((p) => p.id !== 'home')
+  const i = order.findIndex((p) => p.id === page.id)
+  return { prev: i > 0 ? order[i - 1] : undefined, next: i >= 0 && i < order.length - 1 ? order[i + 1] : undefined }
+}
+
 export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; tabId: string; highlightToken?: string | null }) {
   const tabs = tabsFor(page)
   const active = tabs.find((t) => t.id === tabId) ?? tabs[0]
+  const tabsRef = useRef<HTMLElement>(null)
   useTokenHighlight(highlightToken ?? null, page.id)
+
+  // Keep the current section tab visible in the (horizontally scrolling) tab row.
+  useEffect(() => {
+    const row = tabsRef.current
+    const current = row?.querySelector<HTMLElement>('[aria-current="page"]')
+    if (!row || !current) return
+    const left = current.offsetLeft - row.offsetLeft
+    if (left < row.scrollLeft || left + current.offsetWidth > row.scrollLeft + row.clientWidth) {
+      row.scrollTo({ left: Math.max(0, left - 16) })
+    }
+  }, [page.id, active?.id])
+
+  const { prev, next } = neighbours(page)
+  const groupFirst = navGroups.find((g) => g.group === page.group)?.pages[0]
 
   // The home page brings its own hero and layout.
   if (page.id === 'home') return <article className={styles.article}>{page.content}</article>
@@ -70,9 +92,9 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
     <article className={styles.article}>
       {/* Inverted header card: focuses the page on its title. */}
       <header className={styles.pageHeader}>
-        <div className={styles.breadcrumb}>
-          {page.group} / {page.title}
-        </div>
+        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+          {groupFirst && groupFirst.id !== page.id ? <a href={href(groupFirst.id)}>{page.group}</a> : page.group} / <span aria-current="page">{page.title}</span>
+        </nav>
         <div className={styles.titleRow}>
           <h1>{page.title}</h1>
           {page.status && <Tag variant="secondary" color="success" size="lg">{page.status}</Tag>}
@@ -93,7 +115,7 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
       </header>
 
       {tabs.length > 0 && (
-        <nav className={styles.pageTabs} aria-label={`${page.title} sections`}>
+        <nav ref={tabsRef} className={styles.pageTabs} aria-label={`${page.title} sections`}>
           {tabs.map((t) => (
             <a key={t.id} href={href(page.id, t.id)} aria-current={t === active ? 'page' : undefined}>
               {t.label}
@@ -117,6 +139,23 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
           </section>
         )}
       </div>
+
+      {(prev || next) && (
+        <nav className={styles.pager} aria-label="More pages">
+          {prev ? (
+            <a className={styles.pagerLink} href={href(prev.id)} data-dir="prev">
+              <span className={styles.pagerHint}>← Previous</span>
+              <span className={styles.pagerTitle}>{prev.title}</span>
+            </a>
+          ) : <span />}
+          {next && (
+            <a className={styles.pagerLink} href={href(next.id)} data-dir="next">
+              <span className={styles.pagerHint}>Next →</span>
+              <span className={styles.pagerTitle}>{next.title}</span>
+            </a>
+          )}
+        </nav>
+      )}
     </article>
   )
 }

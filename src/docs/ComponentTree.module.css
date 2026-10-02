@@ -207,3 +207,28 @@
     transition: none;
   }
 }
+
+/* ---- Phones: one column, branches stacked under the root ------------------------------------------- */
+
+@media (max-width: 720px) {
+  .tree {
+    grid-template-columns: minmax(0, 1fr) !important; /* overrides the per-tree column count */
+    row-gap: var(--l3-spacing-24);
+    min-width: 0;
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+  .rootRow {
+    justify-content: flex-start;
+  }
+
+  /* Room for the root's spine on the left of each branch. */
+  .column {
+    padding-left: var(--l3-spacing-32);
+  }
+
+  .children,
+  .column > .children {
+    padding-left: var(--l3-spacing-24);
+  }
+}

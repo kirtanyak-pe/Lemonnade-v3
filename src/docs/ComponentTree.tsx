@@ -42,11 +42,13 @@ export function ComponentTree({ spec }: { spec: ComponentTreeSpec }) {
     const box = root.getBoundingClientRect()
     const rect = (id: string) => root.querySelector<HTMLElement>(`[data-node="${CSS.escape(id)}"]`)?.getBoundingClientRect()
     setSize({ w: box.width, h: box.height })
+    // Phones: branches stack in one column, so root → branch uses the same indented spine as the rest.
+    const stacked = matchMedia('(max-width: 720px)').matches
     setPaths(links.flatMap((l) => {
       const a = rect(l.from)
       const b = rect(l.to)
       if (!a || !b) return []
-      if (l.kind === 'top') {
+      if (l.kind === 'top' && !stacked) {
         // Root → branch: elbow from the root's bottom centre to the branch's top centre.
         const x1 = a.left + a.width / 2 - box.left, y1 = a.bottom - box.top
         const x2 = b.left + b.width / 2 - box.left, y2 = b.top - box.top
