@@ -70,6 +70,23 @@ export function HomePage() {
       </section>
 
       <section className={styles.section}>
+        <h2>Foundations</h2>
+        <ul className={styles.cardGrid}>
+          {foundations.map((p) => (
+            <li key={p.id}>
+              <a className={styles.componentCard} href={href(p.id)}>
+                <div className={styles.cardThumb} aria-hidden="true">{foundationThumbs[p.id]?.thumb}</div>
+                <div className={styles.cardBody}>
+                  <span className={styles.cardTitle}>{p.title}</span>
+                  <span className={styles.cardGroup}>{foundationThumbs[p.id]?.meta ?? p.group}</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.section}>
         <h2>Components</h2>
         <ul className={styles.cardGrid}>
           {components.map((p) => {
@@ -89,23 +106,6 @@ export function HomePage() {
               </li>
             )
           })}
-        </ul>
-      </section>
-
-      <section className={styles.section}>
-        <h2>Foundations</h2>
-        <ul className={styles.cardGrid}>
-          {foundations.map((p) => (
-            <li key={p.id}>
-              <a className={styles.componentCard} href={href(p.id)}>
-                <div className={styles.cardThumb} aria-hidden="true">{foundationThumbs[p.id]?.thumb}</div>
-                <div className={styles.cardBody}>
-                  <span className={styles.cardTitle}>{p.title}</span>
-                  <span className={styles.cardGroup}>{foundationThumbs[p.id]?.meta ?? p.group}</span>
-                </div>
-              </a>
-            </li>
-          ))}
         </ul>
       </section>
 

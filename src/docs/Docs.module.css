@@ -423,7 +423,7 @@
   z-index: 10;
   display: flex;
   gap: var(--l3-spacing-32);
-  margin-top: var(--l3-spacing-40);
+  margin-top: var(--l3-spacing-48);
   border-bottom: 1px solid var(--l3-border-light);
   background: var(--l3-surface-default);
   overflow-x: auto;
@@ -459,18 +459,35 @@
 }
 
 .tabBody {
-  margin-top: var(--l3-spacing-40);
-}
-
-.section {
   margin-top: var(--l3-spacing-48);
 }
 
+/* One spacing rhythm for every page: 80 between sections on desktop, 64 on phones. */
+.main {
+  --section-gap: var(--l3-spacing-80);
+}
+
+@media (max-width: 640px) {
+  .main {
+    --section-gap: var(--l3-spacing-64);
+  }
+}
+
+.section {
+  margin-top: var(--section-gap);
+}
+
+/* The first section of a tab already sits below the tab row's own gap. */
+.tabBody > .section:first-child {
+  margin-top: 0;
+}
+
 .section > h2 {
-  margin: 0 0 var(--l3-spacing-08);
+  margin: 0 0 var(--l3-spacing-04);
   font: var(--l3-text-bold-20);
 }
 
+/* Heading and description sit together; the body starts a little further down. */
 .section > p {
   max-width: 640px;
   margin: 0 0 var(--l3-spacing-16);
@@ -1037,7 +1054,7 @@ legend.sectionLabel {
 }
 
 .tabIntro {
-  margin: 0 0 var(--l3-spacing-16);
+  margin: 0 0 var(--l3-spacing-24);
   font: var(--l3-text-medium-14);
   color: var(--l3-content-secondary);
 }
@@ -2207,7 +2224,7 @@ legend.sectionLabel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--l3-spacing-12);
-  margin-top: var(--l3-spacing-64);
+  margin-top: var(--section-gap);
   padding-top: var(--l3-spacing-24);
   border-top: 1px solid var(--l3-border-light);
 }
@@ -2278,7 +2295,5 @@ legend.sectionLabel {
     padding: var(--l3-spacing-20) var(--l3-spacing-16);
   }
 
-  .pager {
-    margin-top: var(--l3-spacing-40);
-  }
+
 }

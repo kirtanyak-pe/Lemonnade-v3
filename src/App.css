@@ -252,9 +252,14 @@
   color: var(--l3-content-tertiary);
 }
 
+/* Variants / preview sections: same generous rhythm as the docs pages. */
 section > h2 {
-  margin: 32px 0 12px;
+  margin: var(--l3-spacing-56) 0 var(--l3-spacing-16);
   font: var(--l3-text-bold-18);
+}
+
+section:first-child > h2 {
+  margin-top: 0;
 }
 
 .sheet-stack {

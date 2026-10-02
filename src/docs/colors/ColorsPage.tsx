@@ -121,11 +121,9 @@ function MiniChip({ token, theme, copy, label }: { token: ThemeToken; theme: Ret
 // ---- Sections ---------------------------------------------------------------------------------------
 
 const sections = [
-  { id: 'how', label: 'How colors are mapped' },
   { id: 'naming', label: 'Token naming' },
-  { id: 'surface', label: 'Surface' },
-  { id: 'content', label: 'Content' },
-  { id: 'border', label: 'Border' },
+  { id: 'surface', label: 'Color roles' },
+  { id: 'how', label: 'How colors are mapped' },
   { id: 'accents', label: 'Accents' },
   { id: 'components', label: 'Component tokens' },
   { id: 'more', label: 'Static, gradients & extras' },
@@ -136,8 +134,10 @@ const sections = [
 function Section({ id, title, lede, children }: { id: string; title: string; lede?: ReactNode; children: ReactNode }) {
   return (
     <section id={`colors-${id}`} className={styles.section} aria-labelledby={`colors-${id}-title`}>
-      <h2 id={`colors-${id}-title`}>{title}</h2>
-      {lede && <p className={styles.lede}>{lede}</p>}
+      <div className={styles.sectionHead}>
+        <h2 id={`colors-${id}-title`}>{title}</h2>
+        {lede && <p className={styles.lede}>{lede}</p>}
+      </div>
       {children}
     </section>
   )
@@ -484,54 +484,65 @@ export function ColorsPage() {
           Change brand, mode or ♿ in the header. Click any color to copy its variable.
         </p>
         <nav className={styles.jump} aria-label="On this page">
-          {sections.map((s) => (
+          {sections.filter((s) => !(view === 'tree' && s.id === 'accents')).map((s) => (
             <Button key={s.id} size="sm" variant="tertiary" onClick={() => goTo(s.id)}>{s.label}</Button>
           ))}
         </nav>
       </div>
 
-      <HowItWorks theme={theme} />
       <Section id="naming" title="Token naming" lede="Every name is built from the same parts, in the same order. Read a name left to right: what it paints, then which color, then how strong.">
         <TokenNaming />
       </Section>
-      <div className={styles.viewToggle}>
-        <div className={styles.viewText}>
-          <span className={styles.viewLabel}>Surface, content, border & accents</span>
-          <span className={styles.viewHint}>{view === 'list' ? 'Every token with its role, value and usage.' : 'How the roles branch into tokens.'}</span>
+
+      <Section id="surface" title="Color roles" lede={view === 'tree'
+          ? 'Color tokens start from one of four roles — surface, icon, text and border — with icons and text sharing the content tokens. Accents branch off on their own.'
+          : 'Every neutral color token, by role: surface, content (text and icons) and border. Accents are covered further down.'}>
+        <div className={styles.viewToggle}>
+          <span className={styles.viewHint}>{view === 'list' ? 'Every token with its role, value and usage.' : 'How the roles branch into tokens. Hover a box to trace it; click a token to copy it.'}</span>
+          <Tabs
+            aria-label="Color roles view"
+            appearance="pill"
+            size="md"
+            items={[
+              { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
+              { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
+            ]}
+            value={view}
+            onChange={setView}
+          />
         </div>
-        <Tabs
-          aria-label="Semantic tokens view"
-          appearance="pill"
-          size="md"
-          items={[
-            { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
-            { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
-          ]}
-          value={view}
-          onChange={setView}
-        />
-      </div>
-      {view === 'list' ? (
-        <>
-          <Section id="surface" title="Surface" lede="Fills behind content, from the page background up to the most emphatic fill.">
-            <RoleList roles={surfaces} filter={filter} theme={theme} copy={copy} />
-          </Section>
-          <Section id="content" title="Content" lede="Text and icons. Pick by importance, not by color.">
-            <RoleList roles={contents} filter={filter} theme={theme} copy={copy} />
-          </Section>
-          <Section id="border" title="Border" lede="Hairlines (1px) and outlines.">
-            <RoleList roles={borders} filter={filter} theme={theme} copy={copy} />
-          </Section>
-        </>
-      ) : (
-        <Section id="surface" title="Color roles" lede="Every neutral color token starts from one of four roles. Icons and text share the same content tokens. Hover a box to trace it; click a token to copy it.">
-          {/* Jump targets for the Content / Border buttons in the toolbar. */}
-          <span id="colors-content" aria-hidden="true" />
-          <span id="colors-border" aria-hidden="true" />
+        {view === 'tree' ? (
           <SemanticTree filter={filter} copied={copy.copied} onCopy={copy.copy} />
-        </Section>
-      )}
-      <AccentMatrix filter={filter} theme={theme} copy={copy} />
+        ) : (
+          <>
+            <div className={styles.subsection}>
+              <div className={styles.sectionHead}>
+                <h3 className={styles.h3}>Surface</h3>
+                <p className={styles.lede}>Fills behind content, from the page background up to the most emphatic fill.</p>
+              </div>
+              <RoleList roles={surfaces} filter={filter} theme={theme} copy={copy} />
+            </div>
+            <div className={styles.subsection} id="colors-content">
+              <div className={styles.sectionHead}>
+                <h3 className={styles.h3}>Content</h3>
+                <p className={styles.lede}>Text and icons. Pick by importance, not by color.</p>
+              </div>
+              <RoleList roles={contents} filter={filter} theme={theme} copy={copy} />
+            </div>
+            <div className={styles.subsection} id="colors-border">
+              <div className={styles.sectionHead}>
+                <h3 className={styles.h3}>Border</h3>
+                <p className={styles.lede}>Hairlines (1px) and outlines.</p>
+              </div>
+              <RoleList roles={borders} filter={filter} theme={theme} copy={copy} />
+            </div>
+          </>
+        )}
+      </Section>
+
+      <HowItWorks theme={theme} />
+      {/* Tree view already shows the accent groups and colors, so the Accents tables only appear in List view. */}
+      {view === 'list' && <AccentMatrix filter={filter} theme={theme} copy={copy} />}
       <ComponentTokens filter={filter} theme={theme} copy={copy} />
       <MoreTokens filter={filter} theme={theme} copy={copy} />
       <Palette filter={filter} copy={copy} />
