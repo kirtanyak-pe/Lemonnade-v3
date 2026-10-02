@@ -1,5 +1,17 @@
 /* Component variant tree — tokens only (1px hairlines are the one literal). */
 
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+}
+
+/* Expand all / Collapse all, right-aligned above the tree. */
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .scroll {
   overflow-x: auto;
   border-radius: var(--l3-radius-16);

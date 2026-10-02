@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Button } from '../components/Button'
 import { Icon } from '../components/Icon'
-import { msKeyboardArrowDown } from '../icons/material'
+import { msKeyboardArrowDown, msUnfoldLess, msUnfoldMore } from '../icons/material'
 import styles from './ComponentTree.module.css'
 
 // A component's options as a top-to-bottom tree: the component at the top, one branch per property
@@ -27,6 +28,9 @@ export function ComponentTree({ spec, showPreviews = true }: { spec: ComponentTr
   const [active, setActive] = useState<string | null>(null)
   // Collapsed groups: their leaves (and connectors) are hidden; the ResizeObserver redraws the lines.
   const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set())
+  const groupIds = useMemo(() => spec.branches.flatMap((b) => (b.groups ?? []).map((g) => g.id)), [spec])
+  const allCollapsed = groupIds.length > 0 && groupIds.every((id) => collapsed.has(id))
+  const toggleAll = () => setCollapsed(allCollapsed ? new Set() : new Set(groupIds))
   const toggle = (id: string) => setCollapsed((c) => { const n = new Set(c); if (n.has(id)) n.delete(id); else n.add(id); return n })
 
   const links = useMemo(() => {
@@ -114,51 +118,65 @@ export function ComponentTree({ spec, showPreviews = true }: { spec: ComponentTr
   )
 
   return (
-    <div className={styles.scroll}>
-      <div ref={wrap} className={styles.tree} data-has-active={lit ? '' : undefined} style={{ gridTemplateColumns: `repeat(${spec.branches.length}, minmax(0, 1fr))` }}>
-        <svg className={styles.lines} width={size.w} height={size.h} aria-hidden="true">
-          {paths.map((p, i) => (
-            <path key={i} d={p.d} className={styles.line} data-lit={lit && lit.has(p.from) && lit.has(p.to) ? '' : undefined} />
-          ))}
-        </svg>
-
-        <div className={styles.rootRow}>
-          <div className={styles.root} {...hover('root')}>
-            <span className={styles.rootTitle}>{spec.title}</span>
-            {spec.note && <span className={styles.rootNote}>{spec.note}</span>}
-          </div>
+    <div className={styles.wrap}>
+      {groupIds.length > 0 && (
+        <div className={styles.toolbar}>
+          <Button
+            variant="tertiary"
+            size="sm"
+            iconLeft={<Icon icon={allCollapsed ? msUnfoldMore : msUnfoldLess} size={16} />}
+            onClick={toggleAll}
+          >
+            {allCollapsed ? 'Expand all' : 'Collapse all'}
+          </Button>
         </div>
+      )}
+      <div className={styles.scroll}>
+        <div ref={wrap} className={styles.tree} data-has-active={lit ? '' : undefined} style={{ gridTemplateColumns: `repeat(${spec.branches.length}, minmax(0, 1fr))` }}>
+          <svg className={styles.lines} width={size.w} height={size.h} aria-hidden="true">
+            {paths.map((p, i) => (
+              <path key={i} d={p.d} className={styles.line} data-lit={lit && lit.has(p.from) && lit.has(p.to) ? '' : undefined} />
+            ))}
+          </svg>
 
-        {spec.branches.map((b) => (
-          <div key={b.id} className={styles.column}>
-            <div className={styles.branch} {...hover(b.id)}>
-              <span className={styles.branchTitle}>{b.label}</span>
-              {b.note && <span className={styles.branchNote}>{b.note}</span>}
+          <div className={styles.rootRow}>
+            <div className={styles.root} {...hover('root')}>
+              <span className={styles.rootTitle}>{spec.title}</span>
+              {spec.note && <span className={styles.rootNote}>{spec.note}</span>}
             </div>
-            <ul className={styles.children}>
-              {(b.groups ?? []).map((g) => (
-                <li key={g.id}>
-                  <button
-                    type="button"
-                    className={styles.group}
-                    {...hover(g.id)}
-                    aria-expanded={!collapsed.has(g.id)}
-                    aria-controls={`tree-${g.id}`}
-                    onClick={() => toggle(g.id)}
-                  >
-                    <span className={styles.groupText}>
-                      <span className={styles.groupTitle}>{g.label}</span>
-                      {g.note && <span className={styles.groupNote}>{g.note}</span>}
-                    </span>
-                    <Icon icon={msKeyboardArrowDown} size={16} className={styles.groupChevron} />
-                  </button>
-                  <ul id={`tree-${g.id}`} className={styles.children} hidden={collapsed.has(g.id)}>{g.leaves.map(leaf)}</ul>
-                </li>
-              ))}
-              {(b.leaves ?? []).map(leaf)}
-            </ul>
           </div>
-        ))}
+
+          {spec.branches.map((b) => (
+            <div key={b.id} className={styles.column}>
+              <div className={styles.branch} {...hover(b.id)}>
+                <span className={styles.branchTitle}>{b.label}</span>
+                {b.note && <span className={styles.branchNote}>{b.note}</span>}
+              </div>
+              <ul className={styles.children}>
+                {(b.groups ?? []).map((g) => (
+                  <li key={g.id}>
+                    <button
+                      type="button"
+                      className={styles.group}
+                      {...hover(g.id)}
+                      aria-expanded={!collapsed.has(g.id)}
+                      aria-controls={`tree-${g.id}`}
+                      onClick={() => toggle(g.id)}
+                    >
+                      <span className={styles.groupText}>
+                        <span className={styles.groupTitle}>{g.label}</span>
+                        {g.note && <span className={styles.groupNote}>{g.note}</span>}
+                      </span>
+                      <Icon icon={msKeyboardArrowDown} size={16} className={styles.groupChevron} />
+                    </button>
+                    <ul id={`tree-${g.id}`} className={styles.children} hidden={collapsed.has(g.id)}>{g.leaves.map(leaf)}</ul>
+                  </li>
+                ))}
+                {(b.leaves ?? []).map(leaf)}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
