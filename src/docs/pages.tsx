@@ -6,7 +6,6 @@ import { TagPreview } from '../preview/TagPreview'
 import { SwitchVariants } from '../preview/SwitchVariants'
 import { SelectionVariants } from '../preview/SelectionVariants'
 import { TabsVariants } from '../preview/TabsVariants'
-import { SegmentedVariants } from '../preview/SegmentedVariants'
 import { ButtonGroupVariants } from '../preview/ButtonGroupVariants'
 import { BottomSheetVariants } from '../preview/BottomSheetVariants'
 import { AerobarVariants } from '../preview/AerobarVariants'
@@ -344,9 +343,9 @@ import { msWallet, msWalletFill } from './icons/material'
     id: 'tabs',
     title: 'Tabs',
     group: 'Navigation',
-    description: 'Tabs switch between related views on the same screen. Underline tabs split a page into sections; pill tabs filter what\'s shown.',
+    description: 'Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what\'s shown, and a pill group switches how content is shown.',
     status: 'Figma synced',
-    altNames: 'Tab bar, chips, filter pills',
+    altNames: 'Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher',
     figmaNodeId: '4543:65938',
     source: 'src/components/Tabs',
     exports: ['Tabs', 'Tab'],
@@ -358,7 +357,15 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Two components</h2>
-          <p><strong>Tabs</strong> (Figma "L3: Tabs") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. <strong>Tab</strong> (Figma "L3: base tab") is one item, in underline or pill form, md or sm.</p>
+          <p><strong>Tabs</strong> (Figma "L3: Tabs group") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. <strong>Tab</strong> (Figma "L3: base tab") is one item, in underline or pill form, md or sm.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Three appearances</h2>
+          <ul>
+            <li><strong>underline</strong> (Figma Flat tabs) — sections of a screen; at the top they go in the Actionbar's bottom slot.</li>
+            <li><strong>pill</strong> (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.</li>
+            <li><strong>pill-group</strong> (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.</li>
+          </ul>
         </section>
         <section className={styles.section}>
           <h2>No layout shift</h2>
@@ -371,8 +378,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'items', type: 'TabItem[]', description: 'Tabs: { value, label, iconLeft?, iconRight?, subLabel?, hideLabel? }.' },
       { name: 'value', type: 'string', description: 'Tabs: the selected item value.' },
       { name: 'onChange', type: '(value) => void', description: 'Tabs: called on tap and on arrow / Home / End keys.' },
-      { name: 'appearance', type: "'underline' | 'pill'", default: "'underline'", description: 'Figma isPill (Tabs) / isChip (base tab).' },
-      { name: 'emphasis', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma Type, pills only — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border.' },
+      { name: 'appearance', type: "'underline' | 'pill' | 'pill-group'", default: "'underline'", description: 'Figma Tabs group Type: Flat tabs / Pill tabs / Pill group. A Tab alone takes underline | pill (Figma isPill).' },
+      { name: 'emphasis', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma base tab Type, appearance="pill" only (pill-group is always tertiary) — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
@@ -380,50 +387,6 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'subLabel', type: 'string', description: 'Figma 👁️ Sub label: a second 8/10 line under the label. Chip (pill) tabs only.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only tab. Needs one icon; the label stays as its accessible name.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
-    ],
-  },
-
-  {
-    id: 'segmented-control',
-    title: 'Segmented control',
-    group: 'Navigation',
-    description: 'Switch between 2–4 views of the same content — Tree / List, Day / Week. One option is always selected.',
-    status: 'Figma synced',
-    altNames: 'Segmented button, toggle group, button group, view switcher, pill group',
-    figmaNodeId: '5147:16270',
-    source: 'src/components/SegmentedControl',
-    exports: ['SegmentedControl'],
-    tokens: ['surface/primary (track) · inverted (selected)', 'content/primary · inverted', 'state-layer/*', 'text-semibold-10 · 12', 'radius/full', 'size/24 · 32', 'spacing/04', 'size/tap-target'],
-    overview: (
-      <>
-        <section className={styles.section}>
-          <h2>When to use it</h2>
-          <p>Use a segmented control to change <strong>how</strong> the same content is shown. To filter content, use chip tabs (<code>Tabs appearance="pill"</code>); to move between sections of a screen, use underline tabs.</p>
-        </section>
-        <section className={styles.section}>
-          <h2>Rules</h2>
-          <ul>
-            <li>2–4 options, short labels. More than 4 → chips.</li>
-            <li>Always single-select, and one option is always selected.</li>
-            <li>Never scrolls. On phones, use <code>fullWidth</code> to split the row into equal segments.</li>
-            <li>Selected segment: black fill (surface/inverted). Unselected: no fill, on a surface/primary track.</li>
-          </ul>
-        </section>
-        <section className={styles.section}>
-          <h2>Separate from Tabs</h2>
-          <p>Figma keeps it as its own component (“L3: Segmented control” with “L3: base segment” items) rather than a Tabs variant, because the track, the always-selected rule and the no-fill unselected state don't apply to tabs or chips.</p>
-        </section>
-      </>
-    ),
-    variants: <SegmentedVariants />,
-    props: [
-      { name: 'items', type: 'SegmentItem[]', description: '2–4 options: { value, label, iconLeft?, iconRight?, hideLabel? }.' },
-      { name: 'value', type: 'string', description: 'The selected option. Must match one item.' },
-      { name: 'onChange', type: '(value) => void', description: 'Called on tap and on arrow / Home / End keys.' },
-      { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: segments 32 / 24 tall.' },
-      { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch to the container with equal-width segments.' },
-      { name: 'aria-label', type: 'string', description: 'Required name for the group. Renders role="radiogroup".' },
-      { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Per item: icon-only segment (Figma 👁️ Label off). The label stays as its accessible name.' },
     ],
   },
 

@@ -9,6 +9,7 @@ const noop = () => {}
 export function TabsVariants() {
   const [underline, setUnderline] = useState('holdings')
   const [pill, setPill] = useState('holdings')
+  const [group, setGroup] = useState('holdings')
   const [showLeft, setShowLeft] = useState(false)
   const [showRight, setShowRight] = useState(false)
   const [showLabel, setShowLabel] = useState(true)
@@ -43,10 +44,12 @@ export function TabsVariants() {
 
       <section>
         <h2>L3: Tabs</h2>
-        <p className="grid-note">isPill=False</p>
+        <p className="grid-note">Type=Flat tabs</p>
         <Tabs aria-label="Underline tabs" items={items} value={underline} onChange={setUnderline} />
-        <p className="grid-note">isPill=True (chips, primary)</p>
+        <p className="grid-note">Type=Pill tabs (primary)</p>
         <Tabs aria-label="Pill tabs" appearance="pill" items={pillItems} value={pill} onChange={setPill} />
+        <p className="grid-note">Type=Pill group (2–4 options, always tertiary)</p>
+        <Tabs aria-label="Pill group" appearance="pill-group" items={pillItems.slice(0, 3)} value={group} onChange={setGroup} />
       </section>
 
       <section>

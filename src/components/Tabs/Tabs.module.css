@@ -31,6 +31,20 @@
   gap: var(--l3-spacing-08);
 }
 
+/*
+ * Figma Type=Pill group: tertiary pills in a surface/secondary track (4px padding and gap, full radius).
+ * Unselected tertiary pills share the track's fill, so only the selected (black) pill stands out.
+ */
+.tabs[data-appearance='pill-group'] {
+  display: inline-flex;
+  gap: var(--l3-spacing-04);
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+}
+
 /* ---- Tab ------------------------------------------------------------------ */
 
 .tab {
@@ -89,7 +103,7 @@
   outline-offset: calc(-1 * var(--l3-spacing-02));
 }
 
-/* ---- Underline tabs (Figma isChip=False) ----------------------------------- */
+/* ---- Underline tabs (Figma isPill=False) ----------------------------------- */
 
 .tab[data-appearance='underline'] {
   --tab-padding-block: var(--l3-spacing-00);
@@ -132,7 +146,7 @@
   background: var(--l3-surface-inverted);
 }
 
-/* ---- Pill tabs (Figma isChip=True) ------------------------------------------ */
+/* ---- Pill tabs (Figma isPill=True) ------------------------------------------ */
 
 .tab[data-appearance='pill'] {
   --tab-surface: var(--l3-surface-primary);

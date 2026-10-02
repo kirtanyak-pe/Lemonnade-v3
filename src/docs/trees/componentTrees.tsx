@@ -10,7 +10,6 @@ import { Checkbox, Radio } from '../../components/Checkbox'
 import { EmptyState } from '../../components/EmptyState'
 import { Icon } from '../../components/Icon'
 import { ListCell } from '../../components/ListCell'
-import { SegmentedControl } from '../../components/SegmentedControl'
 import { Switch } from '../../components/Switch'
 import { Tabs } from '../../components/Tabs'
 import { Tag, TagPlaceholderIcon } from '../../components/Tag'
@@ -143,13 +142,14 @@ const toggle: ComponentTreeSpec = {
 
 const tabs: ComponentTreeSpec = {
   title: 'Tabs',
-  note: 'Switch sections or filter',
+  note: 'Switch sections, filter or switch views',
   branches: [
     {
       id: 'appearance', label: 'Appearance', note: 'What it switches',
       leaves: [
         { id: 'a-u', label: 'underline', note: 'Sections of a screen. At the top: in the Actionbar bottom slot.', preview: <Tabs aria-label="Sections" items={tabItems} value="a" onChange={noop} /> },
-        { id: 'a-p', label: 'pill', note: 'Filter chips. For switching views use the Segmented control.', preview: <Tabs aria-label="Segments" appearance="pill" items={tabItems} value="a" onChange={noop} /> },
+        { id: 'a-p', label: 'pill', note: 'A row of filter chips.', preview: <Tabs aria-label="Filters" appearance="pill" items={tabItems} value="a" onChange={noop} /> },
+        { id: 'a-g', label: 'pill-group', note: '2–4 options in a track to switch views (Tree / List). Always tertiary.', preview: <Tabs aria-label="Views" appearance="pill-group" items={[{ value: 'a', label: 'Tree' }, { value: 'b', label: 'List' }]} value="a" onChange={noop} /> },
       ],
     },
     {
@@ -167,35 +167,6 @@ const tabs: ComponentTreeSpec = {
         { id: 'p-ter', label: 'emphasis: tertiary', note: 'Subtle fill, no border when unselected — quiet, dense rows.', preview: <Tabs aria-label="Tertiary" appearance="pill" emphasis="tertiary" items={tabItems} value="a" onChange={noop} /> },
         { id: 'p-sub', label: 'subLabel', note: 'A second 8/10 line under the label.', preview: <Tabs aria-label="Sub" appearance="pill" items={[{ value: 'a', label: '25 Sep', subLabel: 'Weekly' }, { value: 'b', label: '30 Oct', subLabel: 'Monthly' }]} value="a" onChange={noop} /> },
         { id: 'p-icon', label: 'hideLabel', note: 'Icon-only tab; the label stays as its name.', preview: <Tabs aria-label="Icons" appearance="pill" items={[{ value: 'a', label: 'Favourites', hideLabel: true, iconLeft: <Icon icon={msStar} size={16} /> }, { value: 'b', label: 'Search', hideLabel: true, iconLeft: <Icon icon={msSearch} size={16} /> }]} value="a" onChange={noop} /> },
-      ],
-    },
-  ],
-}
-
-const segItems = [{ value: 'a', label: 'Tree' }, { value: 'b', label: 'List' }]
-const segmented: ComponentTreeSpec = {
-  title: 'Segmented control',
-  note: 'Switch between 2–4 views',
-  branches: [
-    {
-      id: 'size', label: 'Size',
-      leaves: [
-        { id: 's-md', label: 'md', note: 'Default. 32px segments.', preview: <SegmentedControl aria-label="md" items={segItems} value="a" onChange={noop} /> },
-        { id: 's-sm', label: 'sm', note: 'Dense spots inside content. 24px segments.', preview: <SegmentedControl aria-label="sm" size="sm" items={segItems} value="a" onChange={noop} /> },
-      ],
-    },
-    {
-      id: 'width', label: 'Width',
-      leaves: [
-        { id: 'w-hug', label: 'hug', note: 'Default: as wide as its labels.', preview: <SegmentedControl aria-label="Hug" items={segItems} value="a" onChange={noop} /> },
-        { id: 'w-full', label: 'fullWidth', note: 'Equal segments across the row — phones.', preview: <SegmentedControl aria-label="Full" fullWidth items={segItems} value="a" onChange={noop} /> },
-      ],
-    },
-    {
-      id: 'content', label: 'Content',
-      leaves: [
-        { id: 'c-label', label: 'label', note: 'Short words; 2–4 options.', preview: <SegmentedControl aria-label="Labels" items={[...segItems, { value: 'c', label: 'Grid' }]} value="b" onChange={noop} /> },
-        { id: 'c-icon', label: 'hideLabel', note: 'Icon-only; the label stays as its name.', preview: <SegmentedControl aria-label="Icons" items={[{ value: 'a', label: 'Favourites', hideLabel: true, iconLeft: <Icon icon={msStar} size={16} /> }, { value: 'b', label: 'Search', hideLabel: true, iconLeft: <Icon icon={msSearch} size={16} /> }]} value="a" onChange={noop} /> },
       ],
     },
   ],
@@ -476,7 +447,6 @@ export const componentTrees: Record<string, ComponentTreeSpec> = {
   'text-field': textField,
   switch: toggle,
   tabs,
-  'segmented-control': segmented,
   actionbar,
   'bottom-navbar': bottomNavbar,
   card,

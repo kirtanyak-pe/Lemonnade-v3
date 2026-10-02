@@ -1,7 +1,7 @@
 import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import styles from './Tabs.module.css'
 
-/** Figma "L3: base tab" (node 4543:65889). Figma isChip → `appearance="pill"`, Type → `emphasis`, isSmall → `size="sm"`. */
+/** Figma "L3: base tab" (node 4543:65889). Figma isPill → `appearance="pill"`, Type → `emphasis`, isSmall → `size="sm"`. */
 export type TabAppearance = 'underline' | 'pill'
 /**
  * Figma Type: the chip style of a whole row (never mix styles in one row). Underline tabs are always primary.

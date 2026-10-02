@@ -255,19 +255,16 @@ export const changelog: Record<string, Release[]> = {
     },
   ],
 
-  'segmented-control': [
+  tabs: [
     {
-      version: '1.0.0', date: '2026-10-02',
-      summary: 'First release',
+      version: '1.4.0', date: '2026-10-02',
+      summary: 'Pill group',
       changes: [
-        { kind: 'figma', text: 'New Figma components “L3: Segmented control” and “L3: base segment”, split out of the Tabs “Pill group”.' },
-        { kind: 'added', text: 'md / sm sizes, fullWidth, icon-only segments. Selected: black fill; unselected: no fill on a surface/primary track.' },
-        { kind: 'a11y', text: 'role="radiogroup" with arrow / Home / End keys; small segments keep a 32px tap target.' },
+        { kind: 'figma', text: 'Figma “L3: Tabs” is now “L3: Tabs group” (Type: Flat tabs · Pill tabs · Pill group); base tab isChip is now isPill.' },
+        { kind: 'added', text: 'appearance="pill-group": tertiary pills in a surface/secondary track for switching views (Tree / List). Selected pill is a black fill; the rest blend into the track.' },
+        { kind: 'changed', text: 'The separate SegmentedControl component is gone — Figma merged it into the Tabs group as Pill group. Use <Tabs appearance="pill-group"> instead.' },
       ],
     },
-  ],
-
-  tabs: [
     {
       version: '1.3.0', date: '2026-10-02',
       summary: 'Tertiary chips',

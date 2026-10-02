@@ -4,7 +4,6 @@ import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
 import { Tag } from '../../components/Tag'
 import { TextField } from '../../components/TextField'
-import { SegmentedControl } from '../../components/SegmentedControl'
 import { msAccountTree, msSearch, msViewList } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
@@ -501,8 +500,9 @@ export function ColorsPage() {
         <div className={styles.viewToggle}>
           <div className={styles.viewSwitch}>
             <span className={styles.viewLabel}>View as</span>
-            <SegmentedControl
+            <Tabs
               aria-label="Color roles view"
+              appearance="pill-group"
               items={[
                 { value: 'tree', label: 'Tree', iconLeft: <Icon icon={msAccountTree} size={16} /> },
                 { value: 'list', label: 'List', iconLeft: <Icon icon={msViewList} size={16} /> },
