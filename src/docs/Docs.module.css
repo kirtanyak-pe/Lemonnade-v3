@@ -300,12 +300,25 @@
 }
 
 .navItem {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
   padding: var(--l3-spacing-10) var(--l3-spacing-12) var(--l3-spacing-10) var(--l3-spacing-24);
   border-radius: var(--l3-radius-08);
   font: var(--l3-text-medium-14);
   color: var(--l3-content-secondary);
   text-decoration: none;
+}
+
+/* Title takes the row; the ✓ / WIP marker sits at the right edge. */
+.navLabel {
+  flex: 1;
+  min-width: 0;
+}
+
+.navDone {
+  flex: none;
+  color: var(--l3-content-accent-success-default);
 }
 
 .navItem:hover {

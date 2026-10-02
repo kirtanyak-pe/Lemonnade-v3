@@ -10,6 +10,8 @@ export type DocPage = {
   description: string
   /** Badge next to the title. */
   status?: string
+  /** Sidebar marker: ✓ for finished pages, a WIP tag for work in progress. Defaults to done when status is 'Figma synced'. */
+  progress?: 'done' | 'wip'
   altNames?: string
   /** Component pages: shown as Overview / Variants / API / Resources tabs. */
   overview?: ReactNode

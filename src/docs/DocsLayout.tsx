@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { defaultPageId, navGroups, pages } from './pages'
+import { defaultPageId, navGroups, pages, progressOf } from './pages'
+import { Icon } from '../components/Icon'
+import { Tag } from '../components/Tag'
+import { msCheckCircleFill } from '../icons/material'
 import { DocPageView } from './DocPageView'
 import { BrandLogo } from '../components/BrandLogo'
 import { BuildPage } from '../build/BuildPage'
@@ -124,7 +127,9 @@ export function DocsLayout() {
                           aria-current={p === page ? 'page' : undefined}
                           onClick={() => setRailOpen(false)}
                         >
-                          {p.title}
+                          <span className={styles.navLabel}>{p.title}</span>
+                          {progressOf(p) === 'done' && <Icon icon={msCheckCircleFill} size={16} label="Done" className={styles.navDone} />}
+                          {progressOf(p) === 'wip' && <Tag variant="secondary" color="warning" size="sm">WIP</Tag>}
                         </a>
                       </li>
                     ))}

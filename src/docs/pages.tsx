@@ -27,6 +27,9 @@ import { HomePage } from './HomePage'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
 
+/** Sidebar progress: explicit `progress`, else ✓ for Figma-synced pages. */
+export const progressOf = (p: DocPage) => p.progress ?? (p.status === 'Figma synced' ? 'done' : undefined)
+
 const FIGMA_FILE = 'https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/'
 export const figmaUrl = (nodeId: string) => `${FIGMA_FILE}?node-id=${nodeId.replace(':', '-')}`
 
@@ -44,6 +47,7 @@ export const pages: DocPage[] = [
   // ---- Foundations --------------------------------------------------------
   {
     id: 'colors',
+    progress: 'done',
     title: 'Colors',
     group: 'Foundations',
     description: 'How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).',
@@ -51,6 +55,7 @@ export const pages: DocPage[] = [
   },
   {
     id: 'typography',
+    progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
     description: 'The 42 Manrope text styles from Figma, each available as a single font token.',
@@ -58,6 +63,7 @@ export const pages: DocPage[] = [
   },
   {
     id: 'spacing',
+    progress: 'done',
     title: 'Spacing & radius',
     group: 'Foundations',
     description: 'Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.',
@@ -66,6 +72,7 @@ export const pages: DocPage[] = [
 
   {
     id: 'icons',
+    progress: 'done',
     title: 'Icons',
     group: 'Foundations',
     description: 'The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.',
@@ -476,6 +483,7 @@ import { msWallet, msWalletFill } from './icons/material'
   },
   {
     id: 'card',
+    progress: 'wip',
     title: 'Card',
     group: 'Surfaces',
     description: 'A surface that groups related content. Clickable cards are one tap target; static cards just show information.',
