@@ -340,8 +340,12 @@
   --l3-text-label-32: var(--l3-text-semibold-32);
   --l3-text-label-36: var(--l3-text-semibold-36);
   --l3-text-paragraph-10: var(--l3-text-medium-10);
+  --l3-text-label-secondary-10: var(--l3-text-medium-10);
   --l3-text-paragraph-12: var(--l3-text-medium-12);
+  --l3-text-description: var(--l3-text-medium-12);
+  --l3-text-label-secondary-12: var(--l3-text-medium-12);
   --l3-text-paragraph-14: var(--l3-text-medium-14);
+  --l3-text-label-secondary-14: var(--l3-text-medium-14);
   --l3-text-paragraph-16: var(--l3-text-medium-16);
   --l3-text-paragraph-18: var(--l3-text-medium-18);
 }

@@ -50,18 +50,12 @@
 
 /* ---- Tree -------------------------------------------------------------------- */
 
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--l3-spacing-16) var(--l3-spacing-24);
-}
-
+/* Toolbar items: label + control side by side, 32px tall (size/tap-target). */
 .toggle {
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  min-height: var(--l3-size-40);
+  min-height: var(--l3-size-tap-target);
   font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
   cursor: pointer;
@@ -70,15 +64,27 @@
 .sample {
   display: flex;
   flex: 1 1 calc(var(--l3-size-128) * 2);
-  flex-direction: column;
-  gap: var(--l3-spacing-04);
+  align-items: center;
+  gap: var(--l3-spacing-08);
   max-width: calc(var(--l3-size-128) * 3);
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
+  white-space: nowrap;
+}
+
+/* Vertical hairline between the switch and the sample field. */
+.sample::before {
+  content: '';
+  align-self: stretch;
+  width: 1px;
+  margin-right: var(--l3-spacing-08);
+  background: var(--l3-border-light);
 }
 
 .sample input {
-  height: var(--l3-size-40);
+  flex: 1;
+  min-width: 0;
+  height: var(--l3-size-32);
   padding: 0 var(--l3-spacing-12);
   border: 0;
   border-radius: var(--l3-radius-08);
@@ -124,18 +130,6 @@
 
 .roleExample {
   color: var(--l3-content-primary);
-}
-
-/* Role without styles yet (Label secondary): dashed outline and a placeholder line. */
-.roleCard[data-pending] {
-  box-shadow: none;
-  outline: 1px dashed var(--l3-border-intense);
-  outline-offset: -1px;
-}
-
-.rolePending {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-tertiary);
 }
 
 .roleTitle {

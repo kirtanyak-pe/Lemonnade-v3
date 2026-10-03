@@ -3,7 +3,8 @@ import { Tag } from '../components/Tag'
 import { changelog, currentVersion } from './changelog'
 import { Guidelines } from './GuidelinesView'
 import { guidelines } from './guidelineData'
-import { figmaUrl, navGroups } from './pages'
+import { figmaUrl, navGroups, pages, progressOf, progressTags } from './pages'
+import figmaLogo from './assets/figma-logo.svg'
 import { Playground } from './Playground'
 import { playgrounds } from './playgrounds'
 import { PropsTable } from './PropsTable'
@@ -84,6 +85,8 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
 
   const { prev, next } = neighbours(page)
   const groupFirst = navGroups.find((g) => g.group === page.group)?.pages[0]
+  const lifecycle = progressOf(page)
+  const replacement = page.replacedBy ? pages.find((p) => p.id === page.replacedBy) : undefined
 
   // The home page brings its own hero and layout.
   if (page.id === 'home') return <article className={styles.article}>{page.content}</article>
@@ -98,6 +101,10 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
         <div className={styles.titleRow}>
           <h1>{page.title}</h1>
           {page.status && <Tag variant="secondary" color="success" size="lg">{page.status}</Tag>}
+          {lifecycle && <Tag variant="secondary" color={progressTags[lifecycle].color} size="lg">{progressTags[lifecycle].label}</Tag>}
+          {lifecycle === 'replaced' && replacement && (
+            <a className={styles.replacedLink} href={href(replacement.id)}>by {replacement.title} →</a>
+          )}
           {currentVersion(page.id) && (
             <a className={styles.versionLink} href={href(page.id, 'whats-new')} aria-label={`Version ${currentVersion(page.id)} — see what’s new`}>
               <Tag variant="secondary" color="neutral" size="lg">v{currentVersion(page.id)}</Tag>
@@ -105,7 +112,7 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
           )}
           {page.figmaNodeId && (
             <a className={styles.figmaLink} href={figmaUrl(page.figmaNodeId)} target="_blank" rel="noreferrer">
-              <span className={styles.figmaMark} aria-hidden="true" />
+              <img className={styles.figmaMark} src={figmaLogo} alt="" />
               Open in Figma
               <span className={styles.visuallyHidden}> (opens in a new tab)</span>
             </a>

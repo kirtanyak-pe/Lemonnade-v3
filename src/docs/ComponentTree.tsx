@@ -20,8 +20,11 @@ export function Mini({ children }: { children: ReactNode }) {
   return <span className={styles.mini}><span className={styles.miniInner}>{children}</span></span>
 }
 
-/** `showPreviews={false}` hides every leaf's live example, leaving just the name and note. */
-export function ComponentTree({ spec, showPreviews = true }: { spec: ComponentTreeSpec; showPreviews?: boolean }) {
+/**
+ * `showPreviews={false}` hides every leaf's live example, leaving just the name and note.
+ * `controls` sit on the left of the toolbar row, in line with Expand all / Collapse all.
+ */
+export function ComponentTree({ spec, showPreviews = true, controls }: { spec: ComponentTreeSpec; showPreviews?: boolean; controls?: ReactNode }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [paths, setPaths] = useState<{ d: string; from: string; to: string }[]>([])
   const [size, setSize] = useState({ w: 0, h: 0 })
@@ -119,16 +122,19 @@ export function ComponentTree({ spec, showPreviews = true }: { spec: ComponentTr
 
   return (
     <div className={styles.wrap}>
-      {groupIds.length > 0 && (
+      {(controls || groupIds.length > 0) && (
         <div className={styles.toolbar}>
-          <Button
-            variant="tertiary"
-            size="sm"
-            iconLeft={<Icon icon={allCollapsed ? msUnfoldMore : msUnfoldLess} size={16} />}
-            onClick={toggleAll}
-          >
-            {allCollapsed ? 'Expand all' : 'Collapse all'}
-          </Button>
+          {controls && <div className={styles.controls}>{controls}</div>}
+          {groupIds.length > 0 && (
+            <Button
+              variant="tertiary"
+              size="sm"
+              iconLeft={<Icon icon={allCollapsed ? msUnfoldMore : msUnfoldLess} size={16} />}
+              onClick={toggleAll}
+            >
+              {allCollapsed ? 'Expand all' : 'Collapse all'}
+            </Button>
+          )}
         </div>
       )}
       <div className={styles.scroll}>

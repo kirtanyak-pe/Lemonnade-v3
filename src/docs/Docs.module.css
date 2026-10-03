@@ -321,6 +321,12 @@
   color: var(--l3-content-accent-success-default);
 }
 
+/* Discarded / replaced pages: muted title. */
+.navItem[data-retired] .navLabel {
+  color: var(--l3-content-tertiary);
+  text-decoration: line-through;
+}
+
 .navItem:hover {
   color: var(--l3-content-primary);
 }
@@ -1100,11 +1106,18 @@ legend.sectionLabel {
 }
 
 /* Figma's mark as three stacked dots of brand color — decorative. */
+/* The Figma logo (brand asset, 38×57). */
 .figmaMark {
-  width: var(--l3-spacing-12);
-  height: var(--l3-spacing-12);
-  border-radius: var(--l3-radius-04);
-  background: conic-gradient(var(--l3-surface-accent-error-default) 0 25%, var(--l3-surface-accent-purple-default) 0 50%, var(--l3-surface-accent-discover-default) 0 75%, var(--l3-surface-accent-success-default) 0);
+  flex: none;
+  width: auto;
+  height: var(--l3-size-16);
+}
+
+/* "by Tabs →" next to a Replaced tag (the tag itself is never a link). */
+.replacedLink {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-inverted);
+  text-underline-offset: var(--l3-spacing-04);
 }
 
 /* ---- Token links (Resources) + highlight on foundation pages -------------------- */

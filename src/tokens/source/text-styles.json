@@ -496,7 +496,8 @@
         "$extensions": {
           "l3.figmaStyle": "L3/Paragraph - M/10",
           "l3.roles": [
-            "paragraph/10"
+            "paragraph/10",
+            "label-secondary/10"
           ]
         }
       },
@@ -512,7 +513,9 @@
         "$extensions": {
           "l3.figmaStyle": "L3/Paragraph - M/12",
           "l3.roles": [
-            "paragraph/12"
+            "paragraph/12",
+            "description",
+            "label-secondary/12"
           ]
         }
       },
@@ -528,7 +531,8 @@
         "$extensions": {
           "l3.figmaStyle": "L3/Paragraph - M/14",
           "l3.roles": [
-            "paragraph/14"
+            "paragraph/14",
+            "label-secondary/14"
           ]
         }
       },

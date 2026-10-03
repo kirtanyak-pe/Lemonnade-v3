@@ -125,11 +125,15 @@ export function DocsLayout() {
                           className={styles.navItem}
                           href={href(p.id)}
                           aria-current={p === page ? 'page' : undefined}
+                          data-retired={progressOf(p) === 'discarded' || progressOf(p) === 'replaced' || undefined}
                           onClick={() => setRailOpen(false)}
                         >
                           <span className={styles.navLabel}>{p.title}</span>
-                          {progressOf(p) === 'done' && <Icon icon={msCheckCircleFill} size={16} label="Done" className={styles.navDone} />}
+                          {progressOf(p) === 'done' && <Icon icon={msCheckCircleFill} size={16} label="Completed" className={styles.navDone} />}
                           {progressOf(p) === 'wip' && <Tag variant="secondary" color="warning" size="sm">WIP</Tag>}
+                          {progressOf(p) === 'next-wip' && <Tag variant="secondary" color="processing" size="sm">Next</Tag>}
+                          {progressOf(p) === 'discarded' && <Tag variant="secondary" color="neutral" size="sm">Discarded</Tag>}
+                          {progressOf(p) === 'replaced' && <Tag variant="secondary" color="neutral" size="sm">Replaced</Tag>}
                         </a>
                       </li>
                     ))}

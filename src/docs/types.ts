@@ -10,8 +10,14 @@ export type DocPage = {
   description: string
   /** Badge next to the title. */
   status?: string
-  /** Sidebar marker: ✓ for finished pages, a WIP tag for work in progress. Defaults to done when status is 'Figma synced'. */
-  progress?: 'done' | 'wip'
+  /**
+   * Lifecycle, shown as a tag in the page header and as the sidebar marker. Defaults to done when status is 'Figma synced'.
+   * done = Completed · wip = in progress · next-wip = shipped, next version in progress ·
+   * discarded = not in use · replaced = superseded by `replacedBy`.
+   */
+  progress?: 'done' | 'wip' | 'next-wip' | 'discarded' | 'replaced'
+  /** Page id of the replacement, for progress: 'replaced'. */
+  replacedBy?: string
   altNames?: string
   /** Component pages: shown as Overview / Variants / API / Resources tabs. */
   overview?: ReactNode

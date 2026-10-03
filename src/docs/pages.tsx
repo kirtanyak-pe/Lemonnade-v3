@@ -27,8 +27,17 @@ import { HomePage } from './HomePage'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
 
-/** Sidebar progress: explicit `progress`, else ✓ for Figma-synced pages. */
+/** Lifecycle: explicit `progress`, else done for Figma-synced pages. */
 export const progressOf = (p: DocPage) => p.progress ?? (p.status === 'Figma synced' ? 'done' : undefined)
+
+/** Header tag for each lifecycle state (Tag colors: success = finished, warning = in progress, processing = ongoing). */
+export const progressTags = {
+  done: { label: 'Completed', color: 'success' },
+  wip: { label: 'WIP', color: 'warning' },
+  'next-wip': { label: 'Next version WIP', color: 'processing' },
+  discarded: { label: 'Not in use · Discarded', color: 'neutral' },
+  replaced: { label: 'Replaced', color: 'neutral' },
+} as const
 
 const FIGMA_FILE = 'https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/'
 export const figmaUrl = (nodeId: string) => `${FIGMA_FILE}?node-id=${nodeId.replace(':', '-')}`
@@ -58,7 +67,7 @@ export const pages: DocPage[] = [
     progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
-    description: 'Manrope in five roles — Display, Heading, Label, Label secondary (coming) and Paragraph — from the 34 Figma text styles. Each is a single font token.',
+    description: 'Manrope in five roles — Display, Heading, Label (Primary · Secondary), Paragraph and Description — from the 34 Figma text styles. Each is a single font token.',
     content: <TypographyPage />,
   },
   {
