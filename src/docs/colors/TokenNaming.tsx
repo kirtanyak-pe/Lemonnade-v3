@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { Tabs } from '../../components/Tabs'
 import styles from './TokenNaming.module.css'
 
@@ -54,13 +54,13 @@ const examples: Example[] = [
     label: 'Component',
     parts: [
       { text: 'l3', kind: 'namespace' },
-      { text: 'button', kind: 'component', alts: ['state-layer'] },
-      { text: 'buy', kind: 'variant', alts: ['sell', 'primary', 'brand', 'ghost'] },
+      { text: 'button', kind: 'component' },
+      { text: 'primary', kind: 'variant', alts: ['buy', 'sell', 'brand', 'ghost'] },
       { text: 'surface', kind: 'property', alts: ['content', 'border'] },
       { text: 'disabled', kind: 'state', alts: ['loading'] },
     ],
-    figma: '🔷 L3/color/component/button/buy/surface-disabled',
-    ts: "token('component/button/buy/surface-disabled')",
+    figma: '🔷 L3/color/component/button/primary/surface-disabled',
+    ts: "token('component/button/primary/surface-disabled')",
   },
   {
     value: 'base',
@@ -68,7 +68,7 @@ const examples: Example[] = [
     parts: [
       { text: 'l3', kind: 'namespace' },
       { text: 'base', kind: 'tier' },
-      { text: 'hue', kind: 'group', alts: ['neutral'] },
+      { text: 'hue', kind: 'group' },
       { text: 'green', kind: 'intent', alts: ['red', 'blue', 'yellow', 'orange'] },
       { text: '500', kind: 'modifier', alts: ['400', '600', '100', '900'] },
     ],
@@ -125,56 +125,23 @@ function useLabelRows(count: number, key: string) {
   return [ref, rows] as const
 }
 
-/**
- * Faded values sit left-aligned above their part. When a stack would run into the previous one (a wide value
- * like "state-layer"), it starts above that stack instead. Returns each part's row offset and the rows needed.
- */
-function useAltOffsets(ref: RefObject<HTMLDivElement | null>, key: string) {
-  const [layout, setLayout] = useState<{ offsets: number[]; rows: number }>({ offsets: [], rows: 0 })
-  useLayoutEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const place = () => {
-      const gap = parseFloat(getComputedStyle(el).getPropertyValue('--label-gap')) || 0
-      const offsets: number[] = []
-      let prev: { right: number; top: number; count: number } | null = null
-      let rows = 0
-      el.querySelectorAll<HTMLElement>('[data-part]').forEach((part, i) => {
-        const stack = part.querySelector<HTMLElement>('[data-alts]')
-        if (!stack) { offsets[i] = 0; return }
-        const items = [...stack.children] as HTMLElement[]
-        const left = stack.getBoundingClientRect().left
-        const right = Math.max(...items.map((c) => c.getBoundingClientRect().left + c.offsetWidth))
-        const offset = prev && left < prev.right + gap ? prev.top : 0
-        offsets[i] = offset
-        prev = { right, top: offset + items.length, count: items.length }
-        rows = Math.max(rows, offset + items.length)
-      })
-      setLayout((l) => (l.rows === rows && l.offsets.join() === offsets.join() ? l : { offsets, rows }))
-    }
-    place()
-    const ro = new ResizeObserver(place)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [ref, key])
-  return layout
-}
+/** Room above the row for the tallest stack of faded values in any example, so the tags sit on the same line in all of them. */
+const altRows = Math.max(...examples.flatMap((e) => e.parts.map((p) => p.alts?.length ?? 0)))
 
 function Anatomy({ example }: { example: Example }) {
   const [ref, rows] = useLabelRows(example.parts.length, example.parts.map((p) => p.text).join('-'))
   const maxRow = Math.max(0, ...rows)
-  const alts = useAltOffsets(ref, example.parts.map((p) => p.text).join('-'))
   return (
     <div className={styles.anatomyScroll}>
-      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow, '--alt-rows': alts.rows } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
+      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow, '--alt-rows': altRows } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
         <span className={styles.prefix} aria-hidden="true">--</span>
         {example.parts.map((p, i) => (
           <span key={i} className={styles.partGroup} aria-hidden="true">
             {i > 0 && <span className={styles.sep}>-</span>}
-            <span className={styles.part} data-kind={p.kind} data-part style={{ '--row': rows[i] ?? 0 } as CSSProperties}>
+            <span className={styles.part} data-kind={p.kind} style={{ '--row': rows[i] ?? 0 } as CSSProperties}>
               <span className={styles.partTextWrap}>
                 {p.alts && (
-                  <span className={styles.alts} data-alts style={{ '--alt-offset': alts.offsets[i] ?? 0 } as CSSProperties}>
+                  <span className={styles.alts}>
                     {p.alts.map((alt) => <span key={alt} className={styles.alt}>{alt}</span>)}
                   </span>
                 )}
@@ -199,8 +166,13 @@ export function TokenNaming() {
     <div className={styles.wrap}>
       <Tabs aria-label="Token type" appearance="pill" size="md" items={examples.map(({ value, label }) => ({ value, label }))} value={value} onChange={setValue} />
 
-      <div className={styles.card}>
-        <Anatomy example={example} />
+      {/* Every example is laid out in the same grid cell (only the chosen one visible), so the card keeps the tallest one's height. */}
+      <div className={`${styles.card} ${styles.stack}`}>
+        {examples.map((e) => (
+          <div key={e.value} className={styles.stackItem} data-active={e === example || undefined} aria-hidden={e !== example || undefined}>
+            <Anatomy example={e} />
+          </div>
+        ))}
       </div>
 
       <dl className={styles.forms}>
