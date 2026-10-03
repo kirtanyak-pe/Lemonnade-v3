@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import { Tabs } from '../../components/Tabs'
 import styles from './TokenNaming.module.css'
 
@@ -22,7 +22,8 @@ const partLabels: Record<PartKind, string> = {
 type Example = {
   value: string
   label: string
-  parts: { text: string; kind: PartKind }[]
+  /** `alts`: other values the part can take, shown faded above it (nearest first; up to 4 — fewer when that's all there is). */
+  parts: { text: string; kind: PartKind; alts?: string[] }[]
   figma: string
   ts: string
 }
@@ -31,7 +32,7 @@ const examples: Example[] = [
   {
     value: 'semantic',
     label: 'Semantic',
-    parts: [{ text: 'l3', kind: 'namespace' }, { text: 'surface', kind: 'property' }, { text: 'secondary', kind: 'modifier' }],
+    parts: [{ text: 'l3', kind: 'namespace' }, { text: 'surface', kind: 'property', alts: ['content', 'border'] }, { text: 'secondary', kind: 'modifier', alts: ['primary', 'tertiary', 'default', 'inverted'] }],
     figma: '🔷 L3/color/surface/secondary',
     ts: "token('surface/secondary')",
   },
@@ -40,10 +41,10 @@ const examples: Example[] = [
     label: 'Accent',
     parts: [
       { text: 'l3', kind: 'namespace' },
-      { text: 'surface', kind: 'property' },
+      { text: 'surface', kind: 'property', alts: ['content', 'border'] },
       { text: 'accent', kind: 'group' },
-      { text: 'success', kind: 'intent' },
-      { text: 'light', kind: 'modifier' },
+      { text: 'success', kind: 'intent', alts: ['error', 'warning', 'discover', 'brand'] },
+      { text: 'light', kind: 'modifier', alts: ['default'] },
     ],
     figma: '🔷 L3/color/surface/accent/success-light',
     ts: "token('surface/accent/success-light')",
@@ -53,10 +54,10 @@ const examples: Example[] = [
     label: 'Component',
     parts: [
       { text: 'l3', kind: 'namespace' },
-      { text: 'button', kind: 'component' },
-      { text: 'buy', kind: 'variant' },
-      { text: 'surface', kind: 'property' },
-      { text: 'disabled', kind: 'state' },
+      { text: 'button', kind: 'component', alts: ['state-layer'] },
+      { text: 'buy', kind: 'variant', alts: ['sell', 'primary', 'brand', 'ghost'] },
+      { text: 'surface', kind: 'property', alts: ['content', 'border'] },
+      { text: 'disabled', kind: 'state', alts: ['loading'] },
     ],
     figma: '🔷 L3/color/component/button/buy/surface-disabled',
     ts: "token('component/button/buy/surface-disabled')",
@@ -67,9 +68,9 @@ const examples: Example[] = [
     parts: [
       { text: 'l3', kind: 'namespace' },
       { text: 'base', kind: 'tier' },
-      { text: 'hue', kind: 'group' },
-      { text: 'green', kind: 'intent' },
-      { text: '500', kind: 'modifier' },
+      { text: 'hue', kind: 'group', alts: ['neutral'] },
+      { text: 'green', kind: 'intent', alts: ['red', 'blue', 'yellow', 'orange'] },
+      { text: '500', kind: 'modifier', alts: ['400', '600', '100', '900'] },
     ],
     figma: 'L3-color-base/hue/green/500',
     ts: "baseColorVars['hue/green/500']",
@@ -124,18 +125,61 @@ function useLabelRows(count: number, key: string) {
   return [ref, rows] as const
 }
 
+/**
+ * Faded values sit left-aligned above their part. When a stack would run into the previous one (a wide value
+ * like "state-layer"), it starts above that stack instead. Returns each part's row offset and the rows needed.
+ */
+function useAltOffsets(ref: RefObject<HTMLDivElement | null>, key: string) {
+  const [layout, setLayout] = useState<{ offsets: number[]; rows: number }>({ offsets: [], rows: 0 })
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const place = () => {
+      const gap = parseFloat(getComputedStyle(el).getPropertyValue('--label-gap')) || 0
+      const offsets: number[] = []
+      let prev: { right: number; top: number; count: number } | null = null
+      let rows = 0
+      el.querySelectorAll<HTMLElement>('[data-part]').forEach((part, i) => {
+        const stack = part.querySelector<HTMLElement>('[data-alts]')
+        if (!stack) { offsets[i] = 0; return }
+        const items = [...stack.children] as HTMLElement[]
+        const left = stack.getBoundingClientRect().left
+        const right = Math.max(...items.map((c) => c.getBoundingClientRect().left + c.offsetWidth))
+        const offset = prev && left < prev.right + gap ? prev.top : 0
+        offsets[i] = offset
+        prev = { right, top: offset + items.length, count: items.length }
+        rows = Math.max(rows, offset + items.length)
+      })
+      setLayout((l) => (l.rows === rows && l.offsets.join() === offsets.join() ? l : { offsets, rows }))
+    }
+    place()
+    const ro = new ResizeObserver(place)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [ref, key])
+  return layout
+}
+
 function Anatomy({ example }: { example: Example }) {
   const [ref, rows] = useLabelRows(example.parts.length, example.parts.map((p) => p.text).join('-'))
   const maxRow = Math.max(0, ...rows)
+  const alts = useAltOffsets(ref, example.parts.map((p) => p.text).join('-'))
   return (
     <div className={styles.anatomyScroll}>
-      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
+      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow, '--alt-rows': alts.rows } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
         <span className={styles.prefix} aria-hidden="true">--</span>
         {example.parts.map((p, i) => (
           <span key={i} className={styles.partGroup} aria-hidden="true">
             {i > 0 && <span className={styles.sep}>-</span>}
-            <span className={styles.part} data-kind={p.kind} style={{ '--row': rows[i] ?? 0 } as CSSProperties}>
-              <code className={styles.partText}>{p.text}</code>
+            <span className={styles.part} data-kind={p.kind} data-part style={{ '--row': rows[i] ?? 0 } as CSSProperties}>
+              <span className={styles.partTextWrap}>
+                {p.alts && (
+                  <span className={styles.alts} data-alts style={{ '--alt-offset': alts.offsets[i] ?? 0 } as CSSProperties}>
+                    {p.alts.map((alt) => <span key={alt} className={styles.alt}>{alt}</span>)}
+                  </span>
+                )}
+                <code className={styles.partText}>{p.text}</code>
+              </span>
               <span className={styles.stick}>
                 <span className={styles.partLabel} data-label>{partLabels[p.kind]}</span>
               </span>

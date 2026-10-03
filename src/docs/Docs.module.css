@@ -558,17 +558,50 @@
   width: 100%;
 }
 
+/*
+ * Device: a near-black body in every theme (static/black), a 12px bezel with concentric corners
+ * (screen radius + bezel), a thin metal rim, and power + volume buttons on the right edge.
+ */
 .phone {
+  --bezel: var(--l3-spacing-12);
+  --screen-radius: var(--l3-radius-32);
+  --rim: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-30));
+  --band: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-15));
   position: relative;
   box-sizing: content-box;
   flex: none;
   align-self: flex-start; /* content height — never stretched to the slot's (scaled) height */
   width: var(--screen-width, 360px); /* 360 / 392 / 412 — the preview width picker */
   transform-origin: top center;
-  padding: var(--l3-spacing-10);
-  border-radius: var(--l3-radius-32);
-  background: var(--l3-surface-inverted);
-  box-shadow: var(--l3-shadow-elevation-high);
+  padding: var(--bezel);
+  border-radius: calc(var(--screen-radius) + var(--bezel));
+  background: var(--l3-static-black);
+  box-shadow:
+    inset 0 0 0 1px var(--rim),
+    0 0 0 var(--l3-spacing-02) var(--band),
+    var(--l3-shadow-elevation-high);
+}
+
+/* Side buttons: power (short) and volume (long) just outside the right edge. */
+.phone::before,
+.phone::after {
+  content: '';
+  position: absolute;
+  right: calc(-1 * var(--l3-spacing-04));
+  width: var(--l3-spacing-04);
+  border-radius: 0 var(--l3-radius-02) var(--l3-radius-02) 0;
+  background: var(--l3-static-black);
+  box-shadow: inset -1px 0 0 var(--rim), var(--l3-spacing-02) 0 0 var(--band);
+}
+
+.phone::before {
+  top: 18%;
+  height: var(--l3-size-64);
+}
+
+.phone::after {
+  top: calc(18% + var(--l3-size-80));
+  height: var(--l3-size-96);
 }
 
 /*
@@ -576,13 +609,45 @@
  * The DS System statusbar sits on top; the demo screen fills the rest.
  */
 .phoneScreen {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   width: var(--screen-width, 360px);
   aspect-ratio: 360 / 800;
-  border-radius: var(--l3-radius-24);
+  border-radius: var(--screen-radius);
   background: var(--l3-surface-default);
+}
+
+/* Punch-hole camera, centred in the status bar (between the time and the icons). */
+.phoneScreen::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: var(--l3-spacing-10);
+  left: 50%;
+  width: var(--l3-size-12);
+  height: var(--l3-size-12);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-static-black);
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Gesture bar (home indicator) over the bottom of the screen. */
+.phoneScreen::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  bottom: var(--l3-spacing-08);
+  left: 50%;
+  width: 30%;
+  height: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: rgb(from var(--l3-content-primary) r g b / var(--l3-opacity-50));
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .phoneScreen > :not(:first-child) {
@@ -590,9 +655,16 @@
   min-height: 0;
 }
 
-/* Playground previews (compact): a bare phone-width screen that hugs its content. */
+/* Playground previews (compact): a bare phone-width screen that hugs its content — no camera, gesture bar or buttons. */
 .phone[data-compact] .phoneScreen {
   aspect-ratio: auto;
+}
+
+.phone[data-compact]::before,
+.phone[data-compact]::after,
+.phone[data-compact] .phoneScreen::before,
+.phone[data-compact] .phoneScreen::after {
+  display: none;
 }
 
 /* ---- Demo screens (inside the phone) --------------------------------------- */
@@ -788,8 +860,14 @@
   font: var(--l3-text-semibold-14);
 }
 
+/* Chip rows scroll edge to edge: the row's own inline padding (not the wrapper's) lines the first chip up with the content. */
 .filterRow {
-  padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-04);
+  padding: var(--l3-spacing-12) 0 var(--l3-spacing-04);
+}
+
+.filterRow > [role='tablist'] {
+  padding-inline: var(--l3-spacing-16);
+  scroll-padding-inline: var(--l3-spacing-16);
 }
 
 .emptyState {
@@ -1312,12 +1390,8 @@ legend.sectionLabel {
 }
 
 .phone[data-compact] {
-  padding: var(--l3-spacing-06);
-  border-radius: var(--l3-radius-24);
-}
-
-.phone[data-compact] .phoneScreen {
-  border-radius: var(--l3-radius-20);
+  --bezel: var(--l3-spacing-06);
+  --screen-radius: var(--l3-radius-20);
 }
 
 .playgroundCanvas {

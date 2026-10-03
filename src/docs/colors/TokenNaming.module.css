@@ -26,13 +26,83 @@
   --label-height: var(--l3-size-24);
   --row-step: var(--l3-size-28);
   --label-gap: var(--l3-spacing-08);
+  --alt-box: var(--l3-size-24);
+  --alt-gap: var(--l3-spacing-04);
   display: flex;
   align-items: flex-start;
   justify-content: center;
   width: max-content;
   min-width: 100%;
   margin: 0 auto;
+  padding-top: calc(var(--alt-rows, 0) * (var(--alt-box) + var(--alt-gap)));
   padding-bottom: calc(var(--label-height) + var(--rows, 0) * var(--row-step));
+}
+
+/*
+ * Other values a part can take, stacked faded above it (nearest = most likely). Absolutely positioned so they
+ * never widen the part; --alt-rows reserves the room above the row.
+ */
+.partTextWrap {
+  position: relative;
+  display: flex;
+}
+
+/* Left-aligned with the part; --alt-offset (from JS) lifts a stack above a neighbor it would run into. */
+.alts {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: var(--alt-gap);
+  padding-bottom: calc(var(--alt-gap) + var(--alt-offset, 0) * (var(--alt-box) + var(--alt-gap)));
+}
+
+/* Each alternative is a smaller tag in the part's colors, faded. */
+.alt {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--alt-box);
+  padding: 0 var(--l3-spacing-06);
+  border-radius: var(--l3-radius-06);
+  background: var(--part-soft);
+  box-shadow: inset 0 0 0 1px var(--part-border);
+  font: var(--l3-text-bold-14);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--part-content);
+  white-space: nowrap;
+  opacity: var(--l3-opacity-50);
+}
+
+.alt:nth-child(2) {
+  opacity: var(--l3-opacity-30);
+}
+
+.alt:nth-child(3) {
+  opacity: var(--l3-opacity-20);
+}
+
+.alt:nth-child(n + 4) {
+  opacity: var(--l3-opacity-10);
+}
+
+/* Hovering a part (its tag, its faded values or its label) shows its other values clearly. */
+.alt {
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+@media (hover: hover) {
+  .part:hover .alt {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alt {
+    transition: none;
+  }
 }
 
 .prefix,
@@ -143,7 +213,16 @@
     border-radius: var(--l3-radius-06);
   }
 
+  .alt {
+    padding: 0 var(--l3-spacing-04);
+    border-radius: var(--l3-radius-04);
+    font: var(--l3-text-bold-10);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
   .anatomy {
+    --alt-box: var(--l3-size-16);
+    --alt-gap: var(--l3-spacing-02);
     --stick-height: var(--l3-size-20);
     --label-height: var(--l3-size-16);
     --row-step: var(--l3-size-20);

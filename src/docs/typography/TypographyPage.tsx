@@ -44,7 +44,7 @@ function Section({ id, title, lede, children }: { id: string; title: string; led
 
 export function TypographyPage() {
   const [sample, setSample] = useState('Aa ₹24,812')
-  const [showExamples, setShowExamples] = useState(true)
+  const [showExamples, setShowExamples] = useState(false)
 
   const tree = useMemo<ComponentTreeSpec>(() => ({
     title: 'Typography',
