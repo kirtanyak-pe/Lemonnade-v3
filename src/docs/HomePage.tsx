@@ -1,6 +1,8 @@
 import { Button } from '../components/Button'
+import { Icon } from '../components/Icon'
 import { Tag } from '../components/Tag'
 import { productModes, products } from '../tokens'
+import { msDevices, msEmojiSymbols, msPalette, msWidgets } from '../icons/material'
 import { recentReleases } from './changelog'
 import { CodeBlock, defaults } from './Playground'
 import { pages } from './pages'
@@ -51,22 +53,35 @@ export function HomePage() {
         </aside>
       )}
 
+      {/* Intro on the left, the four stats in a 2×2 grid on the right (stacked below on narrow screens). */}
       <section className={styles.hero}>
-        <p className={styles.heroEyebrow}>Lemonnade V3 · L3 design system</p>
-        <h1 className={styles.heroTitle}>Simplifying investment</h1>
-        <p className={styles.heroLede}>
-          React components built from the Figma library, themed with L3 tokens for Lemonn, CS Pro and Kuber, and made for phones first.
-        </p>
-        <div className={styles.heroActions}>
-          <Button size="lg" onClick={() => { window.location.hash = href('button') }}>Browse components</Button>
-          <Button size="lg" variant="secondary" onClick={() => { window.location.hash = href('colors') }}>Foundations</Button>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroMain}>
+            <p className={styles.heroEyebrow}>Lemonnade V3 · L3 design system</p>
+            <h1 className={styles.heroTitle}>Simplifying investment</h1>
+            <p className={styles.heroLede}>
+              React components built from the Figma library, themed with L3 tokens for Lemonn, CS Pro and Kuber, and made for phones first.
+            </p>
+            <div className={styles.heroActions}>
+              <Button size="lg" onClick={() => { window.location.hash = href('button') }}>Browse components</Button>
+              <Button size="lg" variant="secondary" onClick={() => { window.location.hash = href('colors') }}>Foundations</Button>
+            </div>
+          </div>
+          <dl className={styles.stats}>
+            {[
+              { icon: msWidgets, label: 'Components', value: String(components.length) },
+              { icon: msPalette, label: 'Themes', value: `${themeCount} + ${themeCount} ♿` },
+              { icon: msEmojiSymbols, label: 'Icons', value: '3,900+' },
+              { icon: msDevices, label: 'Preview widths', value: '360 · 392 · 412' },
+            ].map((s) => (
+              <div key={s.label} className={styles.stat}>
+                <span className={styles.statIcon}><Icon icon={s.icon} size={20} /></span>
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className={styles.stats}>
-          <div><dt>Components</dt><dd>{components.length}</dd></div>
-          <div><dt>Themes</dt><dd>{themeCount} + {themeCount} ♿</dd></div>
-          <div><dt>Icons</dt><dd>3,900+</dd></div>
-          <div><dt>Preview widths</dt><dd>360 · 392 · 412</dd></div>
-        </dl>
       </section>
 
       <section className={styles.section}>

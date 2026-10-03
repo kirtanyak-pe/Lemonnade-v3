@@ -567,6 +567,8 @@
   --screen-radius: var(--l3-radius-32);
   --rim: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-30));
   --band: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-15));
+  /* Bezel: a dark grey strip around the screen (white at 12% over the black body). */
+  --bezel-fill: linear-gradient(rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10)), rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10)));
   position: relative;
   box-sizing: content-box;
   flex: none;
@@ -575,7 +577,7 @@
   transform-origin: top center;
   padding: var(--bezel);
   border-radius: calc(var(--screen-radius) + var(--bezel));
-  background: var(--l3-static-black);
+  background: var(--bezel-fill), var(--l3-static-black);
   box-shadow:
     inset 0 0 0 1px var(--rim),
     0 0 0 var(--l3-spacing-02) var(--band),
@@ -1683,6 +1685,7 @@ legend.sectionLabel {
   align-items: center;
   gap: var(--l3-spacing-12);
   min-width: 0;
+  overflow: hidden;
   margin-bottom: var(--l3-spacing-16);
   padding: var(--l3-spacing-08) var(--l3-spacing-16);
   border-radius: var(--l3-radius-12);
@@ -1753,7 +1756,13 @@ legend.sectionLabel {
   }
 }
 
+/*
+ * Intro left, stats right when the hero is wide enough (container query: the rail takes room too);
+ * stacked otherwise. The hero itself is the query container, so the grid lives on an inner wrapper.
+ */
 .hero {
+  container-type: inline-size;
+  overflow: hidden;
   padding: var(--l3-spacing-32);
   border-radius: var(--l3-radius-24);
   /* Large container: page color + hairline; only the small cards inside are grey. */
@@ -1787,27 +1796,81 @@ legend.sectionLabel {
   margin-top: var(--l3-spacing-24);
 }
 
-.stats {
+.heroGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--l3-spacing-12);
-  margin: var(--l3-spacing-32) 0 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--l3-spacing-24);
 }
 
-.stats div {
-  padding: var(--l3-spacing-12) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-12);
+@container (min-width: 760px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--l3-spacing-32);
+  }
+}
+
+.heroMain {
+  min-width: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--l3-spacing-12);
+  margin: 0;
+}
+
+/* Small informative card: icon chip, big value, label under it (dt stays first in the DOM for screen readers). */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-16);
   background: var(--l3-surface-secondary);
 }
 
-.stats dt {
-  font: var(--l3-text-medium-12);
+.statIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  margin-bottom: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: var(--l3-content-primary);
+}
+
+.stat dd {
+  order: 1;
+  margin: 0;
+  overflow: hidden;
+  font: var(--l3-text-display-20);
+  color: var(--l3-content-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat dt {
+  order: 2;
+  font: var(--l3-text-label-secondary-12);
   color: var(--l3-content-secondary);
 }
 
-.stats dd {
-  margin: var(--l3-spacing-04) 0 0;
-  font: var(--l3-text-extrabold-20);
+/* Small phones: the value steps down so "360 · 392 · 412" fits a half-width card. */
+@container (max-width: 420px) {
+  .stat {
+    padding: var(--l3-spacing-12);
+  }
+
+  .stat dd {
+    font: var(--l3-text-display-16);
+  }
 }
 
 .cardGrid,
