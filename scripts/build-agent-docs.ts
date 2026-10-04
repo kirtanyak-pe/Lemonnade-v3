@@ -97,6 +97,7 @@ const readIf = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : '')
 
 // Rules first: the agent contract and the full rulebook.
 add('agents', 'Instructions for AI agents', 'Read first. Workflow, non-negotiable rules and how to verify a screen.', readIf(join(root, 'AGENTS.md')), 'Rules')
+add('figma-code-map', 'Figma → code map', 'How every Figma component and property maps to a React component and prop.', readIf(join(root, 'docs/figma-code-map.md')), 'Rules')
 add('design-system', 'Design system rules', 'Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don\'t.', readIf(join(root, 'DESIGN_SYSTEM.md')), 'Rules')
 
 for (const p of pages as Page[]) {

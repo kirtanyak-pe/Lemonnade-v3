@@ -73,6 +73,9 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 
 ## 4. Figma work
 
+- **Figma → code:** `docs/figma-code-map.md` maps every Figma component and property to the React component and prop
+  (e.g. Button `Type=◻️ Primary, Size=Large` → `<Button variant="primary" size="lg">`). Use it when turning a design into code.
+
 - Use the **✅ Lemonnade V3** library (and **👁️ Lemonnade V3 → Icons**) — instances, variables and text/effect
   styles, never raw values.
 - Put content into a component's **slots** (e.g. tabs in the Actionbar's `↓ Content bottom`), don't stack siblings.

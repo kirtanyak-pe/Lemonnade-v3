@@ -7,6 +7,7 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 ## Rules
 
 - [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
+- [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
 - [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.
 
 ## Foundations
