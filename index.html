@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>L3 Design System · Lemonnade V3</title>
+    <!-- Plain-text docs for AI agents (this site renders with JavaScript). -->
+    <link rel="alternate" type="text/plain" href="llms.txt" title="L3 design system docs for AI agents" />
     <script>
       // Apply the stored L3 theme before first paint (mirrors src/theme/ThemeProvider.tsx).
       (function () {
@@ -21,12 +23,19 @@
         if (p === 'cspro') m = 'dark';
         document.documentElement.dataset.product = p;
         document.documentElement.dataset.mode = m;
-        if (s.contrast === 'accessible') document.documentElement.dataset.contrast = 'accessible';
+        // No saved choice → follow the OS 'Increase contrast' setting.
+        var c = s.contrast === 'accessible' || (s.contrast === 'default' && s.v === 2) ? s.contrast
+          : matchMedia('(prefers-contrast: more)').matches ? 'accessible' : 'default';
+        if (c === 'accessible') document.documentElement.dataset.contrast = 'accessible';
       })();
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Replaced by the app on load; tools that don't run JavaScript read this instead. -->
+      <p>Lemonnade V3 (L3) design system docs. AI agents and tools that can't run JavaScript: read <a href="llms.txt">llms.txt</a> (index) or <a href="llms-full.txt">llms-full.txt</a> (everything in one file).</p>
+    </div>
+    <noscript>This site needs JavaScript. Plain-text docs: <a href="llms.txt">llms.txt</a></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

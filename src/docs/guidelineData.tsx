@@ -43,7 +43,7 @@ export const guidelines: Record<string, Guideline[]> = {
     },
     {
       title: 'Use Buy and Sell only for trades',
-      do: { text: 'Buy (green) and Sell (red) are for placing orders.', example: <div className={styles.exRow}><Button size="md" variant="sell">Sell</Button><Button size="md" variant="buy">Buy</Button></div> },
+      do: { text: 'Use Primary for every action; Buy and Sell only for placing orders.', example: <div className={styles.exRow}><Button size="md" variant="sell">Sell</Button><Button size="md" variant="buy">Buy</Button></div> },
       dont: { text: 'Borrow their colors for unrelated actions like saving settings.', example: <Button size="md" variant="buy">Save settings</Button> },
     },
   ],
