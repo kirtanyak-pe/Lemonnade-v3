@@ -95,12 +95,12 @@
 }
 
 .rootTitle {
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-primary-16);
   color: var(--l3-content-inverted);
 }
 
 .rootNote {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-description-10);
   color: var(--l3-content-inverted-secondary);
 }
 
@@ -133,18 +133,18 @@
 }
 
 .branchTitle {
-  font: var(--l3-text-extrabold-14);
+  font: var(--l3-text-heading-primary-14);
   color: var(--l3-content-primary);
 }
 
 .branchNote,
 .groupNote {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-description-10);
   color: var(--l3-content-secondary);
 }
 
 .groupTitle {
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
   color: var(--l3-content-primary);
 }
 
@@ -248,13 +248,40 @@
 }
 
 .leafLabel {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
 }
 
+/* largeText: nothing in the tree below 14px. */
+.wrap[data-large-text] :is(.rootNote, .branchNote, .groupNote, .leafNote) {
+  font: var(--l3-text-description-14);
+}
+
+.wrap[data-large-text] .groupTitle {
+  font: var(--l3-text-heading-secondary-14);
+}
+
+.wrap[data-large-text] .leafLabel {
+  font: var(--l3-text-label-primary-14);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* inlineNotes: label left, note right, one row. */
+.leafText[data-inline] {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.leafText[data-inline] .leafNote {
+  text-align: right;
+  white-space: nowrap;
+}
+
 .leafNote {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 

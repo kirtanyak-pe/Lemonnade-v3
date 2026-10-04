@@ -24,7 +24,7 @@
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-inverted);
   color: var(--l3-content-inverted);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   text-decoration: none;
   transform: translateY(calc(-100% - var(--l3-spacing-16)));
 }
@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-extrabold-24);
+  font: var(--l3-text-heading-primary-24);
   color: var(--l3-content-primary);
   text-decoration: none;
   white-space: nowrap;
@@ -93,7 +93,7 @@
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-primary);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   cursor: pointer;
 }
 
@@ -158,7 +158,7 @@
   margin: 0;
   padding: var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-08);
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
 }
 
 .brandList {
@@ -208,7 +208,7 @@
 .topNav a {
   display: flex;
   align-items: center;
-  font: var(--l3-text-semibold-16);
+  font: var(--l3-text-label-primary-16);
   color: var(--l3-content-secondary);
   text-decoration: none;
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-04)) 0 transparent;
@@ -281,7 +281,7 @@
   border-radius: var(--l3-radius-08);
   background: transparent;
   color: var(--l3-content-primary);
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   text-align: left;
   cursor: pointer;
 }
@@ -305,7 +305,7 @@
   gap: var(--l3-spacing-08);
   padding: var(--l3-spacing-10) var(--l3-spacing-12) var(--l3-spacing-10) var(--l3-spacing-24);
   border-radius: var(--l3-radius-08);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
   color: var(--l3-content-secondary);
   text-decoration: none;
 }
@@ -332,7 +332,7 @@
 }
 
 .navItem[aria-current='page'] {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   color: var(--l3-content-primary);
   background: var(--l3-surface-tertiary);
 }
@@ -394,7 +394,7 @@
 }
 
 .breadcrumb {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-secondary);
 }
 
@@ -425,13 +425,13 @@
 
 .titleRow h1 {
   margin: 0;
-  font: var(--l3-text-extrabold-36);
+  font: var(--l3-text-heading-primary-36);
 }
 
 .lede {
   max-width: 640px;
   margin: var(--l3-spacing-16) 0 0;
-  font: var(--l3-text-medium-18);
+  font: var(--l3-text-description-18);
   color: var(--l3-content-secondary);
 }
 
@@ -465,14 +465,14 @@
 .pageTabs a {
   flex: none;
   padding: var(--l3-spacing-12) 0;
-  font: var(--l3-text-semibold-16);
+  font: var(--l3-text-label-primary-16);
   color: var(--l3-content-secondary);
   text-decoration: none;
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-02)) 0 transparent;
 }
 
 .pageTabs a[aria-current='page'] {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   color: var(--l3-content-primary);
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-02)) 0 var(--l3-content-primary);
 }
@@ -503,14 +503,14 @@
 
 .section > h2 {
   margin: 0 0 var(--l3-spacing-04);
-  font: var(--l3-text-bold-20);
+  font: var(--l3-text-heading-secondary-20);
 }
 
 /* Heading and description sit together; the body starts a little further down. */
 .section > p {
   max-width: 640px;
   margin: 0 0 var(--l3-spacing-16);
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-description-16);
   color: var(--l3-content-secondary);
 }
 
@@ -680,7 +680,7 @@
 
 .appBar {
   padding: var(--l3-spacing-08) var(--l3-spacing-16) var(--l3-spacing-12);
-  font: var(--l3-text-bold-20);
+  font: var(--l3-text-heading-secondary-20);
 }
 
 .quote {
@@ -695,7 +695,7 @@
 
 .symbol {
   margin-bottom: var(--l3-spacing-04);
-  font: var(--l3-text-bold-18);
+  font: var(--l3-text-heading-secondary-18);
 }
 
 .priceBlock {
@@ -706,7 +706,7 @@
 }
 
 .price {
-  font: var(--l3-text-bold-18);
+  font: var(--l3-text-heading-secondary-18);
 }
 
 .fields {
@@ -721,13 +721,13 @@
 }
 
 .fields dt {
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
   color: var(--l3-content-secondary);
 }
 
 .fields dd {
   margin: 0;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
 }
 
 /* Docks inside demo screens are ButtonGroups pinned to the bottom of the screen. */
@@ -792,7 +792,7 @@
 
 .sheetHelper {
   margin: 0;
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
   text-align: center;
 }
@@ -837,11 +837,11 @@
 }
 
 .rowTitle {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
 }
 
 .rowHint {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -859,7 +859,7 @@
 }
 
 .rowValue {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
 }
 
 /* Chip rows scroll edge to edge: the row's own inline padding (not the wrapper's) lines the first chip up with the content. */
@@ -875,7 +875,7 @@
 .emptyState {
   margin: 0;
   padding: var(--l3-spacing-48) var(--l3-spacing-16);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
   text-align: center;
 }
@@ -893,7 +893,7 @@ legend.sectionLabel {
 
 .sectionLabel {
   margin-bottom: var(--l3-spacing-04);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-secondary);
 }
 
@@ -902,7 +902,7 @@ legend.sectionLabel {
   align-items: center;
   gap: var(--l3-spacing-12);
   padding: var(--l3-spacing-06) 0;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
 }
 
 .optionRow.indent {
@@ -918,13 +918,13 @@ legend.sectionLabel {
 .propsTable {
   width: 100%;
   border-collapse: collapse;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
 }
 
 .propsTable th {
   padding: var(--l3-spacing-10) var(--l3-spacing-12);
   border-bottom: 1px solid var(--l3-border-intense);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-secondary);
   text-align: left;
 }
@@ -954,13 +954,13 @@ legend.sectionLabel {
 }
 
 .resources dt {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-secondary);
 }
 
 .resources dd {
   margin: 0;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
 }
 
 .resources a {
@@ -1068,15 +1068,15 @@ legend.sectionLabel {
   }
 
   .brand {
-    font: var(--l3-text-extrabold-16);
+    font: var(--l3-text-heading-primary-16);
   }
 
   .titleRow h1 {
-    font: var(--l3-text-extrabold-28);
+    font: var(--l3-text-heading-primary-28);
   }
 
   .lede {
-    font: var(--l3-text-medium-16);
+    font: var(--l3-text-description-16);
   }
 
   .resources > div {
@@ -1091,7 +1091,7 @@ legend.sectionLabel {
   }
 
   .brand {
-    font: var(--l3-text-extrabold-14);
+    font: var(--l3-text-heading-primary-14);
   }
 }
 
@@ -1126,7 +1126,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   background: transparent;
   color: var(--l3-content-secondary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   cursor: pointer;
 }
 
@@ -1154,7 +1154,7 @@ legend.sectionLabel {
 
 .tabIntro {
   margin: 0 0 var(--l3-spacing-24);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -1170,7 +1170,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
   color: var(--l3-content-primary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   text-decoration: none;
 }
 
@@ -1195,7 +1195,7 @@ legend.sectionLabel {
 
 /* "by Tabs →" next to a Replaced tag (the tag itself is never a link). */
 .replacedLink {
-  font: var(--l3-text-label-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-inverted);
   text-underline-offset: var(--l3-spacing-04);
 }
@@ -1254,7 +1254,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
   cursor: pointer;
 }
 
@@ -1272,7 +1272,7 @@ legend.sectionLabel {
   padding: var(--l3-spacing-02) var(--l3-spacing-06);
   border-radius: var(--l3-radius-06);
   background: var(--l3-surface-default);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
 }
 
 .searchDialog {
@@ -1304,7 +1304,7 @@ legend.sectionLabel {
   outline: none;
   background: transparent;
   color: var(--l3-content-primary);
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-label-secondary-16);
 }
 
 .searchInput::placeholder {
@@ -1337,12 +1337,12 @@ legend.sectionLabel {
   grid-row: span 2;
   align-self: center;
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
 }
 
 .searchTitle {
   overflow: hidden;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1350,7 +1350,7 @@ legend.sectionLabel {
 .searchDetail {
   overflow: hidden;
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1360,7 +1360,7 @@ legend.sectionLabel {
   margin: 0;
   padding: var(--l3-spacing-12) var(--l3-spacing-20);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
 }
 
 .searchHint {
@@ -1433,7 +1433,7 @@ legend.sectionLabel {
 
 .controlsHeader h3 {
   margin: 0;
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-primary-16);
 }
 
 .controlGroup {
@@ -1451,7 +1451,7 @@ legend.sectionLabel {
   margin: 0;
   padding: 0 var(--l3-spacing-16);
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
 }
 
 /* Booleans are full-width ListCell rows, so they tighten the group gap. */
@@ -1481,7 +1481,7 @@ legend.sectionLabel {
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--l3-spacing-04) var(--l3-spacing-08);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-primary);
 }
 
@@ -1527,7 +1527,7 @@ legend.sectionLabel {
   align-items: center;
   justify-content: space-between;
   gap: var(--l3-spacing-12);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-label-secondary-14);
   color: var(--l3-content-primary);
 }
 
@@ -1543,7 +1543,7 @@ legend.sectionLabel {
 .playSheetBody {
   margin: 0;
   padding: var(--l3-spacing-16);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -1582,7 +1582,7 @@ legend.sectionLabel {
   border-bottom: 1px solid var(--l3-border-light);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
 }
 
 .themeCanvas {
@@ -1606,7 +1606,7 @@ legend.sectionLabel {
 
 .guideline > h3 {
   margin: 0 0 var(--l3-spacing-08);
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
 }
 
 .guidelinePair {
@@ -1645,12 +1645,12 @@ legend.sectionLabel {
   gap: var(--l3-spacing-02);
   padding: var(--l3-spacing-12);
   border-top: var(--l3-spacing-04) solid var(--guide-accent);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
 .guidelineCard figcaption strong {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   color: var(--guide-accent-text);
 }
 
@@ -1691,7 +1691,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-12);
   background: var(--l3-surface-default);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1731,7 +1731,7 @@ legend.sectionLabel {
 }
 
 .updatesList strong {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-primary);
 }
 
@@ -1744,7 +1744,7 @@ legend.sectionLabel {
 
 .updatesAll {
   flex: none;
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-accent-discover-default);
 }
 
@@ -1772,20 +1772,20 @@ legend.sectionLabel {
 
 .heroEyebrow {
   margin: 0;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-secondary);
 }
 
 .heroTitle {
   max-width: 22ch;
   margin: var(--l3-spacing-08) 0 0;
-  font: var(--l3-text-extrabold-32);
+  font: var(--l3-text-heading-primary-32);
 }
 
 .heroLede {
   max-width: 60ch;
   margin: var(--l3-spacing-12) 0 0;
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-description-16);
   color: var(--l3-content-secondary);
 }
 
@@ -1850,7 +1850,7 @@ legend.sectionLabel {
   order: 1;
   margin: 0;
   overflow: hidden;
-  font: var(--l3-text-display-20);
+  font: var(--l3-text-heading-primary-20);
   color: var(--l3-content-primary);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1869,7 +1869,7 @@ legend.sectionLabel {
   }
 
   .stat dd {
-    font: var(--l3-text-display-16);
+    font: var(--l3-text-heading-primary-16);
   }
 }
 
@@ -1942,7 +1942,7 @@ legend.sectionLabel {
 }
 
 .cardMetaSm {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1959,12 +1959,12 @@ legend.sectionLabel {
 }
 
 .sortButton {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   color: var(--l3-content-primary);
 }
 
 .filterLink {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-accent-discover-default);
 }
 
@@ -1976,11 +1976,11 @@ legend.sectionLabel {
 }
 
 .cardTitle {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
 }
 
 .cardGroup {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -2007,11 +2007,11 @@ legend.sectionLabel {
   gap: var(--l3-spacing-04) var(--l3-spacing-12);
   padding: var(--l3-spacing-12) 0;
   border-bottom: 1px solid var(--l3-border-light);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
 }
 
 .whatsNew a {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   color: var(--l3-content-primary);
 }
 
@@ -2025,7 +2025,7 @@ legend.sectionLabel {
   }
 
   .heroTitle {
-    font: var(--l3-text-extrabold-24);
+    font: var(--l3-text-heading-primary-24);
   }
 }
 
@@ -2108,7 +2108,7 @@ legend.sectionLabel {
 
 .releaseHeader h3 {
   margin: 0;
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-primary-16);
 }
 
 .release[data-state='past'] .releaseHeader h3 {
@@ -2117,12 +2117,12 @@ legend.sectionLabel {
 
 .releaseMeta {
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
 }
 
 .releaseSummary {
   margin: var(--l3-spacing-04) 0 var(--l3-spacing-08);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-primary);
 }
 
@@ -2139,7 +2139,7 @@ legend.sectionLabel {
   display: flex;
   align-items: baseline;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -2200,22 +2200,22 @@ legend.sectionLabel {
 }
 
 .cardMeta {
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
 .cardTitle {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   color: var(--l3-content-primary);
 }
 
 .cardValue {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   color: var(--l3-content-primary);
 }
 
 .cardValueLg {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   color: var(--l3-content-primary);
 }
 
@@ -2248,7 +2248,7 @@ legend.sectionLabel {
 }
 
 .tpslTitle {
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
   color: var(--l3-content-primary);
 }
 
@@ -2261,7 +2261,7 @@ legend.sectionLabel {
   padding: 0;
   border: 0;
   background: none;
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-accent-discover-default);
   cursor: pointer;
   touch-action: manipulation;
@@ -2286,7 +2286,7 @@ legend.sectionLabel {
 
 .tpslTrail .tpslSelect {
   margin-left: auto;
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
 }
 
 /* Figma inner panel: surface/secondary, 8 · 12 padding, rows 12 apart. */
@@ -2308,7 +2308,7 @@ legend.sectionLabel {
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-secondary);
 }
 
@@ -2325,7 +2325,7 @@ legend.sectionLabel {
 
 .tpslValue {
   min-width: var(--l3-size-48);
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   color: var(--l3-content-primary);
   text-align: center;
   font-variant-numeric: tabular-nums;
@@ -2349,12 +2349,12 @@ legend.sectionLabel {
 
 .tpslTarget {
   margin: 0;
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-secondary);
 }
 
 .tpslTarget strong {
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
 }
 
 .tpslUp {
@@ -2376,7 +2376,7 @@ legend.sectionLabel {
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
   color: var(--l3-content-primary);
   cursor: pointer;
 }
@@ -2422,12 +2422,12 @@ legend.sectionLabel {
 }
 
 .pagerHint {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
 .pagerTitle {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

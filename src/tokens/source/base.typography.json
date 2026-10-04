@@ -1,226 +1,259 @@
 {
+  "$description": "Figma \"🅰️ Typography\" → L3/typography/base/*. Role styles (text-styles.json) reference these.",
   "font": {
     "family": {
       "manrope": {
         "$type": "fontFamily",
-        "$value": "Manrope"
+        "$value": "Manrope",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/family-manrope"
+        }
       }
     },
     "weight": {
-      "regular": {
+      "extrabold": {
         "$type": "fontWeight",
-        "$value": 400,
+        "$value": 800,
         "$extensions": {
-          "l3.figmaValue": "regular"
-        }
-      },
-      "medium": {
-        "$type": "fontWeight",
-        "$value": 500,
-        "$extensions": {
-          "l3.figmaValue": "medium"
-        }
-      },
-      "semibold": {
-        "$type": "fontWeight",
-        "$value": 600,
-        "$extensions": {
-          "l3.figmaValue": "semibold"
+          "l3.figmaVariable": "L3/typography/base/weight/extrabold"
         }
       },
       "bold": {
         "$type": "fontWeight",
         "$value": 700,
         "$extensions": {
-          "l3.figmaValue": "bold"
+          "l3.figmaVariable": "L3/typography/base/weight/bold"
         }
       },
-      "extrabold": {
+      "semibold": {
         "$type": "fontWeight",
-        "$value": 800,
+        "$value": 600,
         "$extensions": {
-          "l3.figmaValue": "extrabold"
+          "l3.figmaVariable": "L3/typography/base/weight/semibold"
+        }
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/weight/medium"
         }
       }
     },
     "size": {
-      "regular": {
-        "50": {
-          "$type": "dimension",
-          "$value": "10px"
-        },
-        "100": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "200": {
-          "$type": "dimension",
-          "$value": "14px"
-        },
-        "300": {
-          "$type": "dimension",
-          "$value": "16px"
-        },
-        "400": {
-          "$type": "dimension",
-          "$value": "18px"
-        },
-        "500": {
-          "$type": "dimension",
-          "$value": "20px"
+      "50": {
+        "$type": "dimension",
+        "$value": "10px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/50"
         }
       },
-      "medium": {
-        "50": {
-          "$type": "dimension",
-          "$value": "10px"
-        },
-        "100": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "200": {
-          "$type": "dimension",
-          "$value": "14px"
-        },
-        "300": {
-          "$type": "dimension",
-          "$value": "16px"
-        },
-        "400": {
-          "$type": "dimension",
-          "$value": "18px"
-        },
-        "500": {
-          "$type": "dimension",
-          "$value": "20px"
+      "100": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/100"
         }
       },
-      "semibold": {
-        "50": {
-          "$type": "dimension",
-          "$value": "10px"
-        },
-        "100": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "200": {
-          "$type": "dimension",
-          "$value": "14px"
-        },
-        "300": {
-          "$type": "dimension",
-          "$value": "16px"
-        },
-        "400": {
-          "$type": "dimension",
-          "$value": "18px"
-        },
-        "500": {
-          "$type": "dimension",
-          "$value": "20px"
-        },
-        "600": {
-          "$type": "dimension",
-          "$value": "24px"
-        },
-        "700": {
-          "$type": "dimension",
-          "$value": "28px"
-        },
-        "800": {
-          "$type": "dimension",
-          "$value": "32px"
-        },
-        "900": {
-          "$type": "dimension",
-          "$value": "36px"
+      "200": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/200"
         }
       },
-      "bold": {
-        "50": {
-          "$type": "dimension",
-          "$value": "10px"
-        },
-        "100": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "200": {
-          "$type": "dimension",
-          "$value": "14px"
-        },
-        "300": {
-          "$type": "dimension",
-          "$value": "16px"
-        },
-        "400": {
-          "$type": "dimension",
-          "$value": "18px"
-        },
-        "500": {
-          "$type": "dimension",
-          "$value": "20px"
-        },
-        "600": {
-          "$type": "dimension",
-          "$value": "24px"
-        },
-        "700": {
-          "$type": "dimension",
-          "$value": "28px"
-        },
-        "800": {
-          "$type": "dimension",
-          "$value": "32px"
-        },
-        "900": {
-          "$type": "dimension",
-          "$value": "36px"
+      "300": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/300"
         }
       },
-      "extrabold": {
-        "50": {
-          "$type": "dimension",
-          "$value": "10px"
-        },
-        "100": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "200": {
-          "$type": "dimension",
-          "$value": "14px"
-        },
-        "300": {
-          "$type": "dimension",
-          "$value": "16px"
-        },
-        "400": {
-          "$type": "dimension",
-          "$value": "18px"
-        },
-        "500": {
-          "$type": "dimension",
-          "$value": "20px"
-        },
-        "600": {
-          "$type": "dimension",
-          "$value": "24px"
-        },
-        "700": {
-          "$type": "dimension",
-          "$value": "28px"
-        },
-        "800": {
-          "$type": "dimension",
-          "$value": "32px"
-        },
-        "900": {
-          "$type": "dimension",
-          "$value": "36px"
+      "400": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/400"
         }
+      },
+      "500": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/500"
+        }
+      },
+      "600": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/600"
+        }
+      },
+      "700": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/700"
+        }
+      },
+      "800": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/800"
+        }
+      },
+      "900": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$extensions": {
+          "l3.figmaVariable": "L3/typography/base/size/900"
+        }
+      }
+    }
+  },
+  "line-height": {
+    "50": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/50"
+      }
+    },
+    "100": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/100"
+      }
+    },
+    "200": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/200"
+      }
+    },
+    "300": {
+      "$type": "dimension",
+      "$value": "22px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/300"
+      }
+    },
+    "400": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/400"
+      }
+    },
+    "500": {
+      "$type": "dimension",
+      "$value": "26px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/500"
+      }
+    },
+    "600": {
+      "$type": "dimension",
+      "$value": "30px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/600"
+      }
+    },
+    "700": {
+      "$type": "dimension",
+      "$value": "36px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/700"
+      }
+    },
+    "800": {
+      "$type": "dimension",
+      "$value": "42px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/800"
+      }
+    },
+    "900": {
+      "$type": "dimension",
+      "$value": "46px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/line-height/900"
+      }
+    }
+  },
+  "paragraph-spacing": {
+    "00": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/00"
+      }
+    },
+    "02": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/02"
+      }
+    },
+    "04": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/04"
+      }
+    },
+    "06": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/06"
+      }
+    },
+    "08": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/08"
+      }
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/10"
+      }
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/12"
+      }
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/16"
+      }
+    },
+    "20": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/20"
+      }
+    },
+    "24": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/spacing/24"
       }
     }
   }

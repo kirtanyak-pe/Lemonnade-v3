@@ -67,7 +67,7 @@ export const pages: DocPage[] = [
     progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
-    description: 'Manrope in five roles — Display, Heading, Label (Primary · Secondary), Paragraph and Description — from the 34 Figma text styles. Each is a single font token.',
+    description: 'Manrope in three families from Figma — Heading (primary · secondary), Label (primary · secondary) and Description — 34 text styles, each a single font token.',
     content: <TypographyPage />,
   },
   {
@@ -154,7 +154,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4471:29225',
     source: 'src/components/Button',
     exports: ['Button'],
-    tokens: ['component/button/*', 'state-layer/*', 'text-bold-16 · 14', 'text-semibold-12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
+    tokens: ['component/button/*', 'state-layer/*', 'text-heading-secondary-14 · 16', 'text-label-primary-12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Order ticket using Buy and Sell buttons">
@@ -293,7 +293,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66091',
     source: 'src/components/TextField',
     exports: ['TextField'],
-    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-medium-12 · 14', 'text-semibold-12', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
+    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-label-primary-12', 'text-label-secondary-12 · 14', 'text-description-12', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
     overview: (
       <>
         <PhoneFrame label="Buy order form with quantity, limit price, note and a disabled exchange field">
@@ -365,7 +365,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65938',
     source: 'src/components/Tabs',
     exports: ['Tabs', 'Tab'],
-    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'text-semibold-10 · 12 · 14', 'text-extrabold-12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
+    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'text-label-primary-08 · 10 · 12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Portfolio screen with underline section tabs and pill filters">
@@ -384,8 +384,8 @@ import { msWallet, msWalletFill } from './icons/material'
           </ul>
         </section>
         <section className={styles.section}>
-          <h2>No layout shift</h2>
-          <p>Selected underline tabs switch to the extrabold style. Each tab reserves that bolder width up front, so neighbouring tabs don't move when the selection changes.</p>
+          <h2>Same label, selected or not</h2>
+          <p>Every tab label uses Label / primary (SemiBold) — 14 for md, 12 for sm underline tabs, 12 / 10 for pills. Selection shows through the text color and the indicator bar (or the pill fill), never a bolder weight, so tabs never shift when the selection changes.</p>
         </section>
       </>
     ),
@@ -417,7 +417,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65480',
     source: 'src/components/Actionbar',
     exports: ['Actionbar', 'ActionbarAction'],
-    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-extrabold-14', 'text-medium-12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
+    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-heading-primary-14', 'text-label-secondary-14', 'text-description-12', 'size/32 · 48', 'state-layer/*', 'radius/full'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an actionbar: back, title, search and watchlist actions, and tabs underneath">
@@ -455,7 +455,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:61961',
     source: 'src/components/BottomNavbar',
     exports: ['BottomNavbar', 'NavIcon', 'navIconNames'],
-    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-semibold-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
+    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-label-primary-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
     overview: (
       <>
         <PhoneFrame label="App home screen with the bottom navbar: tap Mutual Fund or F&O to open their sub-navs, and Home to come back">
@@ -546,7 +546,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:63932',
     source: 'src/components/BottomSheet',
     exports: ['BottomSheet', 'BottomSheetHeader', 'BottomSheetSurface'],
-    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-extrabold-18 · 20', 'text-semibold-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
+    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-heading-primary-18 · 20', 'text-label-primary-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Stock screen that opens an order bottom sheet, a result sheet and a top sheet">
@@ -601,7 +601,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65562',
     source: 'src/components/Aerobar',
     exports: ['Aerobar'],
-    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-semibold-14', 'text-medium-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
+    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-label-primary-14', 'text-description-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an inline warning aerobar and floating success or danger toasts">
@@ -648,7 +648,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66488',
     source: 'src/components/EmptyState',
     exports: ['EmptyState', 'NoResultsIllustration'],
-    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-extrabold-16', 'text-semibold-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
+    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-heading-primary-16', 'text-label-primary-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
     overview: (
       <>
         <PhoneFrame label="Stock search with no matches: the empty state with a Clear button">
@@ -687,7 +687,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65400',
     source: 'src/components/ListCell',
     exports: ['ListCell'],
-    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-semibold-14 · 16', 'text-medium-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-label-primary-14 · 16', 'text-description-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
     overview: (
       <>
         <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
@@ -725,7 +725,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4464:27218',
     source: 'src/components/Tag',
     exports: ['Tag'],
-    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-semibold-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
+    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-label-primary-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
     overview: (
       <>
         <PhoneFrame label="Watchlist using tags for exchange, segment and price change">

@@ -23,8 +23,10 @@ export function Mini({ children }: { children: ReactNode }) {
 /**
  * `showPreviews={false}` hides every leaf's live example, leaving just the name and note.
  * `controls` sit on the left of the toolbar row, in line with Expand all / Collapse all.
+ * `inlineNotes` puts each leaf's note on the right of its label (one row) instead of under it — for short notes.
+ * `largeText` sets every label and note in the tree to at least 14px.
  */
-export function ComponentTree({ spec, showPreviews = true, controls }: { spec: ComponentTreeSpec; showPreviews?: boolean; controls?: ReactNode }) {
+export function ComponentTree({ spec, showPreviews = true, controls, inlineNotes = false, largeText = false }: { spec: ComponentTreeSpec; showPreviews?: boolean; controls?: ReactNode; inlineNotes?: boolean; largeText?: boolean }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [paths, setPaths] = useState<{ d: string; from: string; to: string }[]>([])
   const [size, setSize] = useState({ w: 0, h: 0 })
@@ -112,7 +114,7 @@ export function ComponentTree({ spec, showPreviews = true, controls }: { spec: C
     <li key={l.id}>
       <div className={styles.leaf} {...hover(l.id)} aria-label={`${l.label}${l.note ? ': ' + l.note : ''}`}>
         {showPreviews && <div className={styles.preview} inert>{l.preview}</div>}
-        <div className={styles.leafText}>
+        <div className={styles.leafText} data-inline={inlineNotes || undefined}>
           <code className={styles.leafLabel}>{l.label}</code>
           {l.note && <span className={styles.leafNote}>{l.note}</span>}
         </div>
@@ -121,14 +123,14 @@ export function ComponentTree({ spec, showPreviews = true, controls }: { spec: C
   )
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} data-large-text={largeText || undefined}>
       {(controls || groupIds.length > 0) && (
         <div className={styles.toolbar}>
           {controls && <div className={styles.controls}>{controls}</div>}
           {groupIds.length > 0 && (
             <Button
               variant="tertiary"
-              size="sm"
+              size={largeText ? 'md' : 'sm'}
               iconLeft={<Icon icon={allCollapsed ? msUnfoldMore : msUnfoldLess} size={16} />}
               onClick={toggleAll}
             >

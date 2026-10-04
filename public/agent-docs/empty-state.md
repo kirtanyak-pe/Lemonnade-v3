@@ -5,7 +5,7 @@
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66488
 - Source: `src/components/EmptyState`
 - Also called: No results, zero state, blank slate, nothing found
@@ -64,11 +64,12 @@ Empty state — Nothing to show, or no results
 - `content/primary · secondary`
 - `surface/accent/brand-default (illustration)`
 - `static/black · white (illustration)`
-- `text-extrabold-16`
-- `text-semibold-14`
+- `text-heading-primary-16`
+- `text-label-primary-14`
 - `spacing/04 · 16 · 24`
 - `size/illustration (local, 120px)`
 
 ## Recent changes
 
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.0.0** (2026-09-26) First release: Illustration, heading, description and an action slot. No-results illustration with every fill bound to a theme token.

@@ -8,7 +8,7 @@ import { themes, defaultProduct, defaultMode, productModes } from '../src/tokens
 const root = fileURLToPath(new URL('../src/tokens/', import.meta.url))
 const OPACITY_EXT = 'l3.opacity'
 
-type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string }
+type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string; paragraphSpacing?: string }
 type ShadowValue = { color: string; offsetX: string; offsetY: string; blur: string; spread: string }
 type Leaf = { $type: string; $value: string | number | TypographyValue | ShadowValue; $description?: string; $extensions?: Record<string, string> }
 type Tree = { [key: string]: Tree | Leaf }
@@ -106,30 +106,27 @@ const fontRef = (value: string) => {
   if (!fontTokens.has(target)) throw new Error(`typography: unknown ${target}`)
   return `var(${varName(target)})`
 }
+const fontValue = (value: string) => String(fontTokens.get(refPath(value))?.$value)
 
+// Base values: --l3-font-family-manrope, --l3-font-weight-bold, --l3-font-size-200, --l3-line-height-200, --l3-paragraph-spacing-08.
 const fontLines = [...fontTokens].map(([path, leaf]) =>
   `  ${varName(path)}: ${leaf.$type === 'fontFamily' ? `'${leaf.$value}', sans-serif` : leaf.$value};`)
 
+// Role styles (Figma text styles): text.heading.primary.14 → --l3-text-heading-primary-14 (+ -size, -weight, …).
 const styleLines = [...textStyles].flatMap(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
   const name = varName(path)
-  const [family, weight, size] = [fontRef(v.fontFamily), fontRef(v.fontWeight), fontRef(v.fontSize)]
+  const [family, weight, size, lineHeight] = [fontRef(v.fontFamily), fontRef(v.fontWeight), fontRef(v.fontSize), fontRef(v.lineHeight)]
   return [
     `  /* ${leaf.$extensions?.['l3.figmaStyle']} */`,
     `  ${name}-weight: ${weight};`,
     `  ${name}-size: ${size};`,
-    `  ${name}-line-height: ${v.lineHeight};`,
+    `  ${name}-line-height: ${lineHeight};`,
     `  ${name}-letter-spacing: ${v.letterSpacing};`,
-    `  ${name}: ${weight} ${size}/${v.lineHeight} ${family};`,
+    `  ${name}-paragraph-spacing: ${v.paragraphSpacing ? fontRef(v.paragraphSpacing) : '0px'};`,
+    `  ${name}: ${weight} ${size}/${lineHeight} ${family};`,
   ]
 })
-
-// Figma role names (Display · Heading · Label · Paragraph) as aliases of the weight-named styles above.
-// A style lists its roles in $extensions["l3.roles"], e.g. ["display/14", "heading/section"].
-const rolesOf = (leaf: { $extensions?: Record<string, unknown> }) => (leaf.$extensions?.['l3.roles'] as string[] | undefined) ?? []
-const textRoles = [...textStyles].flatMap(([path, leaf]) =>
-  rolesOf(leaf).map((role) => ({ role, cssVar: `--l3-text-${role.replace('/', '-')}`, alias: varName(path) })))
-const roleLines = textRoles.map(({ cssVar, alias }) => `  ${cssVar}: var(${alias});`)
 
 // ---- effects.css ----------------------------------------------------------
 const shadows = flatten(readJson('source/effect-styles.json'))
@@ -170,32 +167,31 @@ export const numberVars = {
 ${[...numbers.keys()].map((p) => `  '${figmaName(p)}': '${varName(p)}',`).join('\n')}
 } as const
 
-/** Figma text style → CSS custom property (use as \`font: var(--l3-text-bold-16)\`). */
+/**
+ * Figma text styles (🔷 L3/…) → CSS custom property. Use as \`font: var(--l3-text-label-primary-12)\`.
+ * role: heading-primary · heading-secondary · label-primary · label-secondary · description.
+ */
 export const textStyles = [
 ${[...textStyles].map(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
-  const [, weight, size] = path.split('.')
-  const legacy = leaf.$extensions?.['l3.legacy'] ? `, legacy: ${JSON.stringify(leaf.$extensions['l3.legacy'])}` : ''
-  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${Number(size)}, lineHeight: ${parseFloat(v.lineHeight)}, roles: ${JSON.stringify(rolesOf(leaf))}${legacy} },`
+  const parts = path.split('.').slice(1)
+  const size = parts.pop()!
+  const local = leaf.$extensions?.['l3.local'] ? `, local: ${JSON.stringify(leaf.$extensions['l3.local'])}` : ''
+  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', role: '${parts.join('-')}', size: '${size}', weight: ${fontValue(v.fontWeight)}, fontSize: ${parseFloat(fontValue(v.fontSize))}, lineHeight: ${parseFloat(fontValue(v.lineHeight))}, paragraphSpacing: ${v.paragraphSpacing ? parseFloat(fontValue(v.paragraphSpacing)) : 0}${local} },`
 }).join('\n')}
-] as const
-
-/** Figma role name → CSS custom property (an alias of a weight-named style). Use as \`font: var(--l3-text-label-12)\`. */
-export const textRoles = [
-${textRoles.map(({ role, cssVar, alias }) => `  { role: '${role}', cssVar: '${cssVar}', alias: '${alias}' },`).join('\n')}
 ] as const
 
 export type ThemeToken = keyof typeof themeTokenVars
 export type BaseColor = keyof typeof baseColorVars
 export type NumberToken = keyof typeof numberVars
 export type TextStyle = (typeof textStyles)[number]['cssVar']
-export type TextRole = (typeof textRoles)[number]['cssVar']
+export type TextRole = (typeof textStyles)[number]['role']
 `,
 )
-writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n\n  /* Figma roles — aliases of the styles above */\n${roleLines.join('\n')}\n}\n`)
+writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n}\n`)
 writeFileSync(
   root + 'generated/effects.css',
   `${header}:root {\n${shadowLines.join('\n')}\n\n  /* Motion — local tokens, not in Figma yet (source/local.motion.json) */\n${motionLines.join('\n')}\n}\n`,
 )
 
-console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles (${textRoles.length} role aliases), ${shadows.size} shadows, ${motion.size} motion (local)`)
+console.log(`tokens: ${base.size} base colors, ${opacity.size} opacity steps, ${numbers.size} number tokens, ${tokenPaths.length} theme tokens × ${themes.length} themes, ${fontTokens.size} font tokens, ${textStyles.size} text styles, ${shadows.size} shadows, ${motion.size} motion (local)`)

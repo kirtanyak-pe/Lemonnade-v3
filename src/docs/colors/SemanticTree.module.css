@@ -157,17 +157,17 @@
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-extrabold-14);
+  font: var(--l3-text-heading-primary-14);
   color: var(--l3-content-primary);
 }
 
 .groupNote {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-description-10);
   color: var(--l3-content-secondary);
 }
 
 .aa {
-  font: var(--l3-text-extrabold-14);
+  font: var(--l3-text-heading-primary-14);
 }
 
 .group:focus-visible,
@@ -243,20 +243,20 @@
 }
 
 .leafName {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
   overflow-wrap: anywhere;
 }
 
 .leafRole {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-label-secondary-10);
   color: var(--l3-content-secondary);
 }
 
 .empty {
   margin: 0;
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-tertiary);
 }
 

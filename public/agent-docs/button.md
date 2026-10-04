@@ -5,7 +5,7 @@
 - Group: Action
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.4.1
+- Version: 1.4.2
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29225
 - Source: `src/components/Button`
 - Also called: Action, call to action, CTA
@@ -246,8 +246,8 @@ Button — 7 variants · 3 sizes · 3 states
 
 - `component/button/*`
 - `state-layer/*`
-- `text-bold-16 · 14`
-- `text-semibold-12`
+- `text-heading-secondary-14 · 16`
+- `text-label-primary-12`
 - `size/control-sm · md · lg`
 - `radius/08 · 12`
 - `icon-size/16 · 20 · 24`
@@ -255,6 +255,6 @@ Button — 7 variants · 3 sizes · 3 states
 
 ## Recent changes
 
+- **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
 - **1.4.0** (2026-09-30) Label & icon rule, usage rules: At least one of label / iconLeft / iconRight must show, and icon-only buttons have exactly one icon — enforced in TypeScript, with a runtime fallback (left icon wins). Usage rules in src/components/Button/USAGE.md: secondary only next to a stronger button, tertiary when alone (View all), Large only in docks. ButtonGroup warns in development when a button isn’t size="lg".
-- **1.3.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.

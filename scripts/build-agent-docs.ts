@@ -29,7 +29,7 @@ const { pages, navGroups, figmaUrl, progressOf } = await load('/src/docs/pages.t
 const { guidelines } = await load('/src/docs/guidelineData.tsx')
 const { changelog } = await load('/src/docs/changelog.ts')
 const { componentTrees } = await load('/src/docs/trees/componentTrees.tsx')
-const { textStyles, textRoles, numberVars, themeTokenVars, themes } = await load('/src/tokens/index.ts')
+const { textStyles, numberVars, themeTokenVars, themes } = await load('/src/tokens/index.ts')
 await vite.close()
 
 // ---- React element tree → Markdown ------------------------------------------------------------
@@ -171,12 +171,12 @@ for (const p of pages as Page[]) {
   add('color-tokens', 'Color tokens', 'All semantic color tokens with values per theme.', lines.join('\n'), 'Foundations')
 }
 {
-  const lines = ['# Typography tokens', '', '> Manrope. Use one font shorthand token: `font: var(--l3-text-…)`. Prefer the role names.', '',
-    '## Roles (use these)', '', '| Role | CSS variable | Same as |', '|---|---|---|']
-  for (const r of textRoles as { role: string; cssVar: string; alias: string }[]) lines.push(`| ${r.role} | \`${r.cssVar}\` | \`${r.alias}\` |`)
-  lines.push('', '## Styles by weight', '', '| CSS variable | Size / line height | Figma style | Note |', '|---|---|---|---|')
-  for (const s of textStyles as { cssVar: string; fontSize: number; lineHeight: number; figmaName: string; legacy?: string }[]) lines.push(`| \`${s.cssVar}\` | ${s.fontSize}/${s.lineHeight} | ${s.figmaName} | ${s.legacy ? `Legacy — ${cell(s.legacy)}` : ''} |`)
-  add('typography-tokens', 'Typography tokens', 'Text roles (Display, Heading, Label, Paragraph, Description) and every text style.', lines.join('\n'), 'Foundations')
+  const lines = ['# Typography tokens', '', '> Manrope. Use one font shorthand token: `font: var(--l3-text-<role>-<size>)`, e.g. `var(--l3-text-label-primary-12)`. Never set font-size / weight / line-height on their own.', '',
+    'Roles: **heading-primary** (ExtraBold) · **heading-secondary** (Bold, plus `section`) · **label-primary** (SemiBold) · **label-secondary** (Medium) · **description** (Medium, with paragraph spacing). Each token also has `-size`, `-weight`, `-line-height`, `-letter-spacing` and `-paragraph-spacing` parts.', '',
+    '| CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |', '|---|---|---|---|---|']
+  for (const s of textStyles as { cssVar: string; figmaName: string; weight: number; fontSize: number; lineHeight: number; paragraphSpacing: number; local?: string }[])
+    lines.push(`| \`${s.cssVar}\` | ${s.figmaName}${s.local ? ' (local)' : ''} | ${s.weight} | ${s.fontSize}/${s.lineHeight} | ${s.paragraphSpacing} |`)
+  add('typography-tokens', 'Typography tokens', 'Every text style: Heading (primary, secondary), Label (primary, secondary) and Description.', lines.join('\n'), 'Foundations')
 }
 {
   const lines = ['# Spacing, radius & size tokens', '', '> Never use raw px (1px hairlines are the one exception).', '', '| Figma variable | CSS variable | Value |', '|---|---|---|']

@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.0
+- Version: 1.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
 - Source: `src/components/Actionbar`
 - Also called: App bar, top bar, navigation bar, header, toolbar
@@ -71,14 +71,15 @@ Actionbar — The top bar of a screen
 - `border/light · dark`
 - `content/primary · secondary · disabled`
 - `content/accent/discover (caret)`
-- `text-extrabold-14`
-- `text-medium-12 · 14`
+- `text-heading-primary-14`
+- `text-label-secondary-14`
+- `text-description-12`
 - `size/32 · 48`
 - `state-layer/*`
 - `radius/full`
 
 ## Recent changes
 
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **unreleased** (2026-09-28) Figma updated, code to follow: Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.
 - **1.1.0** (2026-09-29) Shadow on scroll: elevation-low when content scrolls under the bar: automatic with sticky, or via the new elevated prop. Rule: flat tabs at the top go in the bottom slot (docs demos updated).
-- **1.0.0** (2026-09-26) First release: Back button, title and description, up to two round icon actions. Search mode, a bottom slot for tabs or filters, and sticky positioning.

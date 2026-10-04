@@ -74,7 +74,7 @@
   --btn-padding-inline: var(--l3-spacing-12);
   --btn-gap: var(--l3-spacing-08);
   --btn-radius: var(--l3-radius-12);
-  --btn-font: var(--l3-text-bold-16); /* L3/bold/16 */
+  --btn-font: var(--l3-text-heading-secondary-16); /* 🔷 L3/Heading/secondary/16 */
   --btn-label-padding: var(--l3-spacing-04);
   --btn-icon-size: var(--l3-icon-size-24);
   --btn-loader-size: var(--l3-icon-size-20);
@@ -86,7 +86,7 @@
   --btn-padding-inline: var(--l3-spacing-10);
   --btn-gap: var(--l3-spacing-04);
   --btn-radius: var(--l3-radius-12);
-  --btn-font: var(--l3-text-bold-14); /* L3/bold/14 */
+  --btn-font: var(--l3-text-heading-secondary-14); /* 🔷 L3/Heading/secondary/14 */
   --btn-label-padding: var(--l3-spacing-04);
   --btn-icon-size: var(--l3-icon-size-20);
   --btn-loader-size: var(--l3-icon-size-20);
@@ -98,7 +98,7 @@
   --btn-padding-inline: var(--l3-spacing-08);
   --btn-gap: var(--l3-spacing-02);
   --btn-radius: var(--l3-radius-08);
-  --btn-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  --btn-font: var(--l3-text-label-primary-12); /* 🔷 L3/Label/primary-sb/12 */
   --btn-label-padding: var(--l3-spacing-02);
   --btn-icon-size: var(--l3-icon-size-16);
   --btn-loader-size: var(--l3-icon-size-16);

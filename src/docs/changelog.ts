@@ -29,6 +29,18 @@ const iconsMigration = (): Release['changes'][number] => ({
 })
 
 export const changelog: Record<string, Release[]> = {
+  typography: [
+    {
+      version: '2.0.0', date: '2026-10-04',
+      summary: 'Typography from Figma roles',
+      changes: [
+        { kind: 'figma', text: 'Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles.' },
+        { kind: 'changed', text: 'Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing).' },
+        { kind: 'changed', text: 'Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.' },
+      ],
+    },
+  ],
+
   colors: [
     {
       version: '1.1.0', date: '2026-10-01',
@@ -106,6 +118,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   button: [
+    {
+      version: '1.4.2', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
     {
       version: '1.4.1', date: '2026-10-01',
       summary: 'CS PRO primary is gold',
@@ -207,6 +226,13 @@ export const changelog: Record<string, Release[]> = {
 
   'text-field': [
     {
+      version: '1.3.0', date: '2026-10-04',
+      summary: 'Typography from Figma',
+      changes: [
+        { kind: 'figma', text: 'Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.' },
+      ],
+    },
+    {
       version: '1.2.0', date: '2026-09-26', commit: '2998418',
       summary: 'Material Symbols icons',
       changes: [iconsMigration()],
@@ -256,6 +282,14 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   tabs: [
+    {
+      version: '1.6.0', date: '2026-10-04',
+      summary: 'Typography from Figma',
+      changes: [
+        { kind: 'figma', text: 'Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb).' },
+        { kind: 'changed', text: 'Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).' },
+      ],
+    },
     {
       version: '1.5.0', date: '2026-10-02',
       summary: 'Hug or fill width',
@@ -312,6 +346,13 @@ export const changelog: Record<string, Release[]> = {
 
   actionbar: [
     {
+      version: '1.1.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
+    {
       version: 'unreleased', date: '2026-09-28',
       summary: 'Figma updated, code to follow',
       changes: [{ kind: 'figma', text: 'Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.' }],
@@ -336,6 +377,13 @@ export const changelog: Record<string, Release[]> = {
 
   'bottom-navbar': [
     {
+      version: '1.0.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-26', commit: 'da7f351',
       summary: 'First release',
       changes: [
@@ -347,6 +395,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'bottom-sheet': [
+    {
+      version: '2.2.0', date: '2026-10-04',
+      summary: 'Typography from Figma',
+      changes: [
+        { kind: 'figma', text: 'Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.' },
+      ],
+    },
     {
       version: '2.1.1', date: '2026-10-01',
       summary: 'Overlay token',
@@ -409,6 +464,13 @@ export const changelog: Record<string, Release[]> = {
 
   aerobar: [
     {
+      version: '1.3.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-09-28', commit: '1718d5d',
       summary: 'Figma color update',
       changes: [
@@ -443,6 +505,13 @@ export const changelog: Record<string, Release[]> = {
 
   'empty-state': [
     {
+      version: '1.0.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-26', commit: '82cf523',
       summary: 'First release',
       changes: [
@@ -453,6 +522,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'list-cell': [
+    {
+      version: '1.1.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
     {
       version: '1.1.0', date: '2026-09-26', commit: '2c82c18',
       summary: 'Accessibility pass',
@@ -469,6 +545,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   tag: [
+    {
+      version: '2.1.1', date: '2026-10-04',
+      summary: 'Typography tokens renamed',
+      changes: [
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+      ],
+    },
     {
       version: '2.1.0', date: '2026-10-02',
       summary: 'White text on solid success and error',

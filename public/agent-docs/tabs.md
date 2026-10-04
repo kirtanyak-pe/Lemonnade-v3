@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65938
 - Source: `src/components/Tabs`
 - Also called: Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher
@@ -28,9 +28,9 @@ import { Tabs, Tab } from './components/Tabs' // path relative to src/
 - **pill** (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.
 - **pill-group** (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.
 
-### No layout shift
+### Same label, selected or not
 
-Selected underline tabs switch to the extrabold style. Each tab reserves that bolder width up front, so neighbouring tabs don't move when the selection changes.
+Every tab label uses Label / primary (SemiBold) — 14 for md, 12 for sm underline tabs, 12 / 10 for pills. Selection shows through the text color and the indicator bar (or the pill fill), never a bolder weight, so tabs never shift when the selection changes.
 
 ## Do / Don't
 
@@ -84,8 +84,7 @@ Tabs — Switch sections, filter or switch views
 - `surface/primary · secondary · inverted`
 - `border/light · dark`
 - `state-layer/*`
-- `text-semibold-10 · 12 · 14`
-- `text-extrabold-12 · 14`
+- `text-label-primary-08 · 10 · 12 · 14`
 - `radius/12 · full`
 - `size/24 · 32 · 40`
 - `spacing/36`
@@ -93,6 +92,6 @@ Tabs — Switch sections, filter or switch views
 
 ## Recent changes
 
+- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
 - **1.5.0** (2026-10-02) Hug or fill width: width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
 - **1.4.0** (2026-10-02) Pill group: Figma “L3: Tabs” is now “L3: Tabs group” (Type: Flat tabs · Pill tabs · Pill group); base tab isChip is now isPill. appearance="pill-group": tertiary pills in a surface/secondary track for switching views (Tree / List). Selected pill is a black fill; the rest blend into the track. The separate SegmentedControl component is gone — Figma merged it into the Tabs group as Pill group. Use <Tabs appearance="pill-group"> instead.
-- **1.3.0** (2026-10-02) Tertiary chips: Figma Type is now Primary · Secondary · Tertiary, each with a selected and an unselected look (Ghost removed, typos fixed). emphasis="tertiary": selected black fill, unselected subtle fill (surface/secondary) with no border or elevation. Switching between views moved to the new Segmented control; pill tabs are for filtering.

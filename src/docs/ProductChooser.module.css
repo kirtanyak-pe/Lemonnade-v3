@@ -24,12 +24,12 @@
 
 .title {
   margin: 0;
-  font: var(--l3-text-extrabold-24);
+  font: var(--l3-text-heading-primary-24);
 }
 
 .lede {
   margin: 0;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -124,11 +124,11 @@
 }
 
 .name {
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-primary-16);
 }
 
 .note {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 

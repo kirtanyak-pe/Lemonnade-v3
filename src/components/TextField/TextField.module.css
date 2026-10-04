@@ -31,12 +31,12 @@
 .label {
   display: flex;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  font: var(--l3-text-description-12); /* 🔷 L3/Description - M/12 */
   color: var(--l3-content-secondary);
 }
 
 .required {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-accent-error-default);
 }
 
@@ -81,7 +81,7 @@
   background: transparent;
   color: var(--l3-content-primary);
   caret-color: var(--tf-caret);
-  font: var(--l3-text-medium-14); /* L3/Medium - Body/14 */
+  font: var(--l3-text-description-14); /* 🔷 L3/Description - M/14 */
 }
 
 .input::placeholder {
@@ -95,6 +95,7 @@
 }
 
 .field[data-multiline] .input {
+  font: var(--l3-text-description-12); /* 🔷 L3/Description - M/12 (text box) */
   min-height: calc(var(--l3-size-96) + var(--l3-spacing-06));
   padding: var(--l3-spacing-12);
   resize: vertical;
@@ -134,7 +135,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  font: var(--l3-text-description-12); /* 🔷 L3/Description - M/12 */
   color: var(--tf-message);
 }
 

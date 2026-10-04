@@ -5,7 +5,7 @@
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.1.0
+- Version: 2.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4464-27218
 - Source: `src/components/Tag`
 - Also called: Badge, chip, label, pill
@@ -88,12 +88,12 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - `surface/secondary`
 - `static/black`
 - `static/white`
-- `text-semibold-10 · 12 · 14`
+- `text-label-primary-10 · 12 · 14`
 - `radius/04`
 - `size/16 · 20 · 24`
 
 ## Recent changes
 
+- **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).
 - **2.0.0** (2026-09-30) Figma color set: profit, loss, zing, processing: Colors follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing. profit / loss use indicator/up·down tokens (white text on solid); zing uses the zing accent. Renamed green → success, red → error, yellow → warning, orange → processing. The old names still work (deprecated). Neutral Secondary / Tertiary background: surface/tertiary → surface/secondary. hideLabel (Figma 👁️ Label): icon-only square tag; the label stays as screen-reader text. Docs demos: price changes and Buy/Sell sides use profit / loss, order status uses processing / error.
-- **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.

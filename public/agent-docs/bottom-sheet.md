@@ -5,7 +5,7 @@
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.1.1
+- Version: 2.2.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -222,8 +222,8 @@ Bottom sheet — A modal panel over the screen
 - `surface/primary`
 - `border/light · intense`
 - `content/primary · secondary`
-- `text-extrabold-18 · 20`
-- `text-semibold-12 · 14`
+- `text-heading-primary-18 · 20`
+- `text-label-primary-12 · 14`
 - `radius/24 · full`
 - `shadow/elevation-high`
 - `static/black + opacity/80 (overlay)`
@@ -232,6 +232,6 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
 - **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.
 - **2.1.0** (2026-09-30) Stacking rule: back button only on a second sheet: Rule: at most 2 sheets. The first sheet over a screen has no back button; a second sheet on top of it does. A third warns in development. BottomSheetHeader hides onBack on the first sheet inside a modal BottomSheet (development warning). Demo: the Buy sheet’s ⓘ opens an “Order types” sheet on top, with back. Playground back button is off by default.
-- **2.0.0** (2026-09-30) Invisible closing, all Figma properties: Removed the drag handle (dragHandle prop) and the header close button (BottomSheetHeader onClose). Sheets close by tapping the backdrop or dragging. The whole sheet drags to dismiss: header and footer always, the content once scrolled to the top. Top sheets drag up. A visually hidden Close button (closeLabel) for screen-reader and keyboard users; Esc still closes. 👁️ Content Slot: leaving out children hides the content area and its padding. Playground use case: “Set Auto TP/SL” (Dev handoff 4292:34429) — interactive TP / SL cards, steppers, trail checkbox and a Save dock, built from L3 components. Playground covers every Figma property (isBottom, header, description, back, info, right slot, content bottom, H-Icon, header tag, content, buttons, utility). New USAGE.md.

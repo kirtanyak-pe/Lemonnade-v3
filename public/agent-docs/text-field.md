@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.2.0
+- Version: 1.3.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66091
 - Source: `src/components/TextField`
 - Also called: Text input, text field, textarea, form field
@@ -75,14 +75,15 @@ Input field — Single line or text box
 - `border/light · dark · accent/error`
 - `content/primary · secondary · tertiary · disabled`
 - `content/accent/error · success · discover`
-- `text-medium-12 · 14`
-- `text-semibold-12`
+- `text-label-primary-12`
+- `text-label-secondary-12 · 14`
+- `text-description-12`
 - `radius/12`
 - `shadow/elevation-low`
 - `icon-size/14 · 16`
 
 ## Recent changes
 
+- **1.3.0** (2026-10-04) Typography from Figma: Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.
 - **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.
 - **1.1.0** (2026-09-26) Accessibility pass: Error fields show focus by thickening the red border (visible focus). Helper and error messages are announced while typing.
-- **1.0.0** (2026-09-26) First release: Input field and multiline text box with label, helper text and required marker. Error and success states; character counter with an over-limit error.

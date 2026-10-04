@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { MaskIcon } from '../components/MaskIcon'
 import { msSearch } from '../icons/material'
-import { numberVars, textRoles, textStyles, themeTokenVars } from '../tokens'
+import { numberVars, textStyles, themeTokenVars } from '../tokens'
 import { pages } from './pages'
 import { tokenHref } from './tokenLinks'
 import { href } from './useHashRoute'
@@ -21,7 +21,6 @@ function buildIndex(): Entry[] {
     ...Object.entries(themeTokenVars),
     ...Object.entries(numberVars),
     ...textStyles.map((t) => [t.cssVar.replace('--l3-', ''), `${t.figmaName} · ${t.cssVar}`] as [string, string]),
-    ...textRoles.map((t) => [t.cssVar.replace('--l3-', ''), `${t.role} · alias of ${t.alias}`] as [string, string]),
   ]
   for (const [name, detail] of tokens) {
     const link = tokenHref(name)

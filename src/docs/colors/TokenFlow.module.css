@@ -23,7 +23,7 @@
 }
 
 .pickerLabel {
-  font: var(--l3-text-extrabold-14);
+  font: var(--l3-text-heading-primary-14);
   color: var(--l3-content-primary);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .pickerCount {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -70,7 +70,7 @@
 }
 
 .emptyNote {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-tertiary);
 }
 
@@ -128,7 +128,7 @@
 }
 
 .colLabel {
-  font: var(--l3-text-extrabold-12);
+  font: var(--l3-text-heading-secondary-12);
   text-transform: uppercase;
   color: var(--l3-content-accent-discover-default);
 }
@@ -204,14 +204,14 @@
 }
 
 .nodeLabel {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
   overflow-wrap: anywhere;
 }
 
 .nodeNote {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-description-10);
   color: var(--l3-content-secondary);
 }
 
@@ -238,7 +238,7 @@
 }
 
 .uiCaption {
-  font: var(--l3-text-medium-10);
+  font: var(--l3-text-description-10);
   color: var(--l3-content-secondary);
   text-align: center;
 }
@@ -255,7 +255,7 @@
 }
 
 .priceText {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-secondary-16);
   font-variant-numeric: tabular-nums;
   color: var(--l3-content-accent-indicator-up-default);
 }
@@ -264,7 +264,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-accent-success-default);
 }
 

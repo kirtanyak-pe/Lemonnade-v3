@@ -13,12 +13,12 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 ## Foundations
 
 - [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
-- [Typography](agent-docs/typography.md): Manrope in five roles — Display, Heading, Label (Primary · Secondary), Paragraph and Description — from the 34 Figma text styles. Each is a single font token.
+- [Typography](agent-docs/typography.md): Manrope in three families from Figma — Heading (primary · secondary), Label (primary · secondary) and Description — 34 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
 - [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
 - [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
-- [Typography tokens](agent-docs/typography-tokens.md): Text roles (Display, Heading, Label, Paragraph, Description) and every text style.
+- [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (primary, secondary), Label (primary, secondary) and Description.
 - [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
 
 ## Components · Action
@@ -492,28 +492,43 @@ Still waiting for the exact text from your notes on:
 
 ## 4. Typography
 
-**Facts (from code):**
+**Facts (from code and Figma "🅰️ Typography"):**
 - One font: **Manrope**, applied only through text tokens. Never set `font-family`.
-- Style text with a single shorthand token: `font: var(--l3-text-<weight>-<size>);`
-  Weights: `regular`, `medium`, `semibold`, `bold`, `extrabold`. Sizes: 10, 12, 14, 16, 18, 20 (and 24–36 for semibold, bold, extrabold).
-  Figma names: extrabold = *Heading*, semibold = *Label*, medium = *Body*.
-- Never set `font-size`, `font-weight` or `line-height` on their own.
-- What components use internally (don't override):
+- Style text with one shorthand token named after its Figma text style: `font: var(--l3-text-<role>-<size>);`
+  e.g. 🔷 L3/Label/primary-sb/12 → `--l3-text-label-primary-12`.
+- Never set `font-size`, `font-weight` or `line-height` on their own. Each style also has parts
+  (`-size`, `-weight`, `-line-height`, `-letter-spacing`, `-paragraph-spacing`), and base values are tokens
+  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-bold`, `--l3-paragraph-spacing-08`).
+
+| Family | Role (token) | Weight | Sizes | Use (draft) |
+|---|---|---|---|---|
+| Heading | `heading-primary` | ExtraBold | 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Screen / sheet titles, key numbers (prices, P&L, balances) |
+| Heading | `heading-secondary` | Bold | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Section and card titles |
+| Heading | `heading-secondary-section` | ExtraBold 14 | — | The standard section heading on a screen |
+| Label | `label-primary` | SemiBold | 10 · 12 · 14 · 16 · 18 | Text on and around controls: buttons, tabs, tags, list titles, field labels |
+| Label | `label-secondary` | Medium | 10 · 12 · 14 · 16 · 18 | Quieter UI text next to a primary label: input text, values, meta |
+| Description | `description` | Medium | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, captions, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
+
+- Label secondary and Description share values; pick by **what the text is** (UI label vs supporting sentence).
+- There is no Regular weight, no Paragraph role and no Display role anymore (Description replaced Paragraph;
+  Heading primary replaced Display). Selected tabs use the same Label style as unselected ones.
+- Local (not a Figma style): `label-primary-08` — SemiBold 8/10, chip tab sub label only.
+  <!-- PENDING: final usage rules per role and size -->
+
+**What components use internally (don't override):**
 
 | Component | Text tokens |
 |---|---|
-| Actionbar | title `extrabold-14`, description `medium-12`, search `medium-14` |
-| Aerobar | heading `semibold-14`, paragraph `medium-12` |
-| BottomNavbar | labels `semibold-10` |
-| BottomSheet | headings `extrabold-18` / `-20`, text `semibold-12` / `-14` |
-| Button | lg `bold-16`, md `bold-14`, sm `semibold-12` |
-| EmptyState | title `extrabold-16`, description `semibold-14` |
-| ListCell | label `semibold-14` / `-16`, description `medium-12` |
-| Tabs | labels `semibold-10`–`-14`, selected `extrabold-12` / `-14`, chip sub label `semibold-08` (local) |
-| Tag | `semibold-10` / `-12` / `-14` by size |
-| TextField | label `semibold-12`, input `medium-14`, helper `medium-12` |
-
-<!-- PENDING: typography roles for screen content (page title, section heading, card title, price, meta) -->
+| Actionbar | `heading-primary-14` · `label-secondary-14` · `description-12` |
+| Aerobar | `label-primary-14` · `description-12` |
+| BottomNavbar | `label-primary-10` |
+| BottomSheet | header sm: `heading-primary-16` + `description-12`; lg: `heading-secondary-20` + `label-secondary-14` |
+| Button | `heading-secondary-14` · `heading-secondary-16` · `label-primary-12` |
+| EmptyState | `heading-primary-16` · `label-primary-14` |
+| ListCell | `label-primary-14` · `label-primary-16` · `description-12` |
+| Tabs | `label-primary-08` · `label-primary-10` · `label-primary-12` · `label-primary-14` |
+| Tag | `label-primary-10` · `label-primary-12` · `label-primary-14` |
+| TextField | label `description-12`, input `description-14`, text box `description-12`, helper `description-12`, required mark `label-primary-12` |
 
 ---
 
@@ -748,10 +763,15 @@ There is **no skeleton or spinner component** yet.
 
 # Typography
 
-> Manrope in five roles — Display, Heading, Label (Primary · Secondary), Paragraph and Description — from the 34 Figma text styles. Each is a single font token.
+> Manrope in three families from Figma — Heading (primary · secondary), Label (primary · secondary) and Description — 34 text styles, each a single font token.
 
 - Group: Foundations
 - Lifecycle: wip
+- Version: 2.0.0
+
+## Recent changes
+
+- **2.0.0** (2026-10-04) Typography from Figma roles: Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles. Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing). Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.
 
 ---
 
@@ -1066,98 +1086,47 @@ Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light
 
 # Typography tokens
 
-> Manrope. Use one font shorthand token: `font: var(--l3-text-…)`. Prefer the role names.
+> Manrope. Use one font shorthand token: `font: var(--l3-text-<role>-<size>)`, e.g. `var(--l3-text-label-primary-12)`. Never set font-size / weight / line-height on their own.
 
-## Roles (use these)
+Roles: **heading-primary** (ExtraBold) · **heading-secondary** (Bold, plus `section`) · **label-primary** (SemiBold) · **label-secondary** (Medium) · **description** (Medium, with paragraph spacing). Each token also has `-size`, `-weight`, `-line-height`, `-letter-spacing` and `-paragraph-spacing` parts.
 
-| Role | CSS variable | Same as |
-|---|---|---|
-| display/14 | `--l3-text-display-14` | `--l3-text-extrabold-14` |
-| heading/section | `--l3-text-heading-section` | `--l3-text-extrabold-14` |
-| display/16 | `--l3-text-display-16` | `--l3-text-extrabold-16` |
-| display/18 | `--l3-text-display-18` | `--l3-text-extrabold-18` |
-| display/20 | `--l3-text-display-20` | `--l3-text-extrabold-20` |
-| display/24 | `--l3-text-display-24` | `--l3-text-extrabold-24` |
-| display/28 | `--l3-text-display-28` | `--l3-text-extrabold-28` |
-| display/32 | `--l3-text-display-32` | `--l3-text-extrabold-32` |
-| display/36 | `--l3-text-display-36` | `--l3-text-extrabold-36` |
-| heading/10 | `--l3-text-heading-10` | `--l3-text-bold-10` |
-| heading/12 | `--l3-text-heading-12` | `--l3-text-bold-12` |
-| heading/14 | `--l3-text-heading-14` | `--l3-text-bold-14` |
-| heading/16 | `--l3-text-heading-16` | `--l3-text-bold-16` |
-| heading/18 | `--l3-text-heading-18` | `--l3-text-bold-18` |
-| heading/20 | `--l3-text-heading-20` | `--l3-text-bold-20` |
-| heading/24 | `--l3-text-heading-24` | `--l3-text-bold-24` |
-| heading/28 | `--l3-text-heading-28` | `--l3-text-bold-28` |
-| heading/32 | `--l3-text-heading-32` | `--l3-text-bold-32` |
-| heading/36 | `--l3-text-heading-36` | `--l3-text-bold-36` |
-| label/10 | `--l3-text-label-10` | `--l3-text-semibold-10` |
-| label/12 | `--l3-text-label-12` | `--l3-text-semibold-12` |
-| label/14 | `--l3-text-label-14` | `--l3-text-semibold-14` |
-| label/16 | `--l3-text-label-16` | `--l3-text-semibold-16` |
-| label/18 | `--l3-text-label-18` | `--l3-text-semibold-18` |
-| label/20 | `--l3-text-label-20` | `--l3-text-semibold-20` |
-| label/24 | `--l3-text-label-24` | `--l3-text-semibold-24` |
-| label/28 | `--l3-text-label-28` | `--l3-text-semibold-28` |
-| label/32 | `--l3-text-label-32` | `--l3-text-semibold-32` |
-| label/36 | `--l3-text-label-36` | `--l3-text-semibold-36` |
-| paragraph/10 | `--l3-text-paragraph-10` | `--l3-text-medium-10` |
-| label-secondary/10 | `--l3-text-label-secondary-10` | `--l3-text-medium-10` |
-| paragraph/12 | `--l3-text-paragraph-12` | `--l3-text-medium-12` |
-| description | `--l3-text-description` | `--l3-text-medium-12` |
-| label-secondary/12 | `--l3-text-label-secondary-12` | `--l3-text-medium-12` |
-| paragraph/14 | `--l3-text-paragraph-14` | `--l3-text-medium-14` |
-| label-secondary/14 | `--l3-text-label-secondary-14` | `--l3-text-medium-14` |
-| paragraph/16 | `--l3-text-paragraph-16` | `--l3-text-medium-16` |
-| paragraph/18 | `--l3-text-paragraph-18` | `--l3-text-medium-18` |
-
-## Styles by weight
-
-| CSS variable | Size / line height | Figma style | Note |
-|---|---|---|---|
-| `--l3-text-extrabold-10` | 10/12 | L3/extrabold - Heading/10 | Legacy — No Figma text style any more (was L3/extrabold - Heading/10). Kept for code that still uses it. |
-| `--l3-text-extrabold-12` | 12/16 | L3/extrabold - Heading/12 | Legacy — No Figma text style any more (was L3/extrabold - Heading/12). Kept for code that still uses it. |
-| `--l3-text-extrabold-14` | 14/20 | L3/Display - EB/14 · L3/Heading - B/Section |  |
-| `--l3-text-extrabold-16` | 16/22 | L3/Display - EB/16 |  |
-| `--l3-text-extrabold-18` | 18/24 | L3/Display - EB/18 |  |
-| `--l3-text-extrabold-20` | 20/26 | L3/Display - EB/20 |  |
-| `--l3-text-extrabold-24` | 24/30 | L3/Display - EB/24 |  |
-| `--l3-text-extrabold-28` | 28/36 | L3/Display - EB/28 |  |
-| `--l3-text-extrabold-32` | 32/42 | L3/Display - EB/32 |  |
-| `--l3-text-extrabold-36` | 36/46 | L3/Display - EB/36 |  |
-| `--l3-text-bold-10` | 10/12 | L3/Heading - B/10 |  |
-| `--l3-text-bold-12` | 12/16 | L3/Heading - B/12 |  |
-| `--l3-text-bold-14` | 14/20 | L3/Heading - B/14 |  |
-| `--l3-text-bold-16` | 16/22 | L3/Heading - B/16 |  |
-| `--l3-text-bold-18` | 18/24 | L3/Heading - B/18 |  |
-| `--l3-text-bold-20` | 20/26 | L3/Heading - B/20 |  |
-| `--l3-text-bold-24` | 24/30 | L3/Heading - B/24 |  |
-| `--l3-text-bold-28` | 28/36 | L3/Heading - B/28 |  |
-| `--l3-text-bold-32` | 32/42 | L3/Heading - B/32 |  |
-| `--l3-text-bold-36` | 36/46 | L3/Heading - B/36 |  |
-| `--l3-text-semibold-10` | 10/12 | L3/Label - SB/10 |  |
-| `--l3-text-semibold-12` | 12/16 | L3/Label - SB/12 |  |
-| `--l3-text-semibold-14` | 14/20 | L3/Label - SB/14 |  |
-| `--l3-text-semibold-16` | 16/22 | L3/Label - SB/16 |  |
-| `--l3-text-semibold-18` | 18/24 | L3/Label - SB/18 |  |
-| `--l3-text-semibold-20` | 20/26 | L3/Label - SB/20 |  |
-| `--l3-text-semibold-24` | 24/30 | L3/Label - SB/24 |  |
-| `--l3-text-semibold-28` | 28/36 | L3/Label - SB/28 |  |
-| `--l3-text-semibold-32` | 32/42 | L3/Label - SB/32 |  |
-| `--l3-text-semibold-36` | 36/46 | L3/Label - SB/36 |  |
-| `--l3-text-medium-10` | 10/12 | L3/Paragraph - M/10 |  |
-| `--l3-text-medium-12` | 12/16 | L3/Paragraph - M/12 |  |
-| `--l3-text-medium-14` | 14/20 | L3/Paragraph - M/14 |  |
-| `--l3-text-medium-16` | 16/22 | L3/Paragraph - M/16 |  |
-| `--l3-text-medium-18` | 18/24 | L3/Paragraph - M/18 |  |
-| `--l3-text-medium-20` | 20/26 | L3/Medium - Body/20 | Legacy — No Figma text style any more (was L3/Medium - Body/20). Kept for code that still uses it. |
-| `--l3-text-regular-10` | 10/12 | L3/Regular/10 | Legacy — No Figma text style any more (was L3/Regular/10). Kept for code that still uses it. |
-| `--l3-text-regular-12` | 12/16 | L3/Regular/12 | Legacy — No Figma text style any more (was L3/Regular/12). Kept for code that still uses it. |
-| `--l3-text-regular-14` | 14/20 | L3/Regular/14 | Legacy — No Figma text style any more (was L3/Regular/14). Kept for code that still uses it. |
-| `--l3-text-regular-16` | 16/22 | L3/Regular/16 | Legacy — No Figma text style any more (was L3/Regular/16). Kept for code that still uses it. |
-| `--l3-text-regular-18` | 18/24 | L3/Regular/18 | Legacy — No Figma text style any more (was L3/Regular/18). Kept for code that still uses it. |
-| `--l3-text-regular-20` | 20/26 | L3/Regular/20 | Legacy — No Figma text style any more (was L3/Regular/20). Kept for code that still uses it. |
-| `--l3-text-semibold-08` | 8/10 | local — chip tab sub label (8/10) | Legacy — Local value — Figma uses 8/10 unbound on the chip sub label; no text style. |
+| CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |
+|---|---|---|---|---|
+| `--l3-text-heading-primary-14` | 🔷 L3/Heading/primary/14 | 800 | 14/20 | 0 |
+| `--l3-text-heading-primary-16` | 🔷 L3/Heading/primary/16 | 800 | 16/22 | 0 |
+| `--l3-text-heading-primary-18` | 🔷 L3/Heading/primary/18 | 800 | 18/24 | 0 |
+| `--l3-text-heading-primary-20` | 🔷 L3/Heading/primary/20 | 800 | 20/26 | 0 |
+| `--l3-text-heading-primary-24` | 🔷 L3/Heading/primary/24 | 800 | 24/30 | 0 |
+| `--l3-text-heading-primary-28` | 🔷 L3/Heading/primary/28 | 800 | 28/36 | 0 |
+| `--l3-text-heading-primary-32` | 🔷 L3/Heading/primary/32 | 800 | 32/42 | 0 |
+| `--l3-text-heading-primary-36` | 🔷 L3/Heading/primary/36 | 800 | 36/46 | 0 |
+| `--l3-text-heading-secondary-10` | 🔷 L3/Heading/secondary/10 | 700 | 10/12 | 0 |
+| `--l3-text-heading-secondary-12` | 🔷 L3/Heading/secondary/12 | 700 | 12/16 | 0 |
+| `--l3-text-heading-secondary-14` | 🔷 L3/Heading/secondary/14 | 700 | 14/20 | 0 |
+| `--l3-text-heading-secondary-16` | 🔷 L3/Heading/secondary/16 | 700 | 16/22 | 0 |
+| `--l3-text-heading-secondary-18` | 🔷 L3/Heading/secondary/18 | 700 | 18/24 | 0 |
+| `--l3-text-heading-secondary-20` | 🔷 L3/Heading/secondary/20 | 700 | 20/26 | 0 |
+| `--l3-text-heading-secondary-24` | 🔷 L3/Heading/secondary/24 | 700 | 24/30 | 0 |
+| `--l3-text-heading-secondary-28` | 🔷 L3/Heading/secondary/28 | 700 | 28/36 | 0 |
+| `--l3-text-heading-secondary-32` | 🔷 L3/Heading/secondary/32 | 700 | 32/42 | 0 |
+| `--l3-text-heading-secondary-36` | 🔷 L3/Heading/secondary/36 | 700 | 36/46 | 0 |
+| `--l3-text-heading-secondary-section` | 🔷 L3/Heading/secondary/Section | 800 | 14/20 | 0 |
+| `--l3-text-label-primary-10` | 🔷 L3/Label/primary-sb/10 | 600 | 10/12 | 0 |
+| `--l3-text-label-primary-12` | 🔷 L3/Label/primary-sb/12 | 600 | 12/16 | 0 |
+| `--l3-text-label-primary-14` | 🔷 L3/Label/primary-sb/14 | 600 | 14/20 | 0 |
+| `--l3-text-label-primary-16` | 🔷 L3/Label/primary-sb/16 | 600 | 16/22 | 0 |
+| `--l3-text-label-primary-18` | 🔷 L3/Label/primary-sb/18 | 600 | 18/24 | 0 |
+| `--l3-text-label-secondary-10` | 🔷 L3/Label/secondary-m/10 | 500 | 10/12 | 0 |
+| `--l3-text-label-secondary-12` | 🔷 L3/Label/secondary-m/12 | 500 | 12/16 | 0 |
+| `--l3-text-label-secondary-14` | 🔷 L3/Label/secondary-m/14 | 500 | 14/20 | 0 |
+| `--l3-text-label-secondary-16` | 🔷 L3/Label/secondary-m/16 | 500 | 16/22 | 0 |
+| `--l3-text-label-secondary-18` | 🔷 L3/Label/secondary-m/18 | 500 | 18/24 | 0 |
+| `--l3-text-description-10` | 🔷 L3/Description - M/10 | 500 | 10/12 | 6 |
+| `--l3-text-description-12` | 🔷 L3/Description - M/12 | 500 | 12/16 | 8 |
+| `--l3-text-description-14` | 🔷 L3/Description - M/14 | 500 | 14/20 | 10 |
+| `--l3-text-description-16` | 🔷 L3/Description - M/16 | 500 | 16/22 | 12 |
+| `--l3-text-description-18` | 🔷 L3/Description - M/18 | 500 | 18/24 | 16 |
+| `--l3-text-label-primary-08` | local — chip tab sub label (8/10) (local) | 600 | 8/10 | 0 |
 
 ---
 
@@ -1237,7 +1206,7 @@ Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light
 - Group: Action
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.4.1
+- Version: 1.4.2
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29225
 - Source: `src/components/Button`
 - Also called: Action, call to action, CTA
@@ -1478,8 +1447,8 @@ Button — 7 variants · 3 sizes · 3 states
 
 - `component/button/*`
 - `state-layer/*`
-- `text-bold-16 · 14`
-- `text-semibold-12`
+- `text-heading-secondary-14 · 16`
+- `text-label-primary-12`
 - `size/control-sm · md · lg`
 - `radius/08 · 12`
 - `icon-size/16 · 20 · 24`
@@ -1487,9 +1456,9 @@ Button — 7 variants · 3 sizes · 3 states
 
 ## Recent changes
 
+- **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
 - **1.4.0** (2026-09-30) Label & icon rule, usage rules: At least one of label / iconLeft / iconRight must show, and icon-only buttons have exactly one icon — enforced in TypeScript, with a runtime fallback (left icon wins). Usage rules in src/components/Button/USAGE.md: secondary only next to a stronger button, tertiary when alone (View all), Large only in docks. ButtonGroup warns in development when a button isn’t size="lg".
-- **1.3.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.
 
 ---
 
@@ -1768,7 +1737,7 @@ Checkbox & radio — Pick many · pick one
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.2.0
+- Version: 1.3.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66091
 - Source: `src/components/TextField`
 - Also called: Text input, text field, textarea, form field
@@ -1838,17 +1807,18 @@ Input field — Single line or text box
 - `border/light · dark · accent/error`
 - `content/primary · secondary · tertiary · disabled`
 - `content/accent/error · success · discover`
-- `text-medium-12 · 14`
-- `text-semibold-12`
+- `text-label-primary-12`
+- `text-label-secondary-12 · 14`
+- `text-description-12`
 - `radius/12`
 - `shadow/elevation-low`
 - `icon-size/14 · 16`
 
 ## Recent changes
 
+- **1.3.0** (2026-10-04) Typography from Figma: Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.
 - **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.
 - **1.1.0** (2026-09-26) Accessibility pass: Error fields show focus by thickening the red border (visible focus). Helper and error messages are announced while typing.
-- **1.0.0** (2026-09-26) First release: Input field and multiline text box with label, helper text and required marker. Error and success states; character counter with an over-limit error.
 
 ---
 
@@ -1931,7 +1901,7 @@ Toggle switch — A setting that applies immediately
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65938
 - Source: `src/components/Tabs`
 - Also called: Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher
@@ -1954,9 +1924,9 @@ import { Tabs, Tab } from './components/Tabs' // path relative to src/
 - **pill** (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.
 - **pill-group** (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.
 
-### No layout shift
+### Same label, selected or not
 
-Selected underline tabs switch to the extrabold style. Each tab reserves that bolder width up front, so neighbouring tabs don't move when the selection changes.
+Every tab label uses Label / primary (SemiBold) — 14 for md, 12 for sm underline tabs, 12 / 10 for pills. Selection shows through the text color and the indicator bar (or the pill fill), never a bolder weight, so tabs never shift when the selection changes.
 
 ## Do / Don't
 
@@ -2010,8 +1980,7 @@ Tabs — Switch sections, filter or switch views
 - `surface/primary · secondary · inverted`
 - `border/light · dark`
 - `state-layer/*`
-- `text-semibold-10 · 12 · 14`
-- `text-extrabold-12 · 14`
+- `text-label-primary-08 · 10 · 12 · 14`
 - `radius/12 · full`
 - `size/24 · 32 · 40`
 - `spacing/36`
@@ -2019,9 +1988,9 @@ Tabs — Switch sections, filter or switch views
 
 ## Recent changes
 
+- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
 - **1.5.0** (2026-10-02) Hug or fill width: width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
 - **1.4.0** (2026-10-02) Pill group: Figma “L3: Tabs” is now “L3: Tabs group” (Type: Flat tabs · Pill tabs · Pill group); base tab isChip is now isPill. appearance="pill-group": tertiary pills in a surface/secondary track for switching views (Tree / List). Selected pill is a black fill; the rest blend into the track. The separate SegmentedControl component is gone — Figma merged it into the Tabs group as Pill group. Use <Tabs appearance="pill-group"> instead.
-- **1.3.0** (2026-10-02) Tertiary chips: Figma Type is now Primary · Secondary · Tertiary, each with a selected and an unselected look (Ghost removed, typos fixed). emphasis="tertiary": selected black fill, unselected subtle fill (surface/secondary) with no border or elevation. Switching between views moved to the new Segmented control; pill tabs are for filtering.
 
 ---
 
@@ -2032,7 +2001,7 @@ Tabs — Switch sections, filter or switch views
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.0
+- Version: 1.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
 - Source: `src/components/Actionbar`
 - Also called: App bar, top bar, navigation bar, header, toolbar
@@ -2098,17 +2067,18 @@ Actionbar — The top bar of a screen
 - `border/light · dark`
 - `content/primary · secondary · disabled`
 - `content/accent/discover (caret)`
-- `text-extrabold-14`
-- `text-medium-12 · 14`
+- `text-heading-primary-14`
+- `text-label-secondary-14`
+- `text-description-12`
 - `size/32 · 48`
 - `state-layer/*`
 - `radius/full`
 
 ## Recent changes
 
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **unreleased** (2026-09-28) Figma updated, code to follow: Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.
 - **1.1.0** (2026-09-29) Shadow on scroll: elevation-low when content scrolls under the bar: automatic with sticky, or via the new elevated prop. Rule: flat tabs at the top go in the bottom slot (docs demos updated).
-- **1.0.0** (2026-09-26) First release: Back button, title and description, up to two round icon actions. Search mode, a bottom slot for tabs or filters, and sticky positioning.
 
 ---
 
@@ -2119,7 +2089,7 @@ Actionbar — The top bar of a screen
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-61961
 - Source: `src/components/BottomNavbar`
 - Also called: Bottom navigation, tab bar, nav bar, bottom tabs, dock
@@ -2185,7 +2155,7 @@ Bottom navbar — App sections, 3–5 items
 - `content/tertiary (unselected)`
 - `content/accent/success-default (selected)`
 - `content/primary (nav icon mask)`
-- `text-semibold-10`
+- `text-label-primary-10`
 - `size/64`
 - `spacing/04 · 10`
 - `icon-size/24`
@@ -2194,6 +2164,7 @@ Bottom navbar — App sections, 3–5 items
 
 ## Recent changes
 
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.0.0** (2026-09-26) First release: Main nav plus Mutual Fund and F&O sub-navs with a Home item and separator. Figma nav icons: theme-aware outlines, brand artwork when selected. Animated switch between navs: the tapped option glides, the rest slide in.
 
 ---
@@ -2293,7 +2264,7 @@ Card — Groups related content
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.1.1
+- Version: 2.2.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -2510,8 +2481,8 @@ Bottom sheet — A modal panel over the screen
 - `surface/primary`
 - `border/light · intense`
 - `content/primary · secondary`
-- `text-extrabold-18 · 20`
-- `text-semibold-12 · 14`
+- `text-heading-primary-18 · 20`
+- `text-label-primary-12 · 14`
 - `radius/24 · full`
 - `shadow/elevation-high`
 - `static/black + opacity/80 (overlay)`
@@ -2520,9 +2491,9 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
 - **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.
 - **2.1.0** (2026-09-30) Stacking rule: back button only on a second sheet: Rule: at most 2 sheets. The first sheet over a screen has no back button; a second sheet on top of it does. A third warns in development. BottomSheetHeader hides onBack on the first sheet inside a modal BottomSheet (development warning). Demo: the Buy sheet’s ⓘ opens an “Order types” sheet on top, with back. Playground back button is off by default.
-- **2.0.0** (2026-09-30) Invisible closing, all Figma properties: Removed the drag handle (dragHandle prop) and the header close button (BottomSheetHeader onClose). Sheets close by tapping the backdrop or dragging. The whole sheet drags to dismiss: header and footer always, the content once scrolled to the top. Top sheets drag up. A visually hidden Close button (closeLabel) for screen-reader and keyboard users; Esc still closes. 👁️ Content Slot: leaving out children hides the content area and its padding. Playground use case: “Set Auto TP/SL” (Dev handoff 4292:34429) — interactive TP / SL cards, steppers, trail checkbox and a Save dock, built from L3 components. Playground covers every Figma property (isBottom, header, description, back, info, right slot, content bottom, H-Icon, header tag, content, buttons, utility). New USAGE.md.
 
 ---
 
@@ -2533,7 +2504,7 @@ Bottom sheet — A modal panel over the screen
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65562
 - Source: `src/components/Aerobar`
 - Also called: Toast, snackbar, banner, alert bar, notification
@@ -2600,17 +2571,17 @@ Aerobar & toast — Status on the page, or a result
 - `content/primary · secondary · inverted`
 - `static/white · black`
 - `opacity/60 · 80`
-- `text-semibold-14`
-- `text-medium-12`
+- `text-label-primary-14`
+- `text-description-12`
 - `radius/12`
 - `shadow/elevation-low · medium`
 - `motion/* (local)`
 
 ## Recent changes
 
+- **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content/secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
 - **1.2.0** (2026-09-26) New action button: Action is now a small Ghost button centred in a 48px slot (was a borderless Secondary). Floating solid warning uses black text, like the inline one. Docs styles no longer leak into the bar’s text.
-- **1.1.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.
 
 ---
 
@@ -2621,7 +2592,7 @@ Aerobar & toast — Status on the page, or a result
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66488
 - Source: `src/components/EmptyState`
 - Also called: No results, zero state, blank slate, nothing found
@@ -2680,13 +2651,14 @@ Empty state — Nothing to show, or no results
 - `content/primary · secondary`
 - `surface/accent/brand-default (illustration)`
 - `static/black · white (illustration)`
-- `text-extrabold-16`
-- `text-semibold-14`
+- `text-heading-primary-16`
+- `text-label-primary-14`
 - `spacing/04 · 16 · 24`
 - `size/illustration (local, 120px)`
 
 ## Recent changes
 
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.0.0** (2026-09-26) First release: Illustration, heading, description and an action slot. No-results illustration with every fill bound to a theme token.
 
 ---
@@ -2698,7 +2670,7 @@ Empty state — Nothing to show, or no results
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.0
+- Version: 1.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -2760,14 +2732,15 @@ List cell — Rows of settings, accounts, items
 - `border/light`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
-- `text-semibold-14 · 16`
-- `text-medium-12`
+- `text-label-primary-14 · 16`
+- `text-description-12`
 - `radius/12 · full`
 - `icon-size/16 · 24`
 - `state-layer/* (tappable rows)`
 
 ## Recent changes
 
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **1.1.0** (2026-09-26) Accessibility pass: Dots have screen-reader text (dotLabel, default “New”). Development warning when a button row contains another control.
 - **1.0.0** (2026-09-26) First release: Plain and card rows, md/sm, icons, trailing content, dots; renders as div, button, link or label.
 
@@ -2780,7 +2753,7 @@ List cell — Rows of settings, accounts, items
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.1.0
+- Version: 2.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4464-27218
 - Source: `src/components/Tag`
 - Also called: Badge, chip, label, pill
@@ -2863,12 +2836,12 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - `surface/secondary`
 - `static/black`
 - `static/white`
-- `text-semibold-10 · 12 · 14`
+- `text-label-primary-10 · 12 · 14`
 - `radius/04`
 - `size/16 · 20 · 24`
 
 ## Recent changes
 
+- **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
 - **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).
 - **2.0.0** (2026-09-30) Figma color set: profit, loss, zing, processing: Colors follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing. profit / loss use indicator/up·down tokens (white text on solid); zing uses the zing accent. Renamed green → success, red → error, yellow → warning, orange → processing. The old names still work (deprecated). Neutral Secondary / Tertiary background: surface/tertiary → surface/secondary. hideLabel (Figma 👁️ Label): icon-only square tag; the label stays as screen-reader text. Docs demos: price changes and Buy/Sell sides use profit / loss, order status uses processing / error.
-- **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.

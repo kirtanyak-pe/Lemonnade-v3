@@ -74,8 +74,7 @@ export function Tab({
       {iconLeft && <span className={styles.icon}>{iconLeft}</span>}
       {!iconOnly && (
         <span className={styles.label}>
-          {/* data-label reserves the bold (selected) width so tabs don't shift when selection changes. */}
-          <span className={styles.labelText} data-label={children}>{children}</span>
+          <span className={styles.labelText}>{children}</span>
           {showSub && <span className={styles.subLabel}>{subLabel}</span>}
         </span>
       )}

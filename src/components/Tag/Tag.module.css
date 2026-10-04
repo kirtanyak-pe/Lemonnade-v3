@@ -40,7 +40,7 @@
   --tag-height: var(--l3-size-16);
   --tag-padding-inline: var(--l3-spacing-04);
   --tag-label-padding: var(--l3-spacing-02);
-  --tag-font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
+  --tag-font: var(--l3-text-label-primary-10); /* 🔷 L3/Label/primary-sb/10 */
   --tag-icon-size: var(--l3-icon-size-12);
 }
 
@@ -48,7 +48,7 @@
   --tag-height: var(--l3-size-20);
   --tag-padding-inline: var(--l3-spacing-02);
   --tag-label-padding: var(--l3-spacing-04);
-  --tag-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  --tag-font: var(--l3-text-label-primary-12); /* 🔷 L3/Label/primary-sb/12 */
   --tag-icon-size: var(--l3-icon-size-16);
 }
 
@@ -56,7 +56,7 @@
   --tag-height: var(--l3-size-24);
   --tag-padding-inline: var(--l3-spacing-04);
   --tag-label-padding: var(--l3-spacing-02);
-  --tag-font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  --tag-font: var(--l3-text-label-primary-14); /* 🔷 L3/Label/primary-sb/14 */
   --tag-icon-size: var(--l3-icon-size-18);
 }
 

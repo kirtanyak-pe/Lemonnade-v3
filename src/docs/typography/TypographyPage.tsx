@@ -1,34 +1,46 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { textRoles, textStyles } from '../../tokens'
-import { ComponentTree, type ComponentTreeSpec, type TreeGroup } from '../ComponentTree'
+import { textStyles } from '../../tokens'
+import { ComponentTree, type ComponentTreeSpec, type TreeLeaf } from '../ComponentTree'
 import { Switch } from '../../components/Switch'
 import styles from './TypographyPage.module.css'
 
-// Typography foundation page. Roles (Display · Heading · Label · Paragraph) are the Figma text style names;
-// in code each is an alias of a weight-named style (--l3-text-label-12 → --l3-text-semibold-12).
-// The roles are still a draft in Figma — guidance below will change.
+// Typography foundation page, mirroring Figma "🅰️ Typography": three families (Heading · Label · Description), each
+// split into the Figma sub-categories, every style one token: --l3-text-<role>-<size>.
+// Usage rules for each role are still being defined in Figma — the guidance below is a draft.
 
-type RoleId = 'display' | 'heading' | 'label' | 'paragraph' | 'description'
+type Style = (typeof textStyles)[number]
+type Role = Style['role']
 
-// `fixed`: a role with one style only (no size scale), e.g. Description = Paragraph 12.
-const roles: { id: RoleId; title: string; weight: string; note: string; use: string; example: string; fixed?: number }[] = [
-  { id: 'display', title: 'Display', weight: 'ExtraBold 800', note: 'Numbers & big titles', use: 'Data people look for first: prices, P&L, balances, the main number on a screen. Larger sizes for screen titles.', example: '₹24,812.35' },
-  { id: 'heading', title: 'Heading', weight: 'Bold 700', note: 'Section titles', use: 'Titles of sections and cards. Heading / Section (ExtraBold 14) is the standard section heading on a screen.', example: 'Open positions' },
-  { id: 'label', title: 'Label', weight: 'SemiBold 600', note: 'UI text', use: 'Text on and around controls: buttons, tabs, tags, list titles, field labels. Label 10 for small roles and meta. Two kinds: Primary (SemiBold) for the main label and Secondary (Medium 10–14) for a quieter one next to it.', example: 'Buy · NIFTY 50' },
-  { id: 'paragraph', title: 'Paragraph', weight: 'Medium 500', note: 'Reading text', use: 'Body text and anything people read as sentences. 10–18 only.', example: 'Orders placed after 3:30 pm go through the next trading day.' },
-  { id: 'description', title: 'Description', weight: 'Paragraph 12', note: 'Supporting line', use: 'The secondary line under a title — list cell and card descriptions, helper text, captions. Always Paragraph 12 (Medium 12/16).', example: 'NSE · Equity · Updated 2 min ago', fixed: 12 },
+/** Figma families → sub-categories (each a role in code). */
+const families: { id: string; title: string; note: string; roles: { role: Role; label: string; weight: string; use: string; example: string }[] }[] = [
+  {
+    id: 'heading', title: 'Heading', note: 'Titles and key numbers',
+    roles: [
+      { role: 'heading-primary', label: 'Primary', weight: 'ExtraBold 800', use: 'Screen and sheet titles, and the numbers people look for first — prices, P&L, balances.', example: '₹24,812.35' },
+      { role: 'heading-secondary', label: 'Secondary', weight: 'Bold 700', use: 'Section and card titles. Section (ExtraBold 14) is the standard section heading on a screen.', example: 'Open positions' },
+    ],
+  },
+  {
+    id: 'label', title: 'Label', note: 'UI text',
+    roles: [
+      { role: 'label-primary', label: 'Primary', weight: 'SemiBold 600', use: 'Text on and around controls: buttons, tabs, tags, list titles, field labels.', example: 'Buy · NIFTY 50' },
+      { role: 'label-secondary', label: 'Secondary', weight: 'Medium 500', use: 'A quieter label next to a primary one: input text, values in key–value rows, meta.', example: 'Qty 25 · LTP' },
+    ],
+  },
+  {
+    id: 'description', title: 'Description', note: 'Supporting & reading text',
+    roles: [
+      { role: 'description', label: 'Description', weight: 'Medium 500', use: 'Descriptions, helper text, captions and any text read as sentences. Comes with paragraph spacing between paragraphs.', example: 'Orders placed after 3:30 pm go through the next trading day.' },
+    ],
+  },
 ]
-
-const scales = [
-  { id: 'sm', label: 'Small', note: '10–14', sizes: [10, 12, 14] },
-  { id: 'md', label: 'Medium', note: '16–20', sizes: [16, 18, 20] },
-  { id: 'lg', label: 'Large', note: '24–36', sizes: [24, 28, 32, 36] },
-]
+const allRoles = families.flatMap((f) => f.roles)
 
 const sizes = [10, 12, 14, 16, 18, 20, 24, 28, 32, 36]
-const lineHeight = (size: number) => textStyles.find((s) => s.fontSize === size)?.lineHeight
-const roleVar = (role: RoleId, size: number | 'section') =>
-  textRoles.find((r) => r.role === `${role}/${size}`) ?? (roles.find((x) => x.id === role)?.fixed === size ? textRoles.find((r) => r.role === role) : undefined)
+const inFigma = textStyles.filter((s) => !('local' in s))
+const styleFor = (role: Role, size: number | 'section') => inFigma.find((s) => s.role === role && s.size === String(size))
+const lineHeight = (size: number) => inFigma.find((s) => s.fontSize === size)?.lineHeight
+const short = (cssVar: string) => cssVar.replace('--l3-text-', '')
 
 function Section({ id, title, lede, children }: { id: string; title: string; lede?: ReactNode; children: ReactNode }) {
   return (
@@ -46,71 +58,44 @@ export function TypographyPage() {
   const [sample, setSample] = useState('Aa ₹24,812')
   const [showExamples, setShowExamples] = useState(false)
 
-  const tree = useMemo<ComponentTreeSpec>(() => ({
-    title: 'Typography',
-    note: 'Manrope · 5 roles · 34 styles',
-    branches: roles.map((r) => {
-      const groups: TreeGroup[] = scales
-        .map((sc) => ({
-          id: `${r.id}-${sc.id}`,
-          label: sc.label,
-          note: sc.note,
-          leaves: sc.sizes.flatMap((size) => {
-            const t = roleVar(r.id, size)
-            if (!t) return []
-            return [{
-              id: t.cssVar,
-              label: t.cssVar.replace('--l3-text-', ''),
-              note: `${size}/${lineHeight(size)}`,
-              preview: <span className={styles.treeSample} style={{ font: `var(${t.cssVar})` }}>{sample}</span>,
-            }]
-          }),
-        }))
-        .filter((g) => g.leaves.length > 0)
-      if (r.fixed) {
-        const t = roleVar(r.id, r.fixed)
-        return { id: r.id, label: r.title, note: r.weight, leaves: t ? [{ id: t.cssVar, label: t.cssVar.replace('--l3-text-', ''), note: `${r.fixed}/${lineHeight(r.fixed)} · = ${t.alias.replace('--l3-text-', '')}`, preview: <span className={styles.treeSample} style={{ font: `var(${t.cssVar})` }}>{sample}</span> }] : [] }
-      }
-      // Label: two kinds — Primary (SemiBold, every size) and Secondary (Medium 10–14, same values as Paragraph).
-      if (r.id === 'label') {
-        const leavesFor = (role: string, withAlias: boolean) => sizes.flatMap((size) => {
-          const t = textRoles.find((x) => x.role === `${role}/${size}`)
-          return t ? [{ id: t.cssVar, label: t.cssVar.replace('--l3-text-', ''), note: `${size}/${lineHeight(size)}${withAlias ? ` · = ${t.alias.replace('--l3-text-', '')}` : ''}`, preview: <span className={styles.treeSample} style={{ font: `var(${t.cssVar})` }}>{sample}</span> }] : []
+  const tree = useMemo<ComponentTreeSpec>(() => {
+    // The branch and group already name the role, so a leaf only shows its size (or "Section").
+    const leaf = (s: Style): TreeLeaf => ({
+      id: s.cssVar,
+      label: s.size === 'section' ? 'Section' : s.size,
+      // Short note shown on the right of the label: Section's font size, line height (LH), paragraph spacing (PS).
+      note: `${s.size === 'section' ? `${s.fontSize} · ` : ''}LH ${s.lineHeight}${s.paragraphSpacing ? ` · PS ${s.paragraphSpacing}` : ''}`,
+      preview: <span className={styles.treeSample} style={{ font: `var(${s.cssVar})` }}>{sample}</span>,
+    })
+    return {
+      title: 'Typography',
+      note: `Manrope · ${allRoles.length} roles · ${inFigma.length} styles`,
+      branches: families.map((f) => {
+        const groups = f.roles.map((r) => {
+          const list = inFigma.filter((s) => s.role === r.role)
+          return { id: r.role, label: r.label, note: `${r.weight} · ${list.length} styles`, leaves: list.map(leaf) }
         })
-        const primary = leavesFor('label', false)
-        const secondary = leavesFor('label-secondary', true)
-        return {
-          id: r.id, label: r.title, note: r.weight,
-          groups: [
-            { id: 'label-primary', label: 'Primary', note: `SemiBold · ${primary.length} sizes`, leaves: primary },
-            { id: 'label-secondary', label: 'Secondary', note: `Medium · ${secondary.length} sizes`, leaves: secondary },
-          ],
-        }
-      }
-      const section = r.id === 'heading' ? roleVar('heading', 'section') : undefined
-      if (section) groups.unshift({ id: 'heading-special', label: 'Section', note: 'ExtraBold 14/20', leaves: [{ id: section.cssVar, label: 'heading-section', note: 'Standard section heading', preview: <span className={styles.treeSample} style={{ font: `var(${section.cssVar})` }}>{sample}</span> }] })
-      return { id: r.id, label: r.title, note: r.weight, groups }
-    }),
-  }), [sample])
+        // A family with one role (Description) hangs its styles straight off the branch.
+        return groups.length === 1
+          ? { id: f.id, label: f.title, note: `${f.note} · ${f.roles[0].weight}`, leaves: groups[0].leaves }
+          : { id: f.id, label: f.title, note: f.note, groups }
+      }),
+    }
+  }, [sample])
 
-  const legacy = textStyles.filter((s) => 'legacy' in s)
-  // Scale table columns: every role, with Label secondary right after Label.
-  const columns = roles.flatMap((r) => {
-    const col = { id: r.id, title: r.title, token: (size: number) => roleVar(r.id, size) }
-    return r.id === 'label'
-      ? [col, { id: 'label-secondary', title: 'Label secondary', token: (size: number) => textRoles.find((x) => x.role === `label-secondary/${size}`) }]
-      : [col]
-  })
+  const local = textStyles.filter((s) => 'local' in s)
 
   return (
     <div className={styles.page}>
       <p className={styles.wip}>
-        <strong>Work in progress.</strong> The roles come from Figma but their rules are still being defined — sizes and usage below may change.
+        <strong>Work in progress.</strong> The styles match Figma; the rules for when to use each role are still being defined, so the guidance below may change.
       </p>
 
-      <Section id="roles" title="Type roles" lede="Every style is Manrope. A role sets the weight and what the text is for; the size sets how loud it is. Hover a box to trace it.">
+      <Section id="roles" title="Type roles" lede="Every style is Manrope. The family says what the text is (Heading, Label, Description), the sub-category how strong it is, and the size how loud. LH = line height, PS = paragraph spacing. Hover a box to trace it.">
         <ComponentTree
           spec={tree}
+          inlineNotes
+          largeText
           showPreviews={showExamples}
           controls={
             <>
@@ -129,15 +114,20 @@ export function TypographyPage() {
         />
       </Section>
 
-      <Section id="use" title="Which role to use" lede="Pick the role by what the text does, then the size by how important it is. Draft guidance from the Figma annotations.">
+      <Section id="use" title="Which role to use" lede="Pick the role by what the text does, then the size by how important it is. Draft guidance.">
         <ul className={styles.roleCards}>
-          {roles.map((r) => (
-            <li key={r.id} className={styles.roleCard}>
-              <span className={styles.roleExample} style={{ font: `var(--l3-text-${r.id === 'paragraph' ? 'paragraph-14' : r.id === 'description' ? 'description' : r.id === 'heading' ? 'heading-section' : r.id === 'display' ? 'display-24' : 'label-14'})` }}>{r.example}</span>
-              <span className={styles.roleTitle}>{r.title} <span className={styles.roleWeight}>{r.weight}</span></span>
-              <span className={styles.roleUse}>{r.use}</span>
-            </li>
-          ))}
+          {allRoles.map((r) => {
+            const example = styleFor(r.role, r.role === 'heading-primary' ? 24 : r.role === 'heading-secondary' ? 'section' : 14)
+            return (
+              <li key={r.role} className={styles.roleCard}>
+                <span className={styles.roleExample} style={{ font: example ? `var(${example.cssVar})` : undefined }}>{r.example}</span>
+                <span className={styles.roleTitle}>
+                  {families.find((f) => f.roles.includes(r))?.title}{r.role !== 'description' && ` · ${r.label}`} <span className={styles.roleWeight}>{r.weight}</span>
+                </span>
+                <span className={styles.roleUse}>{r.use}</span>
+              </li>
+            )
+          })}
         </ul>
       </Section>
 
@@ -148,19 +138,21 @@ export function TypographyPage() {
               <tr>
                 <th scope="col">Size</th>
                 <th scope="col">Line height</th>
-                {columns.map((c) => <th key={c.id} scope="col">{c.title}</th>)}
+                {allRoles.map((r) => <th key={r.role} scope="col">{r.role === 'description' ? 'Description' : `${families.find((f) => f.roles.includes(r))?.title} ${r.label.toLowerCase()}`}</th>)}
               </tr>
             </thead>
             <tbody>
-              {sizes.map((size) => (
+              {[...sizes, 'section' as const].map((size) => (
                 <tr key={size}>
-                  <th scope="row">{size}</th>
-                  <td>{lineHeight(size)}</td>
-                  {columns.map((c) => {
-                    const t = c.token(size)
+                  <th scope="row">{size === 'section' ? 'Section' : size}</th>
+                  <td>{size === 'section' ? lineHeight(14) : lineHeight(size)}</td>
+                  {allRoles.map((r) => {
+                    const s = styleFor(r.role, size)
                     return (
-                      <td key={c.id} data-token={t?.cssVar.replace('--l3-', '')}>
-                        {t ? <span className={styles.cell} style={{ font: `var(${t.cssVar})` }} title={`${t.cssVar} = ${t.alias}`} data-token={t.alias.replace('--l3-', '')}>Aa</span> : <span className={styles.none} aria-label="Not available">—</span>}
+                      <td key={r.role} data-token={s?.cssVar.replace('--l3-', '')}>
+                        {s
+                          ? <span className={styles.cell} style={{ font: `var(${s.cssVar})` }} title={`${s.cssVar} · ${s.figmaName}${s.paragraphSpacing ? ` · paragraph spacing ${s.paragraphSpacing}` : ''}`}>Aa</span>
+                          : <span className={styles.none} aria-label="Not available">—</span>}
                       </td>
                     )
                   })}
@@ -171,23 +163,36 @@ export function TypographyPage() {
         </div>
       </Section>
 
-      <Section id="code" title="Using it in code" lede="Each style is one font shorthand token. Use the role name; the weight names still work and point to the same values.">
-        <pre className={styles.code}><code>{`.title {\n  font: var(--l3-text-heading-section); /* Figma L3/Heading - B/Section */\n}\n\n.price {\n  font: var(--l3-text-display-24);     /* = var(--l3-text-extrabold-24) */\n}`}</code></pre>
-        <p className={styles.lede}>Parts are available too, e.g. <code>--l3-text-semibold-12-size</code>, <code>-line-height</code>, <code>-weight</code> and <code>-letter-spacing</code>.</p>
+      <Section id="code" title="Using it in code" lede="Each style is one font shorthand token named after its Figma style. Never set font-size, weight or line-height on their own.">
+        <pre className={styles.code}><code>{`.title {
+  font: var(--l3-text-heading-secondary-section); /* 🔷 L3/Heading/secondary/Section */
+}
+
+.price {
+  font: var(--l3-text-heading-primary-24);        /* 🔷 L3/Heading/primary/24 */
+}
+
+.helper p + p {
+  font: var(--l3-text-description-12);            /* 🔷 L3/Description - M/12 */
+  margin-top: var(--l3-text-description-12-paragraph-spacing);
+}`}</code></pre>
+        <p className={styles.lede}>Every style also has parts: <code>-size</code>, <code>-weight</code>, <code>-line-height</code>, <code>-letter-spacing</code> and <code>-paragraph-spacing</code>. The base values are tokens too: <code>--l3-font-size-200</code>, <code>--l3-line-height-200</code>, <code>--l3-font-weight-bold</code>.</p>
       </Section>
 
-      <Section id="legacy" title="Legacy styles" lede="In code but no longer a Figma text style. Don't use them in new work; they stay until the code that uses them moves to a role.">
-        <ul className={styles.legacy}>
-          {legacy.map((s) => (
-            <li key={s.cssVar} data-token={s.cssVar.replace('--l3-', '')}>
-              <span className={styles.legacySample} style={{ font: `var(${s.cssVar})` }}>Aa</span>
-              <code>{s.cssVar.replace('--l3-', '')}</code>
-              <span>{s.fontSize}/{s.lineHeight}</span>
-              <span className={styles.legacyNote}>{'legacy' in s ? s.legacy : ''}</span>
-            </li>
-          ))}
-        </ul>
-      </Section>
+      {local.length > 0 && (
+        <Section id="local" title="Local styles" lede="Used in code but not a Figma text style — Figma sets these values directly on one layer.">
+          <ul className={styles.legacy}>
+            {local.map((s) => (
+              <li key={s.cssVar} data-token={s.cssVar.replace('--l3-', '')}>
+                <span className={styles.legacySample} style={{ font: `var(${s.cssVar})` }}>Aa</span>
+                <code>{short(s.cssVar)}</code>
+                <span>{s.fontSize}/{s.lineHeight}</span>
+                <span className={styles.legacyNote}>{'local' in s ? s.local : ''}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
     </div>
   )
 }

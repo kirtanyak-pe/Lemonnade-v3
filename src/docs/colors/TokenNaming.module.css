@@ -85,7 +85,7 @@
   border-radius: var(--l3-radius-06);
   background: var(--part-soft);
   box-shadow: inset 0 0 0 1px var(--part-border);
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-secondary-14);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--part-content);
   white-space: nowrap;
@@ -124,7 +124,7 @@
 .prefix,
 .sep {
   padding-top: var(--l3-spacing-04);
-  font: var(--l3-text-bold-20);
+  font: var(--l3-text-heading-secondary-20);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-tertiary);
 }
@@ -166,7 +166,7 @@
   border-radius: var(--l3-radius-08);
   background: var(--part-soft);
   box-shadow: inset 0 0 0 1px var(--part-border);
-  font: var(--l3-text-bold-20);
+  font: var(--l3-text-heading-secondary-20);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--part-content);
   white-space: nowrap;
@@ -201,7 +201,7 @@
   padding: var(--l3-spacing-04) var(--l3-spacing-12);
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-primary);
   white-space: nowrap;
 }
@@ -215,7 +215,7 @@
   .prefix,
   .sep,
   .partText {
-    font: var(--l3-text-bold-12);
+    font: var(--l3-text-heading-secondary-12);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
@@ -232,7 +232,7 @@
   .alt {
     padding: 0 var(--l3-spacing-04);
     border-radius: var(--l3-radius-04);
-    font: var(--l3-text-bold-10);
+    font: var(--l3-text-heading-secondary-10);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
@@ -252,7 +252,7 @@
   .partLabel {
     padding: var(--l3-spacing-02) var(--l3-spacing-06);
     border-radius: var(--l3-radius-06);
-    font: var(--l3-text-semibold-10);
+    font: var(--l3-text-label-primary-10);
   }
 }
 
@@ -276,7 +276,7 @@
 }
 
 .forms dt {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-secondary);
 }
 
@@ -287,7 +287,7 @@
 .forms code,
 .rules code,
 .glossary code {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
   overflow-wrap: anywhere;
@@ -307,7 +307,7 @@
   gap: var(--l3-spacing-08);
   margin: 0;
   padding-left: var(--l3-spacing-20);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -316,7 +316,7 @@
 }
 
 .details summary {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-primary-14);
   color: var(--l3-content-accent-discover-default);
   cursor: pointer;
 }
@@ -325,7 +325,7 @@
   width: 100%;
   margin-top: var(--l3-spacing-12);
   border-collapse: collapse;
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -338,13 +338,13 @@
 }
 
 .glossary thead th {
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-primary-12);
   color: var(--l3-content-primary);
   background: var(--l3-surface-secondary);
 }
 
 .glossary tbody th {
-  font: var(--l3-text-bold-12);
+  font: var(--l3-text-heading-secondary-12);
   color: var(--l3-content-primary);
   white-space: nowrap;
 }
