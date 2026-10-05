@@ -1,18 +1,17 @@
-import { useDeferredValue, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { Icon } from '../components/Icon'
 import { msArrowUpward, msClose, msFormatAlignCenter, msFormatAlignLeft, msFormatAlignRight, msLayers } from '../icons/material'
-import type { Mode, Product } from '../tokens/themes'
-import type { IconCatalog } from './useIconCatalog'
 import {
-  baseIdOf, clearColors, colorOptions, defaultIconName, findNode, flatten, isIconPart, labelHint, parentOf, partLabels, partOf,
-  partsOf, radii, sizeHint, spacingHint, steps, textSizes, variantHint, variantOptions, weights,
-  type ColorKey, type DesignNode, type Hint, type IconSpec, type Step, type Weight,
+  baseIdOf, clearColors, colorDots, defaultIconName, findNode, flatten, isIconPart, labelHint, nodeTitle, parentOf, partLabels, partOf, partsOf, radii, sizeHint,
+  spacingHint, stepLabel, steps, textSizes, variantHint, variantOptions, weights,
+  type ColorKey, type DesignNode, type Weight,
 } from './design'
+import { Dots, Group, IconPicker, Mini, More, Segmented, Select, Warn, type Theme } from './controls'
+import type { IconCatalog } from './useIconCatalog'
+import { KindFields } from './KindFields'
 import { IconButton } from './ui'
 import styles from './Build.module.css'
-
-type Theme = { product: Product; mode: Mode }
 
 type InspectorProps = {
   /** `docked`: a panel beside the canvas, with the full Layers list. `floating`: a compact box beside the phone. */
@@ -28,113 +27,14 @@ type InspectorProps = {
   onAsk: (text: string) => void
 }
 
-/* ---- Small controls ------------------------------------------------------------------------------------ */
-
-function Group({ title, children }: { title?: string; children: ReactNode }) {
-  return (
-    <section className={styles.group} aria-label={title}>
-      {children}
-    </section>
-  )
-}
-
-/** A label above a control; two of these sit side by side in a `pair`. */
-function Mini({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <label className={styles.mini}>
-      <span className={styles.fieldLabel}>{label}</span>
-      {children}
-    </label>
-  )
-}
-
-/** Only warnings interrupt; plain guidance is shown where the rule is chosen (style) and nowhere else. */
-function Warn({ hint }: { hint: Hint | null }) {
-  return hint && hint.level === 'warn' ? <p className={styles.hint} data-level="warn">{hint.text}</p> : null
-}
-
-function Select<T extends string | number>({ value, options, onChange, format }: {
-  value: T; options: readonly T[]; onChange: (v: T) => void; format?: (v: T) => string
-}) {
-  return (
-    <select className={styles.nativeSelect} value={String(value)} onChange={(e) => onChange(options.find((o) => String(o) === e.target.value)!)}>
-      {options.map((o) => (
-        <option key={String(o)} value={String(o)}>
-          {format ? format(o) : String(o)}
-        </option>
-      ))}
-    </select>
-  )
-}
-
-function Segmented<T extends string>({ label, value, options, onChange }: {
-  label: string; value: T; options: readonly { value: T; label: string; icon?: string }[]; onChange: (v: T) => void
-}) {
-  return (
-    <div className={styles.segmented} role="radiogroup" aria-label={label}>
-      {options.map((o) => (
-        <button key={o.value} type="button" role="radio" aria-checked={value === o.value} aria-label={o.label} title={o.label} onClick={() => onChange(o.value)}>
-          {o.icon ? <Icon icon={o.icon} size={18} /> : o.label}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-type Dot = { key: string; label: string; dot: string; border?: string }
-
-/**
- * A row of color dots. The chosen name sits in the title, so the dots need no captions. Each dot carries the canvas
- * theme, so it shows the color the design will actually use.
- */
-function Dots({ title, dots, value, theme, onPick }: {
-  title: string; dots: Dot[]; value: string | undefined; theme: Theme; onPick: (key: string) => void
-}) {
-  const current = dots.find((d) => d.key === value)
-  return (
-    <div className={styles.field} role="radiogroup" aria-label={title}>
-      <span className={styles.fieldLabel}>
-        {title}
-        {current && <span className={styles.fieldValue}> · {current.label}</span>}
-      </span>
-      <div className={styles.dots}>
-        {dots.map((d) => (
-          <button key={d.key} type="button" role="radio" aria-checked={value === d.key} aria-label={d.label} title={d.label} className={styles.dotButton} onClick={() => onPick(d.key)}>
-            <span className={styles.swatchDot} data-product={theme.product} data-mode={theme.mode} style={{ '--dot': d.dot, '--dot-border': d.border ?? 'var(--l3-border-light)' } as CSSProperties} />
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-const colorDots: Dot[] = colorOptions.map((o) => ({ key: o.value, label: o.label, dot: o.color }))
-
-const stepLabel = (s: Step) => `${Number(s)}`
-
-/** Rarely needed options stay folded away, so the box stays short. */
-function More({ children }: { children: ReactNode }) {
-  return (
-    <details className={styles.more}>
-      <summary>More</summary>
-      <div className={styles.moreBody}>{children}</div>
-    </details>
-  )
-}
-
 /* ---- Layers (docked only) ------------------------------------------------------------------------------- */
-
-function layerName(n: DesignNode) {
-  if (n.kind === 'section') return n.name
-  return `${n.name} · ${(n.text ?? '').slice(0, 24)}`
-}
 
 function Layers({ tree, selectedId, onSelect }: { tree: DesignNode[]; selectedId: string | null; onSelect: (id: string) => void }) {
   const rows = (list: DesignNode[], depth: number): ReactNode =>
     list.map((n) => (
       <li key={n.id}>
         <button type="button" className={styles.layerRow} style={{ paddingInlineStart: `calc(var(--l3-spacing-08) + ${depth} * var(--l3-spacing-16))` }} aria-current={selectedId === n.id || undefined} onClick={() => onSelect(n.id)}>
-          {layerName(n)}
+          {nodeTitle(n)}
         </button>
         {n.kind === 'button' && (
           <ul className={styles.layerList}>
@@ -151,71 +51,6 @@ function Layers({ tree, selectedId, onSelect }: { tree: DesignNode[]; selectedId
       </li>
     ))
   return <ul className={styles.layerList} aria-label="Layers">{rows(tree, 0)}</ul>
-}
-
-/* ---- Icon picker -------------------------------------------------------------------------------------------- */
-
-const PAGE = 30
-const humanize = (name: string) => name.replaceAll('_', ' ')
-
-function IconPicker({ spec, fallback, catalog, onPick }: {
-  spec: IconSpec; fallback: string; catalog: IconCatalog | null; onPick: (patch: Partial<IconSpec>) => void
-}) {
-  const [query, setQuery] = useState('')
-  const [limit, setLimit] = useState(PAGE)
-  const q = useDeferredValue(query.trim().toLowerCase())
-  const current = spec.name ?? fallback
-
-  const results = useMemo(() => {
-    if (!catalog) return []
-    return catalog.catalog
-      .filter((i) => !q || i.name.includes(q.replaceAll(' ', '_')) || i.tags.some((t) => t.toLowerCase().includes(q)))
-      .sort((a, b) => b.popularity - a.popularity)
-  }, [catalog, q])
-
-  const canFill = catalog?.catalog.find((i) => i.name === current)?.hasFill ?? true
-
-  return (
-    <>
-      <input
-        className={styles.fieldInput}
-        type="search"
-        placeholder={`Search icons · now ${humanize(current)}`}
-        aria-label="Search icons"
-        value={query}
-        onChange={(e) => { setQuery(e.target.value); setLimit(PAGE) }}
-      />
-      {!catalog ? (
-        <p className={styles.hint} data-level="info">Loading icons…</p>
-      ) : (
-        <div className={styles.iconGrid} role="group" aria-label="Icons">
-          {results.slice(0, limit).map((i) => (
-            <button
-              key={i.name}
-              type="button"
-              className={styles.iconCell}
-              aria-label={humanize(i.name)}
-              title={humanize(i.name)}
-              aria-pressed={current === i.name}
-              onClick={() => onPick({ name: i.name, fill: !!spec.fill && i.hasFill })}
-            >
-              <Icon icon={catalog.iconUrl(i.name, false) ?? ''} size={20} />
-            </button>
-          ))}
-          {results.length === 0 && <p className={styles.hint} data-level="info">No icons match “{query}”.</p>}
-          {results.length > limit && (
-            <button type="button" className={styles.iconMore} onClick={() => setLimit((l) => l + PAGE)}>
-              More
-            </button>
-          )}
-        </div>
-      )}
-      <label className={styles.check}>
-        <input type="checkbox" checked={!!spec.fill && canFill} disabled={!canFill} onChange={(e) => onPick({ fill: e.target.checked })} />
-        Filled
-      </label>
-    </>
-  )
 }
 
 /* ---- Inspector -------------------------------------------------------------------------------------------- */
@@ -458,6 +293,11 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
           </Group>
           <More>{spacing}</More>
         </>
+      )}
+
+      {/* ---- Every other component ---- */}
+      {node && !['button', 'heading', 'text', 'section'].includes(node.kind) && (
+        <KindFields node={node} set={set} theme={theme} catalog={catalog} />
       )}
 
       {node && (
