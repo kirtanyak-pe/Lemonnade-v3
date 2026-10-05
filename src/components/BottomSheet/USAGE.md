@@ -31,7 +31,16 @@ Don't use it for:
 - A sheet that ends in a decision can still offer a *Cancel* / *Not now* button in its dock (a `secondary` or `ghost`
   button next to the main action) — that's an action, not a close control.
 
-## 3. Anatomy (Figma properties → props)
+## 3. Stacking & the back button
+
+- **At most 2 sheets at a time:** the first over the screen, and one on top of it. **Never a third** — replace the
+  second sheet's content (or close it first) instead. `BottomSheet` warns in development when a third opens.
+- **The first sheet has no back button.** Don't pass `onBack` to it — inside a modal `BottomSheet` the header hides
+  it on the first sheet (with a development warning).
+- **The second sheet has a back button** (`onBack`) that closes it and returns to the first sheet, e.g. an explainer
+  opened from the first sheet's ⓘ, or a sub-step. Its backdrop tap and drag close only that second sheet.
+
+## 4. Anatomy (Figma properties → props)
 
 | Figma | Prop | Notes |
 |---|---|---|
@@ -49,21 +58,21 @@ Don't use it for:
 | isSmall | `size` `'sm' \| 'lg'` | |
 | ✏️ Heading | `heading` (+ `headingId` for `aria-labelledby`) | both |
 | 👁️ / ✏️ Description | `description` | both |
-| 👁️ Back button | `onBack` | sm — only when the sheet has steps (go back a step, not close) |
+| 👁️ Back button | `onBack` | sm — **only on a second sheet stacked on another**; never on the first sheet (see 3) |
 | 👁️ info | `info`, `onInfo`, `infoLabel` | sm |
 | 👁️ Action - right · right slot | `trailing` | sm — one small `ghost` icon `Button` or a `Tag` (Figma's preferred values). Never a ✕. |
 | 👁️ Content bottom | `bottom` | sm — flat `Tabs` or search that belong to the sheet go here, not in the body |
 | 👁️ H-Icon · H-Icon | `icon` | lg — 64px icon |
 | 👁️ header tag | `tag` | lg — `<Tag size="sm">` |
 
-## 4. Which header
+## 5. Which header
 
 | Header | Use for |
 |---|---|
 | `sm` *(default)* | Tasks and choices: order entry, sort, filters, settings |
 | `lg` | Results and confirmations: *Order placed*, *KYC complete* — icon, optional tag, heading, description |
 
-## 5. Content & placement
+## 6. Content & placement
 
 - One dock per sheet (`footer`). The main action follows `Button/USAGE.md` (one strong button).
 - Keep sheets short; if the content needs more than about one screen of scrolling, use a new screen.
@@ -105,6 +114,12 @@ Don't use it for:
   footer={<ButtonGroup aria-label="Done"><Button onClick={closeDone}>Done</Button></ButtonGroup>}
 />
 
+// Second sheet stacked on the first: the only place a back button appears (max 2 sheets)
+<BottomSheet open={explainerOpen} onClose={closeExplainer} aria-labelledby="types-heading"
+  header={<BottomSheetHeader headingId="types-heading" heading="Order types" onBack={closeExplainer} />}>
+  …
+</BottomSheet>
+
 // Top sheet (drag up or tap outside to close)
 <BottomSheet open={sortOpen} onClose={closeSort} placement="top" aria-labelledby="sort-heading"
   header={<BottomSheetHeader headingId="sort-heading" heading="Sort by" />}>
@@ -117,4 +132,3 @@ Don't use it for:
 ## Open questions
 
 <!-- PENDING: maximum sheet height / when a sheet should become a full screen -->
-<!-- PENDING: can a sheet open another sheet (stacked), or should it replace itself? -->

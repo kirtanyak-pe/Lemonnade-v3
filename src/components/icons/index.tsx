@@ -1,5 +1,5 @@
 // Icons used inside the components — Material Symbols Rounded (wght 400 · GRAD 0 · opsz 24) from
-// src/icons/material, rendered as masks so they take the surrounding text colour and fill their slot.
+// src/icons/material, rendered as masks so they take the surrounding text color and fill their slot.
 // For anything else, import from '../icons/material' and use <Icon>.
 import { MaskIcon } from '../MaskIcon'
 import {

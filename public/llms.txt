@@ -1,0 +1,55 @@
+# Lemonnade V3 (L3) design system
+
+> React + TypeScript components and design tokens for Lemonn, CS Pro and Kuber — mobile-first trading apps. Build UI only from these components and `--l3-*` tokens; read the rules first.
+
+Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/ · Everything in one file: llms-full.txt
+
+## Rules
+
+- [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
+- [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
+- [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.
+
+## Foundations
+
+- [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
+- [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
+- [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+- [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+- [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
+- [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
+- [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
+
+## Components · Action
+
+- [Button](agent-docs/button.md): Buttons let people take an action, confirm a choice or move forward in a flow.
+- [Button dock](agent-docs/button-group.md): A bar at the bottom of a screen or sheet that holds its main actions — stacked full-width, or side by side.
+
+## Components · Input & control
+
+- [Checkbox & radio](agent-docs/checkbox.md): Checkboxes pick any number of options; radios pick exactly one from a group.
+- [Input field & text box](agent-docs/text-field.md): Fields let people enter text — a single line (input field) or several lines with a character counter (text box).
+- [Toggle switch](agent-docs/switch.md): Switches turn a single setting on or off, and take effect immediately.
+
+## Components · Navigation
+
+- [Tabs](agent-docs/tabs.md): Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what's shown, and a pill group switches how content is shown.
+- [Actionbar](agent-docs/actionbar.md): The bar at the top of a screen: back, the screen title with an optional description, and up to a couple of actions — or a search field.
+- [Bottom navbar](agent-docs/bottom-navbar.md): The tab bar at the bottom of the app for moving between its main sections. Mutual Fund and F&O have their own sub-navs with a Home item back to the main bar.
+
+## Components · Surfaces
+
+- [Card](agent-docs/card.md): A surface that groups related content. Clickable cards are one tap target; static cards just show information.
+- [Bottom sheet](agent-docs/bottom-sheet.md): A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.
+
+## Components · Feedback & status
+
+- [Aerobar & toast](agent-docs/aerobar.md): A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.
+- [Empty state](agent-docs/empty-state.md): What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.
+
+## Components · Data display
+
+- [List cell](agent-docs/list-cell.md): A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
+- [Tag](agent-docs/tag.md): Tags label, categorise or show the status of something in a compact form.
+

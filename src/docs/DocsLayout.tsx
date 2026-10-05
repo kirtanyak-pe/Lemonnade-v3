@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { defaultPageId, navGroups, pages } from './pages'
+import { defaultPageId, navGroups, pages, progressOf } from './pages'
+import { Icon } from '../components/Icon'
+import { Tag } from '../components/Tag'
+import { msCheckCircleFill } from '../icons/material'
 import { DocPageView } from './DocPageView'
 import { BrandLogo } from '../components/BrandLogo'
 import { BuildPage } from '../build/BuildPage'
 import { Search } from './Search'
 import { ThemeControls } from './ThemeControls'
+import { ProductChooser } from './ProductChooser'
 import { href, useHashRoute } from './useHashRoute'
 import styles from './Docs.module.css'
 
@@ -41,9 +45,18 @@ export function DocsLayout() {
     }
   }, [railOpen])
 
-  // New page: jump to top, update the tab title.
+  // New page: jump to top, update the tab title, and keep the current page visible in the sidebar.
   useEffect(() => {
     window.scrollTo(0, 0)
+    // Desktop only: on small screens the sidebar is a closed drawer.
+    if (matchMedia('(min-width: 901px)').matches) {
+      const rail = railRef.current
+      const current = rail?.querySelector<HTMLElement>('a[aria-current="page"]')
+      if (rail && current) {
+        const top = current.offsetTop - rail.offsetTop
+        if (top < rail.scrollTop || top + current.offsetHeight > rail.scrollTop + rail.clientHeight) rail.scrollTo({ top: top - rail.clientHeight / 3 })
+      }
+    }
     document.title = isBuild ? 'Build · L3 Design System' : `${page.title} · L3 Design System`
   }, [page, isBuild])
 
@@ -56,6 +69,7 @@ export function DocsLayout() {
           Skip to content
         </a>
       )}
+      <ProductChooser />
       <header className={styles.header}>
         <button
           ref={menuRef}
@@ -111,9 +125,15 @@ export function DocsLayout() {
                           className={styles.navItem}
                           href={href(p.id)}
                           aria-current={p === page ? 'page' : undefined}
+                          data-retired={progressOf(p) === 'discarded' || progressOf(p) === 'replaced' || undefined}
                           onClick={() => setRailOpen(false)}
                         >
-                          {p.title}
+                          <span className={styles.navLabel}>{p.title}</span>
+                          {progressOf(p) === 'done' && <Icon icon={msCheckCircleFill} size={16} label="Completed" className={styles.navDone} />}
+                          {progressOf(p) === 'wip' && <Tag variant="secondary" color="warning" size="sm">WIP</Tag>}
+                          {progressOf(p) === 'next-wip' && <Tag variant="secondary" color="processing" size="sm">Next</Tag>}
+                          {progressOf(p) === 'discarded' && <Tag variant="secondary" color="neutral" size="sm">Discarded</Tag>}
+                          {progressOf(p) === 'replaced' && <Tag variant="secondary" color="neutral" size="sm">Replaced</Tag>}
                         </a>
                       </li>
                     ))}

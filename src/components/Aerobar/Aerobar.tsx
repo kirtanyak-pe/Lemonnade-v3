@@ -9,7 +9,7 @@ export type AerobarType = 'primary' | 'discover' | 'danger' | 'success' | 'warni
 export type AerobarProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   /** Figma Type. */
   type?: AerobarType
-  /** Figma isPrimary: `primary` is the solid colour, `secondary` (default) the light tint. */
+  /** Figma isPrimary: `primary` is the solid color, `secondary` (default) the light tint. */
   emphasis?: 'primary' | 'secondary'
   /** Figma isFloating: a rounded, shadowed card inset 16px (a toast) instead of a full-width strip. */
   floating?: boolean

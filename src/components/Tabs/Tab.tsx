@@ -1,10 +1,15 @@
 import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import styles from './Tabs.module.css'
 
-/** Figma "L3: base tab" (node 4543:65889). Figma isChip → `appearance="pill"`, isSmall → `size="sm"`. */
+/** Figma "L3: base tab" (node 4543:65889). Figma isPill → `appearance="pill"`, Type → `emphasis`, isSmall → `size="sm"`. */
 export type TabAppearance = 'underline' | 'pill'
-/** Figma isPrimary: how a selected pill looks — filled (primary) or outlined (secondary). Underline tabs are always primary. */
-export type TabEmphasis = 'primary' | 'secondary'
+/**
+ * Figma Type: the chip style of a whole row (never mix styles in one row). Underline tabs are always primary.
+ * primary — selected black fill · unselected light border
+ * secondary — selected dark outline · unselected light border
+ * tertiary — selected black fill · unselected subtle fill, no border
+ */
+export type TabEmphasis = 'primary' | 'secondary' | 'tertiary'
 export type TabSize = 'md' | 'sm'
 
 export type TabProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'role'> & {
@@ -69,8 +74,7 @@ export function Tab({
       {iconLeft && <span className={styles.icon}>{iconLeft}</span>}
       {!iconOnly && (
         <span className={styles.label}>
-          {/* data-label reserves the bold (selected) width so tabs don't shift when selection changes. */}
-          <span className={styles.labelText} data-label={children}>{children}</span>
+          <span className={styles.labelText}>{children}</span>
           {showSub && <span className={styles.subLabel}>{subLabel}</span>}
         </span>
       )}

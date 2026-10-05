@@ -40,7 +40,7 @@
   --tag-height: var(--l3-size-16);
   --tag-padding-inline: var(--l3-spacing-04);
   --tag-label-padding: var(--l3-spacing-02);
-  --tag-font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
+  --tag-font: var(--l3-text-label-10); /* L3/Label/10 · 650 */
   --tag-icon-size: var(--l3-icon-size-12);
 }
 
@@ -48,7 +48,7 @@
   --tag-height: var(--l3-size-20);
   --tag-padding-inline: var(--l3-spacing-02);
   --tag-label-padding: var(--l3-spacing-04);
-  --tag-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  --tag-font: var(--l3-text-label-12); /* L3/Label/12 · 650 */
   --tag-icon-size: var(--l3-icon-size-16);
 }
 
@@ -56,7 +56,7 @@
   --tag-height: var(--l3-size-24);
   --tag-padding-inline: var(--l3-spacing-04);
   --tag-label-padding: var(--l3-spacing-02);
-  --tag-font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  --tag-font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
   --tag-icon-size: var(--l3-icon-size-18);
 }
 
@@ -80,6 +80,7 @@
 
 .tag[data-color='success'] {
   --tag-solid: var(--l3-surface-accent-success-default);
+  --tag-on-solid: var(--l3-static-white); /* Figma: white on solid success, like profit / loss */
   --tag-soft: var(--l3-surface-accent-success-light);
   --tag-soft-border: var(--l3-border-accent-success-light);
   --tag-soft-content: var(--l3-content-accent-success-default);
@@ -87,6 +88,7 @@
 
 .tag[data-color='error'] {
   --tag-solid: var(--l3-surface-accent-error-default);
+  --tag-on-solid: var(--l3-static-white); /* Figma: white on solid error */
   --tag-soft: var(--l3-surface-accent-error-light);
   --tag-soft-border: var(--l3-border-accent-error-light);
   --tag-soft-content: var(--l3-content-accent-error-default);

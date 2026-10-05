@@ -1,0 +1,338 @@
+/* Component variant tree — tokens only (1px hairlines are the one literal). */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+
+/*
+ * Toolbar above the tree: page controls on the left, Expand all / Collapse all on the right.
+ * With controls it's an outlined bar; with only the button it stays a bare right-aligned row.
+ */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--l3-spacing-08) var(--l3-spacing-16);
+}
+
+.toolbar:has(.controls) {
+  padding: var(--l3-spacing-08) var(--l3-spacing-08) var(--l3-spacing-08) var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.controls {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--l3-spacing-08) var(--l3-spacing-24);
+  min-width: 0;
+}
+
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.tree {
+  position: relative;
+  display: grid;
+  align-items: start;
+  row-gap: var(--l3-spacing-40);
+  column-gap: var(--l3-spacing-24);
+  min-width: calc(var(--l3-size-128) * 7);
+  padding: var(--l3-spacing-32) var(--l3-spacing-24);
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.line {
+  fill: none;
+  stroke: var(--l3-border-intense);
+  stroke-width: var(--l3-spacing-02);
+  stroke-dasharray: var(--l3-spacing-06) var(--l3-spacing-04);
+  transition: stroke var(--l3-motion-duration-short) var(--l3-motion-easing-standard), opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.tree[data-has-active] .line {
+  opacity: var(--l3-opacity-25);
+}
+
+.tree[data-has-active] .line[data-lit] {
+  opacity: 1;
+  stroke: var(--l3-content-primary);
+}
+
+/* ---- Root ------------------------------------------------------------------------------------------- */
+
+.rootRow {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  min-width: var(--l3-size-128);
+  padding: var(--l3-spacing-08) var(--l3-spacing-24);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-inverted);
+}
+
+.rootTitle {
+  font: var(--l3-text-heading-16);
+  color: var(--l3-content-inverted);
+}
+
+.rootNote {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-inverted-secondary);
+}
+
+/* ---- Branch columns --------------------------------------------------------------------------------- */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.branch,
+.group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.branch {
+  align-items: center;
+  min-width: var(--l3-size-128);
+  text-align: center;
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) var(--l3-border-dark);
+}
+
+.branchTitle {
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+.branchNote,
+.groupNote {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
+}
+
+.groupTitle {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+}
+
+/* Group boxes are buttons: tap to collapse / expand their leaves. */
+.group {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  min-height: var(--l3-size-tap-target);
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.groupText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+}
+
+.groupChevron {
+  flex: none;
+  color: var(--l3-content-secondary);
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* Chevron points up while expanded (tap to collapse), down while collapsed (tap to expand). */
+.group[aria-expanded='true'] .groupChevron {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .group:hover .groupChevron {
+    color: var(--l3-content-primary);
+  }
+}
+
+.children[hidden] {
+  display: none;
+}
+
+/* Children hang to the right of their parent's spine (the spine runs 16px in from the parent's left). */
+.children {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  margin: var(--l3-spacing-16) 0 0;
+  padding: 0 0 0 var(--l3-spacing-32);
+  list-style: none;
+}
+
+.column > .children {
+  padding-left: var(--l3-spacing-32);
+}
+
+/* Phone-width components shown at half size (zoom shrinks layout too, so no empty space is left). */
+.mini {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.miniInner {
+  flex: none;
+  width: calc(var(--l3-size-40) * 9);
+  zoom: 0.5;
+}
+
+/* ---- Leaves (live examples) ------------------------------------------------------------------------- */
+
+.leaf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--l3-size-56);
+  padding: var(--l3-spacing-08);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+}
+
+.leafText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+}
+
+.leafLabel {
+  font: var(--l3-text-label-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+}
+
+/* largeText: nothing in the tree below 14px. */
+.wrap[data-large-text] :is(.rootNote, .branchNote, .groupNote, .leafNote) {
+  font: var(--l3-text-description-14);
+}
+
+.wrap[data-large-text] .groupTitle {
+  font: var(--l3-text-heading-14);
+}
+
+.wrap[data-large-text] .leafLabel {
+  font: var(--l3-text-label-14);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* inlineNotes: label left, note right, one row. */
+.leafText[data-inline] {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.leafText[data-inline] .leafNote {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.leafNote {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.tree[data-has-active] :is(.root, .branch, .group, .leaf) {
+  opacity: var(--l3-opacity-40);
+}
+
+.tree[data-has-active] :is(.root, .branch, .group, .leaf)[data-lit] {
+  opacity: 1;
+}
+
+.tree[data-has-active] :is(.group, .leaf)[data-lit] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-dark);
+}
+
+:is(.root, .branch, .group, .leaf):focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .groupChevron,
+  .line,
+  .branch,
+  .group,
+  .leaf {
+    transition: none;
+  }
+}
+
+/* ---- Phones: one column, branches stacked under the root ------------------------------------------- */
+
+@media (max-width: 720px) {
+  .tree {
+    grid-template-columns: minmax(0, 1fr) !important; /* overrides the per-tree column count */
+    row-gap: var(--l3-spacing-24);
+    min-width: 0;
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+  .rootRow {
+    justify-content: flex-start;
+  }
+
+  /* Room for the root's spine on the left of each branch. */
+  .column {
+    padding-left: var(--l3-spacing-32);
+  }
+
+  .children,
+  .column > .children {
+    padding-left: var(--l3-spacing-24);
+  }
+}

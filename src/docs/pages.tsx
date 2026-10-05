@@ -17,8 +17,8 @@ import { EmptyStateVariants } from '../preview/EmptyStateVariants'
 import { BrandLogoVariants } from '../preview/BrandLogoVariants'
 import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
-import { ColorsPreview } from '../preview/ColorsPreview'
-import { TypographyPreview } from '../preview/TypographyPreview'
+import { ColorsPage } from './colors/ColorsPage'
+import { TypographyPage } from './typography/TypographyPage'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
@@ -26,6 +26,18 @@ import { IconsBrowserLazy } from './IconsBrowserLazy'
 import { HomePage } from './HomePage'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
+
+/** Lifecycle: explicit `progress`, else done for Figma-synced pages. */
+export const progressOf = (p: DocPage) => p.progress ?? (p.status === 'Figma synced' ? 'done' : undefined)
+
+/** Header tag for each lifecycle state (Tag colors: success = finished, warning = in progress, processing = ongoing). */
+export const progressTags = {
+  done: { label: 'Completed', color: 'success' },
+  wip: { label: 'WIP', color: 'warning' },
+  'next-wip': { label: 'Next version WIP', color: 'processing' },
+  discarded: { label: 'Not in use · Discarded', color: 'neutral' },
+  replaced: { label: 'Replaced', color: 'neutral' },
+} as const
 
 const FIGMA_FILE = 'https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/'
 export const figmaUrl = (nodeId: string) => `${FIGMA_FILE}?node-id=${nodeId.replace(':', '-')}`
@@ -44,20 +56,23 @@ export const pages: DocPage[] = [
   // ---- Foundations --------------------------------------------------------
   {
     id: 'colors',
+    progress: 'done',
     title: 'Colors',
     group: 'Foundations',
-    description: 'Theme tokens from the Figma "🎨 L3 → Theme" collection. Switch product and mode in the header to see every theme.',
-    content: <ColorsPreview />,
+    description: 'How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).',
+    content: <ColorsPage />,
   },
   {
     id: 'typography',
+    progress: 'wip',
     title: 'Typography',
     group: 'Foundations',
-    description: 'The 42 Manrope text styles from Figma, each available as a single font token.',
-    content: <TypographyPreview />,
+    description: 'Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.',
+    content: <TypographyPage />,
   },
   {
     id: 'spacing',
+    progress: 'done',
     title: 'Spacing & radius',
     group: 'Foundations',
     description: 'Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.',
@@ -66,6 +81,7 @@ export const pages: DocPage[] = [
 
   {
     id: 'icons',
+    progress: 'done',
     title: 'Icons',
     group: 'Foundations',
     description: 'The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.',
@@ -79,7 +95,7 @@ import { msWallet, msWalletFill } from './icons/material'
 <Icon icon={msWallet} size={24} />            // decorative
 <Icon icon={msWalletFill} label="Wallet" />    // meaningful → announced
 <Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`}</code></pre>
-          <p>Only the icons you import end up in the app. Colour comes from the surrounding text colour; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
+          <p>Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
         </section>
         <IconsBrowserLazy />
       </>
@@ -108,8 +124,8 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>Use the full logo where there's room: headers, splash, sign-in. Use the mark (<code>variant="icon"</code>) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p>
         </section>
         <section className={styles.section}>
-          <h2>Colours stay on brand</h2>
-          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand colour, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
+          <h2>Colors stay on brand</h2>
+          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
@@ -138,7 +154,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4471:29225',
     source: 'src/components/Button',
     exports: ['Button'],
-    tokens: ['component/button/*', 'state-layer/*', 'text-bold-16 · 14', 'text-semibold-12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
+    tokens: ['component/button/*', 'state-layer/*', 'text-heading-14 · 16', 'text-label-12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Order ticket using Buy and Sell buttons">
@@ -146,7 +162,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Types</h2>
-          <p>Seven types. Buy and Sell carry trade actions; Brand follows the product colour (Lemonn lime, CS PRO gold, Kuber green).</p>
+          <p>Seven types. Buy and Sell carry trade actions; Brand follows the product color (Lemonn lime, CS PRO gold, Kuber green).</p>
           <div className={styles.demoRow}>
             {buttonVariants.map((v) => (
               <Button key={v} variant={v} size="md">{v[0].toUpperCase() + v.slice(1)}</Button>
@@ -188,7 +204,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma State=🚫 Disabled.' },
       { name: 'children', type: 'ReactNode', description: 'The label (Figma 👁️ Label). Leave it out for an icon button: then pass exactly one icon and aria-label.' },
       { name: 'aria-label', type: 'string', description: 'Required for an icon button (no label). Names the action, e.g. "Share".' },
-      { name: 'iconLeft', type: 'ReactNode', description: 'Figma icon-l slot, sized and coloured by the button.' },
+      { name: 'iconLeft', type: 'ReactNode', description: 'Figma icon-l slot, sized and colored by the button.' },
       { name: 'iconRight', type: 'ReactNode', description: 'Figma icon-r slot.' },
       { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Stretch to the container width.' },
       { name: '…button props', type: 'ButtonHTMLAttributes', description: 'onClick, type (defaults to "button"), aria-*, etc.' },
@@ -277,7 +293,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66091',
     source: 'src/components/TextField',
     exports: ['TextField'],
-    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-medium-12 · 14', 'text-semibold-12', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
+    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-label-12', 'text-description-12 · 14', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
     overview: (
       <>
         <PhoneFrame label="Buy order form with quantity, limit price, note and a disabled exchange field">
@@ -343,13 +359,13 @@ import { msWallet, msWalletFill } from './icons/material'
     id: 'tabs',
     title: 'Tabs',
     group: 'Navigation',
-    description: 'Tabs switch between related views on the same screen. Underline tabs split a page into sections; pill tabs filter what\'s shown.',
+    description: 'Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what\'s shown, and a pill group switches how content is shown.',
     status: 'Figma synced',
-    altNames: 'Tab bar, segmented control, chips, filter pills',
+    altNames: 'Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher',
     figmaNodeId: '4543:65938',
     source: 'src/components/Tabs',
     exports: ['Tabs', 'Tab'],
-    tokens: ['content/primary · secondary · inverted', 'surface/primary · inverted', 'border/light · dark', 'state-layer/*', 'text-semibold-10 · 12 · 14', 'text-extrabold-12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
+    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'text-label-08 · 10 · 12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Portfolio screen with underline section tabs and pill filters">
@@ -357,11 +373,19 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Two components</h2>
-          <p><strong>Tabs</strong> (Figma "L3: Tabs") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. <strong>Tab</strong> (Figma "L3: base tab") is one item, in underline or pill form, md or sm.</p>
+          <p><strong>Tabs</strong> (Figma "L3: Tabs group") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. <strong>Tab</strong> (Figma "L3: base tab") is one item, in underline or pill form, md or sm.</p>
         </section>
         <section className={styles.section}>
-          <h2>No layout shift</h2>
-          <p>Selected underline tabs switch to the extrabold style. Each tab reserves that bolder width up front, so neighbouring tabs don't move when the selection changes.</p>
+          <h2>Three appearances</h2>
+          <ul>
+            <li><strong>underline</strong> (Figma Flat tabs) — sections of a screen; at the top they go in the Actionbar's bottom slot.</li>
+            <li><strong>pill</strong> (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.</li>
+            <li><strong>pill-group</strong> (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.</li>
+          </ul>
+        </section>
+        <section className={styles.section}>
+          <h2>Same label, selected or not</h2>
+          <p>Every tab label uses Label (650) — 14 for md, 12 for sm underline tabs, 12 / 10 for pills. Selection shows through the text color and the indicator bar (or the pill fill), never a bolder weight, so tabs never shift when the selection changes.</p>
         </section>
       </>
     ),
@@ -370,12 +394,13 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'items', type: 'TabItem[]', description: 'Tabs: { value, label, iconLeft?, iconRight?, subLabel?, hideLabel? }.' },
       { name: 'value', type: 'string', description: 'Tabs: the selected item value.' },
       { name: 'onChange', type: '(value) => void', description: 'Tabs: called on tap and on arrow / Home / End keys.' },
-      { name: 'appearance', type: "'underline' | 'pill'", default: "'underline'", description: 'Figma isPill (Tabs) / isChip (base tab).' },
-      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'primary'", description: 'Figma isPrimary: selected pill filled (primary) or outlined (secondary).' },
+      { name: 'appearance', type: "'underline' | 'pill' | 'pill-group'", default: "'underline'", description: 'Figma Tabs group Type: Flat tabs / Pill tabs / Pill group. A Tab alone takes underline | pill (Figma isPill).' },
+      { name: 'emphasis', type: "'primary' | 'secondary' | 'tertiary'", default: "'primary'", description: 'Figma base tab Type, appearance="pill" only (pill-group is always tertiary) — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: underline 40 / 36, pill 32 / 24.' },
+      { name: 'width', type: "'hug' | 'fill'", default: "'hug'", description: 'Tabs: hug = tabs as wide as their labels (a pill group\'s track wraps them); fill = tabs stretch to fill the row (a pill group goes full width with equal pills).' },
       { name: 'aria-label', type: 'string', description: 'Tabs: required name for the tab list.' },
       { name: 'idPrefix', type: 'string', description: 'Tabs: sets tab ids / aria-controls so panels can be linked.' },
-      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, coloured with the label.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma icon slots, 16px, colored with the label.' },
       { name: 'subLabel', type: 'string', description: 'Figma 👁️ Sub label: a second 8/10 line under the label. Chip (pill) tabs only.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only tab. Needs one icon; the label stays as its accessible name.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Tab only, when composing tabs yourself.' },
@@ -392,7 +417,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65480',
     source: 'src/components/Actionbar',
     exports: ['Actionbar', 'ActionbarAction'],
-    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-extrabold-14', 'text-medium-12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
+    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-heading-14', 'text-description-12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an actionbar: back, title, search and watchlist actions, and tabs underneath">
@@ -430,7 +455,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:61961',
     source: 'src/components/BottomNavbar',
     exports: ['BottomNavbar', 'NavIcon', 'navIconNames'],
-    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-semibold-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
+    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-label-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
     overview: (
       <>
         <PhoneFrame label="App home screen with the bottom navbar: tap Mutual Fund or F&O to open their sub-navs, and Home to come back">
@@ -446,7 +471,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Nav icons</h2>
-          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one colour, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colours, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
+          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
@@ -467,6 +492,7 @@ import { msWallet, msWalletFill } from './icons/material'
   },
   {
     id: 'card',
+    progress: 'wip',
     title: 'Card',
     group: 'Surfaces',
     description: 'A surface that groups related content. Clickable cards are one tap target; static cards just show information.',
@@ -520,7 +546,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:63932',
     source: 'src/components/BottomSheet',
     exports: ['BottomSheet', 'BottomSheetHeader', 'BottomSheetSurface'],
-    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-extrabold-18 · 20', 'text-semibold-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
+    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-heading-16 · 20', 'text-description-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Stock screen that opens an order bottom sheet, a result sheet and a top sheet">
@@ -533,6 +559,10 @@ import { msWallet, msWalletFill } from './icons/material'
         <section className={styles.section}>
           <h2>Closing is invisible</h2>
           <p>There is no drag handle and no ✕. People close a sheet by <strong>tapping the backdrop</strong> or <strong>dragging it down</strong> — anywhere on the sheet: the header and footer always, the content once it's scrolled to the top (before that, a swipe scrolls the content). Esc also closes it, and a visually hidden “Close” button is there for screen-reader and keyboard users. The page behind the sheet is inert while it's open.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>At most two sheets</h2>
+          <p>The first sheet over a screen has <strong>no back button</strong>. A second sheet can open on top of it (e.g. an explainer from the ⓘ) — that one has a back button that returns to the first. Never stack a third: replace the second sheet instead. Try the ⓘ on the Buy sheet above.</p>
         </section>
         <section className={styles.section}>
           <h2>Bottom or top</h2>
@@ -555,7 +585,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'Header: heading / description', type: 'string', description: 'Heading text and optional description.' },
       { name: 'Header: info', type: 'boolean | ReactNode', default: 'false', description: 'sm: ⓘ after the heading (decorative on its own).' },
       { name: 'Header: onInfo / infoLabel', type: "() => void / string", default: "'More information'", description: 'sm: makes the ⓘ a real, labelled button.' },
-      { name: 'Header: onBack / trailing', type: '() => void / ReactNode', description: 'sm actions: back button, or any right-side node (Tag, small Button). There is no close (✕) button.' },
+      { name: 'Header: onBack / trailing', type: '() => void / ReactNode', description: 'sm actions: back button — only on a second sheet stacked on another (hidden on the first sheet over the screen) — or any right-side node (Tag, small Button). There is no close (✕) button.' },
       { name: 'Header: bottom', type: 'ReactNode', description: 'sm: Figma "Content bottom" slot under the header row — e.g. flat Tabs or a search field. Put them here, not as a separate row in the sheet body.' },
       { name: 'Header: icon / tag', type: 'ReactNode', description: 'lg: 64px icon slot and a header tag.' },
     ],
@@ -571,7 +601,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65562',
     source: 'src/components/Aerobar',
     exports: ['Aerobar'],
-    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-semibold-14', 'text-medium-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
+    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-label-14', 'text-description-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an inline warning aerobar and floating success or danger toasts">
@@ -592,18 +622,18 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Soft or solid</h2>
-          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid colour (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
+          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
         </section>
       </>
     ),
     variants: <AerobarVariants />,
     props: [
       { name: 'type', type: "'primary' | 'discover' | 'danger' | 'success' | 'warning'", default: "'primary'", description: 'Figma Type.' },
-      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'secondary'", description: 'Figma isPrimary: solid colour (primary) or light tint (secondary).' },
+      { name: 'emphasis', type: "'primary' | 'secondary'", default: "'secondary'", description: 'Figma isPrimary: solid color (primary) or light tint (secondary).' },
       { name: 'floating', type: 'boolean', default: 'false', description: 'Figma isFloating: toast card with shadow and a rise-in animation.' },
       { name: 'heading / paragraph', type: 'ReactNode', description: 'Figma Headline text / Paragraph text (hidden when not passed).' },
       { name: 'icon', type: 'ReactNode | false', default: 'info icon', description: 'Figma icon-L slot (24px); false hides it.' },
-      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small Ghost button in a 48px slot; its label follows the bar colour.' },
+      { name: 'action', type: '{ label, onClick }', description: 'Figma Action-r: small Ghost button in a 48px slot; its label follows the bar color.' },
     ],
   },
 
@@ -618,7 +648,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66488',
     source: 'src/components/EmptyState',
     exports: ['EmptyState', 'NoResultsIllustration'],
-    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-extrabold-16', 'text-semibold-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
+    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-heading-16', 'text-label-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
     overview: (
       <>
         <PhoneFrame label="Stock search with no matches: the empty state with a Clear button">
@@ -630,7 +660,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Illustration</h2>
-          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand colour. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
+          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
         </section>
         <section className={styles.section}>
           <h2>Layout and accessibility</h2>
@@ -657,7 +687,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65400',
     source: 'src/components/ListCell',
     exports: ['ListCell'],
-    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-semibold-14 · 16', 'text-medium-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-label-14 · 16', 'text-description-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
     overview: (
       <>
         <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
@@ -695,7 +725,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4464:27218',
     source: 'src/components/Tag',
     exports: ['Tag'],
-    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-semibold-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
+    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-label-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
     overview: (
       <>
         <PhoneFrame label="Watchlist using tags for exchange, segment and price change">
@@ -719,7 +749,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'color', type: "'neutral' | 'profit' | 'loss' | 'success' | 'error' | 'warning' | 'discover' | 'processing' | 'indigo' | 'teal' | 'purple' | 'zing'", default: "'neutral'", description: 'Figma Color. profit / loss = indicator up / down (price moves, P&L); success / error = outcomes; processing = orange. v1 names green, red, yellow, orange still work (→ success, error, warning, processing).' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'sm'", description: 'Figma Size: 16, 20, 24.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma Type=Disabled; overrides variant and color.' },
-      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and coloured by the tag.' },
+      { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and colored by the tag.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only (square) tag. Needs one icon; children stay as the screen-reader text.' },
     ],
   },

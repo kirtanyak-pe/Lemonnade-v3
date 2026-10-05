@@ -15,7 +15,7 @@ export type IconProps = {
 
 /**
  * Material Symbols Rounded (wght 400 · GRAD 0 · opsz 24) as a mask, so it takes the current
- * text colour — set `color` (ideally a token) on it or a parent to recolour.
+ * text color — set `color` (ideally a token) on it or a parent to recolor.
  */
 export function Icon({ icon, size = 24, label, className }: IconProps) {
   return (

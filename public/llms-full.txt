@@ -1,0 +1,2830 @@
+# Lemonnade V3 (L3) design system
+
+> React + TypeScript components and design tokens for Lemonn, CS Pro and Kuber — mobile-first trading apps. Build UI only from these components and `--l3-*` tokens; read the rules first.
+
+Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/ · Everything in one file: llms-full.txt
+
+## Rules
+
+- [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
+- [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
+- [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.
+
+## Foundations
+
+- [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
+- [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
+- [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+- [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+- [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
+- [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
+- [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
+
+## Components · Action
+
+- [Button](agent-docs/button.md): Buttons let people take an action, confirm a choice or move forward in a flow.
+- [Button dock](agent-docs/button-group.md): A bar at the bottom of a screen or sheet that holds its main actions — stacked full-width, or side by side.
+
+## Components · Input & control
+
+- [Checkbox & radio](agent-docs/checkbox.md): Checkboxes pick any number of options; radios pick exactly one from a group.
+- [Input field & text box](agent-docs/text-field.md): Fields let people enter text — a single line (input field) or several lines with a character counter (text box).
+- [Toggle switch](agent-docs/switch.md): Switches turn a single setting on or off, and take effect immediately.
+
+## Components · Navigation
+
+- [Tabs](agent-docs/tabs.md): Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what's shown, and a pill group switches how content is shown.
+- [Actionbar](agent-docs/actionbar.md): The bar at the top of a screen: back, the screen title with an optional description, and up to a couple of actions — or a search field.
+- [Bottom navbar](agent-docs/bottom-navbar.md): The tab bar at the bottom of the app for moving between its main sections. Mutual Fund and F&O have their own sub-navs with a Home item back to the main bar.
+
+## Components · Surfaces
+
+- [Card](agent-docs/card.md): A surface that groups related content. Clickable cards are one tap target; static cards just show information.
+- [Bottom sheet](agent-docs/bottom-sheet.md): A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.
+
+## Components · Feedback & status
+
+- [Aerobar & toast](agent-docs/aerobar.md): A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.
+- [Empty state](agent-docs/empty-state.md): What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.
+
+## Components · Data display
+
+- [List cell](agent-docs/list-cell.md): A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
+- [Tag](agent-docs/tag.md): Tags label, categorise or show the status of something in a compact form.
+
+
+# Instructions for AI agents
+
+This repo is the **Lemonnade V3 (L3) design system**: React + TypeScript + Vite components in `src/components`,
+design tokens in `src/tokens`, and a docs site in `src/docs`. When you build UI here — a screen, a flow, a new
+component, or a Figma design — follow this file.
+
+## 1. Read before you build
+
+1. **`DESIGN_SYSTEM.md`** — spacing scale, layout primitives, token rules, card/actionbar rules, states, a11y,
+   theming, icons, responsive rules, Do/Don't.
+2. **`src/components/<Name>/USAGE.md`** for every component you use — which variant/size to pick, labels, placement,
+   states. (Written so far: `Button`, `ButtonGroup`, `BottomSheet`. For others, use the component's docs page / playground in `src/docs`.)
+3. The component's props (`src/components/<Name>/<Name>.tsx`). TypeScript enforces several rules — if a combination
+   doesn't compile, it's not allowed; don't cast around it.
+
+**Outside this repo** (Claude Design, ChatGPT, web agents): the same knowledge is published as plain text —
+`llms.txt` (index) and `llms-full.txt` (everything) on the docs site, generated by `npm run agent-docs` from the docs
+data, AGENTS.md, DESIGN_SYSTEM.md and the USAGE files. Edit those sources, never the generated files.
+
+Sections marked `PENDING` are **undecided**. Do not invent rules for them. If your task depends on one, stop and
+ask, or list it under "Open questions" in your answer.
+
+## 2. Non-negotiable rules
+
+- **Components first.** Use an existing component whenever one exists; never hand-roll a button, tab, card, sheet,
+  toast, field, etc. Don't restyle a component's internals — use its props.
+- **Tokens only.** No hex/rgb, raw px spacing, font sizes or shadows in styles. Only `--l3-*` variables (the one
+  accepted literal is `1px` for hairlines). Missing value → add it to `src/tokens/source/local.*.json`, run
+  `npm run tokens`, and say so.
+- **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
+  inside `@media (hover: hover)`.
+- **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
+- **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
+- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a select, stepper, chart,
+  skeleton), say so and ask — don't build a one-off lookalike inside a screen.
+
+Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
+- **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
+  usually in a dock; standalone actions like "View all" are `tertiary`; buttons in a dock / `ButtonGroup` are always
+  `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`.
+- **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
+  button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
+- **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
+- **BottomSheet:** no drag handle and no ✕ — it closes by tapping the backdrop or dragging the sheet down (the
+  component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
+  `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. At most 2 sheets stacked: the first sheet has
+  no back button, only a second sheet on top of it has one. Never open a third.
+- **Accent groups** (DESIGN_SYSTEM.md 3.1): Brand · Market indicators (profit/loss) · Status (success, warning, error,
+  discover, orange) · Sub-brands (us-stock, zing) · Miscellaneous (purple, indigo, teal — exceptional cases only).
+  Choose by meaning, never by look.
+- **Tag colors:** `profit` / `loss` for price moves, P&L and buy/sell side; `success` / `error` for outcomes (placed,
+  failed); `processing` for in-progress (open, pending); `warning`, `discover`, `zing` as named. Don't use the old
+  names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.
+- **Icon-only Tag / Tab:** `hideLabel` + exactly one icon; the label text is still required (it's the accessible name).
+  `subLabel` is for chip (pill) tabs only.
+- **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
+  `surface-secondary` (grey). Never fill a whole section grey.
+- **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
+  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow.
+
+## 3. Workflow for UI tasks
+
+1. **Plan first.** List the screens, what each contains, the transitions (push, bottom sheet, toast), the
+   components you'll use, and anything missing or `PENDING`. For more than one screen, show this plan before building.
+2. **Build.** Screens as React components (docs demos live in `src/docs/demos.tsx` and are registered in
+   `src/docs/pages.tsx`). Use real-looking content and cover empty / loading / error states.
+3. **Verify** before saying you're done:
+   - `npx tsc -b --noEmit` and `npm run build` pass.
+   - No raw colors in your CSS: `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' <your css>` returns nothing (except
+     `rgb(from var(--l3-…))`).
+   - Look at it at 360 / 392 / 412 in light and dark (`npm run dev`, then the docs page or demo).
+4. **Report** what you built, what you verified, and any rule you had to bend or any `PENDING` decision you hit.
+
+## 4. Figma work
+
+- **Figma → code:** `docs/figma-code-map.md` maps every Figma component and property to the React component and prop
+  (e.g. Button `Type=◻️ Primary, Size=Large` → `<Button variant="primary" size="lg">`). Use it when turning a design into code.
+
+- Use the **✅ Lemonnade V3** library (and **👁️ Lemonnade V3 → Icons**) — instances, variables and text/effect
+  styles, never raw values.
+- Put content into a component's **slots** (e.g. tabs in the Actionbar's `↓ Content bottom`), don't stack siblings.
+- Frames are 360 wide; Manrope via L3 text styles.
+
+## 5. Repo conventions
+
+- Every component change gets a release in `src/docs/changelog.ts` (semver per component).
+- Don't commit, push or publish unless asked. The public docs site (`npm run deploy:docs`) is only updated on
+  explicit request.
+
+---
+
+# Figma → code map
+
+How each component in the Figma library "✅ Lemonnade V3" (`lxQ6QIXGOv5mmx0khh5sJn`) maps to the React components in
+`src/components`. Use it to turn a Figma design into code: read the instance's component and properties, then write the
+matching JSX. (This stands in for Figma Code Connect, which needs an Organization/Enterprise plan.)
+
+Conventions: Figma `👁️ X` toggles = whether the prop is passed; `✏️ X` text = the prop's string; `↪ X` swaps = the icon
+passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants are never used.
+
+## Actions
+
+### L3: Button → `<Button>` (`components/Button`)
+| Figma | React |
+|---|---|
+| Type = ◻️ Primary · 🔲 Secondary · ⬜︎ Tertiary · Ghost · 🟨 Brand · 🟩 Buy · 🟥 Sell | `variant="primary" \| "secondary" \| "tertiary" \| "ghost" \| "brand" \| "buy" \| "sell"` |
+| Size = Large · Medium · Small | `size="lg" \| "md" \| "sm"` |
+| State = ♻︎ Loading | `loading` |
+| State = 🚫 Disabled | `disabled` |
+| ✏️ Label (👁️ Label on) | children |
+| 👁️ Label off (icon-only) | no children, one icon, `aria-label` required |
+| ↪ Icon-L / ↪ Icon-R (👁️ on) | `iconLeft` / `iconRight` |
+
+### L3: Button Dock → `<ButtonGroup>` (`components/ButtonGroup`)
+| Figma | React |
+|---|---|
+| Direction = ↓ Vertical · → Horizontal | `direction="vertical" \| "horizontal"` |
+| Scroll indicator | `scrollIndicator` |
+| wrapper (slot) | `<Button size="lg">` children; `aria-label` required |
+
+## Input & control
+
+### L3: input field & text Box → `<TextField>` (`components/TextField`)
+| Figma | React |
+|---|---|
+| ✏️ Label (👁️ Label) | `label` (always visible in practice) |
+| 👁️ Required | `required` |
+| ✏️ Placeholder text | `placeholder` |
+| ✏️ Input text | `value` / `defaultValue` |
+| ✏️ Helper text (Description) | `helperText` (Description-Icon → `helperIcon`) |
+| State = Error · Success | `status="error" \| "success"` |
+| State = Disabled | `disabled` |
+| State = Default · Typing · Typed | runtime states — no prop |
+| isInputBox = True | `multiline` (+ `maxLength` for the counter) |
+| ↪ Icon-L / ↪ Icon-R | `iconLeft` / `iconRight` |
+
+### L3→ Toggle switch → `<Switch>` (`components/Switch`)
+| Figma | React |
+|---|---|
+| ↔ On = True · False | `checked` / `defaultChecked` |
+| isSmall = True | `size="sm"` (default `md`) |
+| (no Figma variant) | `disabled` |
+
+### L3: Radio button & check box → `<Checkbox>` / `<Radio>` (`components/Checkbox`)
+| Figma | React |
+|---|---|
+| isRadio = False · True | `<Checkbox>` · `<Radio>` (radios share a `name`) |
+| 👆 State = selected | `checked` |
+| 👆 State = Intermediate | `indeterminate` (Checkbox only) |
+| Disabled = True | `disabled` |
+
+## Navigation
+
+### L3: Tabs group → `<Tabs>` (`components/Tabs`)
+| Figma | React |
+|---|---|
+| Type = Flat tabs · Pill tabs · Pill group | `appearance="underline" \| "pill" \| "pill-group"` |
+| wrapper (slot) of base tabs | `items={[{ value, label, … }]}`, `value`, `onChange`, `aria-label` |
+
+### L3: base tab → one item in `Tabs` `items` (or `<Tab>` when composing)
+| Figma | React |
+|---|---|
+| isPill = True | `appearance="pill"` (set on `Tabs`) |
+| Type = Primary · Secondary · Tertiary (pills) | `emphasis="primary" \| "secondary" \| "tertiary"` (set on `Tabs`; one style per row) |
+| isSmall = True | `size="sm"` (on `Tabs`) |
+| isSelected = True | that item's `value` is the `Tabs` `value` |
+| ✏️ label | item `label` |
+| 👁️ Label off | item `hideLabel: true` (+ one icon) |
+| ✏️ Sub label (👁️ Sub label) | item `subLabel` (pills only) |
+| ↪ icon - l / ↪ Icon - r | item `iconLeft` / `iconRight` |
+
+### L3: Actionbar → `<Actionbar>` (`components/Actionbar`)
+| Figma | React |
+|---|---|
+| 👁️ Action - left (back) | `onBack` |
+| Base actionbar content: Heading / Description | `title` / `description` |
+| Base actionbar content: Type = Search · Searched | `search={{ value, onChange, placeholder }}` |
+| → content right (slot) | `actions` — 1–2 `<ActionbarAction icon label onClick>` (Tertiary/Ghost style) |
+| ↓ Content bottom (slot) | `bottom` — e.g. `<Tabs>` |
+| Scrolled / elevated look | `sticky` or `elevated` |
+
+### L3: Bottom Navbar → `<BottomNavbar>` (`components/BottomNavbar`)
+| Figma | React |
+|---|---|
+| Tab = Stocks · Market · Portfolio · MF · F&O | `items` = main nav, `value` = selected item |
+| Tab = MF - Funds · MF - Dashboard · MF - SIPs | MF sub-nav `items` + `home` |
+| Tab = F&O - Option Chain · F&O - Positions · F&O - Scalper | F&O sub-nav `items` + `home` |
+| L3 → base navoption (internal) | one entry in `items` |
+
+## Surfaces
+
+### L3: Bottom sheet → `<BottomSheet>` (`components/BottomSheet`)
+| Figma | React |
+|---|---|
+| isBottom = True · False | `placement="bottom" \| "top"` |
+| 👁️ Header | `header={<BottomSheetHeader …/>}` |
+| content slot | children |
+| Utility slot | `utility` |
+| (dock under the content) | `footer={<ButtonGroup>…</ButtonGroup>}` |
+| L3: Overlay | built in (the backdrop) |
+| — | `open`, `onClose`, and a name (`aria-label` / `aria-labelledby`) |
+
+### L3: Bottom sheet header → `<BottomSheetHeader>`
+| Figma | React |
+|---|---|
+| ✏️ Heading | `heading` |
+| ✏️ Description (👁️) | `description` |
+| isSmall = True · False | `size="sm" \| "lg"` |
+| 👁️ Back button | `onBack` (second, stacked sheet only) |
+| H-Icon (👁️ H-Icon) | `icon` |
+| 👁️ header tag | `tag={<Tag …/>}` |
+| 👁️ info | `info` (+ `onInfo`) |
+| right slot (👁️ Action - right) | `trailing` |
+| Content bottom (👁️) | `bottom` — tabs or search |
+
+### Card → `<Card>` (`components/Card`) — code first, no Figma component yet
+
+## Feedback & status
+
+### L3: aerobar - toast → `<Aerobar>` (`components/Aerobar`)
+| Figma | React |
+|---|---|
+| Type = Primary · Discover · Danger · Success · Warning | `type="primary" \| "discover" \| "danger" \| "success" \| "warning"` |
+| isPrimary = True · False | `emphasis="primary" \| "secondary"` (solid · light tint) |
+| isFloating = True | `floating` (toast) |
+| Headline text (👁️ Heading) | `heading` |
+| Paragraph text (👁️ Paragraph) | `paragraph` |
+| icon-L (👁️ Icon-L) | `icon` (`false` hides it) |
+| 👁️ Action-r | `action` |
+
+### L3 → Empty state → `<EmptyState>` (`components/EmptyState`)
+| Figma | React |
+|---|---|
+| ✏️ Heading | `title` |
+| ✏️ Description | `description` |
+| Illustration (slot) | `illustration` (default artwork if omitted) |
+| (button under it) | `action` |
+
+## Data display
+
+### L3: list cell → `<ListCell>` (`components/ListCell`)
+| Figma | React |
+|---|---|
+| isPlain = True · False | `variant="plain" \| "card"` |
+| isSmall = True | `size="sm"` (default `md`) |
+| ✏️ Label · ✏️ Description | `label` · `description` |
+| Icon-l (👁️ Icon - L) | `iconLeft` |
+| icon-r (👁️ Icon - R) | `iconRight` (chevron) or `trailing` (switch, tag, value) |
+| 👁️ Dot-L · 👁️ Dot-R | `dotLeft` · `dotRight` (+ `dotLabel`) |
+| (tappable row) | `as="button"` + `onClick`, `href`, or `as="label"` with a Switch/Checkbox |
+
+### L3: Tags → `<Tag>` (`components/Tag`)
+| Figma | React |
+|---|---|
+| Type = Primary · Secondary · Tertiory | `variant="primary" \| "secondary" \| "tertiary"` |
+| Type = Disabled | `disabled` |
+| Color = Neutral · 🟩 Profit · 🟥 Loss · ✅ Success · 🚨 Error · ⚠️ Warning · 🔷 Discover · 🟠 Processing · indigo · teal · purple · ⚡ Zing | `color="neutral" \| "profit" \| "loss" \| "success" \| "error" \| "warning" \| "discover" \| "processing" \| "indigo" \| "teal" \| "purple" \| "zing"` |
+| Size = Small → 16 · Medium → 20 · Large → 24 | `size="sm" \| "md" \| "lg"` |
+| ✏️ Label | children |
+| 👁️ Label off | `hideLabel` (+ one icon; label text still required) |
+| ↪ Icon-L / ↪ Icon-R | `iconLeft` / `iconRight` |
+
+## Brand & device
+
+### L3 → Brand logo → `<BrandLogo>` (`components/BrandLogo`)
+| Figma | React |
+|---|---|
+| Brand = 🍋 Lemonn · ⭐ Zing | `brand="lemonn" \| "zing"` |
+| isFull = True · False | `variant="full" \| "icon"` |
+
+### L3: System statusbar → `<SystemStatusbar>` (mockups only)
+| Figma | React |
+|---|---|
+| isDark = True | `inverted` |
+
+## Not in code
+
+| Figma | Status |
+|---|---|
+| L3: Title | Planned component — not built yet |
+| L3: System navbar · L3: System keyboard | Device chrome for mockups — not app UI |
+| L3: Space block · L3: Utility / Component container · L3: dev-note · L3: component slot | Figma-only utilities — use CSS gaps / layout in code |
+| L3 → State layer | Built into each component (`--l3-state-layer-*`) |
+
+---
+
+# Lemonnade V3 (L3) Design System
+
+Rules for composing screens with the L3 React components in `src/components`. Tokens are CSS variables
+named `--l3-*`, generated from the Figma "✅ Lemonnade V3" library.
+
+---
+
+## 0. Sources of truth & how to use this file
+
+| What | Where |
+|---|---|
+| Components (React + CSS Modules) | `src/components/<Name>/` — import from the folder: `import { Button } from './components/Button'` |
+| Tokens (source → generated) | `src/tokens/source/*.json` (DTCG, from Figma + `local.*.json`) → `npm run tokens` → `src/tokens/generated/*.css` |
+| Icons | `src/icons/material/` (Material Symbols), refreshed with `npm run icons` |
+| Figma library | "✅ Lemonnade V3" (`lxQ6QIXGOv5mmx0khh5sJn`); icons: "👁️ Lemonnade V3 → Icons" |
+| Live docs (playground + code per component) | https://kirtanyak-pe.github.io/lemonnade-v3-docs/ |
+| Component history | `src/docs/changelog.ts` |
+
+Sections marked `PENDING` are undecided: **do not infer rules for them** — ask, or leave a TODO.
+
+<!-- PENDING: precedence when code, this file and Figma disagree -->
+
+---
+
+## 1. Spacing scale
+
+**4px base: 4, 8, 12, 16, 24, 32, 40, 48, 64.**
+
+| Step | Token |
+|---|---|
+| 4 | `--l3-spacing-04` |
+| 8 | `--l3-spacing-08` |
+| 12 | `--l3-spacing-12` |
+| 16 | `--l3-spacing-16` |
+| 24 | `--l3-spacing-24` |
+| 32 | `--l3-spacing-32` |
+| 40 | `--l3-spacing-40` |
+| 48 | `--l3-spacing-48` |
+| 64 | `--l3-spacing-64` |
+
+Spacing tokens are used for **padding, gaps and margins only**. Never use arbitrary values: no raw px, and
+no off-scale steps. For sizes (width, height, icon boxes), use `--l3-size-*` / `--l3-icon-size-*`, not spacing tokens.
+
+> The token set also contains 02, 06, 10, 14, 20, 28, 36, 56, 72, 80 and 96. These are **not part of the
+> scale**. Some components still use them (see 2.3).
+
+---
+
+## 2. Layout primitives
+
+There are no `Stack` / `Row` components in the codebase. These are the **de facto primitives**: the flexbox
+patterns that recur across the built components (Actionbar, Aerobar, BottomNavbar, BottomSheet, Button,
+ButtonGroup, Checkbox, EmptyState, ListCell, Switch, Tabs, Tag, TextField).
+
+### 2.1 Stack (vertical: `flex-direction: column`)
+
+| Gap | Used for | Seen in |
+|---|---|---|
+| 4 | Title + supporting text; icon over label | EmptyState content, BottomSheet header text, BottomNavbar option |
+| 8 | Label → control → helper; stacked header items | TextField field, BottomSheet large-header centre |
+| 24 | Major blocks inside a component | EmptyState (illustration · text · action), BottomSheet large header |
+
+### 2.2 Row (horizontal: `display: flex`, `align-items: center`)
+
+| Gap | Used for | Seen in |
+|---|---|---|
+| 12 | Leading icon · content · trailing action inside a bar or row | Actionbar row, Aerobar body, TextField control, ListCell (small, card), ButtonGroup |
+| 8 | A cluster of sibling controls | Actionbar actions, Tabs (pill) |
+| 4 | Inline label + icon/marker | TextField label & helper, BottomSheet heading row, ListCell dots |
+
+**Bar padding:** horizontal bars pad **16 inline** and take their height from a `min-height` size token:
+Actionbar row (0 16), inline Aerobar (0 16), ListCell (8 16), ButtonGroup (16), BottomSheet header (16).
+This is the de facto **16px screen gutter**.
+
+### 2.3 Inconsistencies found
+
+1. **Title + description gap differs.** It's 2 in Actionbar content and Aerobar content, but 4 in EmptyState and the
+   BottomSheet header. 2 is off-scale.
+2. **Row gap outlier.** ListCell `md` uses 16 between icon and text, while every other row, including ListCell `sm`
+   and `card`, uses 12.
+3. **Clustered-control gap differs.** It's 12 in ButtonGroup, but 8 in Actionbar actions and Tabs (pill).
+4. **Off-scale spacing inside components** (mostly copied from Figma values):
+   - **02** (34 uses): focus-outline width and offset, gaps in Button `sm`, Tag, Tabs, and Actionbar/Aerobar text.
+   - **06**: Button `sm` vertical padding, Tabs (pill) side padding, floating Aerobar right padding, and the
+     Actionbar back-button focus offset.
+   - **10**: Button `md` padding, BottomNavbar option padding and separator inset.
+   - **36**: Tabs `sm` height, TextField icon box.
+5. **Spacing tokens used as sizes:** the Checkbox tick box (10×10), the TextField icon box (36), and the Tabs `sm` height
+   (36). These should be `--l3-size-*`.
+6. **Asymmetric padding:** the floating Aerobar body pads 0 6 0 12 (Figma), while inline it's 0 16.
+7. **Vertical rhythm is mixed.** Most bars get their height from `min-height`, but ListCell and Aerobar text also add
+   vertical padding (8 / 12).
+8. **Focus-ring offset varies:** 2 in most controls, 6 on the Actionbar back button.
+
+---
+
+## 3. Semantic token rules
+
+### 3.1 Accent groups
+
+Accent colors (`surface/accent/*`, `content/accent/*`, `border/accent/*`) come in **5 groups**. Pick the group by
+**meaning** first, then the color inside it. Never borrow a color from another group because it "looks right".
+
+| Group | Accents | Use for |
+|---|---|---|
+| **Brand** | `brand` | The product color (Lemonn lime, CS PRO gold, Kuber green): brand moments, the brand button. Kuber's brand green is intentionally the same as the profit green (`#0f9958`) — keep brand surfaces away from P&L so a brand banner never reads as a gain. |
+| **Market indicators** | `indicator/up` (profit), `indicator/down` (loss) | Price direction only: price up / down, P&L, buy / sell side. Never for success or error. (The Buy **button** is themed separately: product color in Lemonn and Kuber, `indicator/up` in CS PRO.) |
+| **Status** | `success`, `warning`, `error`, `discover` (info), `orange` (processing) | Outcomes and system states: done, needs attention, failed, info / links, in progress. |
+| **Sub-brands** | `us-stock`, `zing` | Products or segments with their own identity. Use only inside that product or segment. |
+| **Miscellaneous** | `purple`, `indigo`, `teal` | **Exceptional cases only**, e.g. telling categories apart when no other group fits. They carry no meaning. |
+
+- Profit / loss and success / error can look alike (both green / red) but are **not interchangeable**: a price that
+  went up is `profit`, an order that went through is `success`.
+- Every accent has the same five slots: `surface light` + `border light` + `content` for soft fills (tags,
+  banners), `surface default` for solid fills, `border default` for strong outlines.
+- Text on solid fills: `static/black` on warning, `static/white` on profit / loss / success / error, `content/inverted` on the rest.
+
+### 3.2 Token naming
+
+Every token name is built from the same parts, **in this order**:
+
+`--l3` · *(component · variant)* · **property** · *(group · intent)* · **modifier** · *(state)*
+
+| Part | Values |
+|---|---|
+| Namespace | `l3` — always first in CSS (`--l3-…`) |
+| Property | `surface` (fills) · `content` (text, icons) · `border` (outlines) |
+| Group | `accent` for accent colors; none for neutrals (base palette: `hue` / `neutral`) |
+| Intent | `brand` · `indicator-up` · `indicator-down` · `success` · `warning` · `error` · `discover` · `orange` · `us-stock` · `zing` · `purple` · `indigo` · `teal` (see 3.1) |
+| Modifier | Neutrals: `default` · `primary` · `secondary` · `tertiary` · `quaternary` · `inverted` · `disabled` · `overlay`. Accents: `light` · `default` |
+| Component · Variant | Component tokens only: `button` + `primary` … `sell`; `state-layer` + `light` / `dark` |
+| State | Optional: `loading` · `disabled` (state layers: `default` · `hover` · `pressed`). No suffix = default state |
+
+Examples: `--l3-surface-secondary`, `--l3-surface-accent-success-light`, `--l3-button-buy-surface-disabled`,
+`--l3-base-hue-green-500`.
+
+- **Lowercase, words joined with dashes.** Figma separates parts with `/` (`L3/color/surface/accent/success-light`),
+  CSS with `-` (`--l3-surface-accent-success-light`), TS uses the Figma path (`token('surface/accent/success-light')`).
+- **Name by role, never by color** (`content-secondary`, not `grey-60`). Only the base palette names colors.
+- **Leave out what's default:** no state = default state; neutrals have no group or intent.
+
+<!-- PENDING: paste verbatim from notes -->
+Still waiting for the exact text from your notes on:
+- `surface/*` elevation scale
+- `static/black`, `static/white`
+- `content/tertiary`
+- `extra/gold`
+
+---
+
+## 4. Typography
+
+**Facts (from code):**
+- One font: **Manrope** (variable, loaded 200–800), applied only through text tokens. Never set `font-family`.
+- Style text with one shorthand token: `font: var(--l3-text-<role>-<size>);` e.g. `--l3-text-label-12`.
+- Never set `font-size`, `font-weight` or `line-height` on their own. Each style also has parts
+  (`-size`, `-weight`, `-line-height`, `-letter-spacing`, `-paragraph-spacing`), and base values are tokens
+  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750`, `--l3-paragraph-spacing-08`).
+
+| Role (token) | Weight | Sizes | Use (draft) |
+|---|---|---|---|
+| `heading` | 750 | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Screen, sheet, section and card titles; button labels; key numbers (prices, P&L, balances) |
+| `label` | 650 | 10 · 12 · 14 · 16 · 18 | Text on and around controls: tabs, tags, list titles, field labels, small buttons |
+| `description` | 500 | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, input text, values and meta, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
+
+- Three roles only — no primary/secondary sub-roles and no separate Section style (a section title is `heading-14`).
+- **Weights 750 and 650 lead Figma:** Figma's text styles still use ExtraBold/Bold (headings) and SemiBold (labels)
+  until they're updated; follow the tokens.
+- Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
+  <!-- PENDING: final usage rules per role and size -->
+
+**What components use internally (don't override):**
+
+| Component | Text tokens |
+|---|---|
+| Actionbar | `heading-14` · `description-12` · `description-14` |
+| Aerobar | `label-14` · `description-12` |
+| BottomNavbar | `label-10` |
+| BottomSheet | `heading-16` · `heading-20` · `description-12` · `description-14` |
+| Button | `heading-14` · `heading-16` · `label-12` |
+| EmptyState | `heading-16` · `label-14` |
+| ListCell | `label-14` · `label-16` · `description-12` |
+| Tabs | `label-08` · `label-10` · `label-12` · `label-14` |
+| Tag | `label-10` · `label-12` · `label-14` |
+| TextField | `label-12` · `description-12` · `description-14` |
+
+---
+
+## 5. Components
+
+Use a component whenever one exists. Don't restyle a component's internals from outside; use its props.
+Components have no outer margin, so spacing between them belongs to the parent (section 1).
+
+**Usage rules per component** live next to the code in `src/components/<Name>/USAGE.md` (when to use each variant
+and size, labels, placement, states). Read the component's USAGE.md before using it. Written so far: `Button`, `ButtonGroup`, `BottomSheet`.
+
+| Component | Import | Required | Use for |
+|---|---|---|---|
+| `Button` | `components/Button` | label (or `aria-label` if icon-only) | Actions. `variant`: primary · secondary · tertiary · ghost · brand · buy · sell; `size` sm · md · lg |
+| `ButtonGroup` | `components/ButtonGroup` | Buttons as children, `aria-label` | The button dock (Figma "L3: Button Dock"): the main action(s) docked at the bottom of a screen or sheet |
+| `Tag` | `components/Tag` | text (also the screen-reader text when `hideLabel`) | A static label or status: 3 variants × 12 colors × 3 sizes. `profit` / `loss` for price moves and P&L, `success` / `error` for outcomes, `processing` for in-progress |
+| `Switch` | `components/Switch` | a `<label>` or `aria-label` | An on/off setting that applies immediately |
+| `Checkbox` / `Radio` | `components/Checkbox` | a `<label>`; radios share a `name` | Multi-select / pick one |
+| `TextField` | `components/TextField` | `label` | Single-line input, or `multiline` text box with a counter |
+| `Tabs` | `components/Tabs` | `items`, `value`, `onChange`, `aria-label` | Section switching (`underline`) and segmented choices (`pill`, optional `subLabel`); icon-only tabs via `hideLabel` |
+| `Actionbar` + `ActionbarAction` | `components/Actionbar` | action: `icon`, `label`, `onClick` | Top bar: back, title, ≤2 actions, search mode, and a `bottom` slot |
+| `BottomNavbar` + `NavIcon` | `components/BottomNavbar` | `items`, `value` | App-level section nav (3–5), including MF / F&O sub-navs with `home` |
+| `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen. Tabs or search at the top of a sheet go in the header's `bottom` slot |
+| `Aerobar` | `components/Aerobar` | — (`heading` in practice) | A status bar (inline) or toast (`floating`) |
+| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1) |
+| `ListCell` | `components/ListCell` | `label` | Rows: plain or card, with icons, trailing content, dots |
+| `EmptyState` | `components/EmptyState` | `title` | Nothing to show, or no results |
+| `Icon` | `components/Icon` | `icon` | Any Material Symbol |
+| `BrandLogo` | `components/BrandLogo` | `brand` | Lemonn / Zing logo, full or mark only |
+
+**Use this, not that** (from the component APIs and docs):
+- **Tags are not buttons.** Anything tappable is a `Button`, a `ListCell as="button"`, or a Tab.
+- **There is no Chip component.** For a segmented or filter choice, use `Tabs appearance="pill"`.
+- **Cards:** use `Card` (rules in 7.1). For a simple one-line row, `ListCell variant="card"` also exists.
+- **Status:**
+  - A message that belongs to the page is an inline `Aerobar`.
+  - The result of an action (e.g. "order placed") is `Aerobar floating`.
+  - Danger announces as an alert, everything else as a status.
+- **Controls inside rows:** a row holding a Switch or Checkbox is `ListCell as="label"`, never `as="button"`. Button rows can't contain controls.
+- **Actionbar:** `surface-default` with a 1px `border-light` bottom line. When content scrolls under it, it gets
+  `shadow-elevation-low` (automatic with `sticky`, or set `elevated`).
+- **If flat tabs are used at the top, they go inside the Actionbar's content-bottom slot** (`bottom` prop), never as
+  a separate layer below the Actionbar.
+- **Don't use `MaskIcon` directly** in screens. Use `Icon` (it's the internal helper for icons and assets).
+
+---
+
+## 6. Screen anatomy
+
+<!-- PENDING: screen structure (top bar, body, dock vs bottom navbar, toast and sheet placement) -->
+
+---
+
+## 7. Composition patterns
+
+### 7.1 Card
+
+- **Clickable cards, and other tappable elements like chip tabs,** use `surface-primary`, because they sit on the
+  screen background `surface-default`. In the light theme both are the same color (#FFFFFF), so a clickable
+  surface **must** also have a 1px `border-light` and `shadow-elevation-low`.
+- **Card spec** (Figma Order card): padding `spacing-12`, radius `radius-12`, rows `spacing-08` apart; cards in a list
+  are `spacing-16` apart.
+- **Press interaction:** on press, a clickable surface scales down (`--l3-motion-scale-press-default`, 0.98).
+  Other steps exist for different text sizes (see 11), but which element uses which step is not defined yet.
+- **Non-clickable cards** are for decoration or information. **A card with a border radius and a 1px `border-light`
+  uses `surface-default`**, with no shadow and no press.
+- **Flat cards:** if a card is not rounded and has no border (`variant="flat"`), it has **no background** unless one
+  is set manually (`surface`) — transparent, no border, no shadow. It can still be clickable.
+  <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
+- **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
+  So a clickable card never contains other buttons or links.
+
+### 7.2 Containers & grey fills
+
+- **Large containers** (a hero, a section panel, a showcase, a preview stage) use **`surface-default` + a 1px
+  `border-light`** — never a grey fill over the whole block.
+- **Small informative cards inside a container** (stats, key-value tiles, hints, inner panels) may use
+  **`surface-secondary`** (grey), so they read as grouped content inside the container.
+- Don't nest grey in grey: a grey card goes on `surface-default`, not on another grey surface.
+
+### 7.3 Other patterns
+
+<!-- PENDING: form, list and other patterns not yet defined, do not infer -->
+
+---
+
+## 8. Trading semantics
+
+<!-- PENDING: buy/sell usage, price up/down vs success/error, order-status colors, number and currency formatting -->
+
+---
+
+## 9. Content & voice
+
+<!-- PENDING: casing, button verbs, error and empty-state copy, allowed abbreviations -->
+
+---
+
+## 10. States
+
+**Which component handles each state (from code):**
+
+| State | Use |
+|---|---|
+| Empty / no results | `EmptyState` (illustration + title + description + action) |
+| Loading an action | `Button loading` (keeps its width, shows the loader) |
+| Field error / success | `TextField status="error" \| "success"` + `helperText` (announced while typing) |
+| Page or result message | `Aerobar` (`danger`, `success`, `warning`, `discover`) |
+| Disabled | The component's own `disabled` prop, which uses the `*-disabled` tokens |
+
+There is **no skeleton or spinner component** yet.
+
+<!-- PENDING: which states every screen must cover -->
+
+---
+
+## 11. Interaction
+
+- **Tap targets are at least 32px** (`--l3-size-tap-target`). Components grow their tap area with an invisible `::after`, so the visual size doesn't change.
+- **Hover styles only inside `@media (hover: hover)`**, so taps don't leave elements stuck highlighted. Add `touch-action: manipulation`.
+- **Hover and press use state layers:** `--l3-state-layer-dark-*` on light fills and `--l3-state-layer-light-*` on dark ones, painted as a background image, not an overlay element.
+- **Focus:** `:focus-visible` outline `var(--l3-spacing-02) solid var(--l3-border-dark)`.
+- **Press scale** (clickable cards, chip tabs): `transform: scale(var(--l3-motion-scale-press-*))` while pressed,
+  with steps 0.01 apart: `xl` 1.00 · `l` 0.99 · `default` 0.98 · `m` 0.97 · `sm` 0.96 (local tokens).
+  <!-- PENDING: which step each element / text size uses; everything uses `default` today -->
+- **Motion:** only `--l3-motion-duration-short` (150ms), `--l3-motion-duration-medium` (250ms) and `--l3-motion-easing-standard`. Always add a `prefers-reduced-motion: reduce` rule that removes it.
+- **Toasts** with an action don't auto-dismiss; they stay until acted on or replaced.
+- **Bottom sheets** have no drag handle and no visible close button: they close on a backdrop tap or by dragging the sheet down (anywhere on it; the content first scrolls to the top), plus Esc and a visually hidden Close button for screen readers. At most two sheets stack: the first has no back button, a second one on top of it has a back button, never a third. Focus is trapped inside while one is open, and the page behind is inert.
+- **Keyboard:** Tabs move with ← → Home End; the selected tab scrolls into view.
+
+---
+
+## 12. Accessibility
+
+- **Every control needs a name.** A visible `<label>` or `aria-label`; icon-only buttons need `aria-label`. `Switch`, `Checkbox` and `Radio` log a development warning when unnamed.
+- **Headings:** `Actionbar` renders the screen title as `h1` (`headingLevel={2}` inside sheets). `EmptyState` uses `h2` / `h3`. Keep heading order.
+- **Icons are decorative** (`aria-hidden`) unless given a `label`. `BrandLogo` is named by default; use `decorative` when the brand name is written next to it.
+- **Announcements:**
+  - `Aerobar` is `role="status"` (danger: `role="alert"`).
+  - `TextField` helper and error text is live.
+  - `BottomSheet` is `role="dialog"`.
+- **Current location:** `BottomNavbar` marks the current section with `aria-current="page"`. `Tabs` use `role="tablist"` / `tab` with `aria-selected`.
+- **Dots and badges** carry screen-reader text (`ListCell dotLabel`, default "New").
+- **Contrast:** failures in the default themes are accepted; the **♿ Accessible** themes (`data-contrast="accessible"`, see 13) handle high contrast. Check new UI in both.
+
+---
+
+## 13. Theming
+
+- **5 themes:** Lemonn light and dark, CS PRO dark (dark only), Kuber light and dark. They're selected by `data-product` + `data-mode` on `<html>`, or on any wrapper to theme just that part.
+- **♿ Accessible contrast:** each of the 5 has an Accessible version (Figma "♿ Accessible" modes — 10 theme modes in total), turned on with `data-contrast="accessible"` next to `data-product` / `data-mode` (`useTheme().setContrast('accessible')`, saved with the theme). Until someone picks a contrast, it follows the OS **Increase contrast** setting (`prefers-contrast: more` → ♿ Accessible); an explicit choice always wins. It raises secondary/tertiary text opacity, strengthens dark-mode borders and moves accents one step for contrast. Components need no changes — they use the same semantic tokens.
+- `ThemeProvider` applies the theme, and `useTheme()` reads or changes it (`product`, `mode`, `contrast`). The saved theme (`localStorage` key `l3-theme`) is applied before the first paint. Asking CS PRO for light mode falls back to dark.
+- Style with **semantic** tokens (`surface`, `content`, `border`, `component`). **Never use `--l3-base-*`** except in brand artwork: `BrandLogo` keeps the Lemonn and honey ramps in every theme.
+- Check every screen in light and dark.
+
+---
+
+## 14. Icons & brand assets
+
+- **Only Material Symbols Rounded,** weight 400, grade 0, **optical size 24dp.** Never the 48px set, and never another icon family.
+- Import one icon at a time: `import { msWallet, msWalletFill } from './icons/material'`, then render `<Icon icon={msWallet} size={24} />`.
+- **Sizes:** `--l3-icon-size-*` 12–24. Default 24; 16 inside small buttons and tabs. The icon takes the text color.
+- **Filled variants** exist for every icon (`ms<Name>Fill`).
+  <!-- PENDING: when to use filled vs outlined -->
+- **Not Material:** the bottom-nav icons (`NavIcon`), brand logos (`BrandLogo`), and the Empty state illustration are Figma artwork. Don't redraw or recolor them.
+
+---
+
+## 15. Responsive
+
+- **Mobile first.** Build at **360px**, the Figma frame width, and check **392** and **412**.
+- **No horizontal page scroll.** Tabs scroll sideways inside themselves.
+- **Full-width parts touch the screen edges:** Actionbar, Tabs, BottomNavbar, ButtonGroup, inline Aerobar, plain ListCell, EmptyState. Other content sits inside a 16px gutter.
+- **Safe areas:** Actionbar pads for the status bar (`env(safe-area-inset-top)`); BottomNavbar `fixed` and ButtonGroup pad for the home indicator.
+- **Long text:** one-line titles and labels truncate with an ellipsis (Actionbar title, nav labels). Body text wraps. Flex children need `min-width: 0`.
+
+---
+
+## 16. Do / Don't
+
+| Component | Do | Don't |
+|---|---|---|
+| Button | One primary action per screen, paired with secondary actions | Several primary buttons side by side |
+| Button | `primary` for every action; `buy` / `sell` only for placing orders (colors follow the product theme) | Buy/Sell for unrelated actions |
+| ButtonGroup | Horizontal: primary on the right. Vertical: primary on top | Flip the order between screens |
+| Tag | One or two words that label or show status | A tag as a button, or for sentences |
+| Switch | Settings that take effect as soon as they flip | Inside a form that needs Save (use a checkbox) |
+| Checkbox / Radio | Radios when exactly one option can be chosen | Checkboxes for mutually exclusive options |
+| TextField | A visible label that stays while typing | The placeholder as the label |
+| TextField | Errors that say what went wrong and how to fix it | A red border with no message |
+| Tabs | Two to four short, parallel labels | Long labels that truncate, or tabs that act like buttons |
+| Actionbar | One or two of the most useful actions | Crowding it with icons |
+| BottomNavbar | Three to five top-level sections, always labelled | Actions (like Buy), or more than five items |
+| BottomSheet | Close by backdrop tap or dragging down; tabs in the header's `bottom` slot | A ✕ button or a drag handle |
+| Aerobar | Toasts with an action stay until tapped or closed | Important info or undo behind a timer |
+| EmptyState | Say what happened and give a way to recover | A blank screen or dead end |
+| ListCell | Tappable rows get a chevron or trailing control | Tappable rows with nothing to hint at it |
+
+---
+
+## 17. Known token gaps
+
+**Not yet resolved. Do not rely on these for AI generation.**
+
+| Gap | What's in the tokens today |
+|---|---|
+| **us-stock and discover have mostly not diverged** | `us-stock` tokens still point to the same blue ramp as `discover`; the only difference so far is `surface/accent/us-stock-default` in Lemonn / Kuber dark (blue-500 vs discover's blue-400). |
+| **surface/default = surface/primary in light mode** | In LM Light both are `neutral-white-base`, so a "raised" surface doesn't separate from the page. |
+| **extra/gold duplicates the honey ramp** | `extra/gold/*` aliases the `hue/honey` ramp (for example gold-100 → honey-100 in light, honey-800 in dark). It has no values of its own. |
+
+---
+
+## 18. Agent output contract
+
+<!-- PENDING: what an agent must deliver and check before finishing a screen -->
+
+---
+
+# Colors
+
+> How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
+
+- Group: Foundations
+- Lifecycle: done
+- Version: 1.1.0
+
+## Recent changes
+
+- **1.1.0** (2026-10-01) ♿ Accessible themes and Figma token sync: 5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with data-contrast="accessible" or the ♿ button in the header. New surface/overlay (the brand’s darkest neutral at 80%) and gradient-stop-0/static/white · black. surface/accent/us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover. New Colors page: how the three color layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy. Accent groups: Brand · Market indicators (profit / loss) · Status (success, warning, error, discover, orange) · Sub-brands (US stocks, Zing) · Miscellaneous (purple, indigo, teal — exceptional cases only). Also in DESIGN_SYSTEM.md 3.1. Accents are shown as one table per group, and border tokens are previewed as outlines instead of fills. “How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface/content/border, Button and Tag — with hover-to-trace, plus four illustrated rule cards. Token naming: anatomy of semantic, accent, component and base names (namespace · property · group · intent · modifier · state), the same token in Figma / CSS / TS, naming rules and a parts glossary. Also in DESIGN_SYSTEM.md 3.2. Token names shown with dashes plus a role in brackets, e.g. surface-default (Screen BG) — display only. List / Tree toggle for surface, content and border. Tree view: Colors → Surface · Icon · Text · Border, with Icon + Text merging into Content, then each role’s tokens (hover to trace, click to copy). The choice is remembered. Tree view: accents branch off the root in the brand color, then fan out into the 5 accent groups and their colors. Clearer List / Tree switch with icons. “How colors are mapped” (was “How colour works”): pick any base color to see every semantic token it feeds in the current theme (gradient stops skipped), the components that use them (found from their styles) and live previews — e.g. the input field in its success or error state. US spelling (“color”) across the docs. Color mapping: each component now says where it uses the color (read from its stylesheet, e.g. “caret (search)”, “message (status=success)”), and previews show that state — solid vs soft tags, Aerobar type and emphasis, input field success / error, list cell dot. Tag and Aerobar are split into solid and soft nodes, each linked only to the tokens that state reads — e.g. the soft success toast links to success-light (its text is content-primary), not success-default.
+
+---
+
+# Typography
+
+> Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
+
+- Group: Foundations
+- Lifecycle: wip
+- Version: 3.0.0
+
+## Recent changes
+
+- **3.0.0** (2026-10-05) Three roles: Five roles merged into three: Heading (weight 750, sizes 10–36), Label (650, 10–18) and Description (500, 10–18, with paragraph spacing). Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description. Manrope is loaded as a variable font (200–800) so 750 and 650 render. Figma styles still to be updated to these weights.
+- **2.0.0** (2026-10-04) Typography from Figma roles: Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles. Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing). Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.
+
+---
+
+# Spacing & radius
+
+> Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+
+- Group: Foundations
+- Lifecycle: done
+
+---
+
+# Icons
+
+> The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+
+- Group: Foundations
+- Lifecycle: done
+- Version: 1.0.0
+
+## Overview
+
+### Using an icon
+
+```
+`import { Icon } from './components/Icon'
+import { msWallet, msWalletFill } from './icons/material'
+
+<Icon icon={msWallet} size={24} />            // decorative
+<Icon icon={msWalletFill} label="Wallet" />    // meaningful → announced
+<Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`
+```
+
+Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run `npm run icons` to pull new icons from Google.
+
+## Recent changes
+
+- **1.0.0** (2026-09-26) Full Material Symbols Rounded library: 3,900+ icons (outlined + filled), weight 400, grade 0, 24dp optical size, downloaded from Google. <Icon> component with size tokens and an optional label for meaningful icons. npm run icons to pull new icons; only imported icons end up in the app.
+
+---
+
+# Brand logo
+
+> The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+
+- Group: Foundations
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4735-1466
+- Source: `src/components/BrandLogo`
+- Also called: Logo, logotype, wordmark, brand mark, app icon
+
+## Import
+
+```tsx
+import { BrandLogo } from './components/BrandLogo' // path relative to src/
+```
+
+## Overview
+
+### Full or mark
+
+Use the full logo where there's room: headers, splash, sign-in. Use the mark (`variant="icon"`) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.
+
+### Colors stay on brand
+
+The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)
+
+### Accessibility
+
+The logo is announced as its brand name. Pass `label` for something more specific ("Lemonn home"), or `decorative` when the name is already written next to it.
+
+## Options (tree)
+
+Brand logo — Figma artwork — never redraw or recolor
+
+- **Brand**
+  - `lemonn`
+  - `zing`
+- **Variant**
+  - `full` — Mark + wordmark.
+  - `icon` — The mark only.
+- **Size** — Height
+  - `24`
+  - `32`
+  - `40`
+  - `48`
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `brand` | `'lemonn' \| 'zing'` |  | Figma Brand. |
+| `variant` | `'full' \| 'icon'` | `'full'` | Figma isFull: mark + wordmark, or the 24×24 mark. |
+| `size` | `24 \| 32 \| 40 \| 48` | `24` | Height in px from the size tokens; width keeps the proportions. |
+| `label` | `string` |  | Accessible name; defaults to the brand name. |
+| `decorative` | `boolean` | `false` | Hide from screen readers when the name is written next to it. |
+
+## Tokens used
+
+- `base/hue/brand-lemonn-500 · 700 (Lemonn mark)`
+- `surface/inverted (Lemonn wordmark)`
+- `base/hue/honey-300 → 500 (Zing gradient)`
+- `size/24 · 32 · 40 · 48`
+
+## Recent changes
+
+- **1.0.0** (2026-09-28) First release: Lemonn and Zing logos, full or mark only, 24–48px high. Artwork exported from Figma; every color is a token (Lemonn and honey brand ramps, theme wordmark). The lemon leaf stays on the Lemonn ramp in every product theme (Figma binds it to the theme brand color).
+
+---
+
+# Color tokens
+
+> Every semantic color token with its value in each theme. Use the CSS variable; never the hex.
+
+Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light · dark) and optional `data-contrast="accessible"` on `<html>` or any wrapper. CS PRO is dark only.
+
+| Token (Figma: 🔷 L3/color/…) | CSS variable | 🍋 LM → Light | 🍋 LM → Dark | CS PRO → Dark | 🐲 Kuber → Light | 🐲 Kuber → Dark |
+|---|---|---|---|---|---|---|
+| `surface/default` | `--l3-surface-default` | `#ffffff` | `#000000` | `#000000` | `#ffffff` | `#000000` |
+| `surface/primary` | `--l3-surface-primary` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
+| `surface/secondary` | `--l3-surface-secondary` | `#f4f4f4` | `#262626` | `#1b1f2c` | `#f4f4f4` | `#1c1f1e` |
+| `surface/tertiary` | `--l3-surface-tertiary` | `#e8e8e8` | `#393939` | `#2c303f` | `#e8e8e8` | `#292c2b` |
+| `surface/quaternary` | `--l3-surface-quaternary` | `#dbdbdb` | `#525252` | `#464a59` | `#dbdbdb` | `#454947` |
+| `surface/inverted` | `--l3-surface-inverted` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `surface/disabled` | `--l3-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `surface/overlay` | `--l3-surface-overlay` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 80%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 80%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-900) 80%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 80%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 80%, transparent)` |
+| `surface/accent/indicator/down-light` | `--l3-surface-accent-indicator-down-light` | `#fceeee` | `#3f2225` | `#3f2225` | `#fceeee` | `#3f2225` |
+| `surface/accent/indicator/down-default` | `--l3-surface-accent-indicator-down-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `surface/accent/indicator/up-light` | `--l3-surface-accent-indicator-up-light` | `#def4ea` | `#042918` | `#042918` | `#def4ea` | `#042918` |
+| `surface/accent/indicator/up-default` | `--l3-surface-accent-indicator-up-default` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` |
+| `surface/accent/brand-light` | `--l3-surface-accent-brand-light` | `#edfbbf` | `#353f14` | `#1c170d` | `#def4ea` | `#153023` |
+| `surface/accent/brand-default` | `--l3-surface-accent-brand-default` | `#b1e50e` | `#b1e50e` | `#99772e` | `#0f9958` | `#0f9958` |
+| `surface/accent/error-light` | `--l3-surface-accent-error-light` | `#fceeee` | `#3f2225` | `#3f2225` | `#fceeee` | `#3f2225` |
+| `surface/accent/error-default` | `--l3-surface-accent-error-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `surface/accent/success-light` | `--l3-surface-accent-success-light` | `#def4ea` | `#042918` | `#042918` | `#def4ea` | `#042918` |
+| `surface/accent/success-default` | `--l3-surface-accent-success-default` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` |
+| `surface/accent/warning-light` | `--l3-surface-accent-warning-light` | `#fdf7dc` | `#392a00` | `#392a00` | `#fdf7dc` | `#392a00` |
+| `surface/accent/warning-default` | `--l3-surface-accent-warning-default` | `#f6c12f` | `#f6c12f` | `#f6c12f` | `#f6c12f` | `#f6c12f` |
+| `surface/accent/purple-light` | `--l3-surface-accent-purple-light` | `#faf8fe` | `#2b2140` | `#2b2140` | `#faf8fe` | `#2b2140` |
+| `surface/accent/purple-default` | `--l3-surface-accent-purple-default` | `#6f4ab9` | `#9271d6` | `#9271d6` | `#6f4ab9` | `#9271d6` |
+| `surface/accent/indigo-light` | `--l3-surface-accent-indigo-light` | `#f4f6fb` | `#1a1d29` | `#1a1d29` | `#f4f6fb` | `#1a1d29` |
+| `surface/accent/indigo-default` | `--l3-surface-accent-indigo-default` | `#2c3875` | `#717dba` | `#717dba` | `#2c3875` | `#717dba` |
+| `surface/accent/teal-light` | `--l3-surface-accent-teal-light` | `#f6fcfc` | `#003331` | `#003331` | `#f6fcfc` | `#003331` |
+| `surface/accent/teal-default` | `--l3-surface-accent-teal-default` | `#119199` | `#12a2ab` | `#12a2ab` | `#119199` | `#12a2ab` |
+| `surface/accent/discover-light` | `--l3-surface-accent-discover-light` | `#eff4fe` | `#122340` | `#122340` | `#eff4fe` | `#122340` |
+| `surface/accent/discover-default` | `--l3-surface-accent-discover-default` | `#256fef` | `#6daafb` | `#6daafb` | `#256fef` | `#6daafb` |
+| `surface/accent/orange-light` | `--l3-surface-accent-orange-light` | `#fff1e2` | `#331400` | `#331400` | `#fff1e2` | `#331400` |
+| `surface/accent/orange-default` | `--l3-surface-accent-orange-default` | `#e96400` | `#ff8827` | `#ff8827` | `#e96400` | `#ff8827` |
+| `surface/accent/zing-light` | `--l3-surface-accent-zing-light` | `#fdf2dc` | `#392300` | `#392300` | `#fdf2dc` | `#392300` |
+| `surface/accent/zing-default` | `--l3-surface-accent-zing-default` | `#b97502` | `#f6bc2f` | `#f6bc2f` | `#b97502` | `#f6bc2f` |
+| `surface/accent/us-stock-light` | `--l3-surface-accent-us-stock-light` | `#eff4fe` | `#122340` | `#122340` | `#eff4fe` | `#122340` |
+| `surface/accent/us-stock-default` | `--l3-surface-accent-us-stock-default` | `#256fef` | `#256fef` | `#6daafb` | `#256fef` | `#256fef` |
+| `content/primary` | `--l3-content-primary` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `content/secondary` | `--l3-content-secondary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 60%, transparent)` |
+| `content/tertiary` | `--l3-content-tertiary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 40%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 40%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 35%, transparent)` |
+| `content/inverted` | `--l3-content-inverted` | `#ffffff` | `#000000` | `#000000` | `#ffffff` | `#000000` |
+| `content/inverted-secondary` | `--l3-content-inverted-secondary` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 60%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 60%, transparent)` |
+| `content/disabled` | `--l3-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `content/accent/indicator/down-default` | `--l3-content-accent-indicator-down-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `content/accent/indicator/up-default` | `--l3-content-accent-indicator-up-default` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` | `#37ad75` |
+| `content/accent/brand-default` | `--l3-content-accent-brand-default` | `#779a0a` | `#b1e50e` | `#99772e` | `#0f9958` | `#0f9958` |
+| `content/accent/error-default` | `--l3-content-accent-error-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `content/accent/success-default` | `--l3-content-accent-success-default` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` |
+| `content/accent/warning-default` | `--l3-content-accent-warning-default` | `#9f7502` | `#f6c12f` | `#f6c12f` | `#9f7502` | `#f6c12f` |
+| `content/accent/discover-default` | `--l3-content-accent-discover-default` | `#256fef` | `#6daafb` | `#6daafb` | `#256fef` | `#6daafb` |
+| `content/accent/purple-default` | `--l3-content-accent-purple-default` | `#6f4ab9` | `#9271d6` | `#9271d6` | `#6f4ab9` | `#9271d6` |
+| `content/accent/indigo-default` | `--l3-content-accent-indigo-default` | `#2c3875` | `#717dba` | `#717dba` | `#2c3875` | `#717dba` |
+| `content/accent/teal-default` | `--l3-content-accent-teal-default` | `#119199` | `#12a2ab` | `#12a2ab` | `#119199` | `#12a2ab` |
+| `content/accent/orange-default` | `--l3-content-accent-orange-default` | `#e96400` | `#ff8827` | `#ff8827` | `#e96400` | `#ff8827` |
+| `content/accent/zing-default` | `--l3-content-accent-zing-default` | `#b97502` | `#d79900` | `#d79900` | `#b97502` | `#d79900` |
+| `content/accent/us-stock-default` | `--l3-content-accent-us-stock-default` | `#256fef` | `#6daafb` | `#6daafb` | `#256fef` | `#6daafb` |
+| `border/light` | `--l3-border-light` | `#e8e8e8` | `#262626` | `#1b1f2c` | `#e8e8e8` | `#1c1f1e` |
+| `border/intense` | `--l3-border-intense` | `#dbdbdb` | `#525252` | `#464a59` | `#dbdbdb` | `#292c2b` |
+| `border/dark` | `--l3-border-dark` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `border/disabled` | `--l3-border-disabled` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` |
+| `border/accent/brand-light` | `--l3-border-accent-brand-light` | `#d4ed83` | `#455415` | `#2b2617` | `#9adebe` | `#063d23` |
+| `border/accent/brand-default` | `--l3-border-accent-brand-default` | `#b1e50e` | `#b1e50e` | `#99772e` | `#0f9958` | `#0f9958` |
+| `border/accent/indicator/down-light` | `--l3-border-accent-indicator-down-light` | `#f5b9b9` | `#55282d` | `#55282d` | `#f5b9b9` | `#55282d` |
+| `border/accent/indicator/down-default` | `--l3-border-accent-indicator-down-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `border/accent/indicator/up-light` | `--l3-border-accent-indicator-up-light` | `#9adebe` | `#063d23` | `#063d23` | `#9adebe` | `#063d23` |
+| `border/accent/indicator/up-default` | `--l3-border-accent-indicator-up-default` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` | `#0f9958` |
+| `border/accent/success-light` | `--l3-border-accent-success-light` | `#9adebe` | `#063d23` | `#063d23` | `#9adebe` | `#063d23` |
+| `border/accent/success-default` | `--l3-border-accent-success-default` | `#0f9958` | `#37ad75` | `#37ad75` | `#0f9958` | `#37ad75` |
+| `border/accent/error-light` | `--l3-border-accent-error-light` | `#f5b9b9` | `#55282d` | `#55282d` | `#f5b9b9` | `#55282d` |
+| `border/accent/error-default` | `--l3-border-accent-error-default` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `border/accent/warning-light` | `--l3-border-accent-warning-light` | `#ffdf88` | `#6b4e00` | `#6b4e00` | `#ffdf88` | `#6b4e00` |
+| `border/accent/warning-default` | `--l3-border-accent-warning-default` | `#9f7502` | `#f6c12f` | `#f6c12f` | `#9f7502` | `#f6c12f` |
+| `border/accent/discover-light` | `--l3-border-accent-discover-light` | `#cddeff` | `#14346b` | `#14346b` | `#cddeff` | `#14346b` |
+| `border/accent/discover-default` | `--l3-border-accent-discover-default` | `#256fef` | `#6daafb` | `#6daafb` | `#256fef` | `#6daafb` |
+| `border/accent/zing-light` | `--l3-border-accent-zing-light` | `#ffd688` | `#6b4100` | `#6b4100` | `#ffd688` | `#6b4100` |
+| `border/accent/zing-default` | `--l3-border-accent-zing-default` | `#f6bc2f` | `#f6bc2f` | `#f6bc2f` | `#f6bc2f` | `#f6bc2f` |
+| `border/accent/purple-light` | `--l3-border-accent-purple-light` | `#dfd2f9` | `#3c2c5f` | `#3c2c5f` | `#dfd2f9` | `#3c2c5f` |
+| `border/accent/purple-default` | `--l3-border-accent-purple-default` | `#6f4ab9` | `#9271d6` | `#9271d6` | `#6f4ab9` | `#9271d6` |
+| `border/accent/indigo-light` | `--l3-border-accent-indigo-light` | `#b3bada` | `#20253c` | `#20253c` | `#b3bada` | `#20253c` |
+| `border/accent/indigo-default` | `--l3-border-accent-indigo-default` | `#2c3875` | `#717dba` | `#717dba` | `#2c3875` | `#717dba` |
+| `border/accent/teal-light` | `--l3-border-accent-teal-light` | `#b6dee0` | `#034f50` | `#034f50` | `#b6dee0` | `#034f50` |
+| `border/accent/teal-default` | `--l3-border-accent-teal-default` | `#119199` | `#12a2ab` | `#12a2ab` | `#119199` | `#12a2ab` |
+| `border/accent/orange-light` | `--l3-border-accent-orange-light` | `#ffc393` | `#5b2300` | `#5b2300` | `#ffc393` | `#5b2300` |
+| `border/accent/orange-default` | `--l3-border-accent-orange-default` | `#e96400` | `#ff8827` | `#ff8827` | `#e96400` | `#ff8827` |
+| `border/accent/us-stock-default` | `--l3-border-accent-us-stock-default` | `#256fef` | `#6daafb` | `#6daafb` | `#256fef` | `#6daafb` |
+| `border/accent/us-stock-light` | `--l3-border-accent-us-stock-light` | `#cddeff` | `#14346b` | `#14346b` | `#cddeff` | `#14346b` |
+| `static/white` | `--l3-static-white` | `#ffffff` | `#ffffff` | `#ffffff` | `#ffffff` | `#ffffff` |
+| `static/black` | `--l3-static-black` | `#000000` | `#000000` | `#000000` | `#000000` | `#000000` |
+| `extra/gold/50` | `--l3-extra-gold-50` | `#fdf2dc` | `#392300` | `#392300` | `#fdf2dc` | `#392300` |
+| `extra/gold/100` | `--l3-extra-gold-100` | `#fbe5b6` | `#6b4100` | `#6b4100` | `#fbe5b6` | `#6b4100` |
+| `extra/gold/200` | `--l3-extra-gold-200` | `#ffd688` | `#845201` | `#845201` | `#ffd688` | `#845201` |
+| `extra/gold/300` | `--l3-extra-gold-300` | `#f6bc2f` | `#9f6402` | `#9f6402` | `#f6bc2f` | `#9f6402` |
+| `extra/gold/400` | `--l3-extra-gold-400` | `#d79900` | `#b97502` | `#b97502` | `#d79900` | `#b97502` |
+| `extra/gold/500` | `--l3-extra-gold-500` | `#b97502` | `#d79900` | `#d79900` | `#b97502` | `#d79900` |
+| `extra/gold/600` | `--l3-extra-gold-600` | `#9f6402` | `#f6bc2f` | `#f6bc2f` | `#9f6402` | `#f6bc2f` |
+| `extra/gold/700` | `--l3-extra-gold-700` | `#845201` | `#ffd688` | `#ffd688` | `#845201` | `#ffd688` |
+| `extra/gold/800` | `--l3-extra-gold-800` | `#6b4100` | `#fbe5b6` | `#fbe5b6` | `#6b4100` | `#fbe5b6` |
+| `extra/gold/900` | `--l3-extra-gold-900` | `#392300` | `#fdf2dc` | `#fdf2dc` | `#392300` | `#fdf2dc` |
+| `gradient-stop-0/surface/default` | `--l3-gradient-stop-0-surface-default` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` |
+| `gradient-stop-0/surface/primary` | `--l3-gradient-stop-0-surface-primary` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` |
+| `gradient-stop-0/surface/secondary` | `--l3-gradient-stop-0-surface-secondary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-800) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-800) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-800) 0%, transparent)` |
+| `gradient-stop-0/surface/tertiary` | `--l3-gradient-stop-0-surface-tertiary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-700) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-700) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-700) 0%, transparent)` |
+| `gradient-stop-0/surface/quaternary` | `--l3-gradient-stop-0-surface-quaternary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-200) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-600) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-600) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-200) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-600) 0%, transparent)` |
+| `gradient-stop-0/surface/inverted` | `--l3-gradient-stop-0-surface-inverted` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/content/primary` | `--l3-gradient-stop-0-content-primary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/content/secondary` | `--l3-gradient-stop-0-content-secondary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/content/tertiary` | `--l3-gradient-stop-0-content-tertiary` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/content/inverted` | `--l3-gradient-stop-0-content-inverted` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` |
+| `gradient-stop-0/content/disabled` | `--l3-gradient-stop-0-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/border/light` | `--l3-gradient-stop-0-border-light` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-700) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-800) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-800) 0%, transparent)` |
+| `gradient-stop-0/border/intense` | `--l3-gradient-stop-0-border-intense` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-200) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-600) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-700) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-200) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-700) 0%, transparent)` |
+| `gradient-stop-0/border/dark` | `--l3-gradient-stop-0-border-dark` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 0%, transparent)` |
+| `gradient-stop-0/border/inverted` | `--l3-gradient-stop-0-border-inverted` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` |
+| `gradient-stop-0/accent/brand-light` | `--l3-gradient-stop-0-accent-brand-light` | `color-mix(in srgb, var(--l3-base-hue-brand-lemonn-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-lemonn-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cspro-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cskuber-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cskuber-900) 0%, transparent)` |
+| `gradient-stop-0/accent/brand-default` | `--l3-gradient-stop-0-accent-brand-default` | `color-mix(in srgb, var(--l3-base-hue-brand-lemonn-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-lemonn-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cspro-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cskuber-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-brand-cskuber-500) 0%, transparent)` |
+| `gradient-stop-0/accent/error-light` | `--l3-gradient-stop-0-accent-error-light` | `color-mix(in srgb, var(--l3-base-hue-red-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` |
+| `gradient-stop-0/accent/error-default` | `--l3-gradient-stop-0-accent-error-default` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` |
+| `gradient-stop-0/accent/success-light` | `--l3-gradient-stop-0-accent-success-light` | `color-mix(in srgb, var(--l3-base-hue-green-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` |
+| `gradient-stop-0/accent/success-default` | `--l3-gradient-stop-0-accent-success-default` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` |
+| `gradient-stop-0/accent/warning-light` | `--l3-gradient-stop-0-accent-warning-light` | `color-mix(in srgb, var(--l3-base-hue-yellow-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-900) 0%, transparent)` |
+| `gradient-stop-0/accent/warning-default` | `--l3-gradient-stop-0-accent-warning-default` | `color-mix(in srgb, var(--l3-base-hue-yellow-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-yellow-400) 0%, transparent)` |
+| `gradient-stop-0/accent/purple-light` | `--l3-gradient-stop-0-accent-purple-light` | `color-mix(in srgb, var(--l3-base-hue-purple-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-900) 0%, transparent)` |
+| `gradient-stop-0/accent/purple-default` | `--l3-gradient-stop-0-accent-purple-default` | `color-mix(in srgb, var(--l3-base-hue-purple-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-purple-400) 0%, transparent)` |
+| `gradient-stop-0/accent/indigo-light` | `--l3-gradient-stop-0-accent-indigo-light` | `color-mix(in srgb, var(--l3-base-hue-indigo-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-900) 0%, transparent)` |
+| `gradient-stop-0/accent/indigo-default` | `--l3-gradient-stop-0-accent-indigo-default` | `color-mix(in srgb, var(--l3-base-hue-indigo-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-300) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-300) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-indigo-300) 0%, transparent)` |
+| `gradient-stop-0/accent/teal-light` | `--l3-gradient-stop-0-accent-teal-light` | `color-mix(in srgb, var(--l3-base-hue-teal-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-900) 0%, transparent)` |
+| `gradient-stop-0/accent/teal-default` | `--l3-gradient-stop-0-accent-teal-default` | `color-mix(in srgb, var(--l3-base-hue-teal-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-teal-400) 0%, transparent)` |
+| `gradient-stop-0/accent/discover-light` | `--l3-gradient-stop-0-accent-discover-light` | `color-mix(in srgb, var(--l3-base-hue-blue-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` |
+| `gradient-stop-0/accent/discover-default` | `--l3-gradient-stop-0-accent-discover-default` | `color-mix(in srgb, var(--l3-base-hue-blue-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` |
+| `gradient-stop-0/accent/orange-light` | `--l3-gradient-stop-0-accent-orange-light` | `color-mix(in srgb, var(--l3-base-hue-tangerine-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-900) 0%, transparent)` |
+| `gradient-stop-0/accent/orange-default` | `--l3-gradient-stop-0-accent-orange-default` | `color-mix(in srgb, var(--l3-base-hue-tangerine-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-tangerine-400) 0%, transparent)` |
+| `gradient-stop-0/accent/zing-light` | `--l3-gradient-stop-0-accent-zing-light` | `color-mix(in srgb, var(--l3-base-hue-honey-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-900) 0%, transparent)` |
+| `gradient-stop-0/accent/zing-default` | `--l3-gradient-stop-0-accent-zing-default` | `color-mix(in srgb, var(--l3-base-hue-honey-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-300) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-300) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-honey-300) 0%, transparent)` |
+| `gradient-stop-0/accent/indicator/up-light` | `--l3-gradient-stop-0-accent-indicator-up-light` | `color-mix(in srgb, var(--l3-base-hue-green-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-900) 0%, transparent)` |
+| `gradient-stop-0/accent/indicator/up-default` | `--l3-gradient-stop-0-accent-indicator-up-default` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-green-500) 0%, transparent)` |
+| `gradient-stop-0/accent/indicator/down-light` | `--l3-gradient-stop-0-accent-indicator-down-light` | `color-mix(in srgb, var(--l3-base-hue-red-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-900) 0%, transparent)` |
+| `gradient-stop-0/accent/indicator/down-default` | `--l3-gradient-stop-0-accent-indicator-down-default` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-red-500) 0%, transparent)` |
+| `gradient-stop-0/accent/us-stock-default` | `--l3-gradient-stop-0-accent-us-stock-default` | `color-mix(in srgb, var(--l3-base-hue-blue-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-500) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-400) 0%, transparent)` |
+| `gradient-stop-0/accent/us-stock-light` | `--l3-gradient-stop-0-accent-us-stock-light` | `color-mix(in srgb, var(--l3-base-hue-blue-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-50) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-hue-blue-900) 0%, transparent)` |
+| `gradient-stop-0/static/white` | `--l3-gradient-stop-0-static-white` | `color-mix(in srgb, var(--l3-static-white) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-white) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-white) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-white) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-white) 0%, transparent)` |
+| `gradient-stop-0/static/black` | `--l3-gradient-stop-0-static-black` | `color-mix(in srgb, var(--l3-static-black) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-black) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-black) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-black) 0%, transparent)` | `color-mix(in srgb, var(--l3-static-black) 0%, transparent)` |
+| `component/button/buy/surface` | `--l3-button-buy-surface` | `#b1e50e` | `#b1e50e` | `#0f9958` | `#0f9958` | `#0f9958` |
+| `component/button/buy/content` | `--l3-button-buy-content` | `#000000` | `#000000` | `#ffffff` | `#ffffff` | `#ffffff` |
+| `component/button/buy/surface-loading` | `--l3-button-buy-surface-loading` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/buy/content-loading` | `--l3-button-buy-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/buy/surface-disabled` | `--l3-button-buy-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/buy/content-disabled` | `--l3-button-buy-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/sell/surface` | `--l3-button-sell-surface` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` | `#e5505f` |
+| `component/button/sell/content` | `--l3-button-sell-content` | `#ffffff` | `#ffffff` | `#ffffff` | `#ffffff` | `#ffffff` |
+| `component/button/sell/surface-loading` | `--l3-button-sell-surface-loading` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/sell/content-loading` | `--l3-button-sell-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/sell/surface-disabled` | `--l3-button-sell-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/sell/content-disabled` | `--l3-button-sell-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/brand/surface` | `--l3-button-brand-surface` | `#b1e50e` | `#b1e50e` | `#99772e` | `#0f9958` | `#0f9958` |
+| `component/button/brand/content` | `--l3-button-brand-content` | `#000000` | `#000000` | `#ffffff` | `#ffffff` | `#ffffff` |
+| `component/button/brand/surface-loading` | `--l3-button-brand-surface-loading` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/brand/content-loading` | `--l3-button-brand-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/brand/surface-disabled` | `--l3-button-brand-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/brand/content-disabled` | `--l3-button-brand-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/primary/surface` | `--l3-button-primary-surface` | `#161616` | `#e8e8e8` | `#99772e` | `#101110` | `#e8e8e8` |
+| `component/button/primary/content` | `--l3-button-primary-content` | `#ffffff` | `#000000` | `#ffffff` | `#ffffff` | `#000000` |
+| `component/button/primary/surface-disabled` | `--l3-button-primary-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/primary/content-disabled` | `--l3-button-primary-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/primary/surface-loading` | `--l3-button-primary-surface-loading` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/primary/content-loading` | `--l3-button-primary-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/secondary/surface` | `--l3-button-secondary-surface` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
+| `component/button/secondary/content` | `--l3-button-secondary-content` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/secondary/border` | `--l3-button-secondary-border` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/secondary/surface-loading` | `--l3-button-secondary-surface-loading` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
+| `component/button/secondary/content-loading` | `--l3-button-secondary-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/secondary/border-loading` | `--l3-button-secondary-border-loading` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` |
+| `component/button/secondary/surface-disabled` | `--l3-button-secondary-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/secondary/content-disabled` | `--l3-button-secondary-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/secondary/border-disabled` | `--l3-button-secondary-border-disabled` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` |
+| `component/button/tertiary/surface` | `--l3-button-tertiary-surface` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
+| `component/button/tertiary/content` | `--l3-button-tertiary-content` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/tertiary/border` | `--l3-button-tertiary-border` | `#dbdbdb` | `#525252` | `#464a59` | `#dbdbdb` | `#292c2b` |
+| `component/button/tertiary/surface-loading` | `--l3-button-tertiary-surface-loading` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
+| `component/button/tertiary/content-loading` | `--l3-button-tertiary-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/tertiary/border-loading` | `--l3-button-tertiary-border-loading` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` |
+| `component/button/tertiary/surface-disabled` | `--l3-button-tertiary-surface-disabled` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` | `color-mix(in srgb, var(--l3-surface-inverted) 5%, transparent)` |
+| `component/button/tertiary/content-disabled` | `--l3-button-tertiary-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/button/tertiary/border-disabled` | `--l3-button-tertiary-border-disabled` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` | `color-mix(in srgb, var(--l3-border-dark) 5%, transparent)` |
+| `component/button/ghost/content` | `--l3-button-ghost-content` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/ghost/content-loading` | `--l3-button-ghost-content-loading` | `#161616` | `#e8e8e8` | `#d9dbe2` | `#101110` | `#e8e8e8` |
+| `component/button/ghost/content-disabled` | `--l3-button-ghost-content-disabled` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-900) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-charcoal-100) 30%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-slate-100) 35%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-900) 25%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-sage-100) 25%, transparent)` |
+| `component/state-layer/light/default` | `--l3-state-layer-light-default` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` |
+| `component/state-layer/light/hover` | `--l3-state-layer-light-hover` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 5%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 5%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 5%, transparent)` |
+| `component/state-layer/light/pressed` | `--l3-state-layer-light-pressed` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 15%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 15%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 10%, transparent)` |
+| `component/state-layer/dark/default` | `--l3-state-layer-dark-default` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 0%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 0%, transparent)` |
+| `component/state-layer/dark/hover` | `--l3-state-layer-dark-hover` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 5%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 5%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 10%, transparent)` |
+| `component/state-layer/dark/pressed` | `--l3-state-layer-dark-pressed` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 15%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 15%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-black-base) 10%, transparent)` | `color-mix(in srgb, var(--l3-base-neutral-white-base) 15%, transparent)` |
+
+---
+
+# Typography tokens
+
+> Manrope. Use one font shorthand token: `font: var(--l3-text-<role>-<size>)`, e.g. `var(--l3-text-label-12)`. Never set font-size / weight / line-height on their own.
+
+Roles: **heading** (750) · **label** (650) · **description** (500, with paragraph spacing). Each token also has `-size`, `-weight`, `-line-height`, `-letter-spacing` and `-paragraph-spacing` parts.
+
+| CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |
+|---|---|---|---|---|
+| `--l3-text-heading-10` | L3/Heading/10 · 750 | 750 | 10/12 | 0 |
+| `--l3-text-heading-12` | L3/Heading/12 · 750 | 750 | 12/16 | 0 |
+| `--l3-text-heading-14` | L3/Heading/14 · 750 | 750 | 14/20 | 0 |
+| `--l3-text-heading-16` | L3/Heading/16 · 750 | 750 | 16/22 | 0 |
+| `--l3-text-heading-18` | L3/Heading/18 · 750 | 750 | 18/24 | 0 |
+| `--l3-text-heading-20` | L3/Heading/20 · 750 | 750 | 20/26 | 0 |
+| `--l3-text-heading-24` | L3/Heading/24 · 750 | 750 | 24/30 | 0 |
+| `--l3-text-heading-28` | L3/Heading/28 · 750 | 750 | 28/36 | 0 |
+| `--l3-text-heading-32` | L3/Heading/32 · 750 | 750 | 32/42 | 0 |
+| `--l3-text-heading-36` | L3/Heading/36 · 750 | 750 | 36/46 | 0 |
+| `--l3-text-label-10` | L3/Label/10 · 650 | 650 | 10/12 | 0 |
+| `--l3-text-label-12` | L3/Label/12 · 650 | 650 | 12/16 | 0 |
+| `--l3-text-label-14` | L3/Label/14 · 650 | 650 | 14/20 | 0 |
+| `--l3-text-label-16` | L3/Label/16 · 650 | 650 | 16/22 | 0 |
+| `--l3-text-label-18` | L3/Label/18 · 650 | 650 | 18/24 | 0 |
+| `--l3-text-description-10` | 🔷 L3/Description - M/10 | 500 | 10/12 | 6 |
+| `--l3-text-description-12` | 🔷 L3/Description - M/12 | 500 | 12/16 | 8 |
+| `--l3-text-description-14` | 🔷 L3/Description - M/14 | 500 | 14/20 | 10 |
+| `--l3-text-description-16` | 🔷 L3/Description - M/16 | 500 | 16/22 | 12 |
+| `--l3-text-description-18` | 🔷 L3/Description - M/18 | 500 | 18/24 | 16 |
+| `--l3-text-label-08` | local — chip tab sub label (8/10) (local) | 650 | 8/10 | 0 |
+
+---
+
+# Spacing, radius & size tokens
+
+> Never use raw px (1px hairlines are the one exception).
+
+| Figma variable | CSS variable | Value |
+|---|---|---|
+| `spacing/00` | `--l3-spacing-00` | 0px |
+| `spacing/02` | `--l3-spacing-02` | 2px |
+| `spacing/04` | `--l3-spacing-04` | 4px |
+| `spacing/06` | `--l3-spacing-06` | 6px |
+| `spacing/08` | `--l3-spacing-08` | 8px |
+| `spacing/10` | `--l3-spacing-10` | 10px |
+| `spacing/12` | `--l3-spacing-12` | 12px |
+| `spacing/14` | `--l3-spacing-14` | 14px |
+| `spacing/16` | `--l3-spacing-16` | 16px |
+| `spacing/20` | `--l3-spacing-20` | 20px |
+| `spacing/24` | `--l3-spacing-24` | 24px |
+| `spacing/28` | `--l3-spacing-28` | 28px |
+| `spacing/32` | `--l3-spacing-32` | 32px |
+| `spacing/36` | `--l3-spacing-36` | 36px |
+| `spacing/40` | `--l3-spacing-40` | 40px |
+| `spacing/48` | `--l3-spacing-48` | 48px |
+| `spacing/56` | `--l3-spacing-56` | 56px |
+| `spacing/64` | `--l3-spacing-64` | 64px |
+| `spacing/72` | `--l3-spacing-72` | 72px |
+| `spacing/80` | `--l3-spacing-80` | 80px |
+| `spacing/96` | `--l3-spacing-96` | 96px |
+| `radius/00` | `--l3-radius-00` | 0px |
+| `radius/02` | `--l3-radius-02` | 2px |
+| `radius/04` | `--l3-radius-04` | 4px |
+| `radius/06` | `--l3-radius-06` | 6px |
+| `radius/08` | `--l3-radius-08` | 8px |
+| `radius/12` | `--l3-radius-12` | 12px |
+| `radius/16` | `--l3-radius-16` | 16px |
+| `radius/20` | `--l3-radius-20` | 20px |
+| `radius/24` | `--l3-radius-24` | 24px |
+| `radius/32` | `--l3-radius-32` | 32px |
+| `radius/full` | `--l3-radius-full` | 999px |
+| `size/04` | `--l3-size-04` | 4px |
+| `size/08` | `--l3-size-08` | 8px |
+| `size/12` | `--l3-size-12` | 12px |
+| `size/16` | `--l3-size-16` | 16px |
+| `size/20` | `--l3-size-20` | 20px |
+| `size/24` | `--l3-size-24` | 24px |
+| `size/28` | `--l3-size-28` | 28px |
+| `size/32` | `--l3-size-32` | 32px |
+| `size/40` | `--l3-size-40` | 40px |
+| `size/48` | `--l3-size-48` | 48px |
+| `size/56` | `--l3-size-56` | 56px |
+| `size/64` | `--l3-size-64` | 64px |
+| `size/80` | `--l3-size-80` | 80px |
+| `size/96` | `--l3-size-96` | 96px |
+| `size/128` | `--l3-size-128` | 128px |
+| `size/control-sm` | `--l3-size-control-sm` | 32px |
+| `size/control-md` | `--l3-size-control-md` | 40px |
+| `size/control-lg` | `--l3-size-control-lg` | 48px |
+| `size/touch-min` | `--l3-size-touch-min` | 48px |
+| `icon-size/12` | `--l3-icon-size-12` | 12px |
+| `icon-size/14` | `--l3-icon-size-14` | 14px |
+| `icon-size/16` | `--l3-icon-size-16` | 16px |
+| `icon-size/18` | `--l3-icon-size-18` | 18px |
+| `icon-size/20` | `--l3-icon-size-20` | 20px |
+| `icon-size/22` | `--l3-icon-size-22` | 22px |
+| `icon-size/24` | `--l3-icon-size-24` | 24px |
+| `size/tap-target` | `--l3-size-tap-target` | 32px |
+| `size/illustration` | `--l3-size-illustration` | 120px |
+
+---
+
+# Button
+
+> Buttons let people take an action, confirm a choice or move forward in a flow.
+
+- Group: Action
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.5.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29225
+- Source: `src/components/Button`
+- Also called: Action, call to action, CTA
+
+## Import
+
+```tsx
+import { Button } from './components/Button' // path relative to src/
+```
+
+## Usage rules (USAGE.md)
+
+`import { Button } from './components/Button'` · Figma: "L3: Button" (4471:29225) · Docs: `#/button`
+
+A button starts an action. If it only navigates to another screen or section, it is still a Button when it
+looks like one; text links inside content use a text action instead (see *Not a button*).
+
+---
+
+### 1. Choose the variant
+
+| Variant | Use for | Limit |
+|---|---|---|
+| `primary` *(default)* | The main action of a screen, sheet or step: *Place order*, *Continue*, *Save*. | **One per screen** (one per sheet when a sheet is open). |
+| `secondary` | The alternative action **next to a stronger button** (`primary`, `buy`, `sell` or `brand`): *Cancel*, *Modify*, *Edit order*. Its darker border only makes sense beside that stronger button. Mostly used in a **button dock / `ButtonGroup`, typically inside a bottom sheet**. | **Only alongside a stronger button.** Never on its own on the page or inside a card. |
+| `tertiary` | Low-emphasis actions that sit **on the page or inside content**: *View all* at the end of a list, *Add another*, *Load more*, *Sort*. | Use this (not `secondary`) when the action stands alone. |
+| `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. | Not as a screen's main action. |
+| `brand` | Brand moments: onboarding, promotions, first-run CTAs. Follows the product color (Lemonn lime, CS PRO gold, Kuber green). | Not for everyday actions, not next to `buy`/`sell`. |
+| `buy` / `sell` | **Only** to place or confirm a trade. Colors follow the product theme: `buy` uses the product's buy color (Lemonn lime, CS PRO market green, Kuber green), `sell` is red. | Never for unrelated actions (don't use `sell` as a "danger" button). |
+
+**Rule of thumb: every action is `primary` (or `secondary`/`tertiary`/`ghost` around it), except buying or selling, which use `buy` / `sell`.** In Lemonn and Kuber `buy` and `brand` share the product color on purpose — they never appear on the same screen, so it isn't ambiguous.
+
+Pairs that work: `secondary` + `primary`, `sell` + `buy`, `secondary` + `buy` (e.g. *Modify* + *Buy*), `secondary` + `brand`.
+Pairs to avoid: two `primary`, `primary` + `buy`, `brand` + `primary`, a `secondary` on its own.
+
+**Example — a list with a "View all" at the end:** the button is `tertiary`, not `secondary`, because it stands alone on the page.
+
+### 2. Choose the size
+
+| Size | Height (code) | Use in |
+|---|---|---|
+| `lg` *(default)* | 48 (`size/control-lg`) | Bottom docks and `ButtonGroup` — **always `lg` there, never `md` or `sm`** (`ButtonGroup` warns in development). Also the main CTA of a screen or sheet. |
+| `md` | 40 (`size/control-md`) | Actions inside content: cards, sheet bodies, form sections. |
+| `sm` | 32 (`size/control-sm`) | Compact spots: empty-state action, inline row actions, toolbars, Actionbar actions (via `ActionbarAction`). |
+
+- Buttons that sit side by side use the **same size**.
+- Every size keeps a tap area of at least 32px (code).
+
+### 3. Width & placement
+
+- In a bottom dock with one action, use `fullWidth`. With two, use `ButtonGroup` (it sizes them for you). Dock buttons are always `lg`.
+- `ButtonGroup` order: **horizontal → primary on the right**, **vertical → primary on top**. Keep the same order on every screen.
+- Inside content, buttons hug their label (no `fullWidth`) and align to the start, unless they are the only element in a centred block (e.g. `EmptyState`).
+- Don't put more than 2 buttons in a row on a 360px screen; move extra actions to a sheet or menu.
+
+### 4. Label
+
+- **Verb first, specific, sentence case:** *Place order*, *Add funds*, *Cancel order* — not *Submit*, *OK*, *Yes*.
+- 1–3 words; no ending punctuation; no ALL CAPS.
+- Labels must fit on one line at 360px in the chosen size. If it doesn't fit, shorten the label, don't shrink the text.
+- Say the same action the same way everywhere (*Add to watchlist*, not *Save* on one screen and *Add* on another).
+
+### 5. Label & icons: what can be shown
+
+A button has three parts that can each be shown or hidden (Figma 👁️ Label · 👁️ Icon-L · 👁️ Icon-R):
+
+| Label | Icon left | Icon right | Allowed? |
+|---|---|---|---|
+| ✓ | – | – | ✅ label only |
+| ✓ | ✓ | – | ✅ |
+| ✓ | – | ✓ | ✅ |
+| ✓ | ✓ | ✓ | ✅ label with an icon on both sides |
+| – | ✓ | – | ✅ icon-only (needs `aria-label`) |
+| – | – | ✓ | ✅ icon-only (needs `aria-label`) |
+| – | ✓ | ✓ | ❌ **never two icons without a label** |
+| – | – | – | ❌ **at least one part must be visible** |
+
+The component enforces this: TypeScript rejects the two ❌ rows, and at runtime an icon-only button with two icons
+shows only the left one (with a development warning).
+
+### 6. Icons
+
+- `iconLeft` reinforces the action (*+ Add*, *filter*); `iconRight` shows direction (*Continue →*).
+- Use Material Symbols from `icons/material` (`<Icon icon={msAdd} />`); the button sizes the icon for you (24 / 20 / 16 by size — code).
+- **Icon-only** buttons must have `aria-label`. In the top bar, use `ActionbarAction` instead of a bare Button.
+
+### 7. States
+
+- `loading` while the action is running (submitting an order, saving). It keeps the width and ignores taps, so it also prevents double submits (code). Don't change the label while loading.
+- `disabled` only when the action isn't possible **and** the reason is visible nearby (e.g. an invalid field with its error message). Don't disable to hide a feature.
+- After the action: show the result with an `Aerobar` (toast) or move to the next screen — don't leave the button as the only feedback.
+
+### 8. Accessibility
+
+- Buttons default to `type="button"` (code); use `type="submit"` for a form's main button.
+- The label is the accessible name; with no label, `aria-label` is required.
+- Don't put interactive elements inside a button.
+
+### 9. Not a button
+
+- **Tapping a whole card** → a clickable `Card`, not a Card with a single Button in it.
+- **Inline text action** like *Filters* or *View details* in a toolbar → text in `content/accent/discover` (a real `<button>` or link underneath), not a Button.
+- **Tabs / segmented choices** → `Tabs` (pill for chips).
+- **Status labels** → `Tag` (tags are never tappable). Price moves use `profit` / `loss`, outcomes `success` / `error`.
+
+---
+
+### Code
+
+```tsx
+// Screen CTA in a dock
+<ButtonGroup direction="horizontal" aria-label="Order actions">
+  <Button variant="secondary">Modify</Button>
+  <Button variant="buy">Buy</Button>
+</ButtonGroup>
+
+// Single full-width CTA
+<Button fullWidth loading={saving} onClick={save}>Save changes</Button>
+
+// Sheet dock: secondary only next to the stronger action, both Large
+<ButtonGroup direction="horizontal" aria-label="Confirm">
+  <Button variant="secondary">Cancel</Button>
+  <Button>Confirm</Button>
+</ButtonGroup>
+
+// "View all" at the end of a list: tertiary (it stands alone)
+<Button size="md" variant="tertiary" iconRight={<Icon icon={msArrowForward} />}>View all</Button>
+
+// Inside content
+<Button size="md" variant="tertiary" iconLeft={<Icon icon={msAdd} />}>Add another</Button>
+
+// Empty state action
+<Button size="sm" iconLeft={<Icon icon={msDeleteForever} size={12} />} onClick={clear}>Clear</Button>
+
+// Icon-only (outside the Actionbar): exactly one icon + aria-label; tertiary because it stands alone
+<Button size="sm" variant="tertiary" aria-label="Share" iconLeft={<Icon icon={msShare} />} />
+```
+
+---
+
+### Open questions
+
+<!-- PENDING: destructive actions that aren't trades (Delete list, Remove card) — no danger variant exists. Use tertiary + a confirmation sheet? -->
+<!-- PENDING: is "Cancel order" a trade action (sell style) or a destructive action? -->
+<!-- PENDING: difference in intent between tertiary and ghost beyond "container or not" -->
+<!-- PENDING: brand vs primary — which screens count as "brand moments"? -->
+
+## Overview
+
+### Types
+
+Seven types. Buy and Sell carry trade actions; Brand follows the product color (Lemonn lime, CS PRO gold, Kuber green).
+
+PrimarySecondaryTertiaryGhostBrandBuySell
+
+### Sizes
+
+Large (48), Medium (40) and Small (32). Every size has at least a 32px tap area.
+
+LargeMediumSmall
+
+### Secondary, tertiary and docks
+
+Secondary (dark border) only appears next to a stronger button — primary, buy, sell or brand — usually in a sheet's button dock. On its own, on the page or inside a card, use tertiary instead (e.g. *View all* at the end of a list). Buttons in a dock or ButtonGroup are always Large.
+
+### Label and icons
+
+Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an `aria-label`). TypeScript rejects the other combinations.
+
+### States
+
+Loading keeps the button's width and ignores taps. Disabled uses the theme's disabled tokens.
+
+BuyBuy
+
+## Do / Don't
+
+### One primary action per screen
+
+- ✅ **Do:** Pair one primary with secondary actions so the main step is obvious.
+- ❌ **Don't:** Put several primary buttons side by side — nothing stands out.
+
+### Secondary only beside a stronger button
+
+- ✅ **Do:** Pair secondary with primary, buy, sell or brand — usually in a dock. Alone, use tertiary.
+- ❌ **Don't:** Use a secondary button on its own on the page or inside a card.
+
+### Use Buy and Sell only for trades
+
+- ✅ **Do:** Use Primary for every action; Buy and Sell only for placing orders.
+- ❌ **Don't:** Borrow their colors for unrelated actions like saving settings.
+
+## Options (tree)
+
+Button — 7 variants · 3 sizes · 3 states
+
+- **Variant** — What the action means
+  - *Emphasis* — Everyday actions, strongest to quietest
+    - `primary` — The main action. One per screen.
+    - `secondary` — Only next to a stronger button, usually in a dock.
+    - `tertiary` — Stand-alone actions in content, e.g. View all.
+    - `ghost` — Text-style action inside other components.
+  - *Brand* — Follows the product color
+    - `brand` — Brand moments: onboarding, promotions.
+  - *Trade* — Only to place or confirm a trade
+    - `buy` — Buy side.
+    - `sell` — Sell side. Never a "danger" button.
+- **Size** — Where it sits
+  - `lg · 48` — Docks / ButtonGroup (always) and the main CTA.
+  - `md · 40` — Inside content: cards, sheet bodies, forms.
+  - `sm · 32` — Compact spots: empty states, inline rows, toolbars.
+- **State** — What it is doing
+  - `default` — Ready to tap.
+  - `loading` — While the action runs. Keeps its width, ignores taps.
+  - `disabled` — Only when the reason is visible nearby.
+- **Content** — Label and icons
+  - `label` — Verb first, 1–3 words.
+  - `icon left + label` — Icon reinforces the action.
+  - `label + icon right` — Icon shows direction.
+  - `icon only` — Exactly one icon + aria-label. Never two icons without a label.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'brand' \| 'buy' \| 'sell'` | `'primary'` | Figma Type. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Figma Size: Small 32, Medium 40, Large 48. |
+| `loading` | `boolean` | `false` | Figma State=♻︎ Loading. Shows the loader, keeps the width, ignores clicks, sets aria-busy. |
+| `disabled` | `boolean` | `false` | Figma State=🚫 Disabled. |
+| `children` | `ReactNode` |  | The label (Figma 👁️ Label). Leave it out for an icon button: then pass exactly one icon and aria-label. |
+| `aria-label` | `string` |  | Required for an icon button (no label). Names the action, e.g. "Share". |
+| `iconLeft` | `ReactNode` |  | Figma icon-l slot, sized and colored by the button. |
+| `iconRight` | `ReactNode` |  | Figma icon-r slot. |
+| `fullWidth` | `boolean` | `false` | Stretch to the container width. |
+| `…button props` | `ButtonHTMLAttributes` |  | onClick, type (defaults to "button"), aria-*, etc. |
+
+## Tokens used
+
+- `component/button/*`
+- `state-layer/*`
+- `text-heading-14 · 16`
+- `text-label-12`
+- `size/control-sm · md · lg`
+- `radius/08 · 12`
+- `icon-size/16 · 20 · 24`
+- `size/tap-target`
+
+## Recent changes
+
+- **1.5.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
+
+---
+
+# Button dock
+
+> A bar at the bottom of a screen or sheet that holds its main actions — stacked full-width, or side by side.
+
+- Group: Action
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.1.1
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29456
+- Source: `src/components/ButtonGroup`
+- Also called: Button group, ButtonGroup, action bar, sticky footer, CTA bar
+
+## Import
+
+```tsx
+import { ButtonGroup } from './components/ButtonGroup' // path relative to src/
+```
+
+## Usage rules (USAGE.md)
+
+`import { ButtonGroup } from './components/ButtonGroup'` · Figma: "L3: Button Dock" (4471:29456, formerly "L3: Button Group") · Docs: `#/button-group`
+
+The **button dock**: the bar at the bottom of a screen or bottom sheet that holds its main action(s).
+In code it's a `surface-primary` bar with a 1px `border-light` top line, 16px padding, 12px between buttons and
+extra bottom padding for the home indicator.
+
+---
+
+### 1. When to use it
+
+- For the **main action(s) of a screen or a bottom sheet**: *Place order*, *Confirm*, *Save*, *Buy / Sell*.
+- Even for a **single** main action — the dock gives it the bar, spacing and safe-area padding.
+- **One dock per screen** (and one per open sheet, in the sheet's `footer`).
+
+Don't use it for:
+- Actions inside content (a card, a list, a form section) → a standalone `Button` (`tertiary` when alone, e.g. *View all*).
+- Toolbar actions like *Filters* or *Sort* → text actions / `tertiary` buttons in the toolbar row.
+- Choosing between options → `Tabs` (pill for chips).
+
+### 2. What goes inside
+
+- **`Button`s, always `size="lg"`** — never `md` or `sm` (`ButtonGroup` warns in development otherwise) — plus optional
+  helper text below them.
+- **At least one strong button:** `primary`, `buy`, `sell` or `brand`.
+- A `secondary` button only **next to** that strong button (never a dock of only secondary buttons) — `ButtonGroup`
+  warns in development.
+- Allowed combinations:
+
+| Buttons | Example |
+|---|---|
+| 1 strong | *Place buy order* |
+| secondary + strong | *Cancel* + *Confirm*, *Modify* + *Buy* |
+| sell + buy | Trade ticket |
+| strong + secondary + ghost, **vertical**, optional helper text below | Figma's bottom sheet footer (e.g. *Confirm* / *Edit* / *Not now*) |
+
+- A `ghost` button in a dock is the lowest-priority option (e.g. *Not now*, *Skip*) and goes **last** (bottom).
+  <!-- PENDING: when a ghost button belongs in a dock vs outside it; is tertiary ever allowed in a dock? -->
+- **Helper text** (e.g. charges, terms) can sit under the buttons inside the dock, as in Figma's bottom sheet.
+
+### 3. Direction & order
+
+| Direction | Use when | Order |
+|---|---|---|
+| `vertical` *(default)* | One button, or two buttons whose labels don't fit side by side at 360px | **Primary (strong) on top**, secondary below |
+| `horizontal` | Two buttons with short labels (1–2 words each) | **Primary (strong) on the right**, secondary on the left; `sell` left, `buy` right |
+
+- Keep the same order on every screen — people learn where the main action is.
+- Horizontal gives each button an equal width; never set widths yourself.
+
+### 4. Placement & scrolling
+
+- The dock is the **last element** of the screen or sheet, pinned to the bottom (in a sheet, pass it as `footer`).
+- The scrolling content above it ends above the dock — nothing sits behind it.
+- Turn on **`scrollIndicator`** while content is scrolling underneath and there's more below; turn it off when the
+  user reaches the end (the Order review demo does this).
+
+### 5. States
+
+- While the main action runs, set `loading` on **that** button (it keeps its width and blocks double taps); leave
+  the other button enabled unless it would break the action.
+- Disable the main button only when the reason is visible above (e.g. an invalid field) — see `Button/USAGE.md`.
+
+### 6. Accessibility
+
+- Give the dock an **`aria-label`** naming the task (*"Order actions"*, *"Confirm order"*); it's a `role="group"`.
+  `ButtonGroup` warns in development when it's missing.
+- Reading and tab order follow the visual order.
+
+---
+
+### Code
+
+```tsx
+// One main action
+<ButtonGroup aria-label="Place order">
+  <Button variant="buy" disabled={!valid}>Place buy order</Button>
+</ButtonGroup>
+
+// Secondary + strong, side by side (strong on the right)
+<ButtonGroup direction="horizontal" aria-label="Order actions">
+  <Button variant="secondary">Modify</Button>
+  <Button variant="buy">Buy</Button>
+</ButtonGroup>
+
+// Long labels: stacked (strong on top), with the scroll shadow while content is below
+<ButtonGroup direction="vertical" scrollIndicator={moreBelow} aria-label="Confirm order">
+  <Button variant="buy">Confirm buy</Button>
+  <Button variant="secondary">Edit order</Button>
+</ButtonGroup>
+
+// Trade ticket
+<ButtonGroup direction="horizontal" aria-label="Trade">
+  <Button variant="sell">Sell</Button>
+  <Button variant="buy">Buy</Button>
+</ButtonGroup>
+
+// In a bottom sheet
+<BottomSheet open={open} onClose={close} header={…}
+  footer={<ButtonGroup direction="horizontal" aria-label="Confirm"><Button variant="secondary" onClick={close}>Cancel</Button><Button onClick={confirm}>Confirm</Button></ButtonGroup>}>
+  …
+</BottomSheet>
+```
+
+---
+
+### Open questions
+
+<!-- PENDING: maximum number of buttons — Figma's sheet footer shows 3 (vertical). Is 3 the max, and only in sheets? -->
+<!-- PENDING: can a screen have both a ButtonGroup dock and the BottomNavbar? Which wins? -->
+<!-- PENDING: exact label length that forces vertical (currently: "labels don't fit side by side at 360px") -->
+
+## Overview
+
+### Direction
+
+Vertical stacks full-width buttons with the primary on top. Horizontal shares the width equally with the primary on the right — the Order ticket and Filters demos use it.
+
+### What goes in a dock
+
+The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with `aria-label`.
+
+### Scroll indicator
+
+Figma's "Scroll indicator" adds the elevation-high shadow so the bar reads as floating over content. Turn it on while there's more content below — scroll the order above to the end and it fades away.
+
+## Do / Don't
+
+### Primary goes where the thumb ends
+
+- ✅ **Do:** Horizontal: primary on the right. Vertical: primary on top.
+- ❌ **Don't:** Flip the order between screens — people tap the wrong one.
+
+## Options (tree)
+
+Button dock — The main action(s) of a screen or sheet
+
+- **Direction** — How the buttons sit
+  - `vertical` — Default. Long labels; strong button on top.
+  - `horizontal` — Two short labels; strong button on the right.
+- **Buttons** — Always lg · at least one strong button
+  - `1 strong` — A single main action.
+  - `secondary + strong` — Cancel + Confirm, Modify + Buy.
+  - `sell + buy` — Trade ticket.
+- **Scroll indicator** — Content under the dock
+  - `off` — Nothing below, or at the end of the content.
+  - `on` — While more content scrolls underneath.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Figma Direction. |
+| `scrollIndicator` | `boolean` | `false` | Figma "Scroll indicator": shadow while content scrolls underneath. |
+| `children` | `ReactNode` |  | Figma "wrapper" slot — usually <Button size="lg" />s. Horizontal gives each an equal share. |
+| `aria-label` | `string` |  | Names the group (role="group") for screen readers. |
+| `…div props` | `HTMLAttributes` |  | className (e.g. to make it sticky), style, etc. |
+
+## Tokens used
+
+- `surface/default (static)`
+- `surface/primary (clickable)`
+- `border/light`
+- `spacing/12 · 16`
+- `shadow/elevation-high`
+- `motion/* (local)`
+
+## Recent changes
+
+- **1.1.1** (2026-09-30) Renamed to Button dock: Figma renamed "L3: Button Group" to "L3: Button Dock"; the docs page is now "Button dock". The code name ButtonGroup is unchanged.
+- **1.1.0** (2026-09-30) Dock rules: Usage rules in src/components/ButtonGroup/USAGE.md: what goes in a dock, direction and order, placement, scroll indicator. Development warnings: non-Large buttons, no strong button (secondary alone), missing aria-label.
+- **1.0.0** (2026-09-26) First release: Vertical (primary on top) and horizontal (primary on the right) layouts. Scroll indicator: elevation-high shadow while content scrolls underneath.
+
+---
+
+# Checkbox & radio
+
+> Checkboxes pick any number of options; radios pick exactly one from a group.
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.2.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65366
+- Source: `src/components/Checkbox`
+- Also called: Selector, check box, radio button
+
+## Import
+
+```tsx
+import { Checkbox, Radio } from './components/Checkbox' // path relative to src/
+```
+
+## Overview
+
+### Indeterminate
+
+Figma's "Intermediate" state. Use it on a parent checkbox when only some of its children are selected — tap "All segments" above to try it.
+
+## Do / Don't
+
+### Checkboxes for many, radios for one
+
+- ✅ **Do:** Radios when exactly one option can be chosen.
+- ❌ **Don't:** Checkboxes for mutually exclusive options.
+
+## Options (tree)
+
+Checkbox & radio — Pick many · pick one
+
+- **Type** — How many can be chosen
+  - `checkbox` — Several options, or one on/off choice in a form.
+  - `radio` — Exactly one of a set; radios share a name.
+- **State** — Checkbox shown
+  - `unchecked`
+  - `checked`
+  - `indeterminate` — A parent with some children checked.
+  - `disabled`
+- **In a row** — With a label
+  - `ListCell as="label"` — Tap anywhere on the row to toggle.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `checked` | `boolean` |  | Controlled state (or use defaultChecked). |
+| `indeterminate` | `boolean` | `false` | Checkbox only. Figma State=Intermediate. |
+| `disabled` | `boolean` | `false` | Figma Disabled=True. |
+| `name / value` | `string` |  | Radio grouping and form value. |
+| `…input props` | `InputHTMLAttributes` |  | onChange, aria-label, id, etc. Needs an accessible name. |
+
+## Tokens used
+
+- `content/primary`
+- `content/disabled`
+- `content/inverted`
+- `shadow-sm`
+- `radius/06`
+- `size/20 · 24`
+- `size/tap-target`
+
+## Recent changes
+
+- **1.2.0** (2026-09-26) Accessibility pass: Development warning when a checkbox or radio has no accessible name.
+- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.
+- **1.1.0** (2026-09-26) Built for touch: The invisible input grows to a 32px tap target around the 24px control.
+
+---
+
+# Input field & text box
+
+> Fields let people enter text — a single line (input field) or several lines with a character counter (text box).
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.4.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66091
+- Source: `src/components/TextField`
+- Also called: Text input, text field, textarea, form field
+
+## Import
+
+```tsx
+import { TextField } from './components/TextField' // path relative to src/
+```
+
+## Overview
+
+### States come from the input
+
+Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with `status` — try a quantity of 0 or a price outside the band above.
+
+### Text box counter
+
+With `multiline` and `maxLength` the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.
+
+## Do / Don't
+
+### Always show a label
+
+- ✅ **Do:** A visible label stays when people start typing.
+- ❌ **Don't:** Rely on the placeholder as the label — it disappears on input.
+
+### Explain errors
+
+- ✅ **Do:** Say what went wrong and how to fix it.
+- ❌ **Don't:** Show a red border with no message.
+
+## Options (tree)
+
+Input field — Single line or text box
+
+- **Type** — How much text
+  - `field` — One line: quantity, PAN, search.
+  - `multiline` — A text box with a character counter.
+- **Status** — Feedback below the input
+  - `default` — Helper text explains the field.
+  - `success` — The value checks out.
+  - `error` — Say what went wrong and how to fix it.
+  - `disabled`
+- **Extras** — Optional parts
+  - `required` — Marks the label.
+  - `iconLeft / iconRight` — 16px icons inside the field.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label / required` | `string / boolean` |  | Figma Label and the red * (also sets required). |
+| `placeholder / value / onChange` | `input props` |  | Standard input (or textarea) props pass through. |
+| `helperText` | `ReactNode` |  | Figma Helper text row. |
+| `helperIcon` | `boolean` | `true` | Field: the ⓘ before neutral helper text. |
+| `status` | `'error' \| 'success'` |  | Figma State=Error / Success: red border + ⚠ message, or ✓ message. |
+| `disabled` | `boolean` | `false` | Figma State=Disabled. |
+| `iconLeft / iconRight` | `ReactNode` |  | Field: Figma 16px icon slots. |
+| `multiline` | `boolean` | `false` | Figma isInputBox: multi-line text box. |
+| `maxLength` | `number` |  | Text box: shows the counter; over the limit → error. |
+| `limitMessage` | `string` | `'Character limit reached'` | Text box: message when over the limit. |
+
+## Tokens used
+
+- `surface/primary · disabled`
+- `border/light · dark · accent/error`
+- `content/primary · secondary · tertiary · disabled`
+- `content/accent/error · success · discover`
+- `text-label-12`
+- `text-description-12 · 14`
+- `radius/12`
+- `shadow/elevation-low`
+- `icon-size/14 · 16`
+
+## Recent changes
+
+- **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.3.0** (2026-10-04) Typography from Figma: Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.
+- **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.
+
+---
+
+# Toggle switch
+
+> Switches turn a single setting on or off, and take effect immediately.
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.2.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65343
+- Source: `src/components/Switch`
+- Also called: Toggle, knob, toggle button
+
+## Import
+
+```tsx
+import { Switch } from './components/Switch' // path relative to src/
+```
+
+## Overview
+
+### Motion
+
+The knob slides and the track fades over 150ms. Figma has no motion yet, so the timing comes from local motion tokens; it's instant for reduced-motion users.
+
+## Do / Don't
+
+### Switches apply immediately
+
+- ✅ **Do:** Use for settings that take effect as soon as they flip.
+- ❌ **Don't:** Use inside a form that needs Save — use a checkbox there.
+
+## Options (tree)
+
+Toggle switch — A setting that applies immediately
+
+- **Size**
+  - `md` — Default, in settings rows.
+  - `sm` — Compact rows and toolbars.
+- **State**
+  - `off`
+  - `on`
+  - `disabled`
+- **In a row** — Never inside a form that needs Save
+  - `ListCell as="label"` — The whole row toggles it.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `checked` | `boolean` |  | Controlled state (or use defaultChecked). |
+| `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: md 34×20, sm 28×16. |
+| `disabled` | `boolean` | `false` | Not drawn in Figma; uses content/disabled. |
+| `…input props` | `InputHTMLAttributes` |  | onChange, aria-label, id, etc. Renders role="switch". |
+
+## Tokens used
+
+- `content/primary`
+- `content/tertiary`
+- `content/inverted`
+- `content/disabled`
+- `size/12 · 16 · 20`
+- `motion/* (local)`
+- `size/tap-target`
+
+## Recent changes
+
+- **1.2.0** (2026-09-26) Accessibility pass: Development warning when a switch has no accessible name.
+- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.
+- **1.1.0** (2026-09-26) Built for touch: The invisible input grows to a 32px tap target.
+
+---
+
+# Tabs
+
+> Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what's shown, and a pill group switches how content is shown.
+
+- Group: Navigation
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.7.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65938
+- Source: `src/components/Tabs`
+- Also called: Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher
+
+## Import
+
+```tsx
+import { Tabs, Tab } from './components/Tabs' // path relative to src/
+```
+
+## Overview
+
+### Two components
+
+**Tabs** (Figma "L3: Tabs group") is the bar: selection, horizontal scrolling on small screens, and arrow-key navigation. **Tab** (Figma "L3: base tab") is one item, in underline or pill form, md or sm.
+
+### Three appearances
+
+- **underline** (Figma Flat tabs) — sections of a screen; at the top they go in the Actionbar's bottom slot.
+- **pill** (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.
+- **pill-group** (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.
+
+### Same label, selected or not
+
+Every tab label uses Label (650) — 14 for md, 12 for sm underline tabs, 12 / 10 for pills. Selection shows through the text color and the indicator bar (or the pill fill), never a bolder weight, so tabs never shift when the selection changes.
+
+## Do / Don't
+
+### Short, parallel labels
+
+- ✅ **Do:** Two to four one-word sections of the same thing.
+- ❌ **Don't:** Long labels that truncate, or tabs that act like buttons.
+
+## Options (tree)
+
+Tabs — Switch sections, filter or switch views
+
+- **Appearance** — What it switches
+  - `underline` — Sections of a screen. At the top: in the Actionbar bottom slot.
+  - `pill` — A row of filter chips.
+  - `pill-group` — 2–4 options in a track to switch views (Tree / List). Always tertiary.
+- **Size**
+  - `md` — Default.
+  - `sm` — Dense filter rows inside content.
+- **Width**
+  - `hug` — Default. Tabs as wide as their labels.
+  - `fill` — Tabs share the row; pill group pills become equal.
+- **Pill options** — Chip tabs only
+  - `emphasis: primary` — Default. Black fill when selected, light border when not.
+  - `emphasis: secondary` — Dark outline when selected — inside cards and sheets.
+  - `emphasis: tertiary` — Subtle fill, no border when unselected — quiet, dense rows.
+  - `subLabel` — A second 8/10 line under the label.
+  - `hideLabel` — Icon-only tab; the label stays as its name.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `TabItem[]` |  | Tabs: { value, label, iconLeft?, iconRight?, subLabel?, hideLabel? }. |
+| `value` | `string` |  | Tabs: the selected item value. |
+| `onChange` | `(value) => void` |  | Tabs: called on tap and on arrow / Home / End keys. |
+| `appearance` | `'underline' \| 'pill' \| 'pill-group'` | `'underline'` | Figma Tabs group Type: Flat tabs / Pill tabs / Pill group. A Tab alone takes underline \| pill (Figma isPill). |
+| `emphasis` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | Figma base tab Type, appearance="pill" only (pill-group is always tertiary) — the style of the whole row. primary: selected black fill, unselected light border · secondary: selected dark outline, unselected light border · tertiary: selected black fill, unselected subtle fill with no border. |
+| `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: underline 40 / 36, pill 32 / 24. |
+| `width` | `'hug' \| 'fill'` | `'hug'` | Tabs: hug = tabs as wide as their labels (a pill group's track wraps them); fill = tabs stretch to fill the row (a pill group goes full width with equal pills). |
+| `aria-label` | `string` |  | Tabs: required name for the tab list. |
+| `idPrefix` | `string` |  | Tabs: sets tab ids / aria-controls so panels can be linked. |
+| `iconLeft / iconRight` | `ReactNode` |  | Figma icon slots, 16px, colored with the label. |
+| `subLabel` | `string` |  | Figma 👁️ Sub label: a second 8/10 line under the label. Chip (pill) tabs only. |
+| `hideLabel` | `boolean` | `false` | Figma 👁️ Label off: icon-only tab. Needs one icon; the label stays as its accessible name. |
+| `selected` | `boolean` | `false` | Tab only, when composing tabs yourself. |
+
+## Tokens used
+
+- `content/primary · secondary · inverted`
+- `surface/primary · secondary · inverted`
+- `border/light · dark`
+- `state-layer/*`
+- `text-label-08 · 10 · 12 · 14`
+- `radius/12 · full`
+- `size/24 · 32 · 40`
+- `spacing/36`
+- `size/tap-target`
+
+## Recent changes
+
+- **1.7.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
+- **1.5.0** (2026-10-02) Hug or fill width: width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
+
+---
+
+# Actionbar
+
+> The bar at the top of a screen: back, the screen title with an optional description, and up to a couple of actions — or a search field.
+
+- Group: Navigation
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.2.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
+- Source: `src/components/Actionbar`
+- Also called: App bar, top bar, navigation bar, header, toolbar
+
+## Import
+
+```tsx
+import { Actionbar, ActionbarAction } from './components/Actionbar' // path relative to src/
+```
+
+## Overview
+
+### Title or search
+
+Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass `search` and the middle becomes a real search input — tap the search action above.
+
+### Actions and bottom content
+
+`ActionbarAction` is Figma's round 32px icon button; give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
+
+## Do / Don't
+
+### Flat tabs belong to the bar
+
+- ✅ **Do:** Put screen-level (flat) tabs in the Actionbar’s bottom slot.
+- ❌ **Don't:** Place flat tabs below the bar as a separate layer.
+
+### Two actions at most
+
+- ✅ **Do:** Keep the bar to the one or two most useful actions.
+- ❌ **Don't:** Crowd it with icons — the title gets squeezed out.
+
+## Options (tree)
+
+Actionbar — The top bar of a screen
+
+- **Mode**
+  - `title` — Back, title, description, up to 2 actions.
+  - `search` — The middle becomes a search input.
+- **Slots** — Fill them, don’t stack siblings
+  - `actions` — At most 2. Tertiary / ghost style only.
+  - `bottom` — Flat tabs at the top always go here.
+- **Elevation**
+  - `flat` — surface-default + border-light bottom line.
+  - `elevated / sticky` — elevation-low while content scrolls under it.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title / description` | `ReactNode` |  | Figma ✏️ Heading / ✏️ Description. |
+| `headingLevel` | `1 \| 2` | `1` | The title is the screen heading; use 2 inside sheets or previews. |
+| `onBack / backLabel` | `() => void / string` | `'Back'` | Figma 👁️ Action - left: back button with a round state layer. |
+| `actions` | `ReactNode` |  | Figma → content right — usually <ActionbarAction icon label onClick />. |
+| `bottom` | `ReactNode` |  | Figma ↓ Content bottom — Tabs, filters… |
+| `search` | `{ value, onChange, placeholder?, label?, autoFocus? }` |  | Figma base content Type=Search / Searched: the middle becomes a search input. |
+| `sticky` | `boolean` | `false` | Stick to the top while the page scrolls. |
+| `ActionbarAction` | `{ icon, label, onClick, pressed? }` |  | Round 32px icon button; pressed shows a toggle state (e.g. watchlist). |
+
+## Tokens used
+
+- `surface/default`
+- `border/light · dark`
+- `content/primary · secondary · disabled`
+- `content/accent/discover (caret)`
+- `text-heading-14`
+- `text-description-12 · 14`
+- `size/32 · 48`
+- `state-layer/*`
+- `radius/full`
+
+## Recent changes
+
+- **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Search text uses Description.
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **unreleased** (2026-09-28) Figma updated, code to follow: Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.
+
+---
+
+# Bottom navbar
+
+> The tab bar at the bottom of the app for moving between its main sections. Mutual Fund and F&O have their own sub-navs with a Home item back to the main bar.
+
+- Group: Navigation
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.1.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-61961
+- Source: `src/components/BottomNavbar`
+- Also called: Bottom navigation, tab bar, nav bar, bottom tabs, dock
+
+## Import
+
+```tsx
+import { BottomNavbar, NavIcon, navIconNames } from './components/BottomNavbar' // path relative to src/
+```
+
+## Overview
+
+### Main nav and sub-navs
+
+The main bar has Stocks, Market, Portfolio, Mutual Fund and F&O. Mutual Fund and F&O each have their own bar. Pass `home` to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.
+
+### Moving between navs
+
+When the options change, the bar animates. The option you tapped glides into its new slot, and the rest slide in one after another from the direction you're going: from the right into a sub-nav, from the left back Home. The animation uses the motion tokens, and it's turned off when the device is set to reduce motion.
+
+### Nav icons
+
+`NavIcon` is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with `<Icon>`: it's shown in content/tertiary, or success green when selected.
+
+### Accessibility
+
+The bar is a `<nav>` landmark. Give it a name with `aria-label`. Each option is a button, or a link when you pass `href`. The current option is marked with `aria-current="page"`, and the label is always shown. With `fixed`, the bar sticks to the bottom of the screen and adds space for the home indicator.
+
+## Do / Don't
+
+### Only top-level sections
+
+- ✅ **Do:** Three to five main sections, always with labels.
+- ❌ **Don't:** Put actions (like Buy) or more than five items in the bar.
+
+## Options (tree)
+
+Bottom navbar — App sections, 3–5 items
+
+- **Item set** — Which part of the app
+  - `main` — Top-level sections, always labelled.
+  - `sub-nav + home` — MF / F&O sections with a way back home.
+- **Rules**
+  - `no actions` — Never Buy or other actions in the bar; never more than five items.
+  - `aria-current` — The current section is marked for screen readers.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `BottomNavbarItem[]` |  | { value, label, icon, selectedIcon?, href? }. Icons are 24px. |
+| `value` | `string` |  | The current section (Figma Tab / isActive). |
+| `onChange` | `(value) => void` |  | Called when an option is tapped. |
+| `home` | `{ label?, onClick?, href? }` |  | Figma MF / F&O sub-navs: a Home item (back-home icon) and a separator. The label defaults to 'Home'. |
+| `aria-label` | `string` | `'Main'` | Name of the nav landmark. |
+| `fixed` | `boolean` | `false` | Fix the bar to the bottom of the viewport and add the safe-area inset. |
+| `NavIcon` | `{ name: NavIconName; selected? }` |  | Figma .L3: base navicons: stocks, market, portfolio, mutualFund, fno, mfFunds, mfDashboard, mfSips, fnoOptionChain, fnoPositions, fnoScalper, backHome. |
+
+## Tokens used
+
+- `surface/primary`
+- `border/light`
+- `content/tertiary (unselected)`
+- `content/accent/success-default (selected)`
+- `content/primary (nav icon mask)`
+- `text-label-10`
+- `size/64`
+- `spacing/04 · 10`
+- `icon-size/24`
+- `shadow/elevation-medium`
+- `state-layer/dark/*`
+
+## Recent changes
+
+- **1.1.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **1.0.0** (2026-09-26) First release: Main nav plus Mutual Fund and F&O sub-navs with a Home item and separator. Figma nav icons: theme-aware outlines, brand artwork when selected. Animated switch between navs: the tapped option glides, the rest slide in.
+
+---
+
+# Card
+
+> A surface that groups related content. Clickable cards are one tap target; static cards just show information.
+
+- Group: Surfaces
+- Lifecycle: wip
+- Status: Code first
+- Version: 1.2.0
+- Source: `src/components/Card`
+- Also called: Tile, panel, container, list item card
+
+## Import
+
+```tsx
+import { Card } from './components/Card' // path relative to src/
+```
+
+## Overview
+
+### Clickable or static
+
+Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A **clickable** card (`onClick` or `href`) also gets elevation-low and scales to 0.98 while pressed. A **static** card is for information or decoration: rounded with a border/light outline on surface/default, and no shadow or press.
+
+### One action means a clickable card
+
+If a card would hold a single button, make the whole card clickable instead. A clickable card is one tap target, so it can't contain other buttons or links (a development warning flags both cases).
+
+### Flat cards
+
+A card that isn’t rounded and has no border (`variant="flat"`) has no background unless you set one with `surface` — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.
+
+### Same rule for chip tabs
+
+Chip (pill) tabs are tappable surfaces too: unselected chips use surface/primary with border/light and elevation-low, and scale to 0.98 while pressed.
+
+## Do / Don't
+
+### One action? Make the whole card clickable
+
+- ✅ **Do:** The card itself is the tap target — elevation-low, press scale.
+- ❌ **Don't:** Put a single button inside a static card.
+
+## Options (tree)
+
+Card — Groups related content
+
+- **Kind** — Can it be tapped?
+  - `clickable` — surface-primary + border-light + elevation-low + press scale. One action → the whole card.
+  - `static` — Rounded + border → surface-default, no shadow.
+- **Variant**
+  - `default` — Radius 12, padding 12.
+  - `flat` — No radius, no border, transparent unless a surface is set.
+- **Surface** — Only when set manually
+  - `secondary` — An inner panel inside a container.
+  - `inverted` — High emphasis.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` |  | Card content. Inside a clickable card use text and spans only — no other controls. |
+| `onClick` | `() => void` |  | Makes the whole card a button (clickable card). |
+| `href` | `string` |  | Makes the whole card a link (clickable card). |
+| `as` | `'div' \| 'article' \| 'section' \| 'li'` | `'div'` | Element for a static card. |
+| `variant` | `'default' \| 'flat'` | `'default'` | flat: not rounded, no border, no shadow, transparent background. Can still be clickable. |
+| `surface` | `'default' \| 'primary' \| 'secondary' \| 'tertiary' \| 'inverted'` |  | Set the background yourself (surface token). Flat cards are transparent without it. |
+| `padding` | `'default' \| 'none'` | `'default'` | 12px, or none for edge-to-edge content. |
+| `aria-label` | `string` |  | Name for a clickable card when its text alone isn’t a good one. |
+
+## Tokens used
+
+- `surface/primary`
+- `border/light`
+- `shadow/elevation-low (clickable)`
+- `motion/scale/press-default (local, 0.98)`
+- `motion/duration-short`
+- `state-layer/dark/hover`
+- `radius/12`
+- `spacing/12 · 08`
+
+## Recent changes
+
+- **1.2.0** (2026-09-29) Figma card spec: Padding 16 → 12 and radius 16 → 12, matching the Figma Order card (row gap stays 8). Orders demo: 16 between cards, Body/12 meta line, Tertiary status tags, sort + filters toolbar.
+- **1.1.0** (2026-09-29) Flat variant: variant="flat": not rounded, no border, no shadow, transparent background; still clickable. surface prop to set a card background manually (surface tokens only). Static cards (rounded + border/light) use surface/default; clickable cards stay surface/primary.
+- **1.0.0** (2026-09-29) First release: Clickable cards (onClick / href): surface/primary, border/light, elevation-low, press scale 0.98. Static cards for information or decoration: surface/primary + border/light, no shadow or press. Development warnings: a clickable card with controls inside, or a static card holding a single action.
+
+---
+
+# Bottom sheet
+
+> A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.
+
+- Group: Surfaces
+- Lifecycle: done
+- Status: Figma synced
+- Version: 2.3.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
+- Source: `src/components/BottomSheet`
+- Also called: Sheet, modal sheet, drawer, action sheet, top sheet
+
+## Import
+
+```tsx
+import { BottomSheet, BottomSheetHeader, BottomSheetSurface } from './components/BottomSheet' // path relative to src/
+```
+
+## Usage rules (USAGE.md)
+
+`import { BottomSheet, BottomSheetHeader } from './components/BottomSheet'` · Figma: "L3: Bottom sheet" (4543:63932),
+"L3: Bottom sheet header" (4543:63897), "L3: Overlay" (4603:91773) — all `Version=Latest` · Docs: `#/bottom-sheet`
+
+A modal panel that slides up over the screen (or drops from the top) on the dimmed "L3: Overlay" backdrop.
+
+---
+
+### 1. When to use it
+
+- A short task or choice that belongs to the current screen: *place an order*, *pick a sort order*, *confirm*, a
+  result (*Order placed*).
+- `placement="top"` (Figma isBottom=False) for menus tied to the top of the screen, e.g. *Sort by*.
+
+Don't use it for:
+- A whole new flow or a long form → a new screen.
+- A status message → `Aerobar` (toast).
+
+### 2. Closing — invisible, no controls
+
+- **There is no drag handle and no ✕ close button.** Don't add either (not in the header's right slot, not as an
+  icon button).
+- People close a sheet by:
+  - **tapping the backdrop** (the overlay), or
+  - **dragging the sheet down** (up for a top sheet) — from anywhere on it: the header and footer always, the content
+    once it's scrolled to the top. Before that, a swipe scrolls the content. It closes past 30% of its height or on a
+    quick flick; otherwise it springs back.
+- `Esc` also closes it, and the component renders a visually hidden **Close** button (`closeLabel`) for screen-reader
+  and keyboard users. You don't add anything for this.
+- A sheet that ends in a decision can still offer a *Cancel* / *Not now* button in its dock (a `secondary` or `ghost`
+  button next to the main action) — that's an action, not a close control.
+
+### 3. Stacking & the back button
+
+- **At most 2 sheets at a time:** the first over the screen, and one on top of it. **Never a third** — replace the
+  second sheet's content (or close it first) instead. `BottomSheet` warns in development when a third opens.
+- **The first sheet has no back button.** Don't pass `onBack` to it — inside a modal `BottomSheet` the header hides
+  it on the first sheet (with a development warning).
+- **The second sheet has a back button** (`onBack`) that closes it and returns to the first sheet, e.g. an explainer
+  opened from the first sheet's ⓘ, or a sub-step. Its backdrop tap and drag close only that second sheet.
+
+### 4. Anatomy (Figma properties → props)
+
+| Figma | Prop | Notes |
+|---|---|---|
+| isBottom | `placement` `'bottom' \| 'top'` | |
+| 👁️ Header | `header` | Usually `<BottomSheetHeader>`. Without a header, name the dialog with `aria-label`. |
+| content slot · 👁️ Content Slot | `children` | Leave out to hide the area (e.g. a result sheet that's only header + dock). Scrolls when tall. |
+| Buttons | `footer` | Always a `ButtonGroup` (button dock) — see `ButtonGroup/USAGE.md`. |
+| Utility slot · 👁️ Utility slot | `utility` | Below the dock (Figma puts the system navbar here). Bottom sheets only. |
+| L3: Overlay | — | Drawn by `BottomSheet` (80% black, tap to close). |
+
+**Header** (`BottomSheetHeader`):
+
+| Figma | Prop | Size |
+|---|---|---|
+| isSmall | `size` `'sm' \| 'lg'` | |
+| ✏️ Heading | `heading` (+ `headingId` for `aria-labelledby`) | both |
+| 👁️ / ✏️ Description | `description` | both |
+| 👁️ Back button | `onBack` | sm — **only on a second sheet stacked on another**; never on the first sheet (see 3) |
+| 👁️ info | `info`, `onInfo`, `infoLabel` | sm |
+| 👁️ Action - right · right slot | `trailing` | sm — one small `ghost` icon `Button` or a `Tag` (Figma's preferred values). Never a ✕. |
+| 👁️ Content bottom | `bottom` | sm — flat `Tabs` or search that belong to the sheet go here, not in the body |
+| 👁️ H-Icon · H-Icon | `icon` | lg — 64px icon |
+| 👁️ header tag | `tag` | lg — `<Tag size="sm">` |
+
+### 5. Which header
+
+| Header | Use for |
+|---|---|
+| `sm` *(default)* | Tasks and choices: order entry, sort, filters, settings |
+| `lg` | Results and confirmations: *Order placed*, *KYC complete* — icon, optional tag, heading, description |
+
+### 6. Content & placement
+
+- One dock per sheet (`footer`). The main action follows `Button/USAGE.md` (one strong button).
+- Keep sheets short; if the content needs more than about one screen of scrolling, use a new screen.
+- Give the sheet a name: `aria-labelledby` pointing at `headingId`, or `aria-label` when there's no header.
+- Focus moves into the sheet, is trapped there, and returns when it closes; the page behind is inert (code).
+
+---
+
+### Code
+
+```tsx
+// Task sheet: small header, tabs in the header slot, dock
+<BottomSheet
+  open={open}
+  onClose={close}
+  aria-labelledby="buy-heading"
+  header={
+    <BottomSheetHeader
+      headingId="buy-heading"
+      heading="Buy RELIANCE"
+      description="NSE"
+      info
+      bottom={<Tabs aria-label="Order type" items={orderTypes} value={type} onChange={setType} />}
+    />
+  }
+  footer={
+    <ButtonGroup aria-label="Order actions">
+      <Button variant="buy">Buy 10 shares</Button>
+      <Button variant="ghost" onClick={close}>Not now</Button>
+    </ButtonGroup>
+  }
+>
+  …
+</BottomSheet>
+
+// Result sheet: large header, no content slot
+<BottomSheet open={done} onClose={closeDone} aria-labelledby="placed-heading"
+  header={<BottomSheetHeader size="lg" headingId="placed-heading" heading="Order placed" description="10 shares of RELIANCE" icon={<Icon icon={msCheckCircle} />} tag={<Tag size="sm">EXECUTED</Tag>} />}
+  footer={<ButtonGroup aria-label="Done"><Button onClick={closeDone}>Done</Button></ButtonGroup>}
+/>
+
+// Second sheet stacked on the first: the only place a back button appears (max 2 sheets)
+<BottomSheet open={explainerOpen} onClose={closeExplainer} aria-labelledby="types-heading"
+  header={<BottomSheetHeader headingId="types-heading" heading="Order types" onBack={closeExplainer} />}>
+  …
+</BottomSheet>
+
+// Top sheet (drag up or tap outside to close)
+<BottomSheet open={sortOpen} onClose={closeSort} placement="top" aria-labelledby="sort-heading"
+  header={<BottomSheetHeader headingId="sort-heading" heading="Sort by" />}>
+  …radios…
+</BottomSheet>
+```
+
+---
+
+### Open questions
+
+<!-- PENDING: maximum sheet height / when a sheet should become a full screen -->
+
+## Overview
+
+### Three pieces
+
+**BottomSheet** is the modal: the Figma "L3: Overlay" backdrop, slide-in, focus trap, backdrop tap / drag down / Esc to close. **BottomSheetHeader** is Figma's header in small (back · heading · ⓘ · any action) and large (icon · tag · heading · description) sizes. **BottomSheetSurface** is the panel alone, for embedding or static layouts.
+
+### Closing is invisible
+
+There is no drag handle and no ✕. People close a sheet by **tapping the backdrop** or **dragging it down** — anywhere on the sheet: the header and footer always, the content once it's scrolled to the top (before that, a swipe scrolls the content). Esc also closes it, and a visually hidden “Close” button is there for screen-reader and keyboard users. The page behind the sheet is inert while it's open.
+
+### At most two sheets
+
+The first sheet over a screen has **no back button**. A second sheet can open on top of it (e.g. an explainer from the ⓘ) — that one has a back button that returns to the first. Never stack a third: replace the second sheet instead. Try the ⓘ on the Buy sheet above.
+
+### Bottom or top
+
+Figma's isBottom=False drops the sheet from the top with rounded bottom corners — handy for sort or filter menus tied to the top of the screen.
+
+## Do / Don't
+
+### Back only on a stacked sheet
+
+- ✅ **Do:** The first sheet over a screen has no back button. A second sheet on top of it has one, returning to the first. Two sheets at most.
+- ❌ **Don't:** Put a back button on the first sheet, or open a third sheet on top of two.
+
+### Close by dragging or tapping outside
+
+- ✅ **Do:** Keep the header clean: heading, and a back button or one action if needed. The sheet closes by dragging down or tapping the backdrop.
+- ❌ **Don't:** Add a ✕ or a drag handle — closing is handled without visible controls.
+
+## Options (tree)
+
+Bottom sheet — A modal panel over the screen
+
+- **Placement**
+  - `bottom` — Default. Closes by backdrop tap or drag down.
+  - `top` — Menus tied to the top, e.g. Sort.
+- **Header size**
+  - `sm` — Tasks and choices.
+  - `lg` — Results: icon, tag, heading, description.
+- **Stacking** — At most 2 sheets
+  - `1st sheet` — No back button, no ✕.
+  - `2nd sheet` — Back button returns to the first. Never a third.
+  - `header bottom` — Tabs or search at the top of a sheet.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open / onClose` | `boolean / () => void` |  | BottomSheet: visibility; onClose fires on backdrop tap, drag down (up for top sheets), Esc and the screen-reader close button. |
+| `placement` | `'bottom' \| 'top'` | `'bottom'` | Figma isBottom. |
+| `header` | `ReactNode` |  | Figma 👁️ Header — usually <BottomSheetHeader />. |
+| `children` | `ReactNode` |  | Figma content slot; scrolls if the sheet would be taller than the screen. |
+| `footer` | `ReactNode` |  | Figma "Buttons" — usually <ButtonGroup>. |
+| `utility` | `ReactNode` |  | Figma Utility slot, below the buttons. |
+| `closeLabel` | `string` | `'Close'` | Name of the visually hidden close button (screen readers / keyboard). There is no visible close button or drag handle; the whole sheet drags to dismiss. |
+| `container` | `HTMLElement \| null` | `document.body` | Render inside another element instead of covering the page. |
+| `aria-labelledby` | `string` |  | Point at the header heading (headingId) to name the dialog. |
+| `Header: size` | `'sm' \| 'lg'` | `'sm'` | Figma isSmall. |
+| `Header: heading / description` | `string` |  | Heading text and optional description. |
+| `Header: info` | `boolean \| ReactNode` | `false` | sm: ⓘ after the heading (decorative on its own). |
+| `Header: onInfo / infoLabel` | `() => void / string` | `'More information'` | sm: makes the ⓘ a real, labelled button. |
+| `Header: onBack / trailing` | `() => void / ReactNode` |  | sm actions: back button — only on a second sheet stacked on another (hidden on the first sheet over the screen) — or any right-side node (Tag, small Button). There is no close (✕) button. |
+| `Header: bottom` | `ReactNode` |  | sm: Figma "Content bottom" slot under the header row — e.g. flat Tabs or a search field. Put them here, not as a separate row in the sheet body. |
+| `Header: icon / tag` | `ReactNode` |  | lg: 64px icon slot and a header tag. |
+
+## Tokens used
+
+- `surface/primary`
+- `border/light · intense`
+- `content/primary · secondary`
+- `text-heading-16 · 20`
+- `text-description-12 · 14`
+- `radius/24 · full`
+- `shadow/elevation-high`
+- `static/black + opacity/80 (overlay)`
+- `motion/* (local)`
+- `size/tap-target`
+
+## Recent changes
+
+- **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
+- **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
+- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.
+
+---
+
+# Aerobar & toast
+
+> A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.
+
+- Group: Feedback & status
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.4.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65562
+- Source: `src/components/Aerobar`
+- Also called: Toast, snackbar, banner, alert bar, notification
+
+## Import
+
+```tsx
+import { Aerobar } from './components/Aerobar' // path relative to src/
+```
+
+## Overview
+
+### Toasts
+
+Floating, solid toasts for results people should notice — always shown here; in the phone above they rise in after Buy or Sell.
+
+### Inline or floating
+
+Without `floating` it's a full-width strip that sits in the layout (the market-hours warning above). With `floating` it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.
+
+### Soft or solid
+
+Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass `role="status"` so it isn't read out as an alert on every visit.
+
+## Do / Don't
+
+### Let people act before it goes
+
+- ✅ **Do:** Toasts with an action stay until tapped or closed.
+- ❌ **Don't:** Hide important info or undo behind a timer.
+
+## Options (tree)
+
+Aerobar & toast — Status on the page, or a result
+
+- **Type** — Status accents
+  - `success`
+  - `danger` — Announced as an alert.
+  - `warning`
+  - `discover`
+  - `primary` — Neutral.
+- **Emphasis**
+  - `primary (solid)` — Results that need attention.
+  - `secondary (soft)` — Quieter status on the page.
+- **Placement**
+  - `inline` — A message that belongs to the page.
+  - `floating (toast)` — The result of an action. With an action it stays until tapped.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `'primary' \| 'discover' \| 'danger' \| 'success' \| 'warning'` | `'primary'` | Figma Type. |
+| `emphasis` | `'primary' \| 'secondary'` | `'secondary'` | Figma isPrimary: solid color (primary) or light tint (secondary). |
+| `floating` | `boolean` | `false` | Figma isFloating: toast card with shadow and a rise-in animation. |
+| `heading / paragraph` | `ReactNode` |  | Figma Headline text / Paragraph text (hidden when not passed). |
+| `icon` | `ReactNode \| false` | `info icon` | Figma icon-L slot (24px); false hides it. |
+| `action` | `{ label, onClick }` |  | Figma Action-r: small Ghost button in a 48px slot; its label follows the bar color. |
+
+## Tokens used
+
+- `surface/tertiary · inverted`
+- `surface/accent/* (light · default)`
+- `content/primary · secondary · inverted`
+- `static/white · black`
+- `opacity/60 · 80`
+- `text-label-14`
+- `text-description-12`
+- `radius/12`
+- `shadow/elevation-low · medium`
+- `motion/* (local)`
+
+## Recent changes
+
+- **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content/secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
+
+---
+
+# Empty state
+
+> What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.
+
+- Group: Feedback & status
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.1.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66488
+- Source: `src/components/EmptyState`
+- Also called: No results, zero state, blank slate, nothing found
+
+## Import
+
+```tsx
+import { EmptyState, NoResultsIllustration } from './components/EmptyState' // path relative to src/
+```
+
+## Overview
+
+### Say what happened, then offer a way out
+
+Use the heading to say what's missing ("No results found") and the description to say what to try. Figma's CTA is a small primary Button, "Clear" with a delete icon, that resets the search. Tap it in the demo above, then type to see results come back.
+
+### Illustration
+
+The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to `illustration`, or `null` to hide it.
+
+### Layout and accessibility
+
+The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use `headingLevel={3}` under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.
+
+## Do / Don't
+
+### Offer a way forward
+
+- ✅ **Do:** Say what happened and give an action to recover.
+- ❌ **Don't:** Leave a blank screen or a dead end.
+
+## Options (tree)
+
+Empty state — Nothing to show, or no results
+
+- **Parts**
+  - `illustration + title + description + action` — Say what happened and give a way to recover.
+  - `title only` — Small spaces; still never a dead end.
+- **Heading level**
+  - `h2` — Default: the empty state is the page content.
+  - `h3` — Inside a section that already has an h2.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `ReactNode` |  | Figma ✏️ Heading. |
+| `description` | `ReactNode` |  | Figma ✏️ Description. |
+| `illustration` | `ReactNode \| null` | `<NoResultsIllustration />` | Figma Illustration slot, 120px. null hides it. |
+| `action` | `ReactNode` |  | Figma Clear CTA: usually <Button size="sm" variant="primary">. |
+| `headingLevel` | `2 \| 3` | `2` | Heading element for the title. |
+
+## Tokens used
+
+- `surface/default`
+- `content/primary · secondary`
+- `surface/accent/brand-default (illustration)`
+- `static/black · white (illustration)`
+- `text-heading-16`
+- `text-label-14`
+- `spacing/04 · 16 · 24`
+- `size/illustration (local, 120px)`
+
+## Recent changes
+
+- **1.1.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **1.0.0** (2026-09-26) First release: Illustration, heading, description and an action slot. No-results illustration with every fill bound to a theme token.
+
+---
+
+# List cell
+
+> A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
+
+- Group: Data display
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.2.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
+- Source: `src/components/ListCell`
+- Also called: List item, row, cell, settings row, menu item
+
+## Import
+
+```tsx
+import { ListCell } from './components/ListCell' // path relative to src/
+```
+
+## Overview
+
+### Plain or card
+
+Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
+
+### Tappable rows
+
+Use `as="button"` or `href` to make the whole row tappable with a pressed tint. Use `as="label"` with a Switch or Checkbox in `trailing` so tapping anywhere on the row toggles it — try “Biometric login”.
+
+## Do / Don't
+
+### Show where a row leads
+
+- ✅ **Do:** Tappable rows get a chevron (or trailing control).
+- ❌ **Don't:** Make rows tappable with nothing to hint at it.
+
+## Options (tree)
+
+List cell — Rows of settings, accounts, items
+
+- **Variant**
+  - `plain` — Full width, edge to edge.
+  - `card` — A one-line row as a card.
+- **Size**
+  - `md`
+  - `sm`
+- **Tap behaviour** — as=
+  - `button / a` — Whole row taps; show a chevron.
+  - `label` — With a Switch or Checkbox in trailing.
+  - `dotRight` — Unread marker with screen-reader text.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label / description` | `ReactNode` |  | Figma "Label goes here" / "Type description". |
+| `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: 48 / 32 min height, 24 / 16 icons. |
+| `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row, or bordered rounded card. |
+| `iconLeft / iconRight` | `ReactNode` |  | Figma Icon-L / Icon-R slots, sized for you. |
+| `trailing` | `ReactNode` |  | Anything else on the right: Switch, Checkbox, Tag, value text. |
+| `dotLeft / dotRight` | `boolean` | `false` | Figma Dot-L / Dot-R: unread dot on the icon. |
+| `dotLabel` | `string` | `'New'` | What screen readers hear for the dot (it is otherwise only visual). |
+| `as / href / onClick` | `'div' \| 'button' \| 'a' \| 'label'` |  | Makes the row tappable (button / a) or a label for a trailing control. |
+
+## Tokens used
+
+- `surface/primary`
+- `border/light`
+- `content/primary · secondary`
+- `content/accent/discover (dot)`
+- `text-label-14 · 16`
+- `text-description-12`
+- `radius/12 · full`
+- `icon-size/16 · 24`
+- `state-layer/* (tappable rows)`
+
+## Recent changes
+
+- **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **1.1.0** (2026-09-26) Accessibility pass: Dots have screen-reader text (dotLabel, default “New”). Development warning when a button row contains another control.
+
+---
+
+# Tag
+
+> Tags label, categorise or show the status of something in a compact form.
+
+- Group: Data display
+- Lifecycle: done
+- Status: Figma synced
+- Version: 2.2.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4464-27218
+- Source: `src/components/Tag`
+- Also called: Badge, chip, label, pill
+
+## Import
+
+```tsx
+import { Tag } from './components/Tag' // path relative to src/
+```
+
+## Overview
+
+### Types
+
+Primary is solid, Secondary is soft with a border, Tertiary is soft without one.
+
+PrimarySecondaryTertiaryDisabled
+
+## Do / Don't
+
+### Keep tags short and static
+
+- ✅ **Do:** One or two words that label or show status.
+- ❌ **Don't:** Use a tag as a button or for sentences.
+
+## Options (tree)
+
+Tag — 3 types · 12 colors · 3 sizes · never tappable
+
+- **Type**
+  - `primary` — Solid.
+  - `secondary` — Soft with a border.
+  - `tertiary` — Soft, no border.
+  - `disabled`
+- **Color** — Pick by meaning
+  - *Neutral*
+    - `neutral` — Exchange, segment labels.
+  - *Market indicators* — Price direction only
+    - `profit`
+    - `loss`
+  - *Status* — Outcomes and states
+    - `success`
+    - `warning`
+    - `error`
+    - `discover`
+    - `processing`
+  - *Sub-brands*
+    - `zing`
+  - *Miscellaneous* — Exceptional cases only
+    - `purple`
+    - `indigo`
+    - `teal`
+- **Size**
+  - `sm · 16`
+  - `md · 20`
+  - `lg · 24`
+- **Content**
+  - `label` — One or two words.
+  - `icon + label`
+  - `hideLabel` — Icon only; the label stays as screen-reader text.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | Figma Type (Tertiory → tertiary). |
+| `color` | `'neutral' \| 'profit' \| 'loss' \| 'success' \| 'error' \| 'warning' \| 'discover' \| 'processing' \| 'indigo' \| 'teal' \| 'purple' \| 'zing'` | `'neutral'` | Figma Color. profit / loss = indicator up / down (price moves, P&L); success / error = outcomes; processing = orange. v1 names green, red, yellow, orange still work (→ success, error, warning, processing). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Figma Size: 16, 20, 24. |
+| `disabled` | `boolean` | `false` | Figma Type=Disabled; overrides variant and color. |
+| `iconLeft / iconRight` | `ReactNode` |  | Icon slots, sized and colored by the tag. |
+| `hideLabel` | `boolean` | `false` | Figma 👁️ Label off: icon-only (square) tag. Needs one icon; children stay as the screen-reader text. |
+
+## Tokens used
+
+- `surface/accent/*`
+- `content/accent/*`
+- `border/accent/*`
+- `surface/accent/indicator/*`
+- `surface/inverted`
+- `surface/secondary`
+- `static/black`
+- `static/white`
+- `text-label-10 · 12 · 14`
+- `radius/04`
+- `size/16 · 20 · 24`
+
+## Recent changes
+
+- **2.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
+- **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).

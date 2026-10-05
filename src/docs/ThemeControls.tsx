@@ -1,8 +1,9 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { Button } from '../components/Button'
 import { Icon } from '../components/Icon'
 import { ListCell } from '../components/ListCell'
 import { Switch } from '../components/Switch'
-import { msCheck, msDarkMode, msKeyboardArrowDown, msLightMode } from '../icons/material'
+import { msAccessibilityNew, msCheck, msDarkMode, msKeyboardArrowDown, msLightMode } from '../icons/material'
 import { productLabels, productModes, products, type Product } from '../tokens'
 import { useTheme } from '../theme'
 import styles from './Docs.module.css'
@@ -13,19 +14,37 @@ const productNotes: Record<Product, string> = {
   kuber: 'Light & dark',
 }
 
-/** Header theme controls: brand menu (ListCell rows) + light/dark Switch. */
+/** Header theme controls: brand menu (ListCell rows) + light/dark Switch + ♿ Accessible contrast. */
 export function ThemeControls() {
   return (
     <div className={styles.themeControls}>
       <BrandMenu />
       <ModeToggle />
+      <ContrastToggle />
     </div>
+  )
+}
+
+/** Figma "♿ Accessible" modes: higher-contrast text, borders and accents for the current brand and mode. */
+function ContrastToggle() {
+  const { contrast, setContrast } = useTheme()
+  const on = contrast === 'accessible'
+  return (
+    <Button
+      size="sm"
+      variant={on ? 'primary' : 'tertiary'}
+      aria-label="Accessible (high contrast) theme"
+      aria-pressed={on}
+      title={on ? 'Accessible contrast: on' : 'Accessible contrast: off'}
+      iconLeft={<Icon icon={msAccessibilityNew} />}
+      onClick={() => setContrast(on ? 'default' : 'accessible')}
+    />
   )
 }
 
 /**
  * The brand's own accent, rendered inside that brand's theme (data-product) so the token resolves
- * to its colour — no hard-coded brand hexes.
+ * to its color — no hard-coded brand hexes.
  */
 function BrandSwatch({ product }: { product: Product }) {
   return <span className={styles.brandSwatch} data-product={product} data-mode={productModes[product][0]} aria-hidden="true" />

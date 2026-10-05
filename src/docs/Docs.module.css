@@ -1,5 +1,5 @@
 /*
- * Docs site chrome (not a product component). Colours, type, spacing and radius
+ * Docs site chrome (not a product component). Colors, type, spacing and radius
  * are --l3-* tokens so it follows the theme switcher; the few layout widths
  * (rail, content column, phone frame) are page-layout constants.
  */
@@ -24,7 +24,7 @@
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-inverted);
   color: var(--l3-content-inverted);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   text-decoration: none;
   transform: translateY(calc(-100% - var(--l3-spacing-16)));
 }
@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-extrabold-24);
+  font: var(--l3-text-heading-24);
   color: var(--l3-content-primary);
   text-decoration: none;
   white-space: nowrap;
@@ -93,7 +93,7 @@
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-primary);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   cursor: pointer;
 }
 
@@ -158,7 +158,7 @@
   margin: 0;
   padding: var(--l3-spacing-04) var(--l3-spacing-16) var(--l3-spacing-08);
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
 }
 
 .brandList {
@@ -208,7 +208,7 @@
 .topNav a {
   display: flex;
   align-items: center;
-  font: var(--l3-text-semibold-16);
+  font: var(--l3-text-label-16);
   color: var(--l3-content-secondary);
   text-decoration: none;
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-04)) 0 transparent;
@@ -234,7 +234,7 @@
   cursor: pointer;
 }
 
-/* Three-line menu icon drawn with the current text colour. */
+/* Three-line menu icon drawn with the current text color. */
 .menuIcon {
   width: var(--l3-size-20);
   height: var(--l3-spacing-02);
@@ -281,7 +281,7 @@
   border-radius: var(--l3-radius-08);
   background: transparent;
   color: var(--l3-content-primary);
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-14);
   text-align: left;
   cursor: pointer;
 }
@@ -300,12 +300,31 @@
 }
 
 .navItem {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
   padding: var(--l3-spacing-10) var(--l3-spacing-12) var(--l3-spacing-10) var(--l3-spacing-24);
   border-radius: var(--l3-radius-08);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
   text-decoration: none;
+}
+
+/* Title takes the row; the ✓ / WIP marker sits at the right edge. */
+.navLabel {
+  flex: 1;
+  min-width: 0;
+}
+
+.navDone {
+  flex: none;
+  color: var(--l3-content-accent-success-default);
+}
+
+/* Discarded / replaced pages: muted title. */
+.navItem[data-retired] .navLabel {
+  color: var(--l3-content-tertiary);
+  text-decoration: line-through;
 }
 
 .navItem:hover {
@@ -313,7 +332,7 @@
 }
 
 .navItem[aria-current='page'] {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
   background: var(--l3-surface-tertiary);
 }
@@ -334,9 +353,66 @@
   margin: 0 auto;
 }
 
+/* Page header: an inverted card (surface/inverted + content/inverted) on every docs page. */
+.pageHeader {
+  padding: var(--l3-spacing-32);
+  border-radius: var(--l3-radius-24);
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+}
+
+.pageHeader .breadcrumb,
+.pageHeader .lede {
+  color: var(--l3-content-inverted-secondary);
+}
+
+.pageHeader .titleRow h1 {
+  color: var(--l3-content-inverted);
+}
+
+.pageHeader .figmaLink {
+  box-shadow: inset 0 0 0 1px var(--l3-content-inverted-secondary);
+  color: var(--l3-content-inverted);
+}
+
+@media (hover: hover) {
+  .pageHeader .figmaLink:hover {
+    background: var(--l3-state-layer-light-hover);
+    box-shadow: inset 0 0 0 1px var(--l3-content-inverted);
+  }
+}
+
+.pageHeader :is(.figmaLink, .versionLink):focus-visible {
+  outline-color: var(--l3-content-inverted);
+}
+
+@media (max-width: 640px) {
+  .pageHeader {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+    border-radius: var(--l3-radius-16);
+  }
+}
+
 .breadcrumb {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
+}
+
+.breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+}
+
+.breadcrumb a:focus-visible {
+  outline: var(--l3-spacing-02) solid currentColor;
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-04);
 }
 
 .titleRow {
@@ -349,57 +425,92 @@
 
 .titleRow h1 {
   margin: 0;
-  font: var(--l3-text-extrabold-36);
+  font: var(--l3-text-heading-36);
 }
 
 .lede {
   max-width: 640px;
   margin: var(--l3-spacing-16) 0 0;
-  font: var(--l3-text-medium-18);
+  font: var(--l3-text-description-18);
   color: var(--l3-content-secondary);
 }
 
 .pageTabs {
+  /* Sticky under the site header, so switching section never needs a scroll back up. */
+  position: sticky;
+  top: var(--header-height);
+  z-index: 10;
   display: flex;
   gap: var(--l3-spacing-32);
-  margin-top: var(--l3-spacing-40);
+  margin-top: var(--l3-spacing-48);
   border-bottom: 1px solid var(--l3-border-light);
+  background: var(--l3-surface-default);
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+.pageTabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Small screens: the tab row scrolls; fade its edges so it's clear there's more. */
+@media (max-width: 900px) {
+  .pageTabs {
+    gap: var(--l3-spacing-24);
+    mask-image: linear-gradient(90deg, transparent, var(--l3-static-black) var(--l3-spacing-16), var(--l3-static-black) calc(100% - var(--l3-spacing-32)), transparent);
+    padding-right: var(--l3-spacing-32);
+  }
 }
 
 .pageTabs a {
   flex: none;
   padding: var(--l3-spacing-12) 0;
-  font: var(--l3-text-semibold-16);
+  font: var(--l3-text-label-16);
   color: var(--l3-content-secondary);
   text-decoration: none;
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-02)) 0 transparent;
 }
 
 .pageTabs a[aria-current='page'] {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
   color: var(--l3-content-primary);
   box-shadow: inset 0 calc(-1 * var(--l3-spacing-02)) 0 var(--l3-content-primary);
 }
 
 .tabBody {
-  margin-top: var(--l3-spacing-40);
-}
-
-.section {
   margin-top: var(--l3-spacing-48);
 }
 
-.section > h2 {
-  margin: 0 0 var(--l3-spacing-08);
-  font: var(--l3-text-bold-20);
+/* One spacing rhythm for every page: 80 between sections on desktop, 64 on phones. */
+.main {
+  --section-gap: var(--l3-spacing-80);
 }
 
+@media (max-width: 640px) {
+  .main {
+    --section-gap: var(--l3-spacing-64);
+  }
+}
+
+.section {
+  margin-top: var(--section-gap);
+}
+
+/* The first section of a tab already sits below the tab row's own gap. */
+.tabBody > .section:first-child {
+  margin-top: 0;
+}
+
+.section > h2 {
+  margin: 0 0 var(--l3-spacing-04);
+  font: var(--l3-text-heading-20);
+}
+
+/* Heading and description sit together; the body starts a little further down. */
 .section > p {
   max-width: 640px;
   margin: 0 0 var(--l3-spacing-16);
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-description-16);
   color: var(--l3-content-secondary);
 }
 
@@ -428,7 +539,8 @@
   overflow: hidden;
   padding: var(--l3-spacing-48) var(--l3-spacing-16);
   border-radius: var(--l3-radius-24);
-  background-color: var(--l3-surface-secondary);
+  background-color: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
   background-image: radial-gradient(var(--l3-border-intense) 1px, transparent 1px);
   background-size: var(--l3-spacing-20) var(--l3-spacing-20);
 }
@@ -446,17 +558,52 @@
   width: 100%;
 }
 
+/*
+ * Device: a near-black body in every theme (static/black), a 12px bezel with concentric corners
+ * (screen radius + bezel), a thin metal rim, and power + volume buttons on the right edge.
+ */
 .phone {
+  --bezel: var(--l3-spacing-12);
+  --screen-radius: var(--l3-radius-32);
+  --rim: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-30));
+  --band: rgb(from var(--l3-static-white) r g b / var(--l3-opacity-15));
+  /* Bezel: a dark grey strip around the screen (white at 12% over the black body). */
+  --bezel-fill: linear-gradient(rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10)), rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10)));
   position: relative;
   box-sizing: content-box;
   flex: none;
   align-self: flex-start; /* content height — never stretched to the slot's (scaled) height */
   width: var(--screen-width, 360px); /* 360 / 392 / 412 — the preview width picker */
   transform-origin: top center;
-  padding: var(--l3-spacing-10);
-  border-radius: var(--l3-radius-32);
-  background: var(--l3-surface-inverted);
-  box-shadow: var(--l3-shadow-elevation-high);
+  padding: var(--bezel);
+  border-radius: calc(var(--screen-radius) + var(--bezel));
+  background: var(--bezel-fill), var(--l3-static-black);
+  box-shadow:
+    inset 0 0 0 1px var(--rim),
+    0 0 0 var(--l3-spacing-02) var(--band),
+    var(--l3-shadow-elevation-high);
+}
+
+/* Side buttons: power (short) and volume (long) just outside the right edge. */
+.phone::before,
+.phone::after {
+  content: '';
+  position: absolute;
+  right: calc(-1 * var(--l3-spacing-04));
+  width: var(--l3-spacing-04);
+  border-radius: 0 var(--l3-radius-02) var(--l3-radius-02) 0;
+  background: var(--l3-static-black);
+  box-shadow: inset -1px 0 0 var(--rim), var(--l3-spacing-02) 0 0 var(--band);
+}
+
+.phone::before {
+  top: 18%;
+  height: var(--l3-size-64);
+}
+
+.phone::after {
+  top: calc(18% + var(--l3-size-80));
+  height: var(--l3-size-96);
 }
 
 /*
@@ -464,13 +611,45 @@
  * The DS System statusbar sits on top; the demo screen fills the rest.
  */
 .phoneScreen {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   width: var(--screen-width, 360px);
   aspect-ratio: 360 / 800;
-  border-radius: var(--l3-radius-24);
+  border-radius: var(--screen-radius);
   background: var(--l3-surface-default);
+}
+
+/* Punch-hole camera, centred in the status bar (between the time and the icons). */
+.phoneScreen::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: var(--l3-spacing-10);
+  left: 50%;
+  width: var(--l3-size-12);
+  height: var(--l3-size-12);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-static-black);
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) rgb(from var(--l3-static-white) r g b / var(--l3-opacity-10));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Gesture bar (home indicator) over the bottom of the screen. */
+.phoneScreen::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  bottom: var(--l3-spacing-08);
+  left: 50%;
+  width: 30%;
+  height: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: rgb(from var(--l3-content-primary) r g b / var(--l3-opacity-50));
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .phoneScreen > :not(:first-child) {
@@ -478,9 +657,16 @@
   min-height: 0;
 }
 
-/* Playground previews (compact): a bare phone-width screen that hugs its content. */
+/* Playground previews (compact): a bare phone-width screen that hugs its content — no camera, gesture bar or buttons. */
 .phone[data-compact] .phoneScreen {
   aspect-ratio: auto;
+}
+
+.phone[data-compact]::before,
+.phone[data-compact]::after,
+.phone[data-compact] .phoneScreen::before,
+.phone[data-compact] .phoneScreen::after {
+  display: none;
 }
 
 /* ---- Demo screens (inside the phone) --------------------------------------- */
@@ -494,7 +680,7 @@
 
 .appBar {
   padding: var(--l3-spacing-08) var(--l3-spacing-16) var(--l3-spacing-12);
-  font: var(--l3-text-bold-20);
+  font: var(--l3-text-heading-20);
 }
 
 .quote {
@@ -509,7 +695,7 @@
 
 .symbol {
   margin-bottom: var(--l3-spacing-04);
-  font: var(--l3-text-bold-18);
+  font: var(--l3-text-heading-18);
 }
 
 .priceBlock {
@@ -520,7 +706,7 @@
 }
 
 .price {
-  font: var(--l3-text-bold-18);
+  font: var(--l3-text-heading-18);
 }
 
 .fields {
@@ -535,13 +721,13 @@
 }
 
 .fields dt {
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
 .fields dd {
   margin: 0;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
 }
 
 /* Docks inside demo screens are ButtonGroups pinned to the bottom of the screen. */
@@ -592,7 +778,8 @@
   flex-direction: column;
   max-width: 400px;
   border-radius: var(--l3-radius-16);
-  background: var(--l3-surface-secondary);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 .toastSlot {
@@ -605,7 +792,7 @@
 
 .sheetHelper {
   margin: 0;
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
   text-align: center;
 }
@@ -650,11 +837,11 @@
 }
 
 .rowTitle {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
 }
 
 .rowHint {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -672,17 +859,23 @@
 }
 
 .rowValue {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
 }
 
+/* Chip rows scroll edge to edge: the row's own inline padding (not the wrapper's) lines the first chip up with the content. */
 .filterRow {
-  padding: var(--l3-spacing-12) var(--l3-spacing-16) var(--l3-spacing-04);
+  padding: var(--l3-spacing-12) 0 var(--l3-spacing-04);
+}
+
+.filterRow > [role='tablist'] {
+  padding-inline: var(--l3-spacing-16);
+  scroll-padding-inline: var(--l3-spacing-16);
 }
 
 .emptyState {
   margin: 0;
   padding: var(--l3-spacing-48) var(--l3-spacing-16);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
   text-align: center;
 }
@@ -700,7 +893,7 @@ legend.sectionLabel {
 
 .sectionLabel {
   margin-bottom: var(--l3-spacing-04);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -709,7 +902,7 @@ legend.sectionLabel {
   align-items: center;
   gap: var(--l3-spacing-12);
   padding: var(--l3-spacing-06) 0;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
 }
 
 .optionRow.indent {
@@ -725,13 +918,13 @@ legend.sectionLabel {
 .propsTable {
   width: 100%;
   border-collapse: collapse;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
 }
 
 .propsTable th {
   padding: var(--l3-spacing-10) var(--l3-spacing-12);
   border-bottom: 1px solid var(--l3-border-intense);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   text-align: left;
 }
@@ -761,13 +954,13 @@ legend.sectionLabel {
 }
 
 .resources dt {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
 }
 
 .resources dd {
   margin: 0;
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
 }
 
 .resources a {
@@ -789,6 +982,16 @@ legend.sectionLabel {
 /* ---- Small screens: rail becomes a drawer ---------------------------------- */
 
 @media (max-width: 900px) {
+  /* The sidebar is a drawer from here down and has the same links, so drop the top nav to fit the header. */
+  .topNav {
+    display: none;
+  }
+
+  /* Brand switcher shows just its color dot (the menu names the brands). */
+  .brandTriggerLabel {
+    display: none;
+  }
+
   .body {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -842,10 +1045,6 @@ legend.sectionLabel {
     gap: var(--l3-spacing-12);
   }
 
-  .topNav {
-    display: none;
-  }
-
   .themeControls {
     gap: var(--l3-spacing-04);
   }
@@ -863,21 +1062,36 @@ legend.sectionLabel {
     gap: var(--l3-spacing-04);
   }
 
+  /* Room for the ♿ toggle at 360px: the switch alone says light/dark. */
+  .modeIcon {
+    display: none;
+  }
+
   .brand {
-    font: var(--l3-text-extrabold-16);
+    font: var(--l3-text-heading-16);
   }
 
   .titleRow h1 {
-    font: var(--l3-text-extrabold-28);
+    font: var(--l3-text-heading-28);
   }
 
   .lede {
-    font: var(--l3-text-medium-16);
+    font: var(--l3-text-description-16);
   }
 
   .resources > div {
     grid-template-columns: 1fr;
     gap: var(--l3-spacing-04);
+  }
+}
+
+@media (max-width: 400px) {
+  .header {
+    padding: 0 var(--l3-spacing-12);
+  }
+
+  .brand {
+    font: var(--l3-text-heading-14);
   }
 }
 
@@ -912,7 +1126,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   background: transparent;
   color: var(--l3-content-secondary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
   cursor: pointer;
 }
 
@@ -939,8 +1153,8 @@ legend.sectionLabel {
 }
 
 .tabIntro {
-  margin: 0 0 var(--l3-spacing-16);
-  font: var(--l3-text-medium-14);
+  margin: 0 0 var(--l3-spacing-24);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -956,7 +1170,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
   color: var(--l3-content-primary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
   text-decoration: none;
 }
 
@@ -971,12 +1185,19 @@ legend.sectionLabel {
   outline-offset: var(--l3-spacing-02);
 }
 
-/* Figma's mark as three stacked dots of brand colour — decorative. */
+/* Figma's mark as three stacked dots of brand color — decorative. */
+/* The Figma logo (brand asset, 38×57). */
 .figmaMark {
-  width: var(--l3-spacing-12);
-  height: var(--l3-spacing-12);
-  border-radius: var(--l3-radius-04);
-  background: conic-gradient(var(--l3-surface-accent-error-default) 0 25%, var(--l3-surface-accent-purple-default) 0 50%, var(--l3-surface-accent-discover-default) 0 75%, var(--l3-surface-accent-success-default) 0);
+  flex: none;
+  width: auto;
+  height: var(--l3-size-16);
+}
+
+/* "by Tabs →" next to a Replaced tag (the tag itself is never a link). */
+.replacedLink {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-inverted);
+  text-underline-offset: var(--l3-spacing-04);
 }
 
 /* ---- Token links (Resources) + highlight on foundation pages -------------------- */
@@ -1033,7 +1254,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   cursor: pointer;
 }
 
@@ -1051,7 +1272,7 @@ legend.sectionLabel {
   padding: var(--l3-spacing-02) var(--l3-spacing-06);
   border-radius: var(--l3-radius-06);
   background: var(--l3-surface-default);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
 }
 
 .searchDialog {
@@ -1083,7 +1304,7 @@ legend.sectionLabel {
   outline: none;
   background: transparent;
   color: var(--l3-content-primary);
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-description-16);
 }
 
 .searchInput::placeholder {
@@ -1116,12 +1337,12 @@ legend.sectionLabel {
   grid-row: span 2;
   align-self: center;
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
 }
 
 .searchTitle {
   overflow: hidden;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1129,7 +1350,7 @@ legend.sectionLabel {
 .searchDetail {
   overflow: hidden;
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1139,7 +1360,7 @@ legend.sectionLabel {
   margin: 0;
   padding: var(--l3-spacing-12) var(--l3-spacing-20);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
 }
 
 .searchHint {
@@ -1171,12 +1392,8 @@ legend.sectionLabel {
 }
 
 .phone[data-compact] {
-  padding: var(--l3-spacing-06);
-  border-radius: var(--l3-radius-24);
-}
-
-.phone[data-compact] .phoneScreen {
-  border-radius: var(--l3-radius-20);
+  --bezel: var(--l3-spacing-06);
+  --screen-radius: var(--l3-radius-20);
 }
 
 .playgroundCanvas {
@@ -1216,7 +1433,7 @@ legend.sectionLabel {
 
 .controlsHeader h3 {
   margin: 0;
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-16);
 }
 
 .controlGroup {
@@ -1234,7 +1451,7 @@ legend.sectionLabel {
   margin: 0;
   padding: 0 var(--l3-spacing-16);
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
 }
 
 /* Booleans are full-width ListCell rows, so they tighten the group gap. */
@@ -1264,7 +1481,7 @@ legend.sectionLabel {
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--l3-spacing-04) var(--l3-spacing-08);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
 }
 
@@ -1282,7 +1499,9 @@ legend.sectionLabel {
 }
 
 .controlCell {
-  width: 100%;
+  /* Inset by the panel's 1px border so row fills don't paint over it. */
+  width: calc(100% - 2px);
+  margin-inline: 1px;
 }
 
 .codeWrap {
@@ -1308,7 +1527,7 @@ legend.sectionLabel {
   align-items: center;
   justify-content: space-between;
   gap: var(--l3-spacing-12);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-primary);
 }
 
@@ -1324,7 +1543,7 @@ legend.sectionLabel {
 .playSheetBody {
   margin: 0;
   padding: var(--l3-spacing-16);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -1363,7 +1582,7 @@ legend.sectionLabel {
   border-bottom: 1px solid var(--l3-border-light);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-semibold-12);
+  font: var(--l3-text-label-12);
 }
 
 .themeCanvas {
@@ -1387,7 +1606,7 @@ legend.sectionLabel {
 
 .guideline > h3 {
   margin: 0 0 var(--l3-spacing-08);
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
 }
 
 .guidelinePair {
@@ -1426,12 +1645,12 @@ legend.sectionLabel {
   gap: var(--l3-spacing-02);
   padding: var(--l3-spacing-12);
   border-top: var(--l3-spacing-04) solid var(--guide-accent);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
 .guidelineCard figcaption strong {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-14);
   color: var(--guide-accent-text);
 }
 
@@ -1460,28 +1679,113 @@ legend.sectionLabel {
 
 /* ---- Home ---------------------------------------------------------------------- */
 
+/* Slim "What's new" strip above the hero — latest releases from changelog.ts. */
+.updates {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  min-width: 0;
+  overflow: hidden;
+  margin-bottom: var(--l3-spacing-16);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.updatesDate {
+  flex: none;
+  color: var(--l3-content-tertiary);
+}
+
+.updatesList {
+  display: flex;
+  flex: 1;
+  gap: var(--l3-spacing-16);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+.updatesList li {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.updatesList li + li::before {
+  content: '·';
+  margin-right: var(--l3-spacing-16);
+  color: var(--l3-content-tertiary);
+}
+
+.updatesList a,
+.updatesAll {
+  color: inherit;
+  text-decoration: none;
+}
+
+.updatesList strong {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
+}
+
+@media (hover: hover) {
+  .updatesList a:hover,
+  .updatesAll:hover {
+    text-decoration: underline;
+  }
+}
+
+.updatesAll {
+  flex: none;
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-accent-discover-default);
+}
+
+/* Phones: one update, no date. */
+@media (max-width: 640px) {
+  .updatesDate,
+  .updatesList li + li {
+    display: none;
+  }
+}
+
+/*
+ * Intro left, stats right when the hero is wide enough (container query: the rail takes room too);
+ * stacked otherwise. The hero itself is the query container, so the grid lives on an inner wrapper.
+ */
 .hero {
+  container-type: inline-size;
+  overflow: hidden;
   padding: var(--l3-spacing-32);
   border-radius: var(--l3-radius-24);
-  background: var(--l3-surface-secondary);
+  /* Large container: page color + hairline; only the small cards inside are grey. */
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 .heroEyebrow {
   margin: 0;
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
 }
 
 .heroTitle {
   max-width: 22ch;
   margin: var(--l3-spacing-08) 0 0;
-  font: var(--l3-text-extrabold-32);
+  font: var(--l3-text-heading-32);
 }
 
 .heroLede {
   max-width: 60ch;
   margin: var(--l3-spacing-12) 0 0;
-  font: var(--l3-text-medium-16);
+  font: var(--l3-text-description-16);
   color: var(--l3-content-secondary);
 }
 
@@ -1492,27 +1796,81 @@ legend.sectionLabel {
   margin-top: var(--l3-spacing-24);
 }
 
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--l3-spacing-24);
+}
+
+@container (min-width: 760px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--l3-spacing-32);
+  }
+}
+
+.heroMain {
+  min-width: 0;
+}
+
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--l3-spacing-12);
-  margin: var(--l3-spacing-32) 0 0;
+  margin: 0;
 }
 
-.stats div {
-  padding: var(--l3-spacing-12) var(--l3-spacing-16);
-  border-radius: var(--l3-radius-12);
+/* Small informative card: icon chip, big value, label under it (dt stays first in the DOM for screen readers). */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-secondary);
+}
+
+.statIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  margin-bottom: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-full);
   background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: var(--l3-content-primary);
 }
 
-.stats dt {
-  font: var(--l3-text-medium-12);
+.stat dd {
+  order: 1;
+  margin: 0;
+  overflow: hidden;
+  font: var(--l3-text-heading-20);
+  color: var(--l3-content-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat dt {
+  order: 2;
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
-.stats dd {
-  margin: var(--l3-spacing-04) 0 0;
-  font: var(--l3-text-extrabold-20);
+/* Small phones: the value steps down so "360 · 392 · 412" fits a half-width card. */
+@container (max-width: 420px) {
+  .stat {
+    padding: var(--l3-spacing-12);
+  }
+
+  .stat dd {
+    font: var(--l3-text-heading-16);
+  }
 }
 
 .cardGrid,
@@ -1584,7 +1942,7 @@ legend.sectionLabel {
 }
 
 .cardMetaSm {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1601,12 +1959,12 @@ legend.sectionLabel {
 }
 
 .sortButton {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
   color: var(--l3-content-primary);
 }
 
 .filterLink {
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-accent-discover-default);
 }
 
@@ -1618,11 +1976,11 @@ legend.sectionLabel {
 }
 
 .cardTitle {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
 }
 
 .cardGroup {
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1649,11 +2007,11 @@ legend.sectionLabel {
   gap: var(--l3-spacing-04) var(--l3-spacing-12);
   padding: var(--l3-spacing-12) 0;
   border-bottom: 1px solid var(--l3-border-light);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
 }
 
 .whatsNew a {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
 }
 
@@ -1667,7 +2025,7 @@ legend.sectionLabel {
   }
 
   .heroTitle {
-    font: var(--l3-text-extrabold-24);
+    font: var(--l3-text-heading-24);
   }
 }
 
@@ -1750,7 +2108,7 @@ legend.sectionLabel {
 
 .releaseHeader h3 {
   margin: 0;
-  font: var(--l3-text-extrabold-16);
+  font: var(--l3-text-heading-16);
 }
 
 .release[data-state='past'] .releaseHeader h3 {
@@ -1759,12 +2117,12 @@ legend.sectionLabel {
 
 .releaseMeta {
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-medium-12);
+  font: var(--l3-text-description-12);
 }
 
 .releaseSummary {
   margin: var(--l3-spacing-04) 0 var(--l3-spacing-08);
-  font: var(--l3-text-semibold-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
 }
 
@@ -1781,7 +2139,7 @@ legend.sectionLabel {
   display: flex;
   align-items: baseline;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -1800,7 +2158,8 @@ legend.sectionLabel {
   gap: var(--l3-spacing-48);
   padding: var(--l3-spacing-48) var(--l3-spacing-24);
   border-radius: var(--l3-radius-24);
-  background: var(--l3-surface-secondary);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
 }
 
 /* ---- Card demo (Portfolio › Orders) ---------------------------------------------- */
@@ -1841,21 +2200,263 @@ legend.sectionLabel {
 }
 
 .cardMeta {
-  font: var(--l3-text-medium-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
 .cardTitle {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
   color: var(--l3-content-primary);
 }
 
 .cardValue {
-  font: var(--l3-text-bold-14);
+  font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
 }
 
 .cardValueLg {
-  font: var(--l3-text-bold-16);
+  font: var(--l3-text-heading-16);
   color: var(--l3-content-primary);
+}
+
+/* ---- Bottom sheet use case: Set Auto TP/SL (Figma 4292:34429) ------------------------------------------ */
+
+.tpslList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+
+.tpslList > section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+}
+
+.tpslHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.tpslTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+
+.tpslTitle {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+}
+
+/* Inline text action standing in for a dropdown (no Select component yet). */
+.tpslSelect {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-accent-discover-default);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tpslSelect::after {
+  content: '';
+  position: absolute;
+  inset: calc((100% - var(--l3-size-tap-target)) / 2) calc(-1 * var(--l3-spacing-04));
+}
+
+.tpslSelect:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-04);
+}
+
+.tpslSelectNeutral {
+  color: var(--l3-content-primary);
+}
+
+.tpslTrail .tpslSelect {
+  margin-left: auto;
+  font: var(--l3-text-heading-12);
+}
+
+/* Figma inner panel: surface/secondary, 8 · 12 padding, rows 12 apart. */
+.tpslFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+}
+
+.tpslField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-08);
+}
+
+.tpslLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+/* Figma stepper: surface/default pill, radius 8, 4 padding; value bold 14. */
+.tpslStepper {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-02);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-default);
+}
+
+.tpslValue {
+  min-width: var(--l3-size-48);
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tpslDivider,
+.tpslDashed {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--l3-border-light);
+}
+
+.tpslDivider {
+  border-top-color: var(--l3-border-intense); /* Figma border/moderate → nearest L3 token */
+}
+
+.tpslDashed {
+  border-top-style: dashed;
+}
+
+.tpslTarget {
+  margin: 0;
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.tpslTarget strong {
+  font: var(--l3-text-heading-12);
+}
+
+.tpslUp {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+.tpslDown {
+  color: var(--l3-content-accent-indicator-down-default);
+}
+
+.tpslTrail {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  color: var(--l3-content-secondary);
+}
+
+.tpslTrailLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+/* ---- Previous / next pager ------------------------------------------------------------------------- */
+
+.pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--l3-spacing-12);
+  margin-top: var(--section-gap);
+  padding-top: var(--l3-spacing-24);
+  border-top: 1px solid var(--l3-border-light);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: var(--l3-content-primary);
+  text-decoration: none;
+}
+
+.pagerLink[data-dir='next'] {
+  grid-column: 2;
+  align-items: flex-end;
+  text-align: right;
+}
+
+@media (hover: hover) {
+  .pagerLink:hover {
+    box-shadow: inset 0 0 0 1px var(--l3-border-dark);
+  }
+}
+
+.pagerLink:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+.pagerHint {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.pagerTitle {
+  font: var(--l3-text-heading-16);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Phones: tighter previews and home ------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  /* The phone preview is scaled to fit on a phone, so the width picker can't change what you see. */
+  .viewportPicker {
+    display: none;
+  }
+
+  .stage {
+    padding: var(--l3-spacing-16) var(--l3-spacing-08);
+    border-radius: var(--l3-radius-16);
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+  .pageHeader {
+    padding: var(--l3-spacing-20) var(--l3-spacing-16);
+  }
+
+
 }

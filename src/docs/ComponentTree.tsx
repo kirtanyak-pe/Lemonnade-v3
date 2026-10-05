@@ -1,0 +1,191 @@
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Button } from '../components/Button'
+import { Icon } from '../components/Icon'
+import { msKeyboardArrowDown, msUnfoldLess, msUnfoldMore } from '../icons/material'
+import styles from './ComponentTree.module.css'
+
+// A component's options as a top-to-bottom tree: the component at the top, one branch per property
+// (Variant, Size, State…), then optional groups and the leaves — each leaf a live example with a one-line rule.
+// Same dashed-connector language as the Color roles tree.
+
+export type TreeLeaf = { id: string; label: string; note?: string; preview: ReactNode }
+export type TreeGroup = { id: string; label: string; note?: string; leaves: TreeLeaf[] }
+export type TreeBranch = { id: string; label: string; note?: string; groups?: TreeGroup[]; leaves?: TreeLeaf[] }
+export type ComponentTreeSpec = { title: string; note?: string; branches: TreeBranch[] }
+
+type Link = { from: string; to: string; kind: 'top' | 'indent' }
+
+/** A full-width (360px) component — Actionbar, nav bar, sheet — scaled down to fit a tree leaf. */
+export function Mini({ children }: { children: ReactNode }) {
+  return <span className={styles.mini}><span className={styles.miniInner}>{children}</span></span>
+}
+
+/**
+ * `showPreviews={false}` hides every leaf's live example, leaving just the name and note.
+ * `controls` sit on the left of the toolbar row, in line with Expand all / Collapse all.
+ * `inlineNotes` puts each leaf's note on the right of its label (one row) instead of under it — for short notes.
+ * `largeText` sets every label and note in the tree to at least 14px.
+ */
+export function ComponentTree({ spec, showPreviews = true, controls, inlineNotes = false, largeText = false }: { spec: ComponentTreeSpec; showPreviews?: boolean; controls?: ReactNode; inlineNotes?: boolean; largeText?: boolean }) {
+  const wrap = useRef<HTMLDivElement>(null)
+  const [paths, setPaths] = useState<{ d: string; from: string; to: string }[]>([])
+  const [size, setSize] = useState({ w: 0, h: 0 })
+  const [active, setActive] = useState<string | null>(null)
+  // Collapsed groups: their leaves (and connectors) are hidden; the ResizeObserver redraws the lines.
+  const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set())
+  const groupIds = useMemo(() => spec.branches.flatMap((b) => (b.groups ?? []).map((g) => g.id)), [spec])
+  const allCollapsed = groupIds.length > 0 && groupIds.every((id) => collapsed.has(id))
+  const toggleAll = () => setCollapsed(allCollapsed ? new Set() : new Set(groupIds))
+  const toggle = (id: string) => setCollapsed((c) => { const n = new Set(c); if (n.has(id)) n.delete(id); else n.add(id); return n })
+
+  const links = useMemo(() => {
+    const out: Link[] = []
+    for (const b of spec.branches) {
+      out.push({ from: 'root', to: b.id, kind: 'top' })
+      for (const g of b.groups ?? []) {
+        out.push({ from: b.id, to: g.id, kind: 'indent' })
+        for (const l of g.leaves) out.push({ from: g.id, to: l.id, kind: 'indent' })
+      }
+      for (const l of b.leaves ?? []) out.push({ from: b.id, to: l.id, kind: 'indent' })
+    }
+    return out
+  }, [spec])
+
+  const measure = useCallback(() => {
+    const root = wrap.current
+    if (!root) return
+    const box = root.getBoundingClientRect()
+    const rect = (id: string) => root.querySelector<HTMLElement>(`[data-node="${CSS.escape(id)}"]`)?.getBoundingClientRect()
+    setSize({ w: box.width, h: box.height })
+    // Phones: branches stack in one column, so root → branch uses the same indented spine as the rest.
+    const stacked = matchMedia('(max-width: 720px)').matches
+    setPaths(links.flatMap((l) => {
+      const a = rect(l.from)
+      const b = rect(l.to)
+      // Hidden (collapsed) nodes measure as empty boxes — draw nothing to them.
+      if (!a || !b || !b.width || !a.width) return []
+      if (l.kind === 'top' && !stacked) {
+        // Root → branch: elbow from the root's bottom centre to the branch's top centre.
+        const x1 = a.left + a.width / 2 - box.left, y1 = a.bottom - box.top
+        const x2 = b.left + b.width / 2 - box.left, y2 = b.top - box.top
+        const ym = (y1 + y2) / 2
+        return [{ d: `M${x1},${y1} V${ym} H${x2} V${y2}`, from: l.from, to: l.to }]
+      }
+      // Indented tree: a spine down from the parent's left side, a branch into each child.
+      const sx = a.left - box.left + 16
+      const y1 = a.bottom - box.top
+      const yc = b.top + b.height / 2 - box.top
+      return [{ d: `M${sx},${y1} V${yc} H${b.left - box.left}`, from: l.from, to: l.to }]
+    }))
+  }, [links])
+
+  useLayoutEffect(() => {
+    measure()
+    const ro = new ResizeObserver(measure)
+    if (wrap.current) ro.observe(wrap.current)
+    return () => ro.disconnect()
+  }, [measure])
+
+  // Collapsing a group may not resize the tree (a taller column sets its height), so redraw explicitly.
+  useLayoutEffect(measure, [collapsed, showPreviews, measure])
+
+  // Hovered node, its ancestors and its descendants.
+  const lit = useMemo(() => {
+    if (!active) return null
+    const set = new Set([active])
+    const up = (id: string) => links.filter((l) => l.to === id).forEach((l) => { if (!set.has(l.from)) { set.add(l.from); up(l.from) } })
+    const down = (id: string) => links.filter((l) => l.from === id).forEach((l) => { if (!set.has(l.to)) { set.add(l.to); down(l.to) } })
+    up(active)
+    if (active !== 'root') down(active)
+    return set
+  }, [active, links])
+
+  const hover = (id: string) => ({
+    'data-node': id,
+    'data-lit': lit?.has(id) ? '' : undefined,
+    onPointerEnter: () => setActive(id),
+    onPointerLeave: () => setActive(null),
+    onFocus: () => setActive(id),
+    onBlur: () => setActive(null),
+    tabIndex: 0,
+  })
+
+  const leaf = (l: TreeLeaf) => (
+    <li key={l.id}>
+      <div className={styles.leaf} {...hover(l.id)} aria-label={`${l.label}${l.note ? ': ' + l.note : ''}`}>
+        {showPreviews && <div className={styles.preview} inert>{l.preview}</div>}
+        <div className={styles.leafText} data-inline={inlineNotes || undefined}>
+          <code className={styles.leafLabel}>{l.label}</code>
+          {l.note && <span className={styles.leafNote}>{l.note}</span>}
+        </div>
+      </div>
+    </li>
+  )
+
+  return (
+    <div className={styles.wrap} data-large-text={largeText || undefined}>
+      {(controls || groupIds.length > 0) && (
+        <div className={styles.toolbar}>
+          {controls && <div className={styles.controls}>{controls}</div>}
+          {groupIds.length > 0 && (
+            <Button
+              variant="tertiary"
+              size={largeText ? 'md' : 'sm'}
+              iconLeft={<Icon icon={allCollapsed ? msUnfoldMore : msUnfoldLess} size={16} />}
+              onClick={toggleAll}
+            >
+              {allCollapsed ? 'Expand all' : 'Collapse all'}
+            </Button>
+          )}
+        </div>
+      )}
+      <div className={styles.scroll}>
+        <div ref={wrap} className={styles.tree} data-has-active={lit ? '' : undefined} style={{ gridTemplateColumns: `repeat(${spec.branches.length}, minmax(0, 1fr))` }}>
+          <svg className={styles.lines} width={size.w} height={size.h} aria-hidden="true">
+            {paths.map((p, i) => (
+              <path key={i} d={p.d} className={styles.line} data-lit={lit && lit.has(p.from) && lit.has(p.to) ? '' : undefined} />
+            ))}
+          </svg>
+
+          <div className={styles.rootRow}>
+            <div className={styles.root} {...hover('root')}>
+              <span className={styles.rootTitle}>{spec.title}</span>
+              {spec.note && <span className={styles.rootNote}>{spec.note}</span>}
+            </div>
+          </div>
+
+          {spec.branches.map((b) => (
+            <div key={b.id} className={styles.column}>
+              <div className={styles.branch} {...hover(b.id)}>
+                <span className={styles.branchTitle}>{b.label}</span>
+                {b.note && <span className={styles.branchNote}>{b.note}</span>}
+              </div>
+              <ul className={styles.children}>
+                {(b.groups ?? []).map((g) => (
+                  <li key={g.id}>
+                    <button
+                      type="button"
+                      className={styles.group}
+                      {...hover(g.id)}
+                      aria-expanded={!collapsed.has(g.id)}
+                      aria-controls={`tree-${g.id}`}
+                      onClick={() => toggle(g.id)}
+                    >
+                      <span className={styles.groupText}>
+                        <span className={styles.groupTitle}>{g.label}</span>
+                        {g.note && <span className={styles.groupNote}>{g.note}</span>}
+                      </span>
+                      <Icon icon={msKeyboardArrowDown} size={16} className={styles.groupChevron} />
+                    </button>
+                    <ul id={`tree-${g.id}`} className={styles.children} hidden={collapsed.has(g.id)}>{g.leaves.map(leaf)}</ul>
+                  </li>
+                ))}
+                {(b.leaves ?? []).map(leaf)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

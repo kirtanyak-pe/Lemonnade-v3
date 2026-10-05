@@ -19,7 +19,7 @@ import stocks from './assets/stocks.svg'
 import stocksSelected from './assets/stocks-selected.svg'
 
 /**
- * Figma ".L3: base navicons" (node 4543:61823). Unselected icons are single-colour with
+ * Figma ".L3: base navicons" (node 4543:61823). Unselected icons are single-color with
  * content/tertiary (40%) and content/secondary (60%) parts baked in as opacity, so they're masked
  * with content/primary and stay theme-aware. Selected icons are two-tone brand illustrations
  * (raw greens + gradients in Figma, no variables) and render as-is.

@@ -27,8 +27,48 @@
   box-shadow: inset 0 -1px 0 var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
 }
 
+/*
+ * Chip rows scroll sideways only. overflow-x makes the block axis scrollable too, so it's locked, and a little
+ * block padding (taken back with a negative margin) keeps the chips' elevation and press scale from being clipped.
+ */
 .tabs[data-appearance='pill'] {
   gap: var(--l3-spacing-08);
+  overflow-y: hidden;
+  margin-block: calc(-1 * var(--l3-spacing-04));
+  padding-block: var(--l3-spacing-04);
+}
+
+/*
+ * Figma Type=Pill group: tertiary pills in a surface/secondary track (4px padding and gap, full radius).
+ * Unselected tertiary pills share the track's fill, so only the selected (black) pill stands out.
+ */
+.tabs[data-appearance='pill-group'] {
+  display: inline-flex;
+  gap: var(--l3-spacing-04);
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-secondary);
+}
+
+/* width="hug": the track wraps its pills, even inside a stretching flex/grid parent. */
+.tabs[data-appearance='pill-group'][data-width='hug'] {
+  width: fit-content;
+}
+
+/* width="fill": tabs share the row. A pill group's track goes full width and its pills are equal. */
+.tabs[data-width='fill'] {
+  width: 100%;
+}
+
+.tabs[data-width='fill'] > .tab {
+  flex: 1 0 auto;
+}
+
+.tabs[data-appearance='pill-group'][data-width='fill'] > .tab {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 /* ---- Tab ------------------------------------------------------------------ */
@@ -89,7 +129,7 @@
   outline-offset: calc(-1 * var(--l3-spacing-02));
 }
 
-/* ---- Underline tabs (Figma isChip=False) ----------------------------------- */
+/* ---- Underline tabs (Figma isPill=False) ----------------------------------- */
 
 .tab[data-appearance='underline'] {
   --tab-padding-block: var(--l3-spacing-00);
@@ -104,22 +144,19 @@
 
 .tab[data-appearance='underline'][data-size='md'] {
   --tab-height: var(--l3-size-40);
-  --tab-font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
-  --tab-font-selected: var(--l3-text-extrabold-14); /* L3/extrabold - Heading/14 */
+  --tab-font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
 }
 
 .tab[data-appearance='underline'][data-size='sm'] {
   --tab-height: var(--l3-spacing-36);
-  --tab-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
-  --tab-font-selected: var(--l3-text-extrabold-12); /* L3/extrabold - Heading/12 */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 · 650 */
 }
 
-/* Selected underline tab: primary text, bolder style, indicator bar; Figma has no hover layer on it. */
+/* Selected underline tab: primary text and the indicator bar (same font as unselected); Figma has no hover layer on it. */
 .tab[data-appearance='underline'][aria-selected='true'] {
   --tab-content: var(--l3-content-primary);
   --tab-layer-hover: var(--tab-layer-default);
   --tab-layer-pressed: var(--tab-layer-default);
-  font: var(--tab-font-selected);
 }
 
 .indicator {
@@ -132,7 +169,7 @@
   background: var(--l3-surface-inverted);
 }
 
-/* ---- Pill tabs (Figma isChip=True) ------------------------------------------ */
+/* ---- Pill tabs (Figma isPill=True) ------------------------------------------ */
 
 .tab[data-appearance='pill'] {
   --tab-surface: var(--l3-surface-primary);
@@ -147,7 +184,7 @@
   --tab-padding-block: var(--l3-spacing-08);
   --tab-padding-inline: var(--l3-spacing-08);
   --tab-gap: var(--l3-spacing-04);
-  --tab-font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 · 650 */
 }
 
 .tab[data-appearance='pill'][data-size='sm'] {
@@ -155,7 +192,7 @@
   --tab-padding-block: var(--l3-spacing-04);
   --tab-padding-inline: var(--l3-spacing-06);
   --tab-gap: var(--l3-spacing-02);
-  --tab-font: var(--l3-text-semibold-10); /* L3/semibold - Label/10 */
+  --tab-font: var(--l3-text-label-10); /* L3/Label/10 · 650 */
 }
 
 /*
@@ -181,8 +218,8 @@
   }
 }
 
-/* Selected, primary: filled inverted pill with the light state layer. */
-.tab[data-appearance='pill'][data-emphasis='primary'][aria-selected='true'] {
+/* Selected, primary / tertiary: filled inverted pill with the light state layer. */
+.tab[data-appearance='pill']:is([data-emphasis='primary'], [data-emphasis='tertiary'])[aria-selected='true'] {
   --tab-surface: var(--l3-surface-inverted);
   --tab-content: var(--l3-content-inverted);
   --tab-border: transparent;
@@ -199,6 +236,13 @@
  */
 .tab[data-appearance='pill'][data-emphasis='secondary'][aria-selected='true'] {
   --tab-border: var(--l3-border-dark);
+}
+
+/* Unselected, tertiary: subtle fill, no border — not a surface/primary chip, so no elevation either. */
+.tab[data-appearance='pill'][data-emphasis='tertiary'][aria-selected='false'] {
+  --tab-surface: var(--l3-surface-secondary);
+  --tab-border: transparent;
+  box-shadow: none;
 }
 
 /*
@@ -219,7 +263,7 @@
 }
 
 .subLabel {
-  font: var(--l3-text-semibold-08); /* local: Manrope SemiBold 8/10 (Figma sets it without a text style) */
+  font: var(--l3-text-label-08); /* local: Manrope SemiBold 8/10 (Figma sets it without a text style) */
 }
 
 /* Figma 👁️ Label off: icon-only tab — square pill, same padding on every side. */
@@ -247,19 +291,8 @@
   padding-inline: var(--tab-label-padding);
 }
 
-/* Stack an invisible bold copy under the label so the tab is always as wide as its selected state. */
 .labelText {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-}
-
-.labelText::after {
-  content: attr(data-label);
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  font: var(--tab-font-selected, inherit);
-  user-select: none;
-  pointer-events: none; /* visibility: hidden also keeps it out of the accessibility tree */
 }

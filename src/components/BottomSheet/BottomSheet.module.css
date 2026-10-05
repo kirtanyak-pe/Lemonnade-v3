@@ -1,5 +1,5 @@
 /*
- * L3 Bottom sheet + header + overlay — colours, type, spacing, radius, shadow and motion are --l3-* tokens.
+ * L3 Bottom sheet + header + overlay — colors, type, spacing, radius, shadow and motion are --l3-* tokens.
  * Figma's unbound numbers are mapped to same-value tokens; Space blocks become padding.
  */
 
@@ -22,11 +22,11 @@
   justify-content: flex-end;
 }
 
-/* Figma "L3: Overlay": black at 80%. */
+/* Figma "L3: Overlay": surface/overlay (the product's darkest neutral at 80%). */
 .backdrop {
   position: absolute;
   inset: 0;
-  background: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+  background: var(--l3-surface-overlay);
   opacity: 0;
   transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
 }
@@ -194,7 +194,7 @@
 }
 
 .header[data-size='sm'] .heading {
-  font: var(--l3-text-extrabold-18); /* L3/extrabold - Heading/18 */
+  font: var(--l3-text-heading-16); /* L3/Heading/16 · 750 */
 }
 
 /* Figma: the ⓘ after the heading is content/secondary. */
@@ -213,7 +213,7 @@
 }
 
 .header[data-size='sm'] .description {
-  font: var(--l3-text-semibold-12); /* L3/semibold - Label/12 */
+  font: var(--l3-text-description-12); /* 🔷 L3/Description - M/12 */
 }
 
 .headerTrailing {
@@ -297,9 +297,9 @@
 }
 
 .header[data-size='lg'] .heading {
-  font: var(--l3-text-extrabold-20); /* L3/extrabold - Heading/20 */
+  font: var(--l3-text-heading-20); /* L3/Heading/20 · 750 */
 }
 
 .header[data-size='lg'] .description {
-  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  font: var(--l3-text-description-14); /* 🔷 L3/Description - M/14 */
 }

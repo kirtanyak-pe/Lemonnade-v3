@@ -143,7 +143,7 @@ export function KindFields({ node, set, catalog }: Props): ReactNode {
         <>
           <Group>
             <TextRow label="Text" value={node.text} onChange={(text) => set({ text })} />
-            <Mini label="Colour">
+            <Mini label="Color">
               <Select value={node.tagColor ?? 'neutral'} options={tagColors} format={human} onChange={(tagColor) => set({ tagColor })} />
             </Mini>
             <Segmented label="Tag style" value={node.tagVariant ?? 'secondary'} options={[{ value: 'primary', label: 'Solid' }, { value: 'secondary', label: 'Soft' }, { value: 'tertiary', label: 'Outline' }]} onChange={(tagVariant) => set({ tagVariant })} />

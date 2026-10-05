@@ -1,6 +1,8 @@
 import {
   useEffect,
+  useId,
   useRef,
+  useSyncExternalStore,
   useState,
   type CSSProperties,
   type KeyboardEvent,
@@ -8,6 +10,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './BottomSheet.module.css'
+import { SheetDepthContext, sheetStack } from './sheetStack.ts'
 
 /** Figma "L3: Bottom sheet" (node 4543:63932). Figma isBottom=False → `placement="top"`. */
 export type BottomSheetPlacement = 'bottom' | 'top'
@@ -68,6 +71,8 @@ const EXIT_MS = 300 // fallback unmount if transitionend doesn't fire (reduced m
 /**
  * Modal bottom (or top) sheet over the Figma "L3: Overlay" backdrop.
  * Slides in, traps focus, closes on backdrop tap / drag down / Escape, restores focus, locks page scroll.
+ * Stacking: at most 2 sheets. The first has no back button; a second sheet on top of it shows the header's back
+ * button (going back = closing it). Opening a third warns in development.
  * Closing is invisible: no drag handle and no ✕. The whole sheet drags — header and footer always, the content
  * once it's scrolled to the top — and a visually hidden "Close" button serves screen-reader and keyboard users.
  */
@@ -87,6 +92,9 @@ export function BottomSheet({
   const sheetRef = useRef<HTMLDivElement>(null)
   const rootRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ id: number; startY: number; startT: number; content: HTMLElement | null; active: boolean } | null>(null)
+  // Stack level: 1 = first sheet over the screen (no back button), 2 = stacked on it (back button). Max 2.
+  const id = useId()
+  const depth = useSyncExternalStore(sheetStack.subscribe, () => sheetStack.depthOf(id))
   const onCloseRef = useRef(onClose)
   useEffect(() => { onCloseRef.current = onClose })
 
@@ -118,6 +126,12 @@ export function BottomSheet({
       previous?.focus?.()
     }
   }, [open, mounted, container])
+
+  useEffect(() => {
+    if (!open) return
+    sheetStack.push(id)
+    return () => sheetStack.remove(id)
+  }, [open, id])
 
   // Make everything behind the sheet inert (screen-reader browse mode can't wander behind it).
   useEffect(() => {
@@ -242,7 +256,9 @@ export function BottomSheet({
         onKeyDown={onKeyDown}
         style={dragY ? { transform: `translateY(${dragY}px)` } : undefined}
       >
-        <BottomSheetSurface {...surface} placement={placement} />
+        <SheetDepthContext.Provider value={depth}>
+          <BottomSheetSurface {...surface} placement={placement} />
+        </SheetDepthContext.Provider>
         {/* No visible ✕: this button is for screen-reader and keyboard users (tap-outside and drag aren't available to them). */}
         <button type="button" className={styles.srClose} onClick={onClose}>{closeLabel}</button>
       </div>

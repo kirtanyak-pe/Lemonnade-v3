@@ -1,0 +1,247 @@
+/* Typography foundation page — tokens only (1px hairlines are the one literal). */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap, var(--l3-spacing-80));
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+  scroll-margin-top: var(--l3-spacing-80);
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+}
+
+.sectionHead > h2 {
+  margin: 0;
+  font: var(--l3-text-heading-24);
+  color: var(--l3-content-primary);
+}
+
+.lede {
+  margin: 0;
+  max-width: 72ch;
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+.lede code {
+  font: var(--l3-text-label-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+}
+
+/* Small informative card: grey is fine at this size. */
+.wip {
+  margin: 0;
+  padding: var(--l3-spacing-12) var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-accent-warning-light);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-primary);
+}
+
+/* ---- Tree -------------------------------------------------------------------- */
+
+/* Toolbar items: label + control side by side, 32px tall (size/tap-target). */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  min-height: var(--l3-size-tap-target);
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+.sample {
+  display: flex;
+  flex: 1 1 calc(var(--l3-size-128) * 2);
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  max-width: calc(var(--l3-size-128) * 3);
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-secondary);
+  white-space: nowrap;
+}
+
+/* Vertical hairline between the switch and the sample field. */
+.sample::before {
+  content: '';
+  align-self: stretch;
+  width: 1px;
+  margin-right: var(--l3-spacing-08);
+  background: var(--l3-border-light);
+}
+
+.sample input {
+  flex: 1;
+  min-width: 0;
+  height: var(--l3-size-32);
+  padding: 0 var(--l3-spacing-12);
+  border: 0;
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  font: var(--l3-text-description-16); /* 16px keeps iOS Safari from zooming in on focus */
+  color: var(--l3-content-primary);
+}
+
+.sample input:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+}
+
+.treeSample {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--l3-content-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Role cards ---------------------------------------------------------------- */
+
+.roleCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--l3-size-128) * 2), 1fr));
+  gap: var(--l3-spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roleCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.roleExample {
+  color: var(--l3-content-primary);
+}
+
+.roleTitle {
+  margin-top: var(--l3-spacing-08);
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+.roleWeight {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-tertiary);
+}
+
+.roleUse {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+/* ---- Scale table ------------------------------------------------------------------ */
+
+.tableScroll {
+  overflow-x: auto;
+  border-radius: var(--l3-radius-16);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.scale {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.scale :is(th, td) {
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+  border-bottom: 1px solid var(--l3-border-light);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.scale tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.scale thead th {
+  color: var(--l3-content-primary);
+}
+
+.scale tbody th {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+}
+
+.cell {
+  color: var(--l3-content-primary);
+}
+
+.none {
+  color: var(--l3-content-tertiary);
+}
+
+/* ---- Code + legacy -------------------------------------------------------------- */
+
+.code {
+  margin: 0;
+  overflow-x: auto;
+  padding: var(--l3-spacing-16);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-secondary);
+  font: var(--l3-text-label-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+}
+
+.legacy {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--l3-radius-16);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  list-style: none;
+}
+
+.legacy li {
+  display: grid;
+  grid-template-columns: var(--l3-size-40) minmax(0, 1fr) var(--l3-size-56);
+  align-items: center;
+  column-gap: var(--l3-spacing-12);
+  row-gap: var(--l3-spacing-02);
+  padding: var(--l3-spacing-12) var(--l3-spacing-16);
+  border-bottom: 1px solid var(--l3-border-light);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.legacy li:last-child {
+  border-bottom: 0;
+}
+
+.legacy code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+}
+
+.legacySample {
+  grid-row: span 2;
+  color: var(--l3-content-primary);
+}
+
+.legacyNote {
+  grid-column: 2 / -1;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}

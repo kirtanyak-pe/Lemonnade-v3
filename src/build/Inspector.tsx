@@ -18,7 +18,7 @@ type InspectorProps = {
   variant: 'docked' | 'floating'
   tree: DesignNode[]
   selectedId: string | null
-  /** The canvas theme: colour swatches are painted in it so they match what the design shows. */
+  /** The canvas theme: color swatches are painted in it so they match what the design shows. */
   theme: Theme
   /** The full icon set; null until it has loaded. */
   catalog: IconCatalog | null
@@ -123,7 +123,7 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
             onPick={(patch) => set({ [part]: { ...iconSpec, ...patch } })}
           />
           <Dots
-            title="Icon colour"
+            title="Icon color"
             dots={[{ key: 'auto', label: 'Auto', dot: `var(--l3-button-${node.variant ?? 'primary'}-content)` }, ...colorDots]}
             value={iconSpec.color ?? 'auto'}
             theme={theme}
@@ -143,7 +143,7 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
           </Mini>
           <Warn hint={labelHint(node.text ?? '')} />
           <Dots
-            title="Label colour"
+            title="Label color"
             dots={[{ key: 'auto', label: 'Auto', dot: `var(--l3-button-${node.variant ?? 'primary'}-content)` }, ...colorDots]}
             value={node.labelColor ?? 'auto'}
             theme={theme}
@@ -165,7 +165,7 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
               dots={variantOptions.map((o) => ({ key: o.value, label: o.label, dot: o.surface, border: o.border }))}
               value={node.variant}
               theme={theme}
-              // A new style recolours the whole button: label and icons follow it again, per the Button rules.
+              // A new style recolors the whole button: label and icons follow it again, per the Button rules.
               onPick={(k) => set({ variant: k as typeof node.variant, ...clearColors(node) })}
             />
             {node.variant && <p className={styles.hint} data-level={variantHint(node.variant, otherButtons).level}>{variantHint(node.variant, otherButtons).text}</p>}
@@ -201,7 +201,7 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
             {spacing}
             {(node.labelColor || node.iconLeft?.color || node.iconRight?.color) && (
               <Button variant="tertiary" size="sm" onClick={() => set(clearColors(node))}>
-                Reset part colours
+                Reset part colors
               </Button>
             )}
           </More>
@@ -240,7 +240,7 @@ export function Inspector({ variant, tree, selectedId, theme, catalog, onSelect,
               onChange={(textAlign) => set({ textAlign })}
             />
             <Dots
-              title="Colour"
+              title="Color"
               dots={colorDots}
               value={node.color ?? (node.kind === 'heading' ? 'primary' : 'secondary')}
               theme={theme}

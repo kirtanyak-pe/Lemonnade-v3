@@ -85,7 +85,7 @@ export const outputSchema = {
           value: { type: 'string', description: 'List row: the value shown on the right. Empty state: the label of its action button.' },
           weight: strEnum(weights),
           size: { type: 'integer', enum: [...allTextSizes] },
-          color: strEnum(colorKeys, 'Text colour token. Headings are usually primary, supporting text secondary.'),
+          color: strEnum(colorKeys, 'Text color token. Headings are usually primary, supporting text secondary.'),
           textAlign: strEnum(textAligns),
           variant: strEnum(variants, 'Button style.'),
           buttonSize: strEnum(buttonSizes),
@@ -191,7 +191,7 @@ const defaultNames: Record<NodeKind, string> = {
 
 /**
  * Turn Claude's flat list into a design tree, dropping anything outside the vocabulary and fixing the hard rules.
- * `prev` is the design before this request: edits Claude cannot express (per-part colours) are carried over by id.
+ * `prev` is the design before this request: edits Claude cannot express (per-part colors) are carried over by id.
  * `iconNames` is the set of real Material Symbols names; unknown icons are dropped.
  */
 export function fromFlat(raw: unknown, opts: { iconNames?: ReadonlySet<string>; prev?: DesignNode[] } = {}): Sanitized {

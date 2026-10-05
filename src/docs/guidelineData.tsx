@@ -43,8 +43,8 @@ export const guidelines: Record<string, Guideline[]> = {
     },
     {
       title: 'Use Buy and Sell only for trades',
-      do: { text: 'Buy (green) and Sell (red) are for placing orders.', example: <div className={styles.exRow}><Button size="md" variant="sell">Sell</Button><Button size="md" variant="buy">Buy</Button></div> },
-      dont: { text: 'Borrow their colours for unrelated actions like saving settings.', example: <Button size="md" variant="buy">Save settings</Button> },
+      do: { text: 'Use Primary for every action; Buy and Sell only for placing orders.', example: <div className={styles.exRow}><Button size="md" variant="sell">Sell</Button><Button size="md" variant="buy">Buy</Button></div> },
+      dont: { text: 'Borrow their colors for unrelated actions like saving settings.', example: <Button size="md" variant="buy">Save settings</Button> },
     },
   ],
   'button-group': [
@@ -114,6 +114,11 @@ export const guidelines: Record<string, Guideline[]> = {
     },
   ],
   'bottom-sheet': [
+    {
+      title: 'Back only on a stacked sheet',
+      do: { text: 'The first sheet over a screen has no back button. A second sheet on top of it has one, returning to the first. Two sheets at most.', example: <BottomSheetHeader heading="Order types" onBack={noop} /> },
+      dont: { text: 'Put a back button on the first sheet, or open a third sheet on top of two.', example: <BottomSheetHeader heading="Buy RELIANCE" description="First sheet · with a back button" onBack={noop} /> },
+    },
     {
       title: 'Close by dragging or tapping outside',
       do: { text: 'Keep the header clean: heading, and a back button or one action if needed. The sheet closes by dragging down or tapping the backdrop.', example: <BottomSheetHeader heading="Buy RELIANCE" description="NSE" /> },

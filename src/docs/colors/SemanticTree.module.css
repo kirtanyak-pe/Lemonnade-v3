@@ -1,0 +1,281 @@
+/* Semantic color tree — tokens only (1px hairlines are the one literal). */
+
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+/* 4 columns: Surface · Icon · Text · Border. Content spans Icon + Text. */
+.tree {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: var(--l3-spacing-40);
+  column-gap: var(--l3-spacing-24);
+  min-width: calc(var(--l3-size-128) * 6);
+  padding: var(--l3-spacing-32) var(--l3-spacing-24) var(--l3-spacing-24) var(--l3-spacing-40);
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.line {
+  fill: none;
+  stroke: var(--l3-border-intense);
+  stroke-width: var(--l3-spacing-02);
+  stroke-dasharray: var(--l3-spacing-06) var(--l3-spacing-04);
+  transition: stroke var(--l3-motion-duration-short) var(--l3-motion-easing-standard), opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* The accent limb is drawn in the brand color, solid, so it reads as a branch going its own way. */
+.line[data-accent] {
+  stroke: var(--l3-border-accent-brand-default);
+  stroke-dasharray: none;
+}
+
+.tree[data-has-active] .line {
+  opacity: var(--l3-opacity-25);
+}
+
+.tree[data-has-active] .line[data-lit] {
+  opacity: 1;
+  stroke: var(--l3-content-primary);
+}
+
+.rowRoot,
+.rowRoles,
+.rowMerge,
+.rowLeaves {
+  display: contents;
+}
+
+.rowRoot > * {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+.rowRoles > * {
+  justify-self: center;
+}
+
+.rowMerge > * {
+  grid-column: 2 / 4;
+  justify-self: center;
+}
+
+.colSurface { grid-column: 1; }
+
+/* ---- Accent band (bottom, full width) -------------------------------------------------------------- */
+
+.accentBand {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-32);
+  margin-top: var(--l3-spacing-16);
+  padding: var(--l3-spacing-24) var(--l3-spacing-16) var(--l3-spacing-16) var(--l3-spacing-24);
+  border-radius: var(--l3-radius-16);
+  /* Large container: page color + border/light (no fill), per DESIGN_SYSTEM 7.2. */
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  background: var(--l3-surface-default);
+}
+
+.accentHead {
+  display: flex;
+  justify-content: center;
+}
+
+.accentGroups {
+  display: grid;
+  gap: var(--l3-spacing-24);
+}
+
+.accentCol {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--l3-spacing-24);
+  min-width: 0;
+}
+
+.accentCol > .group {
+  align-self: center;
+}
+
+.group[data-level='accent'] {
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) var(--l3-border-accent-brand-default);
+}
+
+.group[data-level='accentGroup'] {
+  min-width: 0;
+}
+.colContent { grid-column: 2 / 4; justify-self: center; }
+.colBorder { grid-column: 4; }
+
+/* ---- Group nodes (root, roles, merged Content) ------------------------------------------------------ */
+
+.group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  min-width: var(--l3-size-128);
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  text-align: center;
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.group[data-level='root'] {
+  background: var(--l3-surface-inverted);
+  box-shadow: none;
+}
+
+.group[data-level='root'] .groupTitle {
+  color: var(--l3-content-inverted);
+}
+
+.group[data-level='root'] .groupNote {
+  color: var(--l3-content-inverted-secondary);
+}
+
+/* The merged node is the point of the diagram: give it the strong outline. */
+.group[data-level='merge'] {
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) var(--l3-border-dark);
+}
+
+.groupTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-heading-14);
+  color: var(--l3-content-primary);
+}
+
+.groupNote {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
+}
+
+.aa {
+  font: var(--l3-text-heading-14);
+}
+
+.group:focus-visible,
+.leaf:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+/* ---- Token leaves ----------------------------------------------------------------------------------- */
+
+.leaves {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leaf {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  min-height: var(--l3-size-40);
+  padding: var(--l3-spacing-04) var(--l3-spacing-12) var(--l3-spacing-04) var(--l3-spacing-08);
+  border: 0;
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), box-shadow var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.tree[data-has-active] :is(.group, .leaf) {
+  opacity: var(--l3-opacity-40);
+}
+
+.tree[data-has-active] :is(.group, .leaf)[data-lit] {
+  opacity: 1;
+}
+
+.tree[data-has-active] .leaf[data-lit],
+.tree[data-has-active] .group[data-level='role'][data-lit] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-dark);
+}
+
+.swatch {
+  flex: none;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+  border-radius: var(--l3-radius-04);
+}
+
+.swatch[data-kind='fill'],
+.swatch[data-kind='split'] {
+  background-color: currentColor;
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+.swatch[data-kind='border'] {
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 var(--l3-spacing-02) currentColor;
+}
+
+.leafText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.leafName {
+  font: var(--l3-text-label-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+  overflow-wrap: anywhere;
+}
+
+.leafRole {
+  font: var(--l3-text-description-10);
+  color: var(--l3-content-secondary);
+}
+
+.empty {
+  margin: 0;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .group,
+  .leaf {
+    transition: none;
+  }
+}
+
+/* Static band: two leaves side by side under its node. */
+.staticRow .leaves {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--l3-spacing-12);
+}
+
+.staticRow .leaves > li {
+  min-width: calc(var(--l3-size-128) * 1.5);
+}

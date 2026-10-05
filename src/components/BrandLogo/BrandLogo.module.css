@@ -1,8 +1,8 @@
 /*
- * L3 Brand logo — every colour is an --l3-* token.
+ * L3 Brand logo — every color is an --l3-* token.
  * The marks use their own brand ramps (base tokens), not the theme's brand-default: a Lemonn logo must
  * stay Lemonn-lime even in the CS PRO or Kuber themes. Figma binds the Lemonn leaf to
- * surface/accent/brand-default, which would recolour it per product — intentionally not followed.
+ * surface/accent/brand-default, which would recolor it per product — intentionally not followed.
  * The Lemonn wordmark follows the theme (Figma: surface/inverted) so it reads on light and dark pages.
  */
 

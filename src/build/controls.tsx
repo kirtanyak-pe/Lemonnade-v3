@@ -62,8 +62,8 @@ export function Segmented<T extends string>({ label, value, options, onChange }:
 
 
 /**
- * A row of colour dots. The chosen name sits in the title, so the dots need no captions. Each dot carries the canvas
- * theme, so it shows the colour the design will actually use.
+ * A row of color dots. The chosen name sits in the title, so the dots need no captions. Each dot carries the canvas
+ * theme, so it shows the color the design will actually use.
  */
 export function Dots({ title, dots, value, theme, onPick }: {
   title: string; dots: Dot[]; value: string | undefined; theme: Theme; onPick: (key: string) => void

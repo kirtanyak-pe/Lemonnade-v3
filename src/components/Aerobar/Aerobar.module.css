@@ -16,7 +16,7 @@
   width: 100%;
 }
 
-/* ---- Types: light tint (soft) / full colour (solid) ------------------------ */
+/* ---- Types: light tint (soft) / full color (solid) ------------------------ */
 
 .aerobar[data-type='discover'] { --ab-soft: var(--l3-surface-accent-discover-light); --ab-solid: var(--l3-surface-accent-discover-default); }
 .aerobar[data-type='danger'] { --ab-soft: var(--l3-surface-accent-error-light); --ab-solid: var(--l3-surface-accent-error-default); }
@@ -29,7 +29,7 @@
 
 /*
  * Solid: inverted text with the paragraph at 60% (Figma layer opacity → opacity token);
- * the Ghost action takes the same colour.
+ * the Ghost action takes the same color.
  */
 .aerobar[data-emphasis='primary'] {
   --ab-surface: var(--ab-solid, var(--l3-surface-inverted));
@@ -107,12 +107,12 @@
 
 .heading {
   margin: 0;
-  font: var(--l3-text-semibold-14); /* L3/semibold - Label/14 */
+  font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
 }
 
 .paragraph {
   margin: 0;
-  font: var(--l3-text-medium-12); /* L3/Medium - Body/12 */
+  font: var(--l3-text-description-12); /* 🔷 L3/Description - M/12 */
   color: var(--ab-paragraph);
 }
 
@@ -148,7 +148,7 @@
 
 /*
  * Figma: small Ghost button — its label follows the bar (ghost/content on soft bars, the solid
- * text colour on solid ones). Figma keeps the dark state layer on every bar (Button's default).
+ * text color on solid ones). Figma keeps the dark state layer on every bar (Button's default).
  */
 .actionSlot .action[data-variant] {
   --btn-content: var(--ab-action, var(--l3-button-ghost-content));

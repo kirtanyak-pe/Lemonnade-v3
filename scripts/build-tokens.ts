@@ -8,7 +8,7 @@ import { themes, defaultProduct, defaultMode, productModes } from '../src/tokens
 const root = fileURLToPath(new URL('../src/tokens/', import.meta.url))
 const OPACITY_EXT = 'l3.opacity'
 
-type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string }
+type TypographyValue = { fontFamily: string; fontWeight: string; fontSize: string; lineHeight: string; letterSpacing: string; paragraphSpacing?: string }
 type ShadowValue = { color: string; offsetX: string; offsetY: string; blur: string; spread: string }
 type Leaf = { $type: string; $value: string | number | TypographyValue | ShadowValue; $description?: string; $extensions?: Record<string, string> }
 type Tree = { [key: string]: Tree | Leaf }
@@ -71,10 +71,13 @@ function cssValue(leaf: Leaf, tokens: Map<string, Leaf>, themeId: string, path: 
 
 function selectorFor(theme: (typeof themes)[number]) {
   // Single-mode products match on product alone, so any requested mode resolves.
-  const sel = productModes[theme.product].length === 1
+  let sel = productModes[theme.product].length === 1
     ? `[data-product="${theme.product}"]`
     : `[data-product="${theme.product}"][data-mode="${theme.mode}"]`
-  return theme.product === defaultProduct && theme.mode === defaultMode ? `:root,\n${sel}` : sel
+  // ♿ Accessible themes add [data-contrast="accessible"]: more specific, so they win over the standard block.
+  const accessible = 'contrast' in theme && theme.contrast === 'accessible'
+  if (accessible) sel += '[data-contrast="accessible"]'
+  return !accessible && theme.product === defaultProduct && theme.mode === defaultMode ? `:root,\n${sel}` : sel
 }
 
 const themeBlocks = themeTokens.map(({ theme, tokens }) => {
@@ -103,21 +106,25 @@ const fontRef = (value: string) => {
   if (!fontTokens.has(target)) throw new Error(`typography: unknown ${target}`)
   return `var(${varName(target)})`
 }
+const fontValue = (value: string) => String(fontTokens.get(refPath(value))?.$value)
 
+// Base values: --l3-font-family-manrope, --l3-font-weight-bold, --l3-font-size-200, --l3-line-height-200, --l3-paragraph-spacing-08.
 const fontLines = [...fontTokens].map(([path, leaf]) =>
   `  ${varName(path)}: ${leaf.$type === 'fontFamily' ? `'${leaf.$value}', sans-serif` : leaf.$value};`)
 
+// Role styles (Figma text styles): text.heading.primary.14 → --l3-text-heading-primary-14 (+ -size, -weight, …).
 const styleLines = [...textStyles].flatMap(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
   const name = varName(path)
-  const [family, weight, size] = [fontRef(v.fontFamily), fontRef(v.fontWeight), fontRef(v.fontSize)]
+  const [family, weight, size, lineHeight] = [fontRef(v.fontFamily), fontRef(v.fontWeight), fontRef(v.fontSize), fontRef(v.lineHeight)]
   return [
     `  /* ${leaf.$extensions?.['l3.figmaStyle']} */`,
     `  ${name}-weight: ${weight};`,
     `  ${name}-size: ${size};`,
-    `  ${name}-line-height: ${v.lineHeight};`,
+    `  ${name}-line-height: ${lineHeight};`,
     `  ${name}-letter-spacing: ${v.letterSpacing};`,
-    `  ${name}: ${weight} ${size}/${v.lineHeight} ${family};`,
+    `  ${name}-paragraph-spacing: ${v.paragraphSpacing ? fontRef(v.paragraphSpacing) : '0px'};`,
+    `  ${name}: ${weight} ${size}/${lineHeight} ${family};`,
   ]
 })
 
@@ -160,12 +167,17 @@ export const numberVars = {
 ${[...numbers.keys()].map((p) => `  '${figmaName(p)}': '${varName(p)}',`).join('\n')}
 } as const
 
-/** Figma text style → CSS custom property (use as \`font: var(--l3-text-bold-16)\`). */
+/**
+ * Figma text styles (🔷 L3/…) → CSS custom property. Use as \`font: var(--l3-text-label-primary-12)\`.
+ * role: heading-primary · heading-secondary · label-primary · label-secondary · description.
+ */
 export const textStyles = [
 ${[...textStyles].map(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
-  const [, weight, size] = path.split('.')
-  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', weight: '${weight}', fontSize: ${Number(size)}, lineHeight: ${parseFloat(v.lineHeight)} },`
+  const parts = path.split('.').slice(1)
+  const size = parts.pop()!
+  const local = leaf.$extensions?.['l3.local'] ? `, local: ${JSON.stringify(leaf.$extensions['l3.local'])}` : ''
+  return `  { figmaName: '${leaf.$extensions?.['l3.figmaStyle']}', cssVar: '${varName(path)}', role: '${parts.join('-')}', size: '${size}', weight: ${fontValue(v.fontWeight)}, fontSize: ${parseFloat(fontValue(v.fontSize))}, lineHeight: ${parseFloat(fontValue(v.lineHeight))}, paragraphSpacing: ${v.paragraphSpacing ? parseFloat(fontValue(v.paragraphSpacing)) : 0}${local} },`
 }).join('\n')}
 ] as const
 
@@ -173,6 +185,7 @@ export type ThemeToken = keyof typeof themeTokenVars
 export type BaseColor = keyof typeof baseColorVars
 export type NumberToken = keyof typeof numberVars
 export type TextStyle = (typeof textStyles)[number]['cssVar']
+export type TextRole = (typeof textStyles)[number]['role']
 `,
 )
 writeFileSync(root + 'generated/typography.css', `${header}:root {\n${fontLines.join('\n')}\n\n${styleLines.join('\n')}\n}\n`)

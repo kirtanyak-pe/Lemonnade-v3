@@ -3,7 +3,7 @@ import { href } from './useHashRoute'
 
 /**
  * Turns a token name — or a Resources chip like "content/primary · secondary",
- * "text-semibold-12 · 14", "state-layer/*" — into a link to the foundation page that shows it,
+ * "text-label-primary-12 · 14", "state-layer/*" — into a link to the foundation page that shows it,
  * with ?token= so that page scrolls to and highlights it. Returns null for families without a page
  * (shadow, motion, opacity).
  */

@@ -1,0 +1,359 @@
+/* Token naming anatomy — tokens only (1px hairlines are the one literal). */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+}
+
+.card {
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+}
+
+/* All examples share one grid cell; the card is as tall as the tallest, and only the active one shows. */
+.stack {
+  display: grid;
+}
+
+.stackItem {
+  grid-area: 1 / 1;
+  align-self: start;
+  min-width: 0;
+  visibility: hidden;
+}
+
+.stackItem[data-active] {
+  visibility: visible;
+}
+
+.anatomyScroll {
+  overflow-x: auto;
+  padding: var(--l3-spacing-32) var(--l3-spacing-24) var(--l3-spacing-24);
+}
+
+/*
+ * Labels hang off the stick (absolutely positioned) so they never widen a part. --row (set per part from
+ * JS) lengthens the stick to drop a label a row when it would touch its neighbor; --rows reserves room below.
+ */
+.anatomy {
+  --stick-height: var(--l3-size-32);
+  --label-height: var(--l3-size-24);
+  --row-step: var(--l3-size-28);
+  --label-gap: var(--l3-spacing-08);
+  --alt-box: var(--l3-size-24);
+  --alt-gap: var(--l3-spacing-04);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: max-content;
+  min-width: 100%;
+  margin: 0 auto;
+  padding-top: calc(var(--alt-rows, 0) * (var(--alt-box) + var(--alt-gap)));
+  padding-bottom: calc(var(--label-height) + var(--rows, 0) * var(--row-step));
+}
+
+/*
+ * Other values a part can take, stacked faded above it (nearest = most likely). Absolutely positioned so they
+ * never widen the part; --alt-rows reserves the room above the row.
+ */
+.partTextWrap {
+  position: relative;
+  display: flex;
+}
+
+/* Left-aligned with the part, starting right above its tag. */
+.alts {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: var(--alt-gap);
+  padding-bottom: var(--alt-gap);
+}
+
+/* Each alternative is a smaller tag in the part's colors, faded. */
+.alt {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--alt-box);
+  padding: 0 var(--l3-spacing-06);
+  border-radius: var(--l3-radius-06);
+  background: var(--part-soft);
+  box-shadow: inset 0 0 0 1px var(--part-border);
+  font: var(--l3-text-heading-14);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--part-content);
+  white-space: nowrap;
+  opacity: var(--l3-opacity-50);
+}
+
+.alt:nth-child(2) {
+  opacity: var(--l3-opacity-30);
+}
+
+.alt:nth-child(3) {
+  opacity: var(--l3-opacity-20);
+}
+
+.alt:nth-child(n + 4) {
+  opacity: var(--l3-opacity-10);
+}
+
+/* Hovering a part (its tag, its faded values or its label) shows its other values clearly. */
+.alt {
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+@media (hover: hover) {
+  .part:hover .alt {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alt {
+    transition: none;
+  }
+}
+
+.prefix,
+.sep {
+  padding-top: var(--l3-spacing-04);
+  font: var(--l3-text-heading-20);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-tertiary);
+}
+
+.partGroup {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Each part: the text in a soft box, a stick, and its label — colored by kind (Miscellaneous accents). */
+.part {
+  --part-soft: var(--l3-surface-secondary);
+  --part-border: var(--l3-border-intense);
+  --part-content: var(--l3-content-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.part[data-kind='property'],
+.dot[data-kind='property'] { --part-soft: var(--l3-surface-accent-discover-light); --part-border: var(--l3-border-accent-discover-default); --part-content: var(--l3-content-accent-discover-default); }
+.part[data-kind='group'],
+.dot[data-kind='group'] { --part-soft: var(--l3-surface-accent-teal-light); --part-border: var(--l3-border-accent-teal-default); --part-content: var(--l3-content-accent-teal-default); }
+.part[data-kind='intent'],
+.dot[data-kind='intent'] { --part-soft: var(--l3-surface-accent-purple-light); --part-border: var(--l3-border-accent-purple-default); --part-content: var(--l3-content-accent-purple-default); }
+.part[data-kind='modifier'],
+.dot[data-kind='modifier'] { --part-soft: var(--l3-surface-accent-orange-light); --part-border: var(--l3-border-accent-orange-default); --part-content: var(--l3-content-accent-orange-default); }
+.part[data-kind='component'],
+.dot[data-kind='component'] { --part-soft: var(--l3-surface-accent-indigo-light); --part-border: var(--l3-border-accent-indigo-default); --part-content: var(--l3-content-accent-indigo-default); }
+.part[data-kind='variant'],
+.dot[data-kind='variant'] { --part-soft: var(--l3-surface-accent-zing-light); --part-border: var(--l3-border-accent-zing-default); --part-content: var(--l3-content-accent-zing-default); }
+.part[data-kind='state'],
+.dot[data-kind='state'] { --part-soft: var(--l3-surface-accent-error-light); --part-border: var(--l3-border-accent-error-default); --part-content: var(--l3-content-accent-error-default); }
+.part[data-kind='tier'],
+.dot[data-kind='tier'] { --part-soft: var(--l3-surface-accent-warning-light); --part-border: var(--l3-border-accent-warning-default); --part-content: var(--l3-content-accent-warning-default); }
+
+.partText {
+  padding: var(--l3-spacing-04) var(--l3-spacing-08);
+  border-radius: var(--l3-radius-08);
+  background: var(--part-soft);
+  box-shadow: inset 0 0 0 1px var(--part-border);
+  font: var(--l3-text-heading-20);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--part-content);
+  white-space: nowrap;
+}
+
+/* Dot at the top, line down to the label. */
+.stick {
+  position: relative;
+  width: var(--l3-spacing-02);
+  height: calc(var(--stick-height) + var(--row, 0) * var(--row-step));
+  margin-top: var(--l3-spacing-12);
+  background: var(--part-border);
+}
+
+.stick::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--l3-spacing-04));
+  left: 50%;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  border-radius: var(--l3-radius-full);
+  background: var(--part-border);
+  transform: translateX(-50%);
+}
+
+.partLabel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--l3-spacing-04) var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+/* Phones: smaller anatomy so more of the name fits before it scrolls. */
+@media (max-width: 640px) {
+  .anatomyScroll {
+    padding: var(--l3-spacing-20) var(--l3-spacing-08) var(--l3-spacing-16);
+  }
+
+  .prefix,
+  .sep,
+  .partText {
+    font: var(--l3-text-heading-12);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .prefix,
+  .sep {
+    padding-top: var(--l3-spacing-02);
+  }
+
+  .partText {
+    padding: var(--l3-spacing-02) var(--l3-spacing-06);
+    border-radius: var(--l3-radius-06);
+  }
+
+  .alt {
+    padding: 0 var(--l3-spacing-04);
+    border-radius: var(--l3-radius-04);
+    font: var(--l3-text-heading-10);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .anatomy {
+    --alt-box: var(--l3-size-16);
+    --alt-gap: var(--l3-spacing-02);
+    --stick-height: var(--l3-size-20);
+    --label-height: var(--l3-size-16);
+    --row-step: var(--l3-size-20);
+    --label-gap: var(--l3-spacing-04);
+  }
+
+  .stick {
+    margin-top: var(--l3-spacing-08);
+  }
+
+  .partLabel {
+    padding: var(--l3-spacing-02) var(--l3-spacing-06);
+    border-radius: var(--l3-radius-06);
+    font: var(--l3-text-label-10);
+  }
+}
+
+/* ---- Same token in Figma / CSS / TS ---------------------------------------------------------- */
+
+.forms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--l3-spacing-12);
+  margin: 0;
+}
+
+.forms > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+  padding: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+}
+
+.forms dt {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-secondary);
+}
+
+.forms dd {
+  margin: 0;
+}
+
+.forms code,
+.rules code,
+.glossary code {
+  font: var(--l3-text-label-12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--l3-content-primary);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .forms {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Rules & glossary --------------------------------------------------------------------------- */
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  padding-left: var(--l3-spacing-20);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+.rules strong {
+  color: var(--l3-content-primary);
+}
+
+.details summary {
+  font: var(--l3-text-label-14);
+  color: var(--l3-content-accent-discover-default);
+  cursor: pointer;
+}
+
+.glossary {
+  width: 100%;
+  margin-top: var(--l3-spacing-12);
+  border-collapse: collapse;
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.glossary th,
+.glossary td {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-bottom: 1px solid var(--l3-border-light);
+  text-align: left;
+  vertical-align: top;
+}
+
+.glossary thead th {
+  font: var(--l3-text-label-12);
+  color: var(--l3-content-primary);
+  background: var(--l3-surface-secondary);
+}
+
+.glossary tbody th {
+  font: var(--l3-text-heading-12);
+  color: var(--l3-content-primary);
+  white-space: nowrap;
+}
+
+.dot {
+  display: inline-block;
+  width: var(--l3-size-08);
+  height: var(--l3-size-08);
+  margin-right: var(--l3-spacing-08);
+  border-radius: var(--l3-radius-full);
+  background: var(--part-border, var(--l3-border-intense));
+}

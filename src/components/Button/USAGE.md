@@ -15,8 +15,10 @@ looks like one; text links inside content use a text action instead (see *Not a 
 | `secondary` | The alternative action **next to a stronger button** (`primary`, `buy`, `sell` or `brand`): *Cancel*, *Modify*, *Edit order*. Its darker border only makes sense beside that stronger button. Mostly used in a **button dock / `ButtonGroup`, typically inside a bottom sheet**. | **Only alongside a stronger button.** Never on its own on the page or inside a card. |
 | `tertiary` | Low-emphasis actions that sit **on the page or inside content**: *View all* at the end of a list, *Add another*, *Load more*, *Sort*. | Use this (not `secondary`) when the action stands alone. |
 | `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. | Not as a screen's main action. |
-| `brand` | Brand moments: onboarding, promotions, first-run CTAs. Follows the product colour (Lemonn lime, CS PRO gold, Kuber green). | Not for everyday actions, not next to `buy`/`sell`. |
-| `buy` / `sell` | **Only** to place or confirm a trade. `buy` = green, `sell` = red. | Never for unrelated actions (don't use `sell` as a "danger" button). |
+| `brand` | Brand moments: onboarding, promotions, first-run CTAs. Follows the product color (Lemonn lime, CS PRO gold, Kuber green). | Not for everyday actions, not next to `buy`/`sell`. |
+| `buy` / `sell` | **Only** to place or confirm a trade. Colors follow the product theme: `buy` uses the product's buy color (Lemonn lime, CS PRO market green, Kuber green), `sell` is red. | Never for unrelated actions (don't use `sell` as a "danger" button). |
+
+**Rule of thumb: every action is `primary` (or `secondary`/`tertiary`/`ghost` around it), except buying or selling, which use `buy` / `sell`.** In Lemonn and Kuber `buy` and `brand` share the product color on purpose — they never appear on the same screen, so it isn't ambiguous.
 
 Pairs that work: `secondary` + `primary`, `sell` + `buy`, `secondary` + `buy` (e.g. *Modify* + *Buy*), `secondary` + `brand`.
 Pairs to avoid: two `primary`, `primary` + `buy`, `brand` + `primary`, a `secondary` on its own.

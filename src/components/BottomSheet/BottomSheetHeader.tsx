@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react'
+import { useContext, useEffect, type ReactNode } from 'react'
 import { BackIcon, InfoIcon } from '../icons'
 import styles from './BottomSheet.module.css'
+import { SheetDepthContext } from './sheetStack.ts'
 
 /** Figma "L3: Bottom sheet header" (node 4543:63897). Figma isSmall → `size="sm"`. */
 export type BottomSheetHeaderProps = {
@@ -16,7 +17,10 @@ export type BottomSheetHeaderProps = {
   onInfo?: () => void
   /** Accessible name for the ⓘ button. */
   infoLabel?: string
-  /** sm: Figma action-left "⬅️ Back". Shows the back button. */
+  /**
+   * sm: Figma 👁️ Back button. Only for a sheet stacked on another sheet (it goes back to the first one).
+   * Inside a modal <BottomSheet> it's hidden on the first sheet over the screen.
+   */
   onBack?: () => void
   /** sm: Figma right slot for "🏷️ Tag" / "🔲 Button" actions (Figma's "❌ Cross" isn't used), e.g. <Tag> or <Button size="sm">. */
   trailing?: ReactNode
@@ -45,6 +49,15 @@ export function BottomSheetHeader({
   className,
 }: BottomSheetHeaderProps) {
   const cls = [styles.header, className].filter(Boolean).join(' ')
+  const depth = useContext(SheetDepthContext)
+  // Rule: the first sheet over the screen never has a back button (null depth = static surface, e.g. docs).
+  const showBack = Boolean(onBack) && depth !== 1
+
+  useEffect(() => {
+    if (import.meta.env.DEV && onBack && depth === 1) {
+      console.warn(`[L3] <BottomSheetHeader onBack> "${heading}": the first bottom sheet over a screen has no back button — only a sheet stacked on another sheet does. Hidden.`)
+    }
+  }, [onBack, depth, heading])
 
   if (size === 'lg') {
     return (
@@ -66,7 +79,7 @@ export function BottomSheetHeader({
     <header className={cls} data-size="sm">
       <div className={styles.headerRow}>
         <div className={styles.headerLeading}>
-          {onBack && (
+          {showBack && (
             <button type="button" className={styles.iconButton} onClick={onBack} aria-label="Back">
               <BackIcon />
             </button>

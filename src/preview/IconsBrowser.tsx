@@ -47,12 +47,12 @@ export function IconsBrowser() {
           helperText={`${results.length} of ${icons.length} icons · Rounded · weight 400 · grade 0 · 24dp`}
           helperIcon={false}
         />
-        <Tabs aria-label="Fill" appearance="pill" size="sm" value={fill} onChange={setFill} items={[{ value: 'outline', label: 'Fill off' }, { value: 'fill', label: 'Fill on' }]} />
+        <Tabs aria-label="Fill" appearance="pill" size="md" value={fill} onChange={setFill} items={[{ value: 'outline', label: 'Fill off' }, { value: 'fill', label: 'Fill on' }]} />
       </div>
       <Tabs
         aria-label="Category"
         appearance="pill"
-        size="sm"
+        size="md"
         value={category}
         onChange={(c) => { setCategory(c); setLimit(PAGE) }}
         items={categories.map((c) => ({ value: c, label: c.replace('&', ' & ') }))}

@@ -13,15 +13,27 @@ export type TabItem<V extends string = string> = {
   hideLabel?: boolean
 }
 
-/** Figma "L3: Tabs" (node 4543:65938). Figma isPill → `appearance="pill"`. */
+/**
+ * Figma "L3: Tabs group" (node 4543:65938). Figma Type → `appearance`:
+ * Flat tabs → `underline` · Pill tabs → `pill` · Pill group → `pill-group`.
+ */
 export type TabsProps<V extends string = string> = {
   items: TabItem<V>[]
   value: V
   onChange: (value: V) => void
-  appearance?: 'underline' | 'pill'
-  /** Pills only: filled (primary) or outlined (secondary) selected pill. */
+  /**
+   * `underline`: sections of a screen. `pill`: a row of filter chips.
+   * `pill-group`: 2–4 options in a shared track for switching views (Tree / List); its pills are always tertiary.
+   */
+  appearance?: 'underline' | 'pill' | 'pill-group'
+  /** `pill` only (Figma base tab Type): the chip style for the whole row — primary, secondary or tertiary. */
   emphasis?: TabEmphasis
   size?: TabSize
+  /**
+   * `hug` (default): tabs are as wide as their labels; a pill group's track wraps them.
+   * `fill`: tabs stretch to fill the row; a pill group's track goes full width with equal pills.
+   */
+  width?: 'hug' | 'fill'
   /** Accessible name for the tab list, e.g. "Portfolio sections". */
   'aria-label': string
   /** Prefix for tab/panel ids so a panel can use aria-labelledby={`${idPrefix}-tab-${value}`}. */
@@ -40,11 +52,15 @@ export function Tabs<V extends string>({
   appearance = 'underline',
   emphasis = 'primary',
   size = 'md',
+  width = 'hug',
   idPrefix,
   className,
   'aria-label': ariaLabel,
 }: TabsProps<V>) {
   const listRef = useRef<HTMLDivElement>(null)
+  // Pill group = tertiary pills inside a surface/secondary track (Figma Type=Pill group).
+  const tabAppearance = appearance === 'underline' ? 'underline' : 'pill'
+  const tabEmphasis = appearance === 'pill-group' ? 'tertiary' : emphasis
 
   // Keep the selected tab visible inside the scrolling row (scrolls the row only, never the page).
   useEffect(() => {
@@ -78,6 +94,7 @@ export function Tabs<V extends string>({
       aria-label={ariaLabel}
       className={[styles.tabs, className].filter(Boolean).join(' ')}
       data-appearance={appearance}
+      data-width={width}
       onKeyDown={onKeyDown}
     >
       {items.map((item) => (
@@ -86,8 +103,8 @@ export function Tabs<V extends string>({
           id={idPrefix ? `${idPrefix}-tab-${item.value}` : undefined}
           aria-controls={idPrefix ? `${idPrefix}-panel-${item.value}` : undefined}
           selected={item.value === value}
-          appearance={appearance}
-          emphasis={emphasis}
+          appearance={tabAppearance}
+          emphasis={tabEmphasis}
           size={size}
           iconLeft={item.iconLeft}
           iconRight={item.iconRight}

@@ -10,7 +10,7 @@ export type IconSpec = { name?: string; fill?: boolean; color?: ColorKey }
 
 /**
  * Ids are `<node>` for a node and `<node>:<part>` for a part of a button (its label or icon). Parts follow the button's
- * style until they are given their own colour.
+ * style until they are given their own color.
  */
 export type DesignNode = {
   id: string
@@ -275,7 +275,7 @@ export function nodeTitle(n: DesignNode): string {
   return `${kindLabels[n.kind]}${text ? ` · ${text.slice(0, 24)}` : ''}`
 }
 
-/** A colour dot in the inspector: a token-painted swatch with a name. */
+/** A color dot in the inspector: a token-painted swatch with a name. */
 export type Dot = { key: string; label: string; dot: string; border?: string }
 export const colorDots: Dot[] = colorOptions.map((o) => ({ key: o.value, label: o.label, dot: o.color }))
 export const stepLabel = (s: Step) => `${Number(s)}`
