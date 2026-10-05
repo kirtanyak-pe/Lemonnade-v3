@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { Button } from '../components/Button'
+import { ButtonGroup } from '../components/ButtonGroup'
+import { Card } from '../components/Card'
 import { Icon } from '../components/Icon'
-import { PhoneFrame } from '../docs/PhoneFrame'
 import { useViewportWidth } from '../docs/viewport'
 import { useTheme } from '../theme'
 import { productLabels, productModes, products, resolveMode, type Mode, type Product } from '../tokens/themes'
@@ -11,41 +12,106 @@ import {
   msOpenInFull, msPlayArrow, msRefresh, msSettings, msThumbDown, msThumbUp, msViewSidebar,
 } from '../icons/material'
 import {
-  baseIdOf, colorVar, findNode, flatten, moveNode, partLabels, partOf, partsOf, radiusVar, spacingVar, textFont, updateNode,
-  type DesignNode, type IconSpec,
+  baseIdOf, colorVar, findNode, flatten, isBleed, isContainer, isFooter, kindLabels, moveNode, nodeTitle, partLabels, partOf, partsOf,
+  radiusVar, spacingVar, textFont, updateNode,
+  type DesignNode, type IconSpec, type NodeKind,
 } from './design'
+import { readPrd, requestDesign, type PrdFile } from './generateClient'
+import { Canvas } from './Canvas'
 import { Inspector } from './Inspector'
+import { Leaf } from './leaves'
+import { defaultModel, models } from './schema'
 import { useIconCatalog } from './useIconCatalog'
 import { IconButton } from './ui'
 import styles from './Build.module.css'
 
-type Message = { role: 'user' | 'assistant'; text: string; target?: string }
+type Message = {
+  id: number
+  role: 'user' | 'assistant'
+  text: string
+  /** The item a request was about, e.g. "Button · Continue". */
+  target?: string
+  pending?: boolean
+  failed?: boolean
+  seconds?: number
+  /** Things Build changed to keep the design within the rules. */
+  warnings?: string[]
+  /** The design before this reply changed it, so it can be undone. */
+  restore?: DesignNode[]
+  undone?: boolean
+}
 type Tab = 'browser' | 'files'
 
-/** Sample screen. Generated screens will produce the same tree. */
+/** Builds a node named after its kind, so the sample below stays readable. */
+const node = (n: Omit<DesignNode, 'name'> & { name?: string }): DesignNode => ({ name: kindLabels[n.kind], ...n })
+
+/**
+ * Sample screen: a Lemonn asset (stock) page, drawn with every component from the guidelines. Generated screens produce
+ * the same kind of tree.
+ */
 const initialTree: DesignNode[] = [
-  {
-    id: 'hero', kind: 'section', name: 'Hero', gap: '08',
+  node({ id: 'bar', kind: 'actionbar', text: 'Reliance Industries', description: 'NSE · RELIANCE', back: true, actions: ['share', 'notifications'], items: ['Overview', 'Chart', 'News', 'F&O'], active: 0 }),
+  node({
+    id: 'price', kind: 'section', name: 'Price', gap: '08',
     children: [
-      { id: 'title', kind: 'heading', name: 'Heading', text: 'Sample screen', weight: 'semibold', size: 20, color: 'primary' },
-      { id: 'body', kind: 'text', name: 'Text', text: 'Turn on the cursor in the chat box, then click a part to edit it. Drag the handle to move it.', weight: 'regular', size: 14, color: 'secondary' },
+      node({ id: 'ltp', kind: 'heading', text: '₹2,914.35', weight: 'bold', size: 32, color: 'primary' }),
+      node({ id: 'move', kind: 'tag', text: '+₹35.60 (1.24%) today', tagColor: 'profit', tagVariant: 'secondary', tagSize: 'md' }),
     ],
-  },
-  {
-    id: 'actions', kind: 'section', name: 'Actions', gap: '12',
+  }),
+  node({ id: 'range', kind: 'tabs', items: ['1D', '1W', '1M', '1Y', '5Y'], active: 0, appearance: 'pill' }),
+  node({ id: 'results', kind: 'aerobar', tone: 'discover', text: 'Q2 results on 24 Oct', description: 'Earnings are due after market hours.' }),
+  node({
+    id: 'position', kind: 'card', name: 'Your position', gap: '04',
     children: [
-      { id: 'cta', kind: 'button', name: 'Button', text: 'Continue', variant: 'primary', iconRight: {} },
-      { id: 'skip', kind: 'button', name: 'Button', text: 'Skip for now', variant: 'tertiary' },
+      node({ id: 'pos-title', kind: 'text', text: 'Your position', weight: 'semibold', size: 14, color: 'secondary' }),
+      node({ id: 'qty', kind: 'listcell', text: 'Quantity', value: '24 shares', iconLeft: { name: 'account_balance_wallet' } }),
+      node({ id: 'avg', kind: 'listcell', text: 'Average buy price', value: '₹2,610.00' }),
+      node({ id: 'ret', kind: 'listcell', text: 'Total returns', description: 'Since 12 Mar', value: '+₹7,304.40' }),
     ],
-  },
+  }),
+  node({
+    id: 'prefs', kind: 'section', name: 'Preferences', gap: '08',
+    children: [
+      node({ id: 'alerts', kind: 'switch', text: 'Alert me on ±5% moves', checked: true }),
+      node({ id: 'digest', kind: 'checkbox', text: 'Include in my weekly digest', checked: true }),
+      node({ id: 'delivery', kind: 'radio', text: 'Delivery (hold long term)', checked: true }),
+      node({ id: 'intraday', kind: 'radio', text: 'Intraday (square off today)' }),
+    ],
+  }),
+  node({ id: 'shares', kind: 'textfield', text: 'Quantity', placeholder: 'Number of shares', helper: 'You can buy up to 500 shares per order.' }),
+  node({ id: 'news', kind: 'emptystate', text: 'No news today', description: 'We’ll show headlines here when there’s something to read.', value: 'Set a news alert' }),
+  node({
+    id: 'about', kind: 'section', name: 'About', gap: '08', align: 'start',
+    children: [
+      node({ id: 'logo', kind: 'brandlogo', brand: 'lemonn', logoVariant: 'full' }),
+      node({ id: 'verified', kind: 'icon', iconLeft: { name: 'verified' } }),
+      node({ id: 'risk', kind: 'text', text: 'Investments in securities are subject to market risk. Read all scheme-related documents carefully.', weight: 'regular', size: 12, color: 'tertiary' }),
+    ],
+  }),
+  node({
+    id: 'trade', kind: 'dock', name: 'Trade', direction: 'horizontal',
+    children: [
+      node({ id: 'sell', kind: 'button', text: 'Sell', variant: 'sell' }),
+      node({ id: 'buy', kind: 'button', text: 'Buy', variant: 'buy' }),
+    ],
+  }),
+  node({
+    id: 'nav', kind: 'bottomnav',
+    navItems: [{ label: 'Stocks', icon: 'stocks' }, { label: 'Market', icon: 'market' }, { label: 'Portfolio', icon: 'portfolio' }, { label: 'Mutual funds', icon: 'mutualFund' }],
+    active: 0,
+  }),
 ]
 
 const welcome: Message = {
+  id: 0,
   role: 'assistant',
-  text: 'Hey! Upload a PRD or describe a screen and I will design it with Lemonnade components. (Generation is not connected yet, so the canvas shows a sample.)',
+  text: 'Hey! Describe a screen, or attach a PRD (.pdf, .md or .txt), and I’ll design it with Lemonnade components. Turn on the cursor in the chat box to edit any part of it.',
 }
 
 const alignItems = { stretch: 'stretch', start: 'flex-start', center: 'center', end: 'flex-end' } as const
+
+
+type Parent = { id: string; kind: NodeKind | 'root'; align: string }
 
 type Drop = { container: string | null; index: number; line: { top: number; left: number; width: number } }
 
@@ -125,7 +191,24 @@ export function BuildPage() {
   const fileRef = useRef<HTMLInputElement>(null)
   const [title, setTitle] = useState('Untitled design')
   const [tab, setTab] = useState<Tab>('browser')
-  const [prd, setPrd] = useState<File | null>(null)
+  const [prd, setPrd] = useState<PrdFile | null>(null)
+  // Which Claude model answers. Remembered on this browser.
+  const [model, setModel] = useState(() => {
+    try {
+      const saved = localStorage.getItem('l3-build-model')
+      return models.some((m) => m.id === saved) ? (saved as string) : defaultModel
+    } catch {
+      return defaultModel
+    }
+  })
+  const chooseModel = (id: string) => {
+    setModel(id)
+    try { localStorage.setItem('l3-build-model', id) } catch { /* storage unavailable: the choice still holds for this session */ }
+  }
+  const [busy, setBusy] = useState(false)
+  const abortRef = useRef<AbortController | null>(null)
+  const nextId = useRef(1)
+  const listRef = useRef<HTMLOListElement>(null)
   const [prompt, setPrompt] = useState('')
   const [messages, setMessages] = useState<Message[]>([welcome])
   // The canvas has its own product theme and light/dark mode (they start from the app theme) — the app chrome is not affected.
@@ -160,17 +243,82 @@ export function BuildPage() {
   const usesCustomIcon = flatten(tree).some((n) => n.iconLeft?.name || n.iconRight?.name)
   const catalog = useIconCatalog(part === 'iconLeft' || part === 'iconRight' || usesCustomIcon)
 
-  const canSend = prompt.trim() !== '' || prd !== null
+  const canSend = (prompt.trim() !== '' || prd !== null) && !busy
+
+  const patchMessage = (id: number, patch: Partial<Message>) => setMessages((all) => all.map((m) => (m.id === id ? { ...m, ...patch } : m)))
+
+  // Ask Claude: send the request with the current design (and the selected item, if any), then replace the canvas with what
+  // comes back. The previous design is kept on the reply, so one click undoes it.
+  const run = async (text: string, opts: { selectedId?: string | null; target?: string } = {}) => {
+    if (busy) return
+    const history = messages
+      .filter((m) => !m.pending && !m.failed && m.text)
+      .map((m) => ({ role: m.role, text: m.target ? `[about ${m.target}] ${m.text}` : m.text }))
+    const userId = nextId.current++
+    const replyId = nextId.current++
+    setMessages((all) => [...all, { id: userId, role: 'user', text, target: opts.target }, { id: replyId, role: 'assistant', text: '', pending: true }])
+    setBusy(true)
+    const controller = new AbortController()
+    abortRef.current = controller
+    const started = Date.now()
+    const before = tree
+    try {
+      const result = await requestDesign(
+        { model, prompt: text, product: productLabels[product], tree, selectedId: opts.selectedId ?? null, history, prd },
+        controller.signal,
+      )
+      const seconds = Math.max(1, Math.round((Date.now() - started) / 1000))
+      if (result.tree) {
+        setTree(result.tree)
+        select(null)
+        patchMessage(replyId, { text: result.reply, pending: false, seconds, warnings: result.warnings, restore: before })
+      } else {
+        patchMessage(replyId, { text: result.reply, pending: false, seconds })
+      }
+      setPrd(null) // the design now carries what the PRD said; attach it again to add more
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setMessages((all) => all.filter((m) => m.id !== replyId))
+      } else {
+        patchMessage(replyId, { text: err instanceof Error ? err.message : 'Something went wrong.', pending: false, failed: true })
+      }
+    } finally {
+      setBusy(false)
+      abortRef.current = null
+    }
+  }
+
   const send = () => {
     if (!canSend) return
-    setMessages((m) => [
-      ...m,
-      { role: 'user', text: prompt.trim() || `Generate designs from ${prd!.name}` },
-      { role: 'assistant', text: 'Design generation is coming in the next step.' },
-    ])
+    const text = prompt.trim() || `Design the screens described in ${prd?.name}.`
     setPrompt('')
+    void run(text)
   }
-  const newChat = () => setMessages([welcome])
+  const newChat = () => {
+    abortRef.current?.abort()
+    setMessages([welcome])
+    setBusy(false)
+  }
+  const undo = (m: Message) => {
+    if (!m.restore) return
+    setTree(m.restore)
+    select(null)
+    patchMessage(m.id, { undone: true })
+  }
+  const attach = async (file: File | undefined) => {
+    if (!file) return
+    try {
+      setPrd(await readPrd(file))
+    } catch (err) {
+      setMessages((all) => [...all, { id: nextId.current++, role: 'assistant', text: err instanceof Error ? err.message : 'Could not read that file.', failed: true }])
+    }
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  // Keep the newest message in view.
+  useEffect(() => {
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight })
+  }, [messages])
 
   const changeNode = (id: string, patch: Partial<DesignNode>) => setTree((t) => updateNode(t, id, patch))
   const select = (id: string | null) => setSelectedId(id)
@@ -181,16 +329,11 @@ export function BuildPage() {
     const n = findNode(tree, baseIdOf(id))
     const p = partOf(id)
     if (!n) return ''
-    const base = n.kind === 'button' ? `${n.name} · ${n.text}` : n.kind === 'section' ? n.name : `${n.name} · ${(n.text ?? '').slice(0, 24)}`
-    return p ? `${base} › ${partLabels[p]}` : base
+    return p ? `${nodeTitle(n)} › ${partLabels[p]}` : nodeTitle(n)
   }
   const ask = (text: string) => {
     if (!selectedId) return
-    setMessages((m) => [
-      ...m,
-      { role: 'user', text, target: describe(selectedId) },
-      { role: 'assistant', text: 'Free-form edits to a single layer will work once generation is connected. Everything in the inspector already applies.' },
-    ])
+    void run(text, { selectedId, target: describe(selectedId) })
   }
 
   // What a click on `target` would select. The first click takes the outermost node (a section, or the whole button);
@@ -247,7 +390,10 @@ export function BuildPage() {
     const target = under ?? options.find((el) => el.dataset.container === 'root')
     if (!target) return null
 
-    const kids = Array.from(target.querySelectorAll<HTMLElement>(':scope > [data-node]')).filter((k) => k.dataset.node !== dragId)
+    // Direct items of this container only: not the parts inside a button, and not items of a container nested in a wrapper.
+    const kids = Array.from(target.querySelectorAll<HTMLElement>('[data-node]')).filter(
+      (k) => k.dataset.node !== dragId && !k.dataset.node!.includes(':') && k.parentElement?.closest('[data-container]') === target,
+    )
     const index = kids.filter((k) => { const r = k.getBoundingClientRect(); return y > r.top + r.height / 2 }).length
     const w = wrap.getBoundingClientRect()
     const c = target.getBoundingClientRect()
@@ -337,13 +483,16 @@ export function BuildPage() {
   useEffect(() => {
     if (!selectedId) return
     const stage = stageRef.current
+    const screen = stage?.querySelector<HTMLElement>('[data-container="root"]') // a long screen scrolls inside the phone
     const observer = new ResizeObserver(place)
     if (stage) observer.observe(stage)
     stage?.addEventListener('scroll', place)
+    screen?.addEventListener('scroll', place)
     window.addEventListener('resize', place)
     return () => {
       observer.disconnect()
       stage?.removeEventListener('scroll', place)
+      screen?.removeEventListener('scroll', place)
       window.removeEventListener('resize', place)
     }
   }, [selectedId, place])
@@ -374,44 +523,70 @@ export function BuildPage() {
     )
   }
 
-  const renderNode = (n: DesignNode, parentAlign: string): ReactNode => {
+  // The first footer (button dock, bottom navigation) is pushed to the bottom of the screen; footers stay pinned while it scrolls.
+  const firstFooter = tree.find(isFooter)?.id
+  const navBelow = tree.some((n) => n.kind === 'bottomnav')
+  const hugs = (n: DesignNode) => n.kind === 'tag' || n.kind === 'brandlogo' || n.kind === 'icon'
+
+  const renderNode = (n: DesignNode, parent: Parent): ReactNode => {
     const isSelected = selectedId === n.id
+    const atRoot = parent.kind === 'root'
+    const inDock = parent.kind === 'dock'
     const box: CSSProperties = { marginTop: spacingVar(n.before), marginBottom: spacingVar(n.after) }
 
+    // Most components sit inside the 16px side gutter; full-width ones (action bar, tabs, dock, navigation…) touch the edges.
+    if (atRoot && !isBleed(n)) box.marginInline = spacingVar('16')
+    if (atRoot && isFooter(n)) {
+      Object.assign(box, { position: 'sticky', bottom: n.kind === 'dock' && navBelow ? 'var(--l3-size-64)' : 0, zIndex: 2, marginTop: n.id === firstFooter ? 'auto' : box.marginTop })
+    }
+    if (inDock) Object.assign(box, { flex: 1, minWidth: 0 })
+    if (hugs(n)) box.alignSelf = parent.align === 'stretch' ? 'flex-start' : undefined
+
+    const inner = { id: n.id, kind: n.kind, align: n.align ?? 'stretch' }
+    const stack: CSSProperties = { display: 'flex', flexDirection: 'column', gap: spacingVar(n.gap), alignItems: alignItems[n.align ?? 'stretch'] }
+
     if (n.kind === 'section') {
-      Object.assign(box, {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spacingVar(n.gap),
+      Object.assign(box, stack, {
         padding: spacingVar(n.padding),
-        alignItems: alignItems[n.align ?? 'stretch'],
         background: n.background && n.background !== 'none' ? `var(--l3-surface-${n.background})` : undefined,
         borderRadius: radiusVar(n.radius),
         border: n.border ? '1px solid var(--l3-border-light)' : undefined,
       })
     } else if (n.kind === 'button') {
       // Fill spans the section; Hug shrinks to the label (starting at the edge unless the section centres or ends items).
-      box.alignSelf = n.fill === false ? (parentAlign === 'stretch' ? 'flex-start' : undefined) : 'stretch'
+      box.alignSelf = n.fill === false && !inDock ? (parent.align === 'stretch' ? 'flex-start' : undefined) : 'stretch'
     }
 
     return (
       <Pickable
         key={n.id}
         id={n.id}
-        container={n.kind === 'section'}
+        container={isContainer(n.kind)}
         selected={isSelected}
         hover={hoverId === n.id}
         dragging={drag?.id === n.id}
         dropTarget={drag?.drop?.container === n.id}
         style={box}
       >
-        {n.kind === 'section' && n.children?.map((c) => renderNode(c, n.align ?? 'stretch'))}
+        {n.kind === 'section' && n.children?.map((c) => renderNode(c, inner))}
+
+        {n.kind === 'card' && (
+          <Card variant={n.flat ? 'flat' : 'default'} surface={n.surface === 'default' ? undefined : n.surface}>
+            <div style={stack}>{n.children?.map((c) => renderNode(c, inner))}</div>
+          </Card>
+        )}
+
+        {n.kind === 'dock' && (
+          <ButtonGroup direction={n.direction ?? 'horizontal'} aria-label={n.name}>
+            {n.children?.map((c) => renderNode(c, inner))}
+          </ButtonGroup>
+        )}
 
         {n.kind === 'button' && (
           <Button
             variant={n.variant}
-            size={n.buttonSize ?? 'lg'}
-            fullWidth={n.fill !== false}
+            size={inDock ? 'lg' : n.buttonSize ?? 'lg'}
+            fullWidth={inDock || n.fill !== false}
             tabIndex={picking ? -1 : undefined}
             iconLeft={n.iconLeft ? iconMark(n, 'iconLeft', n.iconLeft) : undefined}
             iconRight={n.iconRight ? iconMark(n, 'iconRight', n.iconRight) : undefined}
@@ -436,6 +611,8 @@ export function BuildPage() {
             onCommit={(text) => changeNode(n.id, { text: text.trim() || n.text })}
           />
         )}
+
+        {!isContainer(n.kind) && n.kind !== 'button' && n.kind !== 'heading' && n.kind !== 'text' && <Leaf node={n} catalog={catalog} group={parent.id} />}
       </Pickable>
     )
   }
@@ -490,19 +667,36 @@ export function BuildPage() {
             <IconButton icon={msOpenInFull} label="Expand" disabled />
           </div>
 
-          <ol className={styles.messages}>
-            {messages.map((m, i) => (
-              <li key={i} className={styles.message} data-role={m.role}>
+          <ol ref={listRef} className={styles.messages}>
+            {messages.map((m) => (
+              <li key={m.id} className={styles.message} data-role={m.role}>
                 {m.role === 'assistant' ? (
                   <>
-                    <p className={styles.worked}>
-                      Worked for 1s <Icon icon={msChevronRight} size={16} />
+                    <p className={styles.worked} data-pending={m.pending || undefined}>
+                      {m.pending ? 'Designing…' : m.failed ? 'Could not finish' : m.seconds ? `Worked for ${m.seconds}s` : 'Build'} <Icon icon={msChevronRight} size={16} />
                     </p>
-                    <p className={styles.reply}>{m.text}</p>
-                    <div className={styles.feedback}>
-                      <IconButton icon={msThumbUp} label="Good response" />
-                      <IconButton icon={msThumbDown} label="Bad response" />
-                    </div>
+                    {!m.pending && <p className={styles.reply} data-failed={m.failed || undefined}>{m.text}</p>}
+                    {m.warnings && m.warnings.length > 0 && (
+                      <ul className={styles.adjusted}>
+                        {m.warnings.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {m.restore && !m.undone && (
+                      <div className={styles.replyActions}>
+                        <Button variant="tertiary" size="sm" onClick={() => undo(m)}>
+                          Undo this change
+                        </Button>
+                      </div>
+                    )}
+                    {m.undone && <p className={styles.adjusted}>Undone. The design is back to how it was.</p>}
+                    {!m.pending && !m.failed && (
+                      <div className={styles.feedback}>
+                        <IconButton icon={msThumbUp} label="Good response" />
+                        <IconButton icon={msThumbDown} label="Bad response" />
+                      </div>
+                    )}
                   </>
                 ) : (
                   <span className={styles.bubble}>
@@ -518,10 +712,10 @@ export function BuildPage() {
             <input
               ref={fileRef}
               type="file"
-              accept=".pdf,.md,.txt,.doc,.docx"
+              accept=".pdf,.md,.txt"
               className={styles.fileInput}
               aria-label="Upload PRD"
-              onChange={(e) => setPrd(e.target.files?.[0] ?? null)}
+              onChange={(e) => void attach(e.target.files?.[0])}
             />
             {prd && (
               <div className={styles.fileChip}>
@@ -540,8 +734,8 @@ export function BuildPage() {
             <textarea
               className={styles.prompt}
               rows={3}
-              placeholder="Ask for changes"
-              aria-label="Ask for changes"
+              placeholder={busy ? 'Working…' : 'Describe a screen, or ask for changes'}
+              aria-label="Message"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}
@@ -549,11 +743,14 @@ export function BuildPage() {
             <div className={styles.composerRow}>
               <IconButton icon={msAdd} label="Upload PRD" onClick={() => fileRef.current?.click()} />
               <span className={styles.spacer} />
-              <label className={styles.select}>
-                <span className={styles.srOnly}>Mode</span>
-                <select defaultValue="build">
-                  <option value="build">Build</option>
-                  <option value="plan">Plan</option>
+              <label className={styles.select} title={models.find((m) => m.id === model)?.note}>
+                <span className={styles.srOnly}>Claude model</span>
+                <select value={model} onChange={(e) => chooseModel(e.target.value)}>
+                  {models.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.label}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className={styles.select}>
@@ -619,11 +816,19 @@ export function BuildPage() {
                 onMouseLeave={() => setHoverId(null)}
               >
                 {tab === 'browser' ? (
-                  <PhoneFrame label="Generated screen">
-                    <div className={styles.sample} data-container="root" data-drop={drag?.drop && drag.drop.container === null ? true : undefined}>
-                      {tree.map((n) => renderNode(n, 'stretch'))}
+                  <Canvas onViewChange={place}>
+                    <div
+                      className={styles.sample}
+                      data-container="root"
+                      data-drop={drag?.drop && drag.drop.container === null ? true : undefined}
+                      style={{
+                        paddingBlockStart: tree[0] && !isBleed(tree[0]) ? spacingVar('16') : 0,
+                        paddingBlockEnd: tree[tree.length - 1] && isFooter(tree[tree.length - 1]) ? 0 : spacingVar('16'),
+                      }}
+                    >
+                      {tree.map((n) => renderNode(n, { id: 'root', kind: 'root', align: 'stretch' }))}
                     </div>
-                  </PhoneFrame>
+                  </Canvas>
                 ) : (
                   <div className={styles.files}>
                     <h2 className={styles.filesTitle}>Files</h2>

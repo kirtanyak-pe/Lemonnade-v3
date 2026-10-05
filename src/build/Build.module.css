@@ -373,7 +373,10 @@
 }
 
 .stage {
+  position: relative;
+  display: flex;
   flex: 1;
+  flex-direction: column;
   min-height: 0;
   overflow: auto;
   background: var(--l3-surface-secondary);
@@ -384,7 +387,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--l3-spacing-16);
-  padding: var(--l3-spacing-16);
+  padding: 0; /* the gutter is applied per item: full-width components touch the edges */
+  overflow-y: auto; /* a long screen scrolls inside the phone */
+  scrollbar-width: thin;
 }
 
 .sampleTitle {
@@ -947,3 +952,168 @@
     max-height: 320px;
   }
 }
+
+/* ---- Chat replies ------------------------------------------------------------ */
+
+.worked[data-pending] {
+  animation: working 1.2s ease-in-out infinite;
+}
+
+.reply[data-failed] {
+  color: var(--l3-content-accent-error-default);
+}
+
+.adjusted {
+  margin: 0 0 var(--l3-spacing-12);
+  padding-inline-start: var(--l3-spacing-16);
+  font: var(--l3-text-regular-12);
+  color: var(--l3-content-secondary);
+}
+
+p.adjusted {
+  padding-inline-start: 0;
+}
+
+.replyActions {
+  display: flex;
+  margin-bottom: var(--l3-spacing-08);
+}
+
+@keyframes working {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .worked[data-pending] {
+    animation: none;
+  }
+}
+
+/* ---- Components on the canvas ---------------------------------------------- */
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  font: var(--l3-text-regular-14);
+  color: var(--l3-content-primary);
+}
+
+.cellValue {
+  font: var(--l3-text-semibold-14);
+  color: var(--l3-content-primary);
+}
+
+/* ---- Infinite canvas ------------------------------------------------------- */
+
+.viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--l3-surface-secondary);
+  background-image: radial-gradient(var(--l3-border-intense) 1px, transparent 1px);
+  cursor: default;
+  touch-action: none; /* pinch and drag belong to the canvas, not the page */
+  user-select: none;
+}
+
+.viewport[data-space],
+.viewport[data-space] * {
+  cursor: grab;
+}
+
+.viewport[data-panning],
+.viewport[data-panning] * {
+  cursor: grabbing;
+}
+
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.device {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  user-select: text;
+}
+
+.deviceBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-12);
+}
+
+.deviceGrip {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  padding: var(--l3-spacing-04) var(--l3-spacing-10) var(--l3-spacing-04) var(--l3-spacing-06);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-default);
+  box-shadow: var(--l3-shadow-elevation-low);
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-secondary);
+  cursor: grab;
+  touch-action: none;
+}
+
+.deviceGrip:active {
+  cursor: grabbing;
+}
+
+.deviceGrip:focus-visible,
+.zoomBar button:focus-visible {
+  outline: 2px solid var(--l3-content-primary);
+  outline-offset: 2px;
+}
+
+.zoomBar {
+  position: absolute;
+  right: var(--l3-spacing-16);
+  bottom: var(--l3-spacing-16);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  padding: var(--l3-spacing-02);
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-default);
+  box-shadow: var(--l3-shadow-elevation-low);
+}
+
+.zoomBar button {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  border-radius: var(--l3-radius-full);
+  color: var(--l3-content-secondary);
+  cursor: pointer;
+}
+
+.zoomBar .zoomValue {
+  min-width: var(--l3-size-48);
+  font: var(--l3-text-semibold-12);
+  color: var(--l3-content-primary);
+}
+
+@media (hover: hover) {
+  .zoomBar button:hover {
+    background: var(--l3-surface-secondary);
+  }
+}
+

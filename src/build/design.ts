@@ -1,16 +1,12 @@
 // The design the Build page edits: a tree of sections and components, plus the option lists and Lemonnade rules the
 // inspector uses. Generated screens will produce this same shape.
-import type { ButtonSize, ButtonVariant } from '../components/Button'
+import type { ButtonSize, ButtonVariant, ColorKey, NavIconKey, NodeKind, Part, RadiusStep, Step, TagColorKey, Weight } from './schema.ts'
+import { radii, steps, textSizes, weights } from './schema.ts'
 
-export type NodeKind = 'section' | 'heading' | 'text' | 'button'
-export type Part = 'label' | 'iconLeft' | 'iconRight'
+export { radii, steps, textSizes, weights }
+export type { ButtonSize, ButtonVariant, ColorKey, NavIconKey, NodeKind, Part, RadiusStep, Step, TagColorKey, Weight }
 /** One icon on a button. Present = shown; `name` unset = the default for that side. */
 export type IconSpec = { name?: string; fill?: boolean; color?: ColorKey }
-export type ColorKey = 'primary' | 'secondary' | 'tertiary' | 'inverted' | 'brand' | 'discover' | 'success' | 'error' | 'warning' | 'profit' | 'loss'
-/** Steps of the 4px spacing scale (DESIGN_SYSTEM.md §1), as token suffixes: --l3-spacing-<step>. */
-export type Step = '00' | '04' | '08' | '12' | '16' | '24' | '32' | '40' | '48' | '64'
-export type RadiusStep = '00' | '08' | '12' | '16' | '24'
-export type Weight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold'
 
 /**
  * Ids are `<node>` for a node and `<node>:<part>` for a part of a button (its label or icon). Parts follow the button's
@@ -40,7 +36,55 @@ export type DesignNode = {
   iconRight?: IconSpec
   labelColor?: ColorKey
 
-  /** section */
+  /** Shared by several components */
+  description?: string
+  checked?: boolean
+  /** Small extra text: a list row's value, an empty state's button label. */
+  value?: string
+
+  /** actionbar */
+  back?: boolean
+  actions?: string[]
+
+  /** tabs, and the tabs inside an actionbar */
+  items?: string[]
+  active?: number
+  appearance?: 'underline' | 'pill'
+
+  /** tag */
+  tagColor?: TagColorKey
+  tagVariant?: 'primary' | 'secondary' | 'tertiary'
+  tagSize?: 'sm' | 'md' | 'lg'
+
+  /** listcell */
+  cellVariant?: 'plain' | 'card'
+  chevron?: boolean
+  control?: 'none' | 'switch' | 'checkbox'
+
+  /** textfield */
+  placeholder?: string
+  helper?: string
+  status?: 'default' | 'error' | 'success'
+
+  /** aerobar */
+  tone?: 'primary' | 'discover' | 'danger' | 'success' | 'warning'
+  floating?: boolean
+
+  /** bottomnav */
+  navItems?: { label: string; icon: NavIconKey }[]
+
+  /** brandlogo */
+  brand?: 'lemonn' | 'zing'
+  logoVariant?: 'full' | 'icon'
+
+  /** card */
+  surface?: 'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'
+  flat?: boolean
+
+  /** dock */
+  direction?: 'horizontal' | 'vertical'
+
+  /** section, card, dock: the items inside */
   children?: DesignNode[]
   padding?: Step
   gap?: Step
@@ -51,19 +95,6 @@ export type DesignNode = {
 }
 
 /* ---- Options (every value is a design token) -------------------------------------------------------------- */
-
-export const steps: Step[] = ['00', '04', '08', '12', '16', '24', '32', '40', '48', '64']
-export const radii: RadiusStep[] = ['00', '08', '12', '16', '24']
-
-/** Text styles that exist as `--l3-text-<weight>-<size>` tokens. */
-export const textSizes: Record<Weight, number[]> = {
-  regular: [12, 14, 16, 18, 20],
-  medium: [12, 14, 16, 18, 20],
-  semibold: [12, 14, 16, 18, 20, 24, 28, 32, 36],
-  bold: [12, 14, 16, 18, 20, 24, 28, 32, 36],
-  extrabold: [12, 14, 16, 18, 20, 24, 28, 32, 36],
-}
-export const weights = Object.keys(textSizes) as Weight[]
 
 export const colorOptions: { value: ColorKey; label: string; color: string }[] = [
   { value: 'primary', label: 'Primary', color: 'var(--l3-content-primary)' },
@@ -222,3 +253,30 @@ export function spacingHint(node: DesignNode): Hint | null {
   const used = [node.before, node.after, node.padding, node.gap]
   return used.some((s) => s && s !== '00') ? { level: 'info', text: 'Spacing uses the 4px scale. Screens keep a 16px side gutter.' } : null
 }
+
+/* ---- What each kind is called, and which kinds hold other items ---- */
+
+export const kindLabels: Record<NodeKind, string> = {
+  section: 'Section', card: 'Card', dock: 'Button dock', actionbar: 'Action bar', tabs: 'Tabs', heading: 'Heading', text: 'Text',
+  button: 'Button', tag: 'Tag', listcell: 'List row', textfield: 'Text field', switch: 'Switch', checkbox: 'Checkbox', radio: 'Radio',
+  aerobar: 'Status bar', emptystate: 'Empty state', bottomnav: 'Bottom navigation', brandlogo: 'Brand logo', icon: 'Icon',
+}
+
+export const isContainer = (kind: NodeKind) => kind === 'section' || kind === 'card' || kind === 'dock'
+/** Full-bleed components touch the screen edges; everything else sits inside the 16px gutter (DESIGN_SYSTEM.md §15). */
+export const isBleed = (n: DesignNode) => n.kind === 'actionbar' || n.kind === 'tabs' || n.kind === 'dock' || n.kind === 'bottomnav' || n.kind === 'emptystate' || (n.kind === 'listcell' && n.cellVariant !== 'card') || (n.kind === 'aerobar' && !n.floating)
+/** These pin to the bottom of the screen. */
+export const isFooter = (n: DesignNode) => n.kind === 'dock' || n.kind === 'bottomnav'
+
+/** The text shown for a node in the Layers list and chat: its name for containers, its content for the rest. */
+export function nodeTitle(n: DesignNode): string {
+  if (isContainer(n.kind)) return n.name
+  const text = n.text ?? n.items?.join(' · ') ?? n.navItems?.map((i) => i.label).join(' · ') ?? ''
+  return `${kindLabels[n.kind]}${text ? ` · ${text.slice(0, 24)}` : ''}`
+}
+
+/** A colour dot in the inspector: a token-painted swatch with a name. */
+export type Dot = { key: string; label: string; dot: string; border?: string }
+export const colorDots: Dot[] = colorOptions.map((o) => ({ key: o.value, label: o.label, dot: o.color }))
+export const stepLabel = (s: Step) => `${Number(s)}`
+
