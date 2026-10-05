@@ -161,7 +161,72 @@
   display: grid;
   flex: 1;
   grid-template-columns: var(--chat-width) minmax(0, 1fr);
+  position: relative;
   min-height: 0;
+}
+
+/* ---- Panel resize handles ------------------------------------------------- */
+
+/* A wide invisible hit area centred on the panel border; the line shows on hover, focus and while dragging. */
+.splitter {
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  bottom: 0;
+  width: var(--l3-size-08);
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.splitter::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--l3-spacing-02);
+  transform: translateX(-50%);
+  background: transparent;
+  transition: background-color var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splitter::after {
+    transition: none;
+  }
+}
+
+.splitter:focus-visible::after,
+.splitter:active::after {
+  background: var(--l3-content-accent-discover-default);
+}
+
+@media (hover: hover) {
+  .splitter:hover::after {
+    background: var(--l3-border-light);
+  }
+}
+
+.splitterChat {
+  left: var(--chat-width);
+  transform: translateX(-50%);
+  grid-row: 1;
+}
+
+.splitterInspector {
+  right: var(--inspector-width);
+  transform: translateX(50%);
+}
+
+/* While dragging: keep the resize cursor everywhere, and stop text selection and canvas hover outlines. */
+.build[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.build[data-resizing] .stage {
+  pointer-events: none;
 }
 
 /* ---- Chat ------------------------------------------------------------------ */
@@ -909,6 +974,10 @@
 }
 
 @media (max-width: 900px) {
+  .splitter {
+    display: none;
+  }
+
   .previewBody {
     flex-direction: column;
   }
