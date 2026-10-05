@@ -16,10 +16,30 @@ import {
 } from './design'
 import { Inspector } from './Inspector'
 import { useIconCatalog } from './useIconCatalog'
-import { IconButton } from './ui'
+import { IconButton, Splitter } from './ui'
 import styles from './Build.module.css'
 
 type Message = { role: 'user' | 'assistant'; text: string; target?: string }
+
+// Resizable panels (px). The preview always keeps at least PREVIEW_MIN; widths are remembered per browser.
+const PANELS_KEY = 'l3-build-panels'
+const CHAT = { initial: 420, min: 280, max: 720 }
+const INSPECTOR = { initial: 280, min: 240, max: 520 }
+const PREVIEW_MIN = 360
+type Panels = { chat: number; inspector: number }
+
+function loadPanels(): Panels {
+  const fallback = { chat: CHAT.initial, inspector: INSPECTOR.initial }
+  try {
+    const saved = JSON.parse(localStorage.getItem(PANELS_KEY) ?? 'null') as Partial<Panels> | null
+    return {
+      chat: typeof saved?.chat === 'number' ? saved.chat : fallback.chat,
+      inspector: typeof saved?.inspector === 'number' ? saved.inspector : fallback.inspector,
+    }
+  } catch {
+    return fallback
+  }
+}
 type Tab = 'browser' | 'files'
 
 /** Sample screen. Generated screens will produce the same tree. */
@@ -148,6 +168,22 @@ export function BuildPage() {
   const [docked, setDocked] = useState(false)
   const [panelPos, setPanelPos] = useState<{ left: number; top?: number; bottom?: number; maxHeight: number }>({ left: 0, maxHeight: 320 })
   const panelRef = useRef<HTMLDivElement>(null)
+
+  // Panel widths: the chat (left) and the docked edit panel (right) are resized by dragging their edge.
+  const [panels, setPanels] = useState<Panels>(loadPanels)
+  const [resizing, setResizing] = useState(false)
+  const [bodyWidth, setBodyWidth] = useState(0)
+  const bodyRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const body = bodyRef.current
+    if (!body) return
+    const observer = new ResizeObserver(() => setBodyWidth(body.clientWidth))
+    observer.observe(body)
+    return () => observer.disconnect()
+  }, [])
+  useEffect(() => {
+    try { localStorage.setItem(PANELS_KEY, JSON.stringify(panels)) } catch { /* storage unavailable */ }
+  }, [panels])
   // Boxes drawn over the items inside the selection, so each one visibly stands alone and can be clicked.
   const [tags, setTags] = useState<{ id: string; label: string; left: number; top: number; width: number; height: number }[]>([])
   const stageRef = useRef<HTMLDivElement>(null)
@@ -442,8 +478,18 @@ export function BuildPage() {
 
   const badgeName = selected ? (part ? `${selected.name} › ${partLabels[part]}` : selected.name) : ''
 
+  // Shrink the panels (not the stored widths) when the window is too narrow to fit them next to the preview.
+  const inspectorShown = picking && docked
+  const room = bodyWidth || Infinity
+  const fit = (w: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, w))
+  const inspectorMax = Math.max(INSPECTOR.min, Math.min(INSPECTOR.max, room - CHAT.min - PREVIEW_MIN))
+  const inspectorWidth = fit(panels.inspector, INSPECTOR.min, inspectorMax)
+  const chatMax = Math.max(CHAT.min, Math.min(CHAT.max, room - PREVIEW_MIN - (inspectorShown ? inspectorWidth : 0)))
+  const chatWidth = fit(panels.chat, CHAT.min, chatMax)
+  const panelVars = { '--chat-width': `${chatWidth}px`, '--inspector-width': `${inspectorWidth}px` } as CSSProperties
+
   return (
-    <div className={styles.build}>
+    <div className={styles.build} style={panelVars} data-resizing={resizing || undefined}>
       {/* ---- Top bar ---- */}
       <header className={styles.topbar}>
         <div className={styles.topLeft}>
@@ -480,7 +526,7 @@ export function BuildPage() {
         </div>
       </header>
 
-      <div className={styles.body}>
+      <div ref={bodyRef} className={styles.body}>
         {/* ---- Chat ---- */}
         <section className={styles.chat} aria-label="Conversation">
           <div className={styles.chatHeader}>
@@ -580,6 +626,18 @@ export function BuildPage() {
             </div>
           </div>
         </section>
+
+        <Splitter
+          label="Resize chat"
+          side="start"
+          className={styles.splitterChat}
+          value={chatWidth}
+          min={CHAT.min}
+          max={chatMax}
+          onChange={(chat) => setPanels((p) => ({ ...p, chat }))}
+          onReset={() => setPanels((p) => ({ ...p, chat: CHAT.initial }))}
+          onResizing={setResizing}
+        />
 
         {/* ---- Preview ---- */}
         <section className={styles.preview} aria-label="Preview">
@@ -689,7 +747,21 @@ export function BuildPage() {
               )}
             </div>
 
-            {picking && docked && (
+            {inspectorShown && (
+              <Splitter
+                label="Resize edit panel"
+                side="end"
+                className={styles.splitterInspector}
+                value={inspectorWidth}
+                min={INSPECTOR.min}
+                max={inspectorMax}
+                onChange={(inspector) => setPanels((p) => ({ ...p, inspector }))}
+                onReset={() => setPanels((p) => ({ ...p, inspector: INSPECTOR.initial }))}
+                onResizing={setResizing}
+              />
+            )}
+
+            {inspectorShown && (
               <Inspector
                 variant="docked"
                 tree={tree}
