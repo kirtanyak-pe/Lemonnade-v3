@@ -189,7 +189,7 @@
 /* Variants / preview sections: same generous rhythm as the docs pages. */
 section > h2 {
   margin: var(--l3-spacing-56) 0 var(--l3-spacing-16);
-  font: var(--l3-text-heading-secondary-18);
+  font: var(--l3-text-heading-18);
 }
 
 section:first-child > h2 {
@@ -237,7 +237,7 @@ section:first-child > h2 {
 
 .ab-group > h3 {
   margin: 0 0 var(--l3-spacing-08);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-tertiary);
 }
 
@@ -412,7 +412,7 @@ section:first-child > h2 {
 }
 
 .card-demo-title {
-  font: var(--l3-text-heading-secondary-16);
+  font: var(--l3-text-heading-16);
 }
 
 .card-demo-bleed {

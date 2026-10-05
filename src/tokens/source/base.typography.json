@@ -11,28 +11,21 @@
       }
     },
     "weight": {
-      "extrabold": {
+      "750": {
         "$type": "fontWeight",
-        "$value": 800,
+        "$value": 750,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/weight/extrabold"
+          "l3.local": "Heading weight. Code leads — Figma still binds ExtraBold/Bold until the styles are updated."
         }
       },
-      "bold": {
+      "650": {
         "$type": "fontWeight",
-        "$value": 700,
+        "$value": 650,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/weight/bold"
+          "l3.local": "Label weight. Code leads — Figma still binds SemiBold until the styles are updated."
         }
       },
-      "semibold": {
-        "$type": "fontWeight",
-        "$value": 600,
-        "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/weight/semibold"
-        }
-      },
-      "medium": {
+      "500": {
         "$type": "fontWeight",
         "$value": 500,
         "$extensions": {

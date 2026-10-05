@@ -21,21 +21,19 @@
   },
   "text": {
     "label": {
-      "primary": {
-        "08": {
-          "$type": "typography",
-          "$value": {
-            "fontFamily": "{font.family.manrope}",
-            "fontWeight": "{font.weight.semibold}",
-            "fontSize": "{font.size.local.08}",
-            "lineHeight": "{line-height.local.10}",
-            "letterSpacing": "0px",
-            "paragraphSpacing": "{paragraph-spacing.00}"
-          },
-          "$extensions": {
-            "l3.figmaStyle": "local — chip tab sub label (8/10)",
-            "l3.local": "Not a Figma text style; Figma uses SemiBold 8/10 unbound on the chip sub label."
-          }
+      "08": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{font.family.manrope}",
+          "fontWeight": "{font.weight.650}",
+          "fontSize": "{font.size.local.08}",
+          "lineHeight": "{line-height.local.10}",
+          "letterSpacing": "0px",
+          "paragraphSpacing": "{paragraph-spacing.00}"
+        },
+        "$extensions": {
+          "l3.figmaStyle": "local — chip tab sub label (8/10)",
+          "l3.local": "Not a Figma text style; Figma uses SemiBold 8/10 unbound on the chip sub label."
         }
       }
     }

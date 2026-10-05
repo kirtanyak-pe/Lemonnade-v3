@@ -24,7 +24,7 @@
 
 .title {
   margin: 0;
-  font: var(--l3-text-heading-primary-24);
+  font: var(--l3-text-heading-24);
 }
 
 .lede {
@@ -124,7 +124,7 @@
 }
 
 .name {
-  font: var(--l3-text-heading-primary-16);
+  font: var(--l3-text-heading-16);
 }
 
 .note {

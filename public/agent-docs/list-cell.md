@@ -5,7 +5,7 @@
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.1
+- Version: 1.2.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -67,7 +67,7 @@ List cell — Rows of settings, accounts, items
 - `border/light`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
-- `text-label-primary-14 · 16`
+- `text-label-14 · 16`
 - `text-description-12`
 - `radius/12 · full`
 - `icon-size/16 · 24`
@@ -75,6 +75,6 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
-- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
+- **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 - **1.1.0** (2026-09-26) Accessibility pass: Dots have screen-reader text (dotLabel, default “New”). Development warning when a button row contains another control.
-- **1.0.0** (2026-09-26) First release: Plain and card rows, md/sm, icons, trailing content, dots; renders as div, button, link or label.

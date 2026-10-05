@@ -45,12 +45,12 @@
 }
 
 .title {
-  font: var(--l3-text-heading-primary-16); /* 🔷 L3/Heading/primary/16 */
+  font: var(--l3-text-heading-16); /* L3/Heading/16 · 750 */
   color: var(--l3-content-primary);
 }
 
 .description {
-  font: var(--l3-text-label-primary-14); /* 🔷 L3/Label/primary-sb/14 */
+  font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
   color: var(--l3-content-secondary);
 }
 

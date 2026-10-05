@@ -21,7 +21,7 @@
 
 .sectionHead > h2 {
   margin: 0;
-  font: var(--l3-text-heading-primary-24);
+  font: var(--l3-text-heading-24);
   color: var(--l3-content-primary);
 }
 
@@ -33,7 +33,7 @@
 }
 
 .lede code {
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
 }
@@ -56,7 +56,7 @@
   align-items: center;
   gap: var(--l3-spacing-08);
   min-height: var(--l3-size-tap-target);
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
   cursor: pointer;
 }
@@ -67,7 +67,7 @@
   align-items: center;
   gap: var(--l3-spacing-08);
   max-width: calc(var(--l3-size-128) * 3);
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
   white-space: nowrap;
 }
@@ -134,12 +134,12 @@
 
 .roleTitle {
   margin-top: var(--l3-spacing-08);
-  font: var(--l3-text-heading-secondary-14);
+  font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
 }
 
 .roleWeight {
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-tertiary);
 }
 
@@ -159,7 +159,7 @@
 .scale {
   width: 100%;
   border-collapse: collapse;
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -179,7 +179,7 @@
 }
 
 .scale tbody th {
-  font: var(--l3-text-heading-secondary-12);
+  font: var(--l3-text-heading-12);
   color: var(--l3-content-primary);
 }
 
@@ -199,7 +199,7 @@
   padding: var(--l3-spacing-16);
   border-radius: var(--l3-radius-12);
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
 }
@@ -222,7 +222,7 @@
   row-gap: var(--l3-spacing-02);
   padding: var(--l3-spacing-12) var(--l3-spacing-16);
   border-bottom: 1px solid var(--l3-border-light);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 

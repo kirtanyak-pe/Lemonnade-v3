@@ -5,7 +5,7 @@
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.1
+- Version: 1.4.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65562
 - Source: `src/components/Aerobar`
 - Also called: Toast, snackbar, banner, alert bar, notification
@@ -72,7 +72,7 @@ Aerobar & toast — Status on the page, or a result
 - `content/primary · secondary · inverted`
 - `static/white · black`
 - `opacity/60 · 80`
-- `text-label-primary-14`
+- `text-label-14`
 - `text-description-12`
 - `radius/12`
 - `shadow/elevation-low · medium`
@@ -80,6 +80,6 @@ Aerobar & toast — Status on the page, or a result
 
 ## Recent changes
 
-- **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
+- **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 - **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content/secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
-- **1.2.0** (2026-09-26) New action button: Action is now a small Ghost button centred in a 48px slot (was a borderless Secondary). Floating solid warning uses black text, like the inline one. Docs styles no longer leak into the bar’s text.

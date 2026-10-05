@@ -122,7 +122,7 @@
 }
 
 .title {
-  font: var(--l3-text-heading-primary-14); /* 🔷 L3/Heading/primary/14 */
+  font: var(--l3-text-heading-14); /* L3/Heading/14 · 750 */
   color: var(--l3-content-primary);
 }
 
@@ -142,7 +142,7 @@
   background: transparent;
   color: var(--l3-content-primary);
   caret-color: var(--l3-content-accent-discover-default);
-  font: var(--l3-text-label-secondary-14); /* 🔷 L3/Label/secondary-m/14 */
+  font: var(--l3-text-description-14); /* 🔷 L3/Description - M/14 */
   appearance: none;
 }
 

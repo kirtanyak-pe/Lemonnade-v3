@@ -22,8 +22,8 @@ const TypographyThumb = () => (
   <div className={styles.type}>
     <span className={styles.typeBig}>Aa</span>
     <span className={styles.typeScale}>
-      <span style={{ font: 'var(--l3-text-heading-primary-14)' }}>Heading</span>
-      <span style={{ font: 'var(--l3-text-label-primary-14)' }}>Label</span>
+      <span style={{ font: 'var(--l3-text-heading-14)' }}>Heading</span>
+      <span style={{ font: 'var(--l3-text-label-14)' }}>Label</span>
       <span style={{ font: 'var(--l3-text-description-14)' }}>Description</span>
     </span>
   </div>

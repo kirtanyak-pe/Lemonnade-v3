@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.1
+- Version: 1.1.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-61961
 - Source: `src/components/BottomNavbar`
 - Also called: Bottom navigation, tab bar, nav bar, bottom tabs, dock
@@ -71,7 +71,7 @@ Bottom navbar — App sections, 3–5 items
 - `content/tertiary (unselected)`
 - `content/accent/success-default (selected)`
 - `content/primary (nav icon mask)`
-- `text-label-primary-10`
+- `text-label-10`
 - `size/64`
 - `spacing/04 · 10`
 - `icon-size/24`
@@ -80,5 +80,6 @@ Bottom navbar — App sections, 3–5 items
 
 ## Recent changes
 
-- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.
+- **1.1.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
+- **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 - **1.0.0** (2026-09-26) First release: Main nav plus Mutual Fund and F&O sub-navs with a Home item and separator. Figma nav icons: theme-aware outlines, brand artwork when selected. Animated switch between navs: the tapped option glides, the rest slide in.

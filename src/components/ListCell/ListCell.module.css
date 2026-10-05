@@ -103,11 +103,11 @@
 }
 
 .cell[data-size='md'] .label {
-  font: var(--l3-text-label-primary-16); /* 🔷 L3/Label/primary-sb/16 */
+  font: var(--l3-text-label-16); /* L3/Label/16 · 650 */
 }
 
 .cell[data-size='sm'] .label {
-  font: var(--l3-text-label-primary-14); /* 🔷 L3/Label/primary-sb/14 */
+  font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
 }
 
 .description {

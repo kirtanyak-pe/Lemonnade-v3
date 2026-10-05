@@ -144,12 +144,12 @@
 
 .tab[data-appearance='underline'][data-size='md'] {
   --tab-height: var(--l3-size-40);
-  --tab-font: var(--l3-text-label-primary-14); /* 🔷 L3/Label/primary-sb/14 — selected and unselected alike */
+  --tab-font: var(--l3-text-label-14); /* L3/Label/14 · 650 */
 }
 
 .tab[data-appearance='underline'][data-size='sm'] {
   --tab-height: var(--l3-spacing-36);
-  --tab-font: var(--l3-text-label-primary-12); /* 🔷 L3/Label/primary-sb/12 — selected and unselected alike */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 · 650 */
 }
 
 /* Selected underline tab: primary text and the indicator bar (same font as unselected); Figma has no hover layer on it. */
@@ -184,7 +184,7 @@
   --tab-padding-block: var(--l3-spacing-08);
   --tab-padding-inline: var(--l3-spacing-08);
   --tab-gap: var(--l3-spacing-04);
-  --tab-font: var(--l3-text-label-primary-12); /* 🔷 L3/Label/primary-sb/12 */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 · 650 */
 }
 
 .tab[data-appearance='pill'][data-size='sm'] {
@@ -192,7 +192,7 @@
   --tab-padding-block: var(--l3-spacing-04);
   --tab-padding-inline: var(--l3-spacing-06);
   --tab-gap: var(--l3-spacing-02);
-  --tab-font: var(--l3-text-label-primary-10); /* 🔷 L3/Label/primary-sb/10 */
+  --tab-font: var(--l3-text-label-10); /* L3/Label/10 · 650 */
 }
 
 /*
@@ -263,7 +263,7 @@
 }
 
 .subLabel {
-  font: var(--l3-text-label-primary-08); /* local: Manrope SemiBold 8/10 (Figma sets it without a text style) */
+  font: var(--l3-text-label-08); /* local: Manrope SemiBold 8/10 (Figma sets it without a text style) */
 }
 
 /* Figma 👁️ Label off: icon-only tab — square pill, same padding on every side. */

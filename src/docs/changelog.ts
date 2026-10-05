@@ -31,6 +31,15 @@ const iconsMigration = (): Release['changes'][number] => ({
 export const changelog: Record<string, Release[]> = {
   typography: [
     {
+      version: '3.0.0', date: '2026-10-05',
+      summary: 'Three roles',
+      changes: [
+        { kind: 'changed', text: 'Five roles merged into three: Heading (weight 750, sizes 10–36), Label (650, 10–18) and Description (500, 10–18, with paragraph spacing).' },
+        { kind: 'changed', text: 'Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description.' },
+        { kind: 'added', text: 'Manrope is loaded as a variable font (200–800) so 750 and 650 render. Figma styles still to be updated to these weights.' },
+      ],
+    },
+    {
       version: '2.0.0', date: '2026-10-04',
       summary: 'Typography from Figma roles',
       changes: [
@@ -119,10 +128,17 @@ export const changelog: Record<string, Release[]> = {
 
   button: [
     {
+      version: '1.5.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.4.2', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -226,6 +242,13 @@ export const changelog: Record<string, Release[]> = {
 
   'text-field': [
     {
+      version: '1.4.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-10-04',
       summary: 'Typography from Figma',
       changes: [
@@ -282,6 +305,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   tabs: [
+    {
+      version: '1.7.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
     {
       version: '1.6.0', date: '2026-10-04',
       summary: 'Typography from Figma',
@@ -346,10 +376,17 @@ export const changelog: Record<string, Release[]> = {
 
   actionbar: [
     {
+      version: '1.2.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650). Search text uses Description.' },
+      ],
+    },
+    {
       version: '1.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -377,10 +414,17 @@ export const changelog: Record<string, Release[]> = {
 
   'bottom-navbar': [
     {
+      version: '1.1.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.0.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -395,6 +439,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'bottom-sheet': [
+    {
+      version: '2.3.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.' },
+      ],
+    },
     {
       version: '2.2.0', date: '2026-10-04',
       summary: 'Typography from Figma',
@@ -464,10 +515,17 @@ export const changelog: Record<string, Release[]> = {
 
   aerobar: [
     {
+      version: '1.4.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.3.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -505,10 +563,17 @@ export const changelog: Record<string, Release[]> = {
 
   'empty-state': [
     {
+      version: '1.1.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.0.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -523,10 +588,17 @@ export const changelog: Record<string, Release[]> = {
 
   'list-cell': [
     {
+      version: '1.2.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '1.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -546,10 +618,17 @@ export const changelog: Record<string, Release[]> = {
 
   tag: [
     {
+      version: '2.2.0', date: '2026-10-05',
+      summary: 'New type weights',
+      changes: [
+        { kind: 'changed', text: 'Text uses the three typography roles: titles Heading (750), labels Label (650).' },
+      ],
+    },
+    {
       version: '2.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-primary-12). No visual change.' },
+        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {

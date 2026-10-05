@@ -23,7 +23,7 @@
 }
 
 .pickerLabel {
-  font: var(--l3-text-heading-primary-14);
+  font: var(--l3-text-heading-14);
   color: var(--l3-content-primary);
 }
 
@@ -128,7 +128,7 @@
 }
 
 .colLabel {
-  font: var(--l3-text-heading-secondary-12);
+  font: var(--l3-text-heading-12);
   text-transform: uppercase;
   color: var(--l3-content-accent-discover-default);
 }
@@ -204,7 +204,7 @@
 }
 
 .nodeLabel {
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--l3-content-primary);
   overflow-wrap: anywhere;
@@ -255,7 +255,7 @@
 }
 
 .priceText {
-  font: var(--l3-text-heading-secondary-16);
+  font: var(--l3-text-heading-16);
   font-variant-numeric: tabular-nums;
   color: var(--l3-content-accent-indicator-up-default);
 }
@@ -264,7 +264,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-04);
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-accent-success-default);
 }
 

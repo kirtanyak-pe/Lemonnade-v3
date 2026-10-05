@@ -171,12 +171,12 @@ for (const p of pages as Page[]) {
   add('color-tokens', 'Color tokens', 'All semantic color tokens with values per theme.', lines.join('\n'), 'Foundations')
 }
 {
-  const lines = ['# Typography tokens', '', '> Manrope. Use one font shorthand token: `font: var(--l3-text-<role>-<size>)`, e.g. `var(--l3-text-label-primary-12)`. Never set font-size / weight / line-height on their own.', '',
-    'Roles: **heading-primary** (ExtraBold) · **heading-secondary** (Bold, plus `section`) · **label-primary** (SemiBold) · **label-secondary** (Medium) · **description** (Medium, with paragraph spacing). Each token also has `-size`, `-weight`, `-line-height`, `-letter-spacing` and `-paragraph-spacing` parts.', '',
+  const lines = ['# Typography tokens', '', '> Manrope. Use one font shorthand token: `font: var(--l3-text-<role>-<size>)`, e.g. `var(--l3-text-label-12)`. Never set font-size / weight / line-height on their own.', '',
+    'Roles: **heading** (750) · **label** (650) · **description** (500, with paragraph spacing). Each token also has `-size`, `-weight`, `-line-height`, `-letter-spacing` and `-paragraph-spacing` parts.', '',
     '| CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |', '|---|---|---|---|---|']
   for (const s of textStyles as { cssVar: string; figmaName: string; weight: number; fontSize: number; lineHeight: number; paragraphSpacing: number; local?: string }[])
     lines.push(`| \`${s.cssVar}\` | ${s.figmaName}${s.local ? ' (local)' : ''} | ${s.weight} | ${s.fontSize}/${s.lineHeight} | ${s.paragraphSpacing} |`)
-  add('typography-tokens', 'Typography tokens', 'Every text style: Heading (primary, secondary), Label (primary, secondary) and Description.', lines.join('\n'), 'Foundations')
+  add('typography-tokens', 'Typography tokens', 'Every text style: Heading (750), Label (650) and Description (500).', lines.join('\n'), 'Foundations')
 }
 {
   const lines = ['# Spacing, radius & size tokens', '', '> Never use raw px (1px hairlines are the one exception).', '', '| Figma variable | CSS variable | Value |', '|---|---|---|']

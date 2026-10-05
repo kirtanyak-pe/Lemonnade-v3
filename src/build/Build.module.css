@@ -103,7 +103,7 @@
   max-width: 220px;
   padding: var(--l3-spacing-04) var(--l3-spacing-06);
   border-radius: var(--l3-radius-06);
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
   text-overflow: ellipsis;
 }
@@ -113,7 +113,7 @@
   padding: 0 var(--l3-spacing-06);
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-06);
-  font: var(--l3-text-label-secondary-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
 }
 
@@ -139,7 +139,7 @@
   gap: var(--l3-spacing-06);
   padding: var(--l3-spacing-06) var(--l3-spacing-12);
   border-radius: var(--l3-radius-08);
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
   cursor: pointer;
 }
@@ -187,7 +187,7 @@
 .chatTitle {
   flex: 1;
   margin: 0;
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
 }
 
@@ -257,7 +257,7 @@
   padding: var(--l3-spacing-06) var(--l3-spacing-10);
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-label-secondary-12);
+  font: var(--l3-text-description-12);
 }
 
 .fileName {
@@ -273,7 +273,7 @@
   border-radius: var(--l3-radius-04);
   color: var(--l3-content-secondary);
   cursor: pointer;
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
 }
 
 .prompt {
@@ -308,7 +308,7 @@
   border: 0;
   border-radius: var(--l3-radius-08);
   background: transparent;
-  font: var(--l3-text-label-secondary-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-primary);
   cursor: pointer;
 }
@@ -352,7 +352,7 @@
 
 .url {
   margin-left: var(--l3-spacing-08);
-  font: var(--l3-text-label-secondary-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
 
@@ -389,7 +389,7 @@
 
 .sampleTitle {
   margin: 0;
-  font: var(--l3-text-heading-secondary-20);
+  font: var(--l3-text-heading-20);
 }
 
 .stage[data-picking] {
@@ -439,7 +439,7 @@
 }
 
 .fieldLabel {
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -450,7 +450,7 @@
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-08);
   background: transparent;
-  font: var(--l3-text-label-secondary-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-primary);
 }
 
@@ -492,7 +492,7 @@
   justify-content: center;
   height: var(--l3-size-32);
   border-radius: var(--l3-radius-08);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   cursor: pointer;
 }
@@ -567,7 +567,7 @@
 }
 
 .more summary {
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   cursor: pointer;
 }
@@ -614,7 +614,7 @@
   border-radius: var(--l3-radius-04);
   background: var(--l3-surface-accent-discover-default);
   color: var(--l3-static-white);
-  font: var(--l3-text-label-primary-10);
+  font: var(--l3-text-label-10);
   text-overflow: ellipsis;
   white-space: nowrap;
   transform: translateY(-50%);
@@ -651,7 +651,7 @@
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  font: var(--l3-text-label-secondary-14);
+  font: var(--l3-text-description-14);
 }
 
 .floatPanel {
@@ -681,7 +681,7 @@
 }
 
 .popoverTitle {
-  font: var(--l3-text-label-primary-14);
+  font: var(--l3-text-label-14);
 }
 
 .chip {
@@ -689,7 +689,7 @@
   padding: var(--l3-spacing-04) var(--l3-spacing-10);
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-full);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   cursor: pointer;
 }
@@ -715,7 +715,7 @@
 .target {
   display: block;
   margin-bottom: var(--l3-spacing-04);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -737,7 +737,7 @@
 
 .filesTitle {
   margin: 0 0 var(--l3-spacing-12);
-  font: var(--l3-text-label-primary-16);
+  font: var(--l3-text-label-16);
 }
 
 .filesRow,
@@ -792,7 +792,7 @@
   border: 1px solid var(--l3-border-light);
   border-radius: var(--l3-radius-08);
   background: transparent;
-  font: var(--l3-text-label-secondary-14);
+  font: var(--l3-text-description-14);
   color: var(--l3-content-primary);
 }
 
@@ -811,7 +811,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--l3-spacing-06) var(--l3-spacing-08);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
   cursor: pointer;
 }
@@ -838,7 +838,7 @@
   padding-inline-end: var(--l3-spacing-08);
   overflow: hidden;
   border-radius: var(--l3-radius-06);
-  font: var(--l3-text-label-secondary-12);
+  font: var(--l3-text-description-12);
   color: var(--l3-content-secondary);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -847,7 +847,7 @@
 
 .layerRow[aria-current] {
   background: var(--l3-surface-secondary);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-primary);
 }
 
@@ -869,7 +869,7 @@
   border-radius: var(--l3-radius-06);
   background: var(--l3-surface-inverted);
   color: var(--l3-content-inverted);
-  font: var(--l3-text-label-primary-12);
+  font: var(--l3-text-label-12);
   white-space: nowrap;
 }
 

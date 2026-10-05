@@ -150,43 +150,39 @@ Still waiting for the exact text from your notes on:
 
 ## 4. Typography
 
-**Facts (from code and Figma "🅰️ Typography"):**
-- One font: **Manrope**, applied only through text tokens. Never set `font-family`.
-- Style text with one shorthand token named after its Figma text style: `font: var(--l3-text-<role>-<size>);`
-  e.g. 🔷 L3/Label/primary-sb/12 → `--l3-text-label-primary-12`.
+**Facts (from code):**
+- One font: **Manrope** (variable, loaded 200–800), applied only through text tokens. Never set `font-family`.
+- Style text with one shorthand token: `font: var(--l3-text-<role>-<size>);` e.g. `--l3-text-label-12`.
 - Never set `font-size`, `font-weight` or `line-height` on their own. Each style also has parts
   (`-size`, `-weight`, `-line-height`, `-letter-spacing`, `-paragraph-spacing`), and base values are tokens
-  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-bold`, `--l3-paragraph-spacing-08`).
+  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750`, `--l3-paragraph-spacing-08`).
 
-| Family | Role (token) | Weight | Sizes | Use (draft) |
-|---|---|---|---|---|
-| Heading | `heading-primary` | ExtraBold | 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Screen / sheet titles, key numbers (prices, P&L, balances) |
-| Heading | `heading-secondary` | Bold | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Section and card titles |
-| Heading | `heading-secondary-section` | ExtraBold 14 | — | The standard section heading on a screen |
-| Label | `label-primary` | SemiBold | 10 · 12 · 14 · 16 · 18 | Text on and around controls: buttons, tabs, tags, list titles, field labels |
-| Label | `label-secondary` | Medium | 10 · 12 · 14 · 16 · 18 | Quieter UI text next to a primary label: input text, values, meta |
-| Description | `description` | Medium | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, captions, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
+| Role (token) | Weight | Sizes | Use (draft) |
+|---|---|---|---|
+| `heading` | 750 | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Screen, sheet, section and card titles; button labels; key numbers (prices, P&L, balances) |
+| `label` | 650 | 10 · 12 · 14 · 16 · 18 | Text on and around controls: tabs, tags, list titles, field labels, small buttons |
+| `description` | 500 | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, input text, values and meta, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
 
-- Label secondary and Description share values; pick by **what the text is** (UI label vs supporting sentence).
-- There is no Regular weight, no Paragraph role and no Display role anymore (Description replaced Paragraph;
-  Heading primary replaced Display). Selected tabs use the same Label style as unselected ones.
-- Local (not a Figma style): `label-primary-08` — SemiBold 8/10, chip tab sub label only.
+- Three roles only — no primary/secondary sub-roles and no separate Section style (a section title is `heading-14`).
+- **Weights 750 and 650 lead Figma:** Figma's text styles still use ExtraBold/Bold (headings) and SemiBold (labels)
+  until they're updated; follow the tokens.
+- Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
   <!-- PENDING: final usage rules per role and size -->
 
 **What components use internally (don't override):**
 
 | Component | Text tokens |
 |---|---|
-| Actionbar | `heading-primary-14` · `label-secondary-14` · `description-12` |
-| Aerobar | `label-primary-14` · `description-12` |
-| BottomNavbar | `label-primary-10` |
-| BottomSheet | header sm: `heading-primary-16` + `description-12`; lg: `heading-secondary-20` + `label-secondary-14` |
-| Button | `heading-secondary-14` · `heading-secondary-16` · `label-primary-12` |
-| EmptyState | `heading-primary-16` · `label-primary-14` |
-| ListCell | `label-primary-14` · `label-primary-16` · `description-12` |
-| Tabs | `label-primary-08` · `label-primary-10` · `label-primary-12` · `label-primary-14` |
-| Tag | `label-primary-10` · `label-primary-12` · `label-primary-14` |
-| TextField | label `description-12`, input `description-14`, text box `description-12`, helper `description-12`, required mark `label-primary-12` |
+| Actionbar | `heading-14` · `description-12` · `description-14` |
+| Aerobar | `label-14` · `description-12` |
+| BottomNavbar | `label-10` |
+| BottomSheet | `heading-16` · `heading-20` · `description-12` · `description-14` |
+| Button | `heading-14` · `heading-16` · `label-12` |
+| EmptyState | `heading-16` · `label-14` |
+| ListCell | `label-14` · `label-16` · `description-12` |
+| Tabs | `label-08` · `label-10` · `label-12` · `label-14` |
+| Tag | `label-10` · `label-12` · `label-14` |
+| TextField | `label-12` · `description-12` · `description-14` |
 
 ---
 

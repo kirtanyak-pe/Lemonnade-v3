@@ -194,7 +194,7 @@
 }
 
 .header[data-size='sm'] .heading {
-  font: var(--l3-text-heading-primary-16); /* 🔷 L3/Heading/primary/16 */
+  font: var(--l3-text-heading-16); /* L3/Heading/16 · 750 */
 }
 
 /* Figma: the ⓘ after the heading is content/secondary. */
@@ -297,9 +297,9 @@
 }
 
 .header[data-size='lg'] .heading {
-  font: var(--l3-text-heading-secondary-20); /* 🔷 L3/Heading/secondary/20 */
+  font: var(--l3-text-heading-20); /* L3/Heading/20 · 750 */
 }
 
 .header[data-size='lg'] .description {
-  font: var(--l3-text-label-secondary-14); /* 🔷 L3/Label/secondary-m/14 */
+  font: var(--l3-text-description-14); /* 🔷 L3/Description - M/14 */
 }
