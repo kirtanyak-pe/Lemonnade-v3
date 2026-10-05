@@ -142,7 +142,7 @@
   background: transparent;
   color: var(--l3-content-primary);
   caret-color: var(--l3-content-accent-discover-default);
-  font: var(--l3-text-description-14); /* 🔷 L3/Description/14 */
+  font: var(--l3-text-label-14); /* 🔷 L3/Label/14 — typed search text */
   appearance: none;
 }
 

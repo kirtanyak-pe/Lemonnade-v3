@@ -11,9 +11,9 @@ type Style = (typeof textStyles)[number]
 type Role = Style['role']
 
 const roles: { role: Role; title: string; weight: string; note: string; use: string; example: string; exampleSize: number }[] = [
-  { role: 'heading', title: 'Heading', weight: '750', note: 'Titles and key numbers', use: 'Screen, sheet, section and card titles, button labels, and the numbers people look for first — prices, P&L, balances.', example: '₹24,812.35', exampleSize: 24 },
-  { role: 'label', title: 'Label', weight: '650', note: 'UI text', use: 'Text on and around controls: tabs, tags, list titles, field labels, small buttons.', example: 'Buy · NIFTY 50', exampleSize: 14 },
-  { role: 'description', title: 'Description', weight: '500', note: 'Supporting and reading text', use: 'Descriptions, helper text, input text, values and meta, and anything read as sentences. Comes with paragraph spacing.', example: 'Orders placed after 3:30 pm go through the next trading day.', exampleSize: 14 },
+  { role: 'heading', title: 'Heading', weight: '750', note: 'Main headings and key numbers', use: 'The main heading of a page or section, or the most prominent number on the page when it is 18px or larger.', example: '₹24,812.35', exampleSize: 24 },
+  { role: 'label', title: 'Label', weight: '650', note: 'Labels, input text, small numbers', use: 'A literal label — a tab, tag or field label — the text typed into an input field, or a small number.', example: 'Buy · NIFTY 50', exampleSize: 14 },
+  { role: 'description', title: 'Description', weight: '500', note: 'Describes a heading or label', use: 'The description of a heading or a label. Never use it to show a number — numbers are Label, or Heading when prominent and 18px or larger.', example: 'Orders go through on the next trading day.', exampleSize: 14 },
 ]
 
 const sizes = [10, 12, 14, 16, 18, 20, 24, 28, 32, 36]
@@ -86,7 +86,7 @@ export function TypographyPage() {
         />
       </Section>
 
-      <Section id="use" title="Which role to use" lede="Pick the role by what the text does, then the size by how important it is. Draft guidance.">
+      <Section id="use" title="Which role to use" lede="Pick the role by what the text is. Size rules come later.">
         <ul className={styles.roleCards}>
           {roles.map((r) => {
             const example = styleFor(r.role, r.exampleSize)

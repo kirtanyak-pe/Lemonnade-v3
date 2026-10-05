@@ -50,7 +50,7 @@
 }
 
 .description {
-  font: var(--l3-text-label-14); /* 🔷 L3/Label/primary-sb/14 */
+  font: var(--l3-text-description-14); /* 🔷 L3/Description/14 */
   color: var(--l3-content-secondary);
 }
 

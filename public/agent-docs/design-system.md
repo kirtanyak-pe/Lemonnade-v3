@@ -159,11 +159,15 @@ Still waiting for the exact text from your notes on:
 
 | Role (token) | Weight | Sizes | Use (draft) |
 |---|---|---|---|
-| `heading` | 750 | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | Screen, sheet, section and card titles; button labels; key numbers (prices, P&L, balances) |
-| `label` | 650 | 10 · 12 · 14 · 16 · 18 | Text on and around controls: tabs, tags, list titles, field labels, small buttons |
-| `description` | 500 | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, input text, values and meta, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
+| `heading` | 750 | 10 · 12 · 14 · 16 · 18 · 20 · 24 · 28 · 32 · 36 | The main heading of a page or section, or the most prominent number on the page when it's 18px or larger |
+| `label` | 650 | 10 · 12 · 14 · 16 · 18 | A literal label (tab, tag, field label), input field text, or a small number |
+| `description` | 500 | 10 · 12 · 14 · 16 · 18 | The description of a heading or a label. **Never shows a number.** Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
 
 - Three roles only — no primary/secondary sub-roles and no separate Section style (a section title is `heading-14`).
+- **Role rules** (size-level rules: PENDING):
+  - **Heading** — the main heading of a page or section, or the page's most prominent number **if it's 18px or more**.
+  - **Label** — a literal label (tab, tag, field label), the text typed into an input field, or a **small number** (under 18px, or not the page's key number).
+  - **Description** — describes a heading or a label. **Never use Description for a number** — numbers are Label (or Heading when prominent and ≥ 18px).
 - **Figma:** the styles' weights are bound to `L3/typography/base/font-weight/*` (750 · 650 · 500), same as code.
   Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
   code roles: they render the same.
@@ -174,16 +178,16 @@ Still waiting for the exact text from your notes on:
 
 | Component | Text tokens |
 |---|---|
-| Actionbar | `heading-14` · `description-12` · `description-14` |
+| Actionbar | title `heading-14`; description `description-12`; typed search text `label-14` |
 | Aerobar | `label-14` · `description-12` |
 | BottomNavbar | `label-10` |
 | BottomSheet | `heading-16` · `heading-20` · `description-12` · `description-14` |
 | Button | `heading-14` · `heading-16` · `label-12` |
-| EmptyState | `heading-16` · `label-14` |
+| EmptyState | title `heading-16`; description `description-14` |
 | ListCell | `label-14` · `label-16` · `description-12` |
 | Tabs | `label-08` · `label-10` · `label-12` · `label-14` |
 | Tag | `label-10` · `label-12` · `label-14` |
-| TextField | `label-12` · `description-12` · `description-14` |
+| TextField | field label, required mark and counter `label-12`; typed text and placeholder `label-14`; helper text `description-12` |
 
 ---
 

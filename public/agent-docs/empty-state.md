@@ -5,7 +5,7 @@
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.0
+- Version: 1.2.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66488
 - Source: `src/components/EmptyState`
 - Also called: No results, zero state, blank slate, nothing found
@@ -71,6 +71,6 @@ Empty state — Nothing to show, or no results
 
 ## Recent changes
 
+- **1.2.0** (2026-10-05) Typography role rules: Typography role rules: the line under the title uses Description (it describes the heading). Matches Figma.
 - **1.1.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.0.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.0.0** (2026-09-26) First release: Illustration, heading, description and an action slot. No-results illustration with every fill bound to a theme token.

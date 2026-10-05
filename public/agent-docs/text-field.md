@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.4.0
+- Version: 1.5.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66091
 - Source: `src/components/TextField`
 - Also called: Text input, text field, textarea, form field
@@ -83,6 +83,6 @@ Input field — Single line or text box
 
 ## Recent changes
 
+- **1.5.0** (2026-10-05) Typography role rules: Typography role rules: field label, typed text and the character counter use Label (a number never uses Description); helper text stays Description. Matches Figma.
 - **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.3.0** (2026-10-04) Typography from Figma: Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.
-- **1.2.0** (2026-09-26) Material Symbols icons: Icons now come from the Material Symbols Rounded library (weight 400, 24dp) and take the text color.

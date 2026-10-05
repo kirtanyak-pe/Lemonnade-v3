@@ -90,7 +90,7 @@
   border-radius: var(--l3-radius-08);
   background: var(--l3-surface-default);
   box-shadow: inset 0 0 0 1px var(--l3-border-light);
-  font: var(--l3-text-description-16); /* 16px keeps iOS Safari from zooming in on focus */
+  font: var(--l3-text-label-16); /* 16px keeps iOS Safari from zooming in on focus */
   color: var(--l3-content-primary);
 }
 

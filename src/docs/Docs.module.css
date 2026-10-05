@@ -305,7 +305,7 @@
   gap: var(--l3-spacing-08);
   padding: var(--l3-spacing-10) var(--l3-spacing-12) var(--l3-spacing-10) var(--l3-spacing-24);
   border-radius: var(--l3-radius-08);
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
   text-decoration: none;
 }
@@ -721,7 +721,7 @@
 }
 
 .fields dt {
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
 }
 
@@ -902,7 +902,7 @@ legend.sectionLabel {
   align-items: center;
   gap: var(--l3-spacing-12);
   padding: var(--l3-spacing-06) 0;
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
 }
 
 .optionRow.indent {
@@ -1254,7 +1254,7 @@ legend.sectionLabel {
   border-radius: var(--l3-radius-full);
   background: var(--l3-surface-secondary);
   color: var(--l3-content-secondary);
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
   cursor: pointer;
 }
 
@@ -1304,7 +1304,7 @@ legend.sectionLabel {
   outline: none;
   background: transparent;
   color: var(--l3-content-primary);
-  font: var(--l3-text-description-16);
+  font: var(--l3-text-label-16);
 }
 
 .searchInput::placeholder {
@@ -1527,7 +1527,7 @@ legend.sectionLabel {
   align-items: center;
   justify-content: space-between;
   gap: var(--l3-spacing-12);
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
 }
 
@@ -1858,7 +1858,7 @@ legend.sectionLabel {
 
 .stat dt {
   order: 2;
-  font: var(--l3-text-description-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1942,7 +1942,7 @@ legend.sectionLabel {
 }
 
 .cardMetaSm {
-  font: var(--l3-text-description-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -1980,7 +1980,7 @@ legend.sectionLabel {
 }
 
 .cardGroup {
-  font: var(--l3-text-description-12);
+  font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
 }
 
@@ -2117,7 +2117,7 @@ legend.sectionLabel {
 
 .releaseMeta {
   color: var(--l3-content-tertiary);
-  font: var(--l3-text-description-12);
+  font: var(--l3-text-label-12);
 }
 
 .releaseSummary {
@@ -2200,7 +2200,7 @@ legend.sectionLabel {
 }
 
 .cardMeta {
-  font: var(--l3-text-description-14);
+  font: var(--l3-text-label-14);
   color: var(--l3-content-secondary);
 }
 

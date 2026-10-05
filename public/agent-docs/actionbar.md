@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.2.0
+- Version: 1.3.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
 - Source: `src/components/Actionbar`
 - Also called: App bar, top bar, navigation bar, header, toolbar
@@ -79,6 +79,6 @@ Actionbar — The top bar of a screen
 
 ## Recent changes
 
+- **1.3.0** (2026-10-05) Typography role rules: Typography role rules: typed search text and its placeholder use Label (input text). Matches Figma.
 - **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Search text uses Description.
 - **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **unreleased** (2026-09-28) Figma updated, code to follow: Figma’s Actionbar row now has an 8px gap between items. Not yet synced to code.

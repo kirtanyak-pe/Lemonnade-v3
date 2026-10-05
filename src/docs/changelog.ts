@@ -242,6 +242,13 @@ export const changelog: Record<string, Release[]> = {
 
   'text-field': [
     {
+      version: '1.5.0', date: '2026-10-05',
+      summary: 'Typography role rules',
+      changes: [
+        { kind: 'changed', text: 'Typography role rules: field label, typed text and the character counter use Label (a number never uses Description); helper text stays Description. Matches Figma.' },
+      ],
+    },
+    {
       version: '1.4.0', date: '2026-10-05',
       summary: 'New type weights',
       changes: [
@@ -375,6 +382,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   actionbar: [
+    {
+      version: '1.3.0', date: '2026-10-05',
+      summary: 'Typography role rules',
+      changes: [
+        { kind: 'changed', text: 'Typography role rules: typed search text and its placeholder use Label (input text). Matches Figma.' },
+      ],
+    },
     {
       version: '1.2.0', date: '2026-10-05',
       summary: 'New type weights',
@@ -562,6 +576,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'empty-state': [
+    {
+      version: '1.2.0', date: '2026-10-05',
+      summary: 'Typography role rules',
+      changes: [
+        { kind: 'changed', text: 'Typography role rules: the line under the title uses Description (it describes the heading). Matches Figma.' },
+      ],
+    },
     {
       version: '1.1.0', date: '2026-10-05',
       summary: 'New type weights',
