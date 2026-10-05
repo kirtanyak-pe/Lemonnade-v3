@@ -164,8 +164,9 @@ Still waiting for the exact text from your notes on:
 | `description` | 500 | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, input text, values and meta, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
 
 - Three roles only — no primary/secondary sub-roles and no separate Section style (a section title is `heading-14`).
-- **Weights 750 and 650 lead Figma:** Figma's text styles still use ExtraBold/Bold (headings) and SemiBold (labels)
-  until they're updated; follow the tokens.
+- **Figma:** the styles' weights are bound to `L3/typography/base/font-weight/*` (750 · 650 · 500), same as code.
+  Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
+  code roles: they render the same.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
   <!-- PENDING: final usage rules per role and size -->
 

@@ -1,5 +1,5 @@
 {
-  "$description": "Three roles: Heading (750), Label (650), Description (500). Heading/Label weights lead Figma (see base.typography.json).",
+  "$description": "Three roles: Heading (750), Label (650), Description (500) — Figma \"🅰️ Typography\" text styles, weights bound to L3/typography/base/font-weight/*.",
   "text": {
     "heading": {
       "10": {
@@ -13,7 +13,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/10 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/10"
         }
       },
       "12": {
@@ -27,7 +27,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/12 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/12"
         }
       },
       "14": {
@@ -41,7 +41,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/14 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/14"
         }
       },
       "16": {
@@ -55,7 +55,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/16 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/16"
         }
       },
       "18": {
@@ -69,7 +69,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/18 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/18"
         }
       },
       "20": {
@@ -83,7 +83,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/20 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/20"
         }
       },
       "24": {
@@ -97,7 +97,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/24 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/24"
         }
       },
       "28": {
@@ -111,7 +111,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/28 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/28"
         }
       },
       "32": {
@@ -125,7 +125,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/32 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/32"
         }
       },
       "36": {
@@ -139,7 +139,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Heading/36 · 750"
+          "l3.figmaStyle": "🔷 L3/Heading/36"
         }
       }
     },
@@ -155,7 +155,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Label/10 · 650"
+          "l3.figmaStyle": "🔷 L3/Label/primary-sb/10"
         }
       },
       "12": {
@@ -169,7 +169,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Label/12 · 650"
+          "l3.figmaStyle": "🔷 L3/Label/primary-sb/12"
         }
       },
       "14": {
@@ -183,7 +183,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Label/14 · 650"
+          "l3.figmaStyle": "🔷 L3/Label/primary-sb/14"
         }
       },
       "16": {
@@ -197,7 +197,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Label/16 · 650"
+          "l3.figmaStyle": "🔷 L3/Label/primary-sb/16"
         }
       },
       "18": {
@@ -211,7 +211,7 @@
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
-          "l3.figmaStyle": "L3/Label/18 · 650"
+          "l3.figmaStyle": "🔷 L3/Label/primary-sb/18"
         }
       }
     },
@@ -227,7 +227,7 @@
           "paragraphSpacing": "{paragraph-spacing.06}"
         },
         "$extensions": {
-          "l3.figmaStyle": "🔷 L3/Description - M/10"
+          "l3.figmaStyle": "🔷 L3/Description/10"
         }
       },
       "12": {
@@ -241,7 +241,7 @@
           "paragraphSpacing": "{paragraph-spacing.08}"
         },
         "$extensions": {
-          "l3.figmaStyle": "🔷 L3/Description - M/12"
+          "l3.figmaStyle": "🔷 L3/Description/12"
         }
       },
       "14": {
@@ -255,7 +255,7 @@
           "paragraphSpacing": "{paragraph-spacing.10}"
         },
         "$extensions": {
-          "l3.figmaStyle": "🔷 L3/Description - M/14"
+          "l3.figmaStyle": "🔷 L3/Description/14"
         }
       },
       "16": {
@@ -269,7 +269,7 @@
           "paragraphSpacing": "{paragraph-spacing.12}"
         },
         "$extensions": {
-          "l3.figmaStyle": "🔷 L3/Description - M/16"
+          "l3.figmaStyle": "🔷 L3/Description/16"
         }
       },
       "18": {
@@ -283,7 +283,7 @@
           "paragraphSpacing": "{paragraph-spacing.16}"
         },
         "$extensions": {
-          "l3.figmaStyle": "🔷 L3/Description - M/18"
+          "l3.figmaStyle": "🔷 L3/Description/18"
         }
       }
     }

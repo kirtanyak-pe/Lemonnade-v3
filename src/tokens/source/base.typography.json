@@ -15,21 +15,21 @@
         "$type": "fontWeight",
         "$value": 750,
         "$extensions": {
-          "l3.local": "Heading weight. Code leads — Figma still binds ExtraBold/Bold until the styles are updated."
+          "l3.figmaVariable": "L3/typography/base/font-weight/heading"
         }
       },
       "650": {
         "$type": "fontWeight",
         "$value": 650,
         "$extensions": {
-          "l3.local": "Label weight. Code leads — Figma still binds SemiBold until the styles are updated."
+          "l3.figmaVariable": "L3/typography/base/font-weight/label"
         }
       },
       "500": {
         "$type": "fontWeight",
         "$value": 500,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/weight/medium"
+          "l3.figmaVariable": "L3/typography/base/font-weight/description"
         }
       }
     },

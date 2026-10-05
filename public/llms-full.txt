@@ -333,7 +333,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 
 | Figma | Status |
 |---|---|
-| L3: Title | Planned component — not built yet |
+| L3: Title | Figma-only — not built in code (by decision) |
 | L3: System navbar · L3: System keyboard | Device chrome for mockups — not app UI |
 | L3: Space block · L3: Utility / Component container · L3: dev-note · L3: component slot | Figma-only utilities — use CSS gaps / layout in code |
 | L3 → State layer | Built into each component (`--l3-state-layer-*`) |
@@ -506,8 +506,9 @@ Still waiting for the exact text from your notes on:
 | `description` | 500 | 10 · 12 · 14 · 16 · 18 | Descriptions, helper text, input text, values and meta, reading text. Has paragraph spacing (6 · 8 · 10 · 12 · 16) |
 
 - Three roles only — no primary/secondary sub-roles and no separate Section style (a section title is `heading-14`).
-- **Weights 750 and 650 lead Figma:** Figma's text styles still use ExtraBold/Bold (headings) and SemiBold (labels)
-  until they're updated; follow the tokens.
+- **Figma:** the styles' weights are bound to `L3/typography/base/font-weight/*` (750 · 650 · 500), same as code.
+  Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
+  code roles: they render the same.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
   <!-- PENDING: final usage rules per role and size -->
 
@@ -1089,26 +1090,26 @@ Roles: **heading** (750) · **label** (650) · **description** (500, with paragr
 
 | CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |
 |---|---|---|---|---|
-| `--l3-text-heading-10` | L3/Heading/10 · 750 | 750 | 10/12 | 0 |
-| `--l3-text-heading-12` | L3/Heading/12 · 750 | 750 | 12/16 | 0 |
-| `--l3-text-heading-14` | L3/Heading/14 · 750 | 750 | 14/20 | 0 |
-| `--l3-text-heading-16` | L3/Heading/16 · 750 | 750 | 16/22 | 0 |
-| `--l3-text-heading-18` | L3/Heading/18 · 750 | 750 | 18/24 | 0 |
-| `--l3-text-heading-20` | L3/Heading/20 · 750 | 750 | 20/26 | 0 |
-| `--l3-text-heading-24` | L3/Heading/24 · 750 | 750 | 24/30 | 0 |
-| `--l3-text-heading-28` | L3/Heading/28 · 750 | 750 | 28/36 | 0 |
-| `--l3-text-heading-32` | L3/Heading/32 · 750 | 750 | 32/42 | 0 |
-| `--l3-text-heading-36` | L3/Heading/36 · 750 | 750 | 36/46 | 0 |
-| `--l3-text-label-10` | L3/Label/10 · 650 | 650 | 10/12 | 0 |
-| `--l3-text-label-12` | L3/Label/12 · 650 | 650 | 12/16 | 0 |
-| `--l3-text-label-14` | L3/Label/14 · 650 | 650 | 14/20 | 0 |
-| `--l3-text-label-16` | L3/Label/16 · 650 | 650 | 16/22 | 0 |
-| `--l3-text-label-18` | L3/Label/18 · 650 | 650 | 18/24 | 0 |
-| `--l3-text-description-10` | 🔷 L3/Description - M/10 | 500 | 10/12 | 6 |
-| `--l3-text-description-12` | 🔷 L3/Description - M/12 | 500 | 12/16 | 8 |
-| `--l3-text-description-14` | 🔷 L3/Description - M/14 | 500 | 14/20 | 10 |
-| `--l3-text-description-16` | 🔷 L3/Description - M/16 | 500 | 16/22 | 12 |
-| `--l3-text-description-18` | 🔷 L3/Description - M/18 | 500 | 18/24 | 16 |
+| `--l3-text-heading-10` | 🔷 L3/Heading/10 | 750 | 10/12 | 0 |
+| `--l3-text-heading-12` | 🔷 L3/Heading/12 | 750 | 12/16 | 0 |
+| `--l3-text-heading-14` | 🔷 L3/Heading/14 | 750 | 14/20 | 0 |
+| `--l3-text-heading-16` | 🔷 L3/Heading/16 | 750 | 16/22 | 0 |
+| `--l3-text-heading-18` | 🔷 L3/Heading/18 | 750 | 18/24 | 0 |
+| `--l3-text-heading-20` | 🔷 L3/Heading/20 | 750 | 20/26 | 0 |
+| `--l3-text-heading-24` | 🔷 L3/Heading/24 | 750 | 24/30 | 0 |
+| `--l3-text-heading-28` | 🔷 L3/Heading/28 | 750 | 28/36 | 0 |
+| `--l3-text-heading-32` | 🔷 L3/Heading/32 | 750 | 32/42 | 0 |
+| `--l3-text-heading-36` | 🔷 L3/Heading/36 | 750 | 36/46 | 0 |
+| `--l3-text-label-10` | 🔷 L3/Label/primary-sb/10 | 650 | 10/12 | 0 |
+| `--l3-text-label-12` | 🔷 L3/Label/primary-sb/12 | 650 | 12/16 | 0 |
+| `--l3-text-label-14` | 🔷 L3/Label/primary-sb/14 | 650 | 14/20 | 0 |
+| `--l3-text-label-16` | 🔷 L3/Label/primary-sb/16 | 650 | 16/22 | 0 |
+| `--l3-text-label-18` | 🔷 L3/Label/primary-sb/18 | 650 | 18/24 | 0 |
+| `--l3-text-description-10` | 🔷 L3/Description/10 | 500 | 10/12 | 6 |
+| `--l3-text-description-12` | 🔷 L3/Description/12 | 500 | 12/16 | 8 |
+| `--l3-text-description-14` | 🔷 L3/Description/14 | 500 | 14/20 | 10 |
+| `--l3-text-description-16` | 🔷 L3/Description/16 | 500 | 16/22 | 12 |
+| `--l3-text-description-18` | 🔷 L3/Description/18 | 500 | 18/24 | 16 |
 | `--l3-text-label-08` | local — chip tab sub label (8/10) (local) | 650 | 8/10 | 0 |
 
 ---

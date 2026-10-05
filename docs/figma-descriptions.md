@@ -55,8 +55,8 @@ The Lemonn or Zing logo. isFull = mark + wordmark; otherwise just the mark. 24�
 Code: `<BrandLogo brand variant>` · Docs: #/brand-logo
 
 ### L3: Title (4543:84634)
-A title with an optional description, in Large / Medium / Small / Mini. Not built in code yet.
-Code: — (planned) · Docs: —
+A title with an optional description, in Large / Medium / Small / Mini. Figma-only — there is no code component; in code, compose it from Heading + Description text styles.
+Code: — (Figma-only) · Docs: —
 
 ### L3: Overlay (4603:91773)
 The backdrop behind modal content (bottom sheets). Uses surface/overlay. Use Version = Latest.

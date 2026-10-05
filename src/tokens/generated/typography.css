@@ -37,140 +37,140 @@
   --l3-font-size-local-08: 8px;
   --l3-line-height-local-10: 10px;
 
-  /* L3/Heading/10 · 750 */
+  /* 🔷 L3/Heading/10 */
   --l3-text-heading-10-weight: var(--l3-font-weight-750);
   --l3-text-heading-10-size: var(--l3-font-size-50);
   --l3-text-heading-10-line-height: var(--l3-line-height-50);
   --l3-text-heading-10-letter-spacing: 0px;
   --l3-text-heading-10-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-10: var(--l3-font-weight-750) var(--l3-font-size-50)/var(--l3-line-height-50) var(--l3-font-family-manrope);
-  /* L3/Heading/12 · 750 */
+  /* 🔷 L3/Heading/12 */
   --l3-text-heading-12-weight: var(--l3-font-weight-750);
   --l3-text-heading-12-size: var(--l3-font-size-100);
   --l3-text-heading-12-line-height: var(--l3-line-height-100);
   --l3-text-heading-12-letter-spacing: 0px;
   --l3-text-heading-12-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-12: var(--l3-font-weight-750) var(--l3-font-size-100)/var(--l3-line-height-100) var(--l3-font-family-manrope);
-  /* L3/Heading/14 · 750 */
+  /* 🔷 L3/Heading/14 */
   --l3-text-heading-14-weight: var(--l3-font-weight-750);
   --l3-text-heading-14-size: var(--l3-font-size-200);
   --l3-text-heading-14-line-height: var(--l3-line-height-200);
   --l3-text-heading-14-letter-spacing: 0px;
   --l3-text-heading-14-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-14: var(--l3-font-weight-750) var(--l3-font-size-200)/var(--l3-line-height-200) var(--l3-font-family-manrope);
-  /* L3/Heading/16 · 750 */
+  /* 🔷 L3/Heading/16 */
   --l3-text-heading-16-weight: var(--l3-font-weight-750);
   --l3-text-heading-16-size: var(--l3-font-size-300);
   --l3-text-heading-16-line-height: var(--l3-line-height-300);
   --l3-text-heading-16-letter-spacing: 0px;
   --l3-text-heading-16-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-16: var(--l3-font-weight-750) var(--l3-font-size-300)/var(--l3-line-height-300) var(--l3-font-family-manrope);
-  /* L3/Heading/18 · 750 */
+  /* 🔷 L3/Heading/18 */
   --l3-text-heading-18-weight: var(--l3-font-weight-750);
   --l3-text-heading-18-size: var(--l3-font-size-400);
   --l3-text-heading-18-line-height: var(--l3-line-height-400);
   --l3-text-heading-18-letter-spacing: 0px;
   --l3-text-heading-18-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-18: var(--l3-font-weight-750) var(--l3-font-size-400)/var(--l3-line-height-400) var(--l3-font-family-manrope);
-  /* L3/Heading/20 · 750 */
+  /* 🔷 L3/Heading/20 */
   --l3-text-heading-20-weight: var(--l3-font-weight-750);
   --l3-text-heading-20-size: var(--l3-font-size-500);
   --l3-text-heading-20-line-height: var(--l3-line-height-500);
   --l3-text-heading-20-letter-spacing: 0px;
   --l3-text-heading-20-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-20: var(--l3-font-weight-750) var(--l3-font-size-500)/var(--l3-line-height-500) var(--l3-font-family-manrope);
-  /* L3/Heading/24 · 750 */
+  /* 🔷 L3/Heading/24 */
   --l3-text-heading-24-weight: var(--l3-font-weight-750);
   --l3-text-heading-24-size: var(--l3-font-size-600);
   --l3-text-heading-24-line-height: var(--l3-line-height-600);
   --l3-text-heading-24-letter-spacing: 0px;
   --l3-text-heading-24-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-24: var(--l3-font-weight-750) var(--l3-font-size-600)/var(--l3-line-height-600) var(--l3-font-family-manrope);
-  /* L3/Heading/28 · 750 */
+  /* 🔷 L3/Heading/28 */
   --l3-text-heading-28-weight: var(--l3-font-weight-750);
   --l3-text-heading-28-size: var(--l3-font-size-700);
   --l3-text-heading-28-line-height: var(--l3-line-height-700);
   --l3-text-heading-28-letter-spacing: 0px;
   --l3-text-heading-28-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-28: var(--l3-font-weight-750) var(--l3-font-size-700)/var(--l3-line-height-700) var(--l3-font-family-manrope);
-  /* L3/Heading/32 · 750 */
+  /* 🔷 L3/Heading/32 */
   --l3-text-heading-32-weight: var(--l3-font-weight-750);
   --l3-text-heading-32-size: var(--l3-font-size-800);
   --l3-text-heading-32-line-height: var(--l3-line-height-800);
   --l3-text-heading-32-letter-spacing: 0px;
   --l3-text-heading-32-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-32: var(--l3-font-weight-750) var(--l3-font-size-800)/var(--l3-line-height-800) var(--l3-font-family-manrope);
-  /* L3/Heading/36 · 750 */
+  /* 🔷 L3/Heading/36 */
   --l3-text-heading-36-weight: var(--l3-font-weight-750);
   --l3-text-heading-36-size: var(--l3-font-size-900);
   --l3-text-heading-36-line-height: var(--l3-line-height-900);
   --l3-text-heading-36-letter-spacing: 0px;
   --l3-text-heading-36-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-heading-36: var(--l3-font-weight-750) var(--l3-font-size-900)/var(--l3-line-height-900) var(--l3-font-family-manrope);
-  /* L3/Label/10 · 650 */
+  /* 🔷 L3/Label/primary-sb/10 */
   --l3-text-label-10-weight: var(--l3-font-weight-650);
   --l3-text-label-10-size: var(--l3-font-size-50);
   --l3-text-label-10-line-height: var(--l3-line-height-50);
   --l3-text-label-10-letter-spacing: 0px;
   --l3-text-label-10-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-label-10: var(--l3-font-weight-650) var(--l3-font-size-50)/var(--l3-line-height-50) var(--l3-font-family-manrope);
-  /* L3/Label/12 · 650 */
+  /* 🔷 L3/Label/primary-sb/12 */
   --l3-text-label-12-weight: var(--l3-font-weight-650);
   --l3-text-label-12-size: var(--l3-font-size-100);
   --l3-text-label-12-line-height: var(--l3-line-height-100);
   --l3-text-label-12-letter-spacing: 0px;
   --l3-text-label-12-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-label-12: var(--l3-font-weight-650) var(--l3-font-size-100)/var(--l3-line-height-100) var(--l3-font-family-manrope);
-  /* L3/Label/14 · 650 */
+  /* 🔷 L3/Label/primary-sb/14 */
   --l3-text-label-14-weight: var(--l3-font-weight-650);
   --l3-text-label-14-size: var(--l3-font-size-200);
   --l3-text-label-14-line-height: var(--l3-line-height-200);
   --l3-text-label-14-letter-spacing: 0px;
   --l3-text-label-14-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-label-14: var(--l3-font-weight-650) var(--l3-font-size-200)/var(--l3-line-height-200) var(--l3-font-family-manrope);
-  /* L3/Label/16 · 650 */
+  /* 🔷 L3/Label/primary-sb/16 */
   --l3-text-label-16-weight: var(--l3-font-weight-650);
   --l3-text-label-16-size: var(--l3-font-size-300);
   --l3-text-label-16-line-height: var(--l3-line-height-300);
   --l3-text-label-16-letter-spacing: 0px;
   --l3-text-label-16-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-label-16: var(--l3-font-weight-650) var(--l3-font-size-300)/var(--l3-line-height-300) var(--l3-font-family-manrope);
-  /* L3/Label/18 · 650 */
+  /* 🔷 L3/Label/primary-sb/18 */
   --l3-text-label-18-weight: var(--l3-font-weight-650);
   --l3-text-label-18-size: var(--l3-font-size-400);
   --l3-text-label-18-line-height: var(--l3-line-height-400);
   --l3-text-label-18-letter-spacing: 0px;
   --l3-text-label-18-paragraph-spacing: var(--l3-paragraph-spacing-00);
   --l3-text-label-18: var(--l3-font-weight-650) var(--l3-font-size-400)/var(--l3-line-height-400) var(--l3-font-family-manrope);
-  /* 🔷 L3/Description - M/10 */
+  /* 🔷 L3/Description/10 */
   --l3-text-description-10-weight: var(--l3-font-weight-500);
   --l3-text-description-10-size: var(--l3-font-size-50);
   --l3-text-description-10-line-height: var(--l3-line-height-50);
   --l3-text-description-10-letter-spacing: 0px;
   --l3-text-description-10-paragraph-spacing: var(--l3-paragraph-spacing-06);
   --l3-text-description-10: var(--l3-font-weight-500) var(--l3-font-size-50)/var(--l3-line-height-50) var(--l3-font-family-manrope);
-  /* 🔷 L3/Description - M/12 */
+  /* 🔷 L3/Description/12 */
   --l3-text-description-12-weight: var(--l3-font-weight-500);
   --l3-text-description-12-size: var(--l3-font-size-100);
   --l3-text-description-12-line-height: var(--l3-line-height-100);
   --l3-text-description-12-letter-spacing: 0px;
   --l3-text-description-12-paragraph-spacing: var(--l3-paragraph-spacing-08);
   --l3-text-description-12: var(--l3-font-weight-500) var(--l3-font-size-100)/var(--l3-line-height-100) var(--l3-font-family-manrope);
-  /* 🔷 L3/Description - M/14 */
+  /* 🔷 L3/Description/14 */
   --l3-text-description-14-weight: var(--l3-font-weight-500);
   --l3-text-description-14-size: var(--l3-font-size-200);
   --l3-text-description-14-line-height: var(--l3-line-height-200);
   --l3-text-description-14-letter-spacing: 0px;
   --l3-text-description-14-paragraph-spacing: var(--l3-paragraph-spacing-10);
   --l3-text-description-14: var(--l3-font-weight-500) var(--l3-font-size-200)/var(--l3-line-height-200) var(--l3-font-family-manrope);
-  /* 🔷 L3/Description - M/16 */
+  /* 🔷 L3/Description/16 */
   --l3-text-description-16-weight: var(--l3-font-weight-500);
   --l3-text-description-16-size: var(--l3-font-size-300);
   --l3-text-description-16-line-height: var(--l3-line-height-300);
   --l3-text-description-16-letter-spacing: 0px;
   --l3-text-description-16-paragraph-spacing: var(--l3-paragraph-spacing-12);
   --l3-text-description-16: var(--l3-font-weight-500) var(--l3-font-size-300)/var(--l3-line-height-300) var(--l3-font-family-manrope);
-  /* 🔷 L3/Description - M/18 */
+  /* 🔷 L3/Description/18 */
   --l3-text-description-18-weight: var(--l3-font-weight-500);
   --l3-text-description-18-size: var(--l3-font-size-400);
   --l3-text-description-18-line-height: var(--l3-line-height-400);

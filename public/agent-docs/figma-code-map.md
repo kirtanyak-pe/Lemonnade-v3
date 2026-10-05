@@ -186,7 +186,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 
 | Figma | Status |
 |---|---|
-| L3: Title | Planned component — not built yet |
+| L3: Title | Figma-only — not built in code (by decision) |
 | L3: System navbar · L3: System keyboard | Device chrome for mockups — not app UI |
 | L3: Space block · L3: Utility / Component container · L3: dev-note · L3: component slot | Figma-only utilities — use CSS gaps / layout in code |
 | L3 → State layer | Built into each component (`--l3-state-layer-*`) |

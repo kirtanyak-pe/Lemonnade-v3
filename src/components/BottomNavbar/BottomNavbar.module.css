@@ -106,7 +106,7 @@
 .label {
   max-width: 100%;
   overflow: hidden;
-  font: var(--l3-text-label-10); /* L3/Label/10 · 650 */
+  font: var(--l3-text-label-10); /* 🔷 L3/Label/primary-sb/10 */
   text-overflow: ellipsis;
   white-space: nowrap;
 }
