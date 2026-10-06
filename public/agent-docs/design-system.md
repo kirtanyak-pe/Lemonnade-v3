@@ -155,7 +155,7 @@ Still waiting for the exact text from your notes on:
 - Style text with one shorthand token: `font: var(--l3-text-<role>-<size>);` e.g. `--l3-text-label-12`.
 - Never set `font-size`, `font-weight` or `line-height` on their own. Each style also has parts
   (`-size`, `-weight`, `-line-height`, `-letter-spacing`, `-paragraph-spacing`), and base values are tokens
-  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750`, `--l3-paragraph-spacing-08`).
+  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750` / `-650` / `-500`, `--l3-paragraph-spacing-08`).
 
 | Role (token) | Weight | Sizes | Use (draft) |
 |---|---|---|---|
@@ -168,7 +168,8 @@ Still waiting for the exact text from your notes on:
   - **Heading** — the main heading of a page or section, or the page's most prominent number **if it's 18px or more**.
   - **Label** — a literal label (tab, tag, field label), the text typed into an input field, or a **small number** (under 18px, or not the page's key number).
   - **Description** — describes a heading or a label. **Never use Description for a number** — numbers are Label (or Heading when prominent and ≥ 18px).
-- **Figma:** the styles' weights are bound to `L3/typography/base/font-weight/*` (750 · 650 · 500), same as code.
+- **Figma is the source of truth.** Style weights are bound to `L3/typography/base/weight/heading · label · description`
+  (750 · 650 · 500) and render exactly that — same as code.
   Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
   code roles: they render the same.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.

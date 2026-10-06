@@ -122,7 +122,7 @@ const styleLines = [...textStyles].flatMap(([path, leaf]) => {
     `  ${name}-weight: ${weight};`,
     `  ${name}-size: ${size};`,
     `  ${name}-line-height: ${lineHeight};`,
-    `  ${name}-letter-spacing: ${v.letterSpacing};`,
+    `  ${name}-letter-spacing: ${v.letterSpacing.startsWith('{') ? fontRef(v.letterSpacing) : v.letterSpacing};`,
     `  ${name}-paragraph-spacing: ${v.paragraphSpacing ? fontRef(v.paragraphSpacing) : '0px'};`,
     `  ${name}: ${weight} ${size}/${lineHeight} ${family};`,
   ]

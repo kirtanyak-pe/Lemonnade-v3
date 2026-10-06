@@ -1,5 +1,5 @@
 {
-  "$description": "Three roles: Heading (750), Label (650), Description (500) — Figma \"🅰️ Typography\" text styles, weights bound to L3/typography/base/font-weight/*.",
+  "$description": "Three roles: Heading (750), Label (650), Description (500) — Figma \"🅰️ Typography\" text styles, weights bound to L3/typography/base/weight/*.",
   "text": {
     "heading": {
       "10": {
@@ -9,7 +9,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.50}",
           "lineHeight": "{line-height.50}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -23,7 +23,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.100}",
           "lineHeight": "{line-height.100}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -37,7 +37,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.200}",
           "lineHeight": "{line-height.200}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -51,7 +51,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.300}",
           "lineHeight": "{line-height.300}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -65,7 +65,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.400}",
           "lineHeight": "{line-height.400}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -79,7 +79,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.500}",
           "lineHeight": "{line-height.500}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -93,7 +93,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.600}",
           "lineHeight": "{line-height.600}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -107,7 +107,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.700}",
           "lineHeight": "{line-height.700}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -121,7 +121,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.800}",
           "lineHeight": "{line-height.800}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -135,7 +135,7 @@
           "fontWeight": "{font.weight.750}",
           "fontSize": "{font.size.900}",
           "lineHeight": "{line-height.900}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -151,7 +151,7 @@
           "fontWeight": "{font.weight.650}",
           "fontSize": "{font.size.50}",
           "lineHeight": "{line-height.50}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -165,7 +165,7 @@
           "fontWeight": "{font.weight.650}",
           "fontSize": "{font.size.100}",
           "lineHeight": "{line-height.100}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -179,7 +179,7 @@
           "fontWeight": "{font.weight.650}",
           "fontSize": "{font.size.200}",
           "lineHeight": "{line-height.200}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -193,7 +193,7 @@
           "fontWeight": "{font.weight.650}",
           "fontSize": "{font.size.300}",
           "lineHeight": "{line-height.300}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -207,7 +207,7 @@
           "fontWeight": "{font.weight.650}",
           "fontSize": "{font.size.400}",
           "lineHeight": "{line-height.400}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.00}"
         },
         "$extensions": {
@@ -223,7 +223,7 @@
           "fontWeight": "{font.weight.500}",
           "fontSize": "{font.size.50}",
           "lineHeight": "{line-height.50}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.06}"
         },
         "$extensions": {
@@ -237,7 +237,7 @@
           "fontWeight": "{font.weight.500}",
           "fontSize": "{font.size.100}",
           "lineHeight": "{line-height.100}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.08}"
         },
         "$extensions": {
@@ -251,7 +251,7 @@
           "fontWeight": "{font.weight.500}",
           "fontSize": "{font.size.200}",
           "lineHeight": "{line-height.200}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.10}"
         },
         "$extensions": {
@@ -265,7 +265,7 @@
           "fontWeight": "{font.weight.500}",
           "fontSize": "{font.size.300}",
           "lineHeight": "{line-height.300}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.12}"
         },
         "$extensions": {
@@ -279,7 +279,7 @@
           "fontWeight": "{font.weight.500}",
           "fontSize": "{font.size.400}",
           "lineHeight": "{line-height.400}",
-          "letterSpacing": "0px",
+          "letterSpacing": "{letter-spacing.00}",
           "paragraphSpacing": "{paragraph-spacing.16}"
         },
         "$extensions": {

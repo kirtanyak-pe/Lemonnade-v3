@@ -11,25 +11,25 @@
       }
     },
     "weight": {
-      "750": {
+      "500": {
         "$type": "fontWeight",
-        "$value": 750,
+        "$value": 500,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/font-weight/heading"
+          "l3.figmaVariable": "L3/typography/base/weight/description"
         }
       },
       "650": {
         "$type": "fontWeight",
         "$value": 650,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/font-weight/label"
+          "l3.figmaVariable": "L3/typography/base/weight/label"
         }
       },
-      "500": {
+      "750": {
         "$type": "fontWeight",
-        "$value": 500,
+        "$value": 750,
         "$extensions": {
-          "l3.figmaVariable": "L3/typography/base/font-weight/description"
+          "l3.figmaVariable": "L3/typography/base/weight/heading"
         }
       }
     },
@@ -247,6 +247,15 @@
       "$value": "24px",
       "$extensions": {
         "l3.figmaVariable": "L3/typography/base/spacing/24"
+      }
+    }
+  },
+  "letter-spacing": {
+    "00": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$extensions": {
+        "l3.figmaVariable": "L3/typography/base/letter-spacing/00"
       }
     }
   }

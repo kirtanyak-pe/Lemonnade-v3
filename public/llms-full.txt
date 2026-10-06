@@ -497,7 +497,7 @@ Still waiting for the exact text from your notes on:
 - Style text with one shorthand token: `font: var(--l3-text-<role>-<size>);` e.g. `--l3-text-label-12`.
 - Never set `font-size`, `font-weight` or `line-height` on their own. Each style also has parts
   (`-size`, `-weight`, `-line-height`, `-letter-spacing`, `-paragraph-spacing`), and base values are tokens
-  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750`, `--l3-paragraph-spacing-08`).
+  (`--l3-font-size-200`, `--l3-line-height-200`, `--l3-font-weight-750` / `-650` / `-500`, `--l3-paragraph-spacing-08`).
 
 | Role (token) | Weight | Sizes | Use (draft) |
 |---|---|---|---|
@@ -510,7 +510,8 @@ Still waiting for the exact text from your notes on:
   - **Heading** — the main heading of a page or section, or the page's most prominent number **if it's 18px or more**.
   - **Label** — a literal label (tab, tag, field label), the text typed into an input field, or a **small number** (under 18px, or not the page's key number).
   - **Description** — describes a heading or a label. **Never use Description for a number** — numbers are Label (or Heading when prominent and ≥ 18px).
-- **Figma:** the styles' weights are bound to `L3/typography/base/font-weight/*` (750 · 650 · 500), same as code.
+- **Figma is the source of truth.** Style weights are bound to `L3/typography/base/weight/heading · label · description`
+  (750 · 650 · 500) and render exactly that — same as code.
   Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
   code roles: they render the same.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
@@ -768,10 +769,11 @@ There is **no skeleton or spinner component** yet.
 
 - Group: Foundations
 - Lifecycle: wip
-- Version: 3.0.0
+- Version: 3.0.1
 
 ## Recent changes
 
+- **3.0.1** (2026-10-06) Figma variable names: Figma weight variables renamed to L3/typography/base/weight/heading · label · description (750 · 650 · 500). No visual change.
 - **3.0.0** (2026-10-05) Three roles: Five roles merged into three: Heading (weight 750, sizes 10–36), Label (650, 10–18) and Description (500, 10–18, with paragraph spacing). Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description. Manrope is loaded as a variable font (200–800) so 750 and 650 render. Figma styles still to be updated to these weights.
 - **2.0.0** (2026-10-04) Typography from Figma roles: Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles. Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing). Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.
 

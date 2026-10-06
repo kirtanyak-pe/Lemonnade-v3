@@ -31,6 +31,13 @@ const iconsMigration = (): Release['changes'][number] => ({
 export const changelog: Record<string, Release[]> = {
   typography: [
     {
+      version: '3.0.1', date: '2026-10-06',
+      summary: 'Figma variable names',
+      changes: [
+        { kind: 'figma', text: 'Figma weight variables renamed to L3/typography/base/weight/heading · label · description (750 · 650 · 500). No visual change.' },
+      ],
+    },
+    {
       version: '3.0.0', date: '2026-10-05',
       summary: 'Three roles',
       changes: [
