@@ -1,12 +1,14 @@
-// The Build canvas: an infinite, pannable and zoomable surface holding the phone, which can itself be moved anywhere.
+// The Build canvas: an infinite, pannable and zoomable surface holding the phone, which can itself be moved anywhere, and
+// any Figma frames pasted into the chat (boards), shown at their real size beside it.
 // Zooming here scales the canvas only; the browser's own zoom is left alone (pinch and Ctrl/⌘ + wheel are captured).
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { Icon } from '../components/Icon'
 import { SystemStatusbar } from '../components/SystemStatusbar'
 import { ViewportPicker } from '../docs/PhoneFrame'
 import { useViewportWidth } from '../docs/viewport'
-import { msAdd, msDragIndicator, msFitScreen, msRemove } from '../icons/material'
+import { msAdd, msClose, msDragIndicator, msFitScreen, msOpenInNew, msRemove } from '../icons/material'
 import docs from '../docs/Docs.module.css'
+import type { FigmaBoard } from './figmaLinks'
 import styles from './Build.module.css'
 
 type View = { x: number; y: number; zoom: number }
@@ -22,7 +24,19 @@ function swallowNextClick() {
   setTimeout(() => window.removeEventListener('click', stop, { capture: true }), 0)
 }
 
-export function Canvas({ children, onViewChange }: { children: ReactNode; onViewChange?: () => void }) {
+type CanvasProps = {
+  children: ReactNode
+  onViewChange?: () => void
+  boards?: FigmaBoard[]
+  onMoveBoard?: (id: string, x: number, y: number) => void
+  onRemoveBoard?: (id: string) => void
+  /** Draws a board's content; gets the current zoom so it can turn screen movement into canvas units. */
+  renderBoard?: (board: FigmaBoard, zoom: number) => ReactNode
+  /** Changes whenever boards are added: the view then fits everything, so new ones come into sight. */
+  fitKey?: number
+}
+
+export function Canvas({ children, onViewChange, boards = [], onMoveBoard, onRemoveBoard, renderBoard, fitKey = 0 }: CanvasProps) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const deviceRef = useRef<HTMLDivElement>(null)
   const width = useViewportWidth()
@@ -31,7 +45,7 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
   const fitted = useRef(false)
   const [spaceHeld, setSpaceHeld] = useState(false)
   const [panning, setPanning] = useState(false)
-  const gesture = useRef<{ kind: 'pan' | 'phone'; startX: number; startY: number; origin: { x: number; y: number }; moved: boolean } | null>(null)
+  const gesture = useRef<{ kind: 'pan' | 'phone' | 'board'; boardId?: string; startX: number; startY: number; origin: { x: number; y: number }; moved: boolean } | null>(null)
   const viewRef = useRef(view)
   useLayoutEffect(() => { viewRef.current = view }, [view])
 
@@ -51,18 +65,31 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
     })
   }, [])
 
-  /** Fit the phone in view (never above 100%) and centre it. */
+  const boardsRef = useRef(boards)
+  useLayoutEffect(() => { boardsRef.current = boards }, [boards])
+
+  /** Fit the phone and every board in view (never above 100%) and centre them. */
   const fit = useCallback(() => {
     const el = viewportRef.current
     const device = deviceRef.current
     if (!el || !device) return
     const W = el.clientWidth
     const H = el.clientHeight
-    const w = device.offsetWidth
-    const h = device.offsetHeight
-    if (!W || !H || !w || !h) return
+    if (!W || !H || !device.offsetWidth || !device.offsetHeight) return
+    const BAR = 40 // a board's title bar sits above it
+    const boxes = [
+      { x: phone.x, y: phone.y, w: device.offsetWidth, h: device.offsetHeight },
+      ...boardsRef.current.map((b) => ({ x: b.x, y: b.y - BAR, w: b.width, h: b.height + BAR })),
+    ]
+    const left = Math.min(...boxes.map((b) => b.x))
+    const top = Math.min(...boxes.map((b) => b.y))
+    const w = Math.max(...boxes.map((b) => b.x + b.w)) - left
+    const h = Math.max(...boxes.map((b) => b.y + b.h)) - top
     const zoom = clampZoom(Math.min(1, (W - 96) / w, (H - 64) / h))
-    setView({ zoom, x: (W - w * zoom) / 2 - phone.x * zoom, y: (H - h * zoom) / 2 - phone.y * zoom })
+    // Centre what fits; something too big even at the smallest zoom (a long web page) starts at the top-left instead.
+    const x = w * zoom <= W - 96 ? (W - w * zoom) / 2 : 48
+    const y = h * zoom <= H - 64 ? (H - h * zoom) / 2 : 32 + BAR * zoom
+    setView({ zoom, x: x - left * zoom, y: y - top * zoom })
   }, [phone.x, phone.y])
 
   const setZoom = (zoom: number) => zoomAt(clampZoom(zoom) / viewRef.current.zoom)
@@ -74,6 +101,14 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
     fitted.current = true
     fit()
   }, [fit])
+
+  // New boards: bring everything into view. Only when boards are added, not when one is moved.
+  const lastFit = useRef(fitKey)
+  useLayoutEffect(() => {
+    if (lastFit.current === fitKey) return
+    lastFit.current = fitKey
+    fit()
+  }, [fitKey, fit])
 
   // Let the page re-measure its overlays (selection, badges) after the canvas moves.
   useLayoutEffect(() => { onViewChange?.() }, [view, phone, width, onViewChange])
@@ -143,7 +178,7 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
   // Pan: drag empty canvas, drag anywhere while holding Space, or drag with the middle mouse button.
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
-    const onPhone = !!target.closest(`.${styles.device}`)
+    const onPhone = !!target.closest(`.${styles.device}, .${styles.board}`)
     if (e.button === 1 || spaceHeld || (e.button === 0 && !onPhone)) {
       if (target.closest(`.${styles.zoomBar}`)) return
       e.preventDefault()
@@ -159,6 +194,13 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
     gesture.current = { kind: 'phone', startX: e.clientX, startY: e.clientY, origin: { ...phone }, moved: false }
     setPanning(true)
   }
+  const startBoardMove = (e: ReactPointerEvent<HTMLButtonElement>, b: FigmaBoard) => {
+    e.preventDefault()
+    e.stopPropagation()
+    viewportRef.current?.setPointerCapture(e.pointerId)
+    gesture.current = { kind: 'board', boardId: b.id, startX: e.clientX, startY: e.clientY, origin: { x: b.x, y: b.y }, moved: false }
+    setPanning(true)
+  }
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     const g = gesture.current
     if (!g) return
@@ -166,6 +208,7 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
     const dy = e.clientY - g.startY
     if (!g.moved && Math.hypot(dx, dy) > 3) g.moved = true
     if (g.kind === 'pan') setView((v) => ({ ...v, x: g.origin.x + dx, y: g.origin.y + dy }))
+    else if (g.kind === 'board') onMoveBoard?.(g.boardId!, Math.round(g.origin.x + dx / view.zoom), Math.round(g.origin.y + dy / view.zoom))
     else setPhone({ x: g.origin.x + dx / view.zoom, y: g.origin.y + dy / view.zoom })
   }
   const endGesture = () => {
@@ -208,6 +251,27 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
             </div>
           </div>
         </div>
+
+        {boards.map((b) => (
+          <figure key={b.id} className={styles.board} style={{ left: b.x, top: b.y, width: b.width }}>
+            <figcaption className={styles.boardBar}>
+              <button type="button" className={styles.deviceGrip} aria-label={`Drag to move ${b.name}`} title="Drag to move" onPointerDown={(e) => startBoardMove(e, b)}>
+                <Icon icon={msDragIndicator} size={16} />
+                <span className={styles.boardName}>{b.name}</span>
+                <span className={styles.boardSize}>{b.width} × {b.height}</span>
+              </button>
+              <span className={styles.boardActions}>
+                <a className={styles.boardAction} href={b.url} target="_blank" rel="noreferrer" aria-label={`Open ${b.name} in Figma`} title="Open in Figma">
+                  <Icon icon={msOpenInNew} size={16} />
+                </a>
+                <button type="button" className={styles.boardAction} aria-label={`Remove ${b.name} from the canvas`} title="Remove" onClick={() => onRemoveBoard?.(b.id)}>
+                  <Icon icon={msClose} size={16} />
+                </button>
+              </span>
+            </figcaption>
+            {renderBoard?.(b, view.zoom)}
+          </figure>
+        ))}
       </div>
 
       <div className={styles.zoomBar} role="group" aria-label="Canvas zoom">
@@ -220,7 +284,7 @@ export function Canvas({ children, onViewChange }: { children: ReactNode; onView
         <button type="button" aria-label="Zoom in" title="Zoom in (Ctrl/⌘ +)" onClick={() => zoomAt(1.25)}>
           <Icon icon={msAdd} size={18} />
         </button>
-        <button type="button" aria-label="Fit the phone in view" title="Fit (Shift 1)" onClick={fit}>
+        <button type="button" aria-label="Fit everything in view" title="Fit (Shift 1)" onClick={fit}>
           <Icon icon={msFitScreen} size={18} />
         </button>
       </div>

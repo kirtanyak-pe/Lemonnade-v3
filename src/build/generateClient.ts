@@ -1,5 +1,6 @@
-// Browser side of the Build chat: reads the attached PRD and calls the generation endpoint.
+// Browser side of the Build chat: reads the attached PRD, calls the generation endpoint, and imports Figma links.
 import type { DesignNode } from './design'
+import type { FigmaBoard } from './figmaLinks'
 
 export type PrdFile = { name: string; kind: 'text' | 'pdf'; data: string }
 
@@ -52,4 +53,23 @@ export async function requestDesign(body: GenerateBody, signal: AbortSignal): Pr
   const data = await res.json()
   if (!res.ok) throw new Error(typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.')
   return data as GenerateResponse
+}
+
+const FIGMA_ENDPOINT = '/api/figma'
+
+/** Ask the server to read a Figma link as editable layers: one board per frame, positioned as in Figma. */
+export async function importFigma(url: string, signal: AbortSignal): Promise<{ name: string; boards: Omit<FigmaBoard, 'id'>[]; notes: string[] }> {
+  let res: Response
+  try {
+    res = await fetch(FIGMA_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }), signal })
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') throw err
+    throw new Error('Could not reach the Figma service. Check your connection and try again.')
+  }
+  if (!(res.headers.get('content-type') ?? '').includes('application/json')) {
+    throw new Error('Figma import is not available on this copy of Build: it has no backend connected yet.')
+  }
+  const data = await res.json()
+  if (!res.ok) throw new Error(typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.')
+  return data
 }

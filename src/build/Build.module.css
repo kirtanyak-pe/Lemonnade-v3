@@ -1068,6 +1068,133 @@ p.adjusted {
   touch-action: none;
 }
 
+/* A Figma frame pasted into the chat, at its real size beside the phone. */
+.board {
+  position: absolute;
+  margin: 0;
+}
+
+.boardBar {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--l3-spacing-12);
+  padding-bottom: var(--l3-spacing-12);
+  min-width: 0;
+}
+
+.boardName {
+  overflow: hidden;
+  max-width: calc(var(--l3-size-128) * 2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--l3-content-primary);
+}
+
+.boardSize {
+  color: var(--l3-content-tertiary);
+}
+
+.boardActions {
+  display: flex;
+  gap: var(--l3-spacing-04);
+}
+
+.boardAction {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-default);
+  box-shadow: var(--l3-shadow-elevation-low);
+  color: var(--l3-content-secondary);
+  cursor: pointer;
+}
+
+.boardAction:focus-visible {
+  outline: 2px solid var(--l3-content-primary);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .boardAction:hover {
+    color: var(--l3-content-primary);
+  }
+}
+
+.boardFrame {
+  --figma-select: var(--l3-border-accent-discover-default);
+  position: relative;
+}
+
+.boardLayers {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--l3-shadow-elevation-low);
+  cursor: default;
+  user-select: none;
+}
+
+/* A box's stroke, painted over its content as in Figma. */
+.layerStroke {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.layerEditing {
+  outline: none;
+  cursor: text;
+  user-select: text;
+}
+
+/* Layer edit box (Figma boards). */
+.layerKind {
+  margin: 0;
+  padding: var(--l3-spacing-08) var(--l3-spacing-16);
+  border-bottom: 1px solid var(--l3-border-light);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.layerActions {
+  display: flex;
+  gap: var(--l3-spacing-08);
+}
+
+.colorInput {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--l3-size-40);
+  padding: var(--l3-spacing-04);
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-08);
+  background: transparent;
+  cursor: pointer;
+}
+
+.figmaPanel {
+  position: absolute;
+  top: var(--l3-spacing-16);
+  right: var(--l3-spacing-16);
+  z-index: 8;
+  box-sizing: border-box;
+  width: var(--inspector-width);
+  max-height: calc(100% - var(--l3-spacing-32));
+  overflow-y: auto;
+  border: 1px solid var(--l3-border-light);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-default);
+  box-shadow: var(--l3-shadow-elevation-low);
+}
+
 .deviceGrip:active {
   cursor: grabbing;
 }
@@ -1117,3 +1244,69 @@ p.adjusted {
   }
 }
 
+
+/* Dragging a Figma layer: the frame it will drop into, and where it lands inside auto layout. */
+.figmaDropBox {
+  position: fixed;
+  z-index: 999;
+  box-sizing: border-box;
+  border: 1px solid var(--l3-border-accent-discover-default);
+  pointer-events: none;
+}
+
+.figmaDropLine {
+  position: fixed;
+  z-index: 1001;
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-border-accent-discover-default);
+  pointer-events: none;
+}
+
+/* Name of the hovered or selected layer of a Figma board, kept at screen size whatever the zoom. */
+.layerBadge {
+  position: absolute;
+  z-index: 5;
+  max-width: calc(var(--l3-size-128) * 3);
+  overflow: hidden;
+  padding: var(--l3-spacing-02) var(--l3-spacing-06);
+  border-radius: var(--l3-radius-04);
+  background: var(--l3-surface-accent-discover-default);
+  font: var(--l3-text-label-12);
+  color: var(--l3-static-white);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+
+.layerBadge[data-kind='hover'] {
+  opacity: 0.8;
+}
+
+.layerBadge[hidden] {
+  display: none;
+}
+
+/* Token color choice in the layer edit box. */
+.tokenGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+}
+
+.tokenGroupTitle {
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-tertiary);
+}
+
+.tokenCurrent {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-08);
+  font: var(--l3-text-description-12);
+  color: var(--l3-content-secondary);
+}
+
+.swatchDot[data-unlinked] {
+  border-style: dashed;
+}
