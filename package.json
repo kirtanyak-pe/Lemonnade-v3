@@ -20,7 +20,6 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "0.129.0",
     "@types/node": "24.13.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
@@ -28,6 +27,9 @@
     "oxlint": "1.84.0",
     "typescript": "~6.0.2",
     "vite": "8.3.0"
+  },
+  "optionalDependencies": {
+    "@anthropic-ai/sdk": "0.129.0"
   },
   "overrides": {
     "rolldown": "1.2.9"

@@ -1,6 +1,7 @@
 // Turns a request from the Build chat into a design, by calling Claude. Runs on the server only: the API key never
 // reaches the browser. Written against plain inputs so the same code can move into a Supabase Edge Function later.
-import Anthropic from '@anthropic-ai/sdk'
+// The Claude SDK is an optional dependency, loaded only when a request needs it: the site still builds and runs where
+// the package can't be installed (for example when a company registry blocks it), and the chat says AI is unavailable.
 import type { DesignNode } from '../src/build/design.ts'
 import { fromFlat, mockDesign, outputSchema, toFlat, type FlatNode } from '../src/build/generation.ts'
 import { defaultModel, models, textSizes } from '../src/build/schema.ts'
@@ -67,13 +68,32 @@ When a current design is provided, return the WHOLE updated design, not just the
 
 Reply in one to three short sentences: what you built or changed, then at most three assumptions or open questions. Plain text only, no markdown.`
 
-function client(env: Env) {
-  return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
+// Just the parts of the SDK used here, so type-checking does not need the package installed.
+type TextBlock = { type: 'text'; text: string; cache_control?: { type: 'ephemeral' } }
+type ContentBlock = TextBlock | { type: 'document'; source: { type: 'base64'; media_type: 'application/pdf'; data: string } }
+type MessageParam = { role: 'user' | 'assistant'; content: string | ContentBlock[] }
+type ErrorClass = new (...args: never[]) => Error & { status?: number }
+type Sdk = {
+  default: new (opts: { apiKey?: string }) => {
+    beta: { messages: { stream(params: Record<string, unknown>): { finalMessage(): Promise<{ stop_reason: string | null; content: { type: string; text?: string }[] }> } } }
+  }
+  APIError: ErrorClass
+  AuthenticationError: ErrorClass
+  RateLimitError: ErrorClass
+  BadRequestError: ErrorClass
+}
+
+// A variable specifier keeps TypeScript and the bundler from resolving the package at build time.
+const SDK_PACKAGE = '@anthropic-ai/sdk'
+let sdkPromise: Promise<Sdk | null> | undefined
+function loadSdk(): Promise<Sdk | null> {
+  sdkPromise ??= (import(SDK_PACKAGE) as Promise<Sdk>).catch(() => null)
+  return sdkPromise
 }
 
 /** Build the messages: earlier chat turns as real turns, then this request with the current design and any PRD. */
-function buildMessages(req: GenerateRequest): Anthropic.Beta.BetaMessageParam[] {
-  const messages: Anthropic.Beta.BetaMessageParam[] = []
+function buildMessages(req: GenerateRequest): MessageParam[] {
+  const messages: MessageParam[] = []
   for (const h of req.history.slice(-8)) {
     if (!h.text.trim()) continue
     const last = messages[messages.length - 1]
@@ -94,7 +114,7 @@ function buildMessages(req: GenerateRequest): Anthropic.Beta.BetaMessageParam[] 
   if (req.prd?.kind === 'text') parts.push(`Attached PRD (${req.prd.name}):\n${req.prd.data.slice(0, 120_000)}`)
   parts.push(`Request: ${req.prompt}`)
 
-  const content: Anthropic.Beta.BetaContentBlockParam[] = []
+  const content: ContentBlock[] = []
   if (req.prd?.kind === 'pdf') {
     content.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: req.prd.data } })
   }
@@ -117,18 +137,21 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
     return { reply: mock.reply, tree, warnings, live: false }
   }
 
+  const sdk = await loadSdk()
+  if (!sdk) throw new UserError('AI generation isn’t available: the @anthropic-ai/sdk package is not installed on this machine.')
+
   // Only models on the allowlist can be chosen; anything else falls back to the default.
   const chosen = models.find((m) => m.id === req.model) ?? models.find((m) => m.id === env.BUILD_MODEL) ?? models.find((m) => m.id === defaultModel)!
   const effort = (['low', 'medium', 'high', 'xhigh', 'max'] as const).find((e) => e === env.BUILD_EFFORT) ?? 'medium'
 
   // The rules are identical on every request, so they are cached: repeat requests read them at a fraction of the price.
-  const system: Anthropic.Beta.BetaTextBlockParam[] = [
+  const system: TextBlock[] = [
     { type: 'text', text: INTRO },
     { type: 'text', text: `# Design-system rules\n\n${rules}`, cache_control: { type: 'ephemeral' } },
   ]
 
   try {
-    const stream = client(env).beta.messages.stream({
+    const stream = new sdk.default({ apiKey: env.ANTHROPIC_API_KEY }).beta.messages.stream({
       model: chosen.id,
       max_tokens: 24_000,
       // If a safety classifier declines, the API retries on its default fallback model inside the same call.
@@ -143,7 +166,7 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
     if (message.stop_reason === 'refusal') throw new UserError('Claude declined this request. Try describing the screen differently.')
     if (message.stop_reason === 'max_tokens') throw new UserError('The design was too big to finish. Try asking for one screen at a time.')
 
-    const text = message.content.flatMap((b) => (b.type === 'text' ? [b.text] : [])).join('').trim()
+    const text = message.content.flatMap((b) => (b.type === 'text' && b.text ? [b.text] : [])).join('').trim()
 
     let parsed: { reply?: unknown; nodes?: unknown }
     try {
@@ -155,10 +178,10 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
     return { reply: typeof parsed.reply === 'string' && parsed.reply.trim() ? parsed.reply.trim() : 'Done.', tree, warnings, live: true }
   } catch (err) {
     if (err instanceof UserError) throw err
-    if (err instanceof Anthropic.AuthenticationError) throw new UserError('The Claude API key was rejected. Check ANTHROPIC_API_KEY in .env.local.')
-    if (err instanceof Anthropic.RateLimitError) throw new UserError('Claude is busy or the rate limit was hit. Wait a moment and try again.')
-    if (err instanceof Anthropic.BadRequestError) throw new UserError(`Claude rejected the request: ${err.message}`)
-    if (err instanceof Anthropic.APIError) throw new UserError(`Claude returned an error (${err.status ?? 'network'}). Please try again.`)
+    if (err instanceof sdk.AuthenticationError) throw new UserError('The Claude API key was rejected. Check ANTHROPIC_API_KEY in .env.local.')
+    if (err instanceof sdk.RateLimitError) throw new UserError('Claude is busy or the rate limit was hit. Wait a moment and try again.')
+    if (err instanceof sdk.BadRequestError) throw new UserError(`Claude rejected the request: ${err.message}`)
+    if (err instanceof sdk.APIError) throw new UserError(`Claude returned an error (${err.status ?? 'network'}). Please try again.`)
     throw err
   }
 }
