@@ -144,12 +144,12 @@
 
 .tab[data-appearance='underline'][data-size='md'] {
   --tab-height: var(--l3-size-40);
-  --tab-font: var(--l3-text-label-14); /* 🔷 L3/Label/primary-sb/14 */
+  --tab-font: var(--l3-text-label-14); /* L3/Label/14 */
 }
 
 .tab[data-appearance='underline'][data-size='sm'] {
   --tab-height: var(--l3-spacing-36);
-  --tab-font: var(--l3-text-label-12); /* 🔷 L3/Label/primary-sb/12 */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 */
 }
 
 /* Selected underline tab: primary text and the indicator bar (same font as unselected); Figma has no hover layer on it. */
@@ -184,7 +184,7 @@
   --tab-padding-block: var(--l3-spacing-08);
   --tab-padding-inline: var(--l3-spacing-08);
   --tab-gap: var(--l3-spacing-04);
-  --tab-font: var(--l3-text-label-12); /* 🔷 L3/Label/primary-sb/12 */
+  --tab-font: var(--l3-text-label-12); /* L3/Label/12 */
 }
 
 .tab[data-appearance='pill'][data-size='sm'] {
@@ -192,7 +192,7 @@
   --tab-padding-block: var(--l3-spacing-04);
   --tab-padding-inline: var(--l3-spacing-06);
   --tab-gap: var(--l3-spacing-02);
-  --tab-font: var(--l3-text-label-10); /* 🔷 L3/Label/primary-sb/10 */
+  --tab-font: var(--l3-text-label-10); /* L3/Label/10 */
 }
 
 /*

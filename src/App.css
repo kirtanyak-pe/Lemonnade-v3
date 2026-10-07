@@ -330,10 +330,11 @@ section:first-child > h2 {
   min-width: 0;
 }
 
-.icons-detail-text code {
-  font-size: 12px;
-  overflow-wrap: anywhere;
-  color: var(--l3-content-secondary);
+
+.icons-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--l3-spacing-08);
 }
 
 .icons-grid {

@@ -511,9 +511,8 @@ Still waiting for the exact text from your notes on:
   - **Label** — a literal label (tab, tag, field label), the text typed into an input field, or a **small number** (under 18px, or not the page's key number).
   - **Description** — describes a heading or a label. **Never use Description for a number** — numbers are Label (or Heading when prominent and ≥ 18px).
 - **Figma is the source of truth.** Style weights are bound to `L3/typography/base/weight/heading · label · description`
-  (750 · 650 · 500) and render exactly that — same as code.
-  Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
-  code roles: they render the same.
+  (750 · 650 · 500) and render exactly that — same as code. Figma has exactly these 20 styles: `L3/Heading/10…36`,
+  `L3/Label/10…18`, `L3/Description/10…18`.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
   <!-- PENDING: final usage rules per role and size -->
 
@@ -894,7 +893,7 @@ Brand logo — Figma artwork — never redraw or recolor
 
 Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light · dark) and optional `data-contrast="accessible"` on `<html>` or any wrapper. CS PRO is dark only.
 
-| Token (Figma: 🔷 L3/color/…) | CSS variable | 🍋 LM → Light | 🍋 LM → Dark | CS PRO → Dark | 🐲 Kuber → Light | 🐲 Kuber → Dark |
+| Token (Figma: L3/color/…) | CSS variable | 🍋 LM → Light | 🍋 LM → Dark | CS PRO → Dark | 🐲 Kuber → Light | 🐲 Kuber → Dark |
 |---|---|---|---|---|---|---|
 | `surface/default` | `--l3-surface-default` | `#ffffff` | `#000000` | `#000000` | `#ffffff` | `#000000` |
 | `surface/primary` | `--l3-surface-primary` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |
@@ -1096,26 +1095,26 @@ Roles: **heading** (750) · **label** (650) · **description** (500, with paragr
 
 | CSS variable | Figma style | Weight | Size / line height | Paragraph spacing |
 |---|---|---|---|---|
-| `--l3-text-heading-10` | 🔷 L3/Heading/10 | 750 | 10/12 | 0 |
-| `--l3-text-heading-12` | 🔷 L3/Heading/12 | 750 | 12/16 | 0 |
-| `--l3-text-heading-14` | 🔷 L3/Heading/14 | 750 | 14/20 | 0 |
-| `--l3-text-heading-16` | 🔷 L3/Heading/16 | 750 | 16/22 | 0 |
-| `--l3-text-heading-18` | 🔷 L3/Heading/18 | 750 | 18/24 | 0 |
-| `--l3-text-heading-20` | 🔷 L3/Heading/20 | 750 | 20/26 | 0 |
-| `--l3-text-heading-24` | 🔷 L3/Heading/24 | 750 | 24/30 | 0 |
-| `--l3-text-heading-28` | 🔷 L3/Heading/28 | 750 | 28/36 | 0 |
-| `--l3-text-heading-32` | 🔷 L3/Heading/32 | 750 | 32/42 | 0 |
-| `--l3-text-heading-36` | 🔷 L3/Heading/36 | 750 | 36/46 | 0 |
-| `--l3-text-label-10` | 🔷 L3/Label/primary-sb/10 | 650 | 10/12 | 0 |
-| `--l3-text-label-12` | 🔷 L3/Label/primary-sb/12 | 650 | 12/16 | 0 |
-| `--l3-text-label-14` | 🔷 L3/Label/primary-sb/14 | 650 | 14/20 | 0 |
-| `--l3-text-label-16` | 🔷 L3/Label/primary-sb/16 | 650 | 16/22 | 0 |
-| `--l3-text-label-18` | 🔷 L3/Label/primary-sb/18 | 650 | 18/24 | 0 |
-| `--l3-text-description-10` | 🔷 L3/Description/10 | 500 | 10/12 | 6 |
-| `--l3-text-description-12` | 🔷 L3/Description/12 | 500 | 12/16 | 8 |
-| `--l3-text-description-14` | 🔷 L3/Description/14 | 500 | 14/20 | 10 |
-| `--l3-text-description-16` | 🔷 L3/Description/16 | 500 | 16/22 | 12 |
-| `--l3-text-description-18` | 🔷 L3/Description/18 | 500 | 18/24 | 16 |
+| `--l3-text-heading-10` | L3/Heading/10 | 750 | 10/12 | 0 |
+| `--l3-text-heading-12` | L3/Heading/12 | 750 | 12/16 | 0 |
+| `--l3-text-heading-14` | L3/Heading/14 | 750 | 14/20 | 0 |
+| `--l3-text-heading-16` | L3/Heading/16 | 750 | 16/22 | 0 |
+| `--l3-text-heading-18` | L3/Heading/18 | 750 | 18/24 | 0 |
+| `--l3-text-heading-20` | L3/Heading/20 | 750 | 20/26 | 0 |
+| `--l3-text-heading-24` | L3/Heading/24 | 750 | 24/30 | 0 |
+| `--l3-text-heading-28` | L3/Heading/28 | 750 | 28/36 | 0 |
+| `--l3-text-heading-32` | L3/Heading/32 | 750 | 32/42 | 0 |
+| `--l3-text-heading-36` | L3/Heading/36 | 750 | 36/46 | 0 |
+| `--l3-text-label-10` | L3/Label/10 | 650 | 10/12 | 0 |
+| `--l3-text-label-12` | L3/Label/12 | 650 | 12/16 | 0 |
+| `--l3-text-label-14` | L3/Label/14 | 650 | 14/20 | 0 |
+| `--l3-text-label-16` | L3/Label/16 | 650 | 16/22 | 0 |
+| `--l3-text-label-18` | L3/Label/18 | 650 | 18/24 | 0 |
+| `--l3-text-description-10` | L3/Description/10 | 500 | 10/12 | 6 |
+| `--l3-text-description-12` | L3/Description/12 | 500 | 12/16 | 8 |
+| `--l3-text-description-14` | L3/Description/14 | 500 | 14/20 | 10 |
+| `--l3-text-description-16` | L3/Description/16 | 500 | 16/22 | 12 |
+| `--l3-text-description-18` | L3/Description/18 | 500 | 18/24 | 16 |
 | `--l3-text-label-08` | local — chip tab sub label (8/10) (local) | 650 | 8/10 | 0 |
 
 ---
@@ -1978,7 +1977,7 @@ Tabs — Switch sections, filter or switch views
 ## Recent changes
 
 - **1.7.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
-- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
+- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
 - **1.5.0** (2026-10-02) Hug or fill width: width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
 
 ---

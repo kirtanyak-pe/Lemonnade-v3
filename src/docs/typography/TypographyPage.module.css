@@ -193,16 +193,6 @@
 
 /* ---- Code + legacy -------------------------------------------------------------- */
 
-.code {
-  margin: 0;
-  overflow-x: auto;
-  padding: var(--l3-spacing-16);
-  border-radius: var(--l3-radius-12);
-  background: var(--l3-surface-secondary);
-  font: var(--l3-text-label-12);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  color: var(--l3-content-primary);
-}
 
 .legacy {
   display: flex;

@@ -3,33 +3,35 @@ import { MaskIcon } from '../components/MaskIcon'
 import { msSearch } from '../icons/material'
 import { numberVars, textStyles, themeTokenVars } from '../tokens'
 import { pages } from './pages'
+import { docName } from './names'
 import { tokenHref } from './tokenLinks'
 import { href } from './useHashRoute'
 import styles from './Docs.module.css'
 
-type Entry = { kind: 'Page' | 'Prop' | 'Token'; title: string; detail: string; href: string; keywords: string }
+type Entry = { kind: 'Page' | 'Token'; title: string; detail: string; href: string; keywords: string }
 
 function buildIndex(): Entry[] {
   const entries: Entry[] = []
   for (const p of pages) {
     entries.push({ kind: 'Page', title: p.title, detail: p.group, href: href(p.id), keywords: `${p.altNames ?? ''} ${p.description}`.toLowerCase() })
-    for (const prop of p.props ?? []) {
-      entries.push({ kind: 'Prop', title: prop.name, detail: `${p.title} · ${prop.type}`, href: href(p.id, 'api'), keywords: prop.description.toLowerCase() })
-    }
   }
-  const tokens: [string, string][] = [
-    ...Object.entries(themeTokenVars),
-    ...Object.entries(numberVars),
-    ...textStyles.map((t) => [t.cssVar.replace('--l3-', ''), `${t.figmaName} · ${t.cssVar}`] as [string, string]),
+  // Figma names only (variables and text styles); CSS names are for the agent docs.
+  const variables: [string, string][] = [
+    ...Object.keys(themeTokenVars).map((name) => [name, 'Color variable'] as [string, string]),
+    ...Object.keys(numberVars).map((name) => [name, 'Number variable'] as [string, string]),
   ]
-  for (const [name, detail] of tokens) {
+  for (const [name, detail] of variables) {
     const link = tokenHref(name)
-    if (link) entries.push({ kind: 'Token', title: name, detail, href: link, keywords: '' })
+    if (link) entries.push({ kind: 'Token', title: docName(name), detail, href: link, keywords: name })
+  }
+  for (const t of textStyles) {
+    if ('local' in t) continue
+    entries.push({ kind: 'Token', title: docName(t.figmaName), detail: `Text style · ${t.fontSize}/${t.lineHeight}`, href: href('typography', undefined, { token: t.cssVar.replace('--l3-', '') }), keywords: '' })
   }
   return entries
 }
 
-const kindOrder: Entry['kind'][] = ['Page', 'Prop', 'Token']
+const kindOrder: Entry['kind'][] = ['Page', 'Token']
 
 function search(index: Entry[], query: string): Entry[] {
   const q = query.trim().toLowerCase()
@@ -46,7 +48,7 @@ function search(index: Entry[], query: string): Entry[] {
     .map(([, e]) => e)
 }
 
-/** ⌘K / Ctrl K / "/" search over pages (incl. alternative names), props and tokens. */
+/** ⌘K / Ctrl K / "/" search over pages (incl. alternative names), Figma variables and text styles. */
 export function Search() {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -112,7 +114,7 @@ export function Search() {
             ref={inputRef}
             className={styles.searchInput}
             type="search"
-            placeholder="Search components, props, tokens…"
+            placeholder="Search components, variables, text styles…"
             value={query}
             autoFocus
             onChange={(e) => { setQuery(e.target.value); setActive(0) }}

@@ -4,26 +4,13 @@ import { Tag } from '../components/Tag'
 import { productModes, products } from '../tokens'
 import { msDevices, msEmojiSymbols, msPalette, msWidgets } from '../icons/material'
 import { recentReleases } from './changelog'
-import { CodeBlock, defaults } from './Playground'
-import { pages } from './pages'
+import { defaults } from './Playground'
+import { figmaUrl, pages } from './pages'
 import { playgrounds } from './playgrounds'
 import { href } from './useHashRoute'
 import { foundationThumbs } from './FoundationThumbs'
 import styles from './Docs.module.css'
 
-
-const quickStart = `// main.tsx — themes follow the product / mode chosen by the app
-import './tokens'
-import { ThemeProvider } from './theme'
-
-<ThemeProvider>
-  <App />
-</ThemeProvider>
-
-// Any screen
-import { Button } from './components/Button'
-
-<Button variant="buy" size="lg" fullWidth>Buy</Button>`
 
 export function HomePage() {
   const components = pages.filter((p) => p.group !== 'Foundations' && p.group !== 'Start')
@@ -60,11 +47,11 @@ export function HomePage() {
             <p className={styles.heroEyebrow}>Lemonnade V3 · L3 design system</p>
             <h1 className={styles.heroTitle}>Simplifying investment</h1>
             <p className={styles.heroLede}>
-              React components built from the Figma library, themed with L3 tokens for Lemonn, CS Pro and Kuber, and made for phones first.
+              The Figma library, rules and live examples for designing Lemonn, CS PRO and Kuber — one system, every theme, made for phones first.
             </p>
             <div className={styles.heroActions}>
               <Button size="lg" onClick={() => { window.location.hash = href('button') }}>Browse components</Button>
-              <Button size="lg" variant="secondary" onClick={() => { window.location.hash = href('colors') }}>Foundations</Button>
+              <Button size="lg" variant="secondary" onClick={() => window.open(figmaUrl('0:1'), '_blank', 'noopener')}>Open Figma library</Button>
             </div>
           </div>
           <dl className={styles.stats}>
@@ -125,10 +112,17 @@ export function HomePage() {
       </section>
 
       <section className={styles.section}>
-        <h2>Quick start</h2>
-        <CodeBlock code={quickStart} />
+        <h2>Designing with Lemonnade</h2>
+        <ol className={styles.steps}>
+          <li><strong>Turn on the library.</strong> In your Figma file, open Assets → Libraries and enable <strong>✅ Lemonnade V3</strong> and <strong>👁️ Lemonnade V3 → Icons</strong>.</li>
+          <li><strong>Start from a 360 × 800 frame</strong> and set its variable mode to your product: 🍋 LM, CS PRO or 🐲 Kuber, light or dark.</li>
+          <li><strong>Use library components, not copies.</strong> Change them through their properties and fill their slots — never detach.</li>
+          <li><strong>Only library styles and variables:</strong> L3 text styles for text, L3 color and spacing variables for everything else.</li>
+          <li><strong>Check the rules</strong> on each component's Overview tab before handing off, and look at the screen in light and dark.</li>
+        </ol>
         <p>
-          Use only <code>--l3-*</code> tokens in styles. Search anything with <kbd>⌘K</kbd> or <kbd>/</kbd>, and use the 360 · 392 · 412 switch above any phone preview to check layouts.
+          Search anything with <kbd>⌘K</kbd> or <kbd>/</kbd>, and use the 360 · 392 · 412 switch above any phone preview to check layouts.
+          AI design tools read the same rules as text: <a href="llms.txt">llms.txt</a>.
         </p>
       </section>
 

@@ -164,7 +164,7 @@ for (const p of pages as Page[]) {
   const cols = (themes as { id: string; figmaMode: string }[]).filter((t) => !t.id.startsWith('acc-'))
   const lines = ['# Color tokens', '', '> Every semantic color token with its value in each theme. Use the CSS variable; never the hex.', '',
     'Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light · dark) and optional `data-contrast="accessible"` on `<html>` or any wrapper. CS PRO is dark only.', '',
-    `| Token (Figma: 🔷 L3/color/…) | CSS variable | ${cols.map((c) => c.figmaMode).join(' | ')} |`, `|---|---|${cols.map(() => '---').join('|')}|`]
+    `| Token (Figma: L3/color/…) | CSS variable | ${cols.map((c) => c.figmaMode).join(' | ')} |`, `|---|---|${cols.map(() => '---').join('|')}|`]
   for (const [name, cssVar] of Object.entries(themeTokenVars as Record<string, string>)) {
     lines.push(`| \`${name}\` | \`${cssVar}\` | ${cols.map((c) => { const scope = themeBlocks.get(c.figmaMode) ?? new Map(); const v = scope.get(cssVar); return v ? `\`${resolve(v, scope)}\`` : '—' }).join(' | ')} |`)
   }

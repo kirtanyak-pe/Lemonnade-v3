@@ -7,13 +7,13 @@ import { figmaUrl, navGroups, pages, progressOf, progressTags } from './pages'
 import figmaLogo from './assets/figma-logo.svg'
 import { Playground } from './Playground'
 import { playgrounds } from './playgrounds'
-import { PropsTable } from './PropsTable'
 import { ReleaseTimeline } from './ReleaseTimeline'
 import { ThemesGrid } from './ThemesGrid'
 import { tokenHref, useTokenHighlight } from './tokenLinks'
 import { ComponentTree } from './ComponentTree'
 import { componentTrees } from './trees/componentTrees'
 import type { DocPage } from './types'
+import { docName } from './names'
 import { href } from './useHashRoute'
 import styles from './Docs.module.css'
 
@@ -53,7 +53,7 @@ function tabsFor(page: DocPage): Tab[] {
       ),
     })
   }
-  if (page.props) tabs.push({ id: 'api', label: 'API', content: <PropsTable rows={page.props} /> })
+  // Props (page.props), source and import paths are for code: they live in the AI-agent docs (llms.txt), not on the site.
   if (changelog[page.id]) tabs.push({ id: 'whats-new', label: 'What’s new', content: <ReleaseTimeline releases={changelog[page.id]} /> })
   tabs.push({ id: 'resources', label: 'Resources', content: <Resources page={page} /> })
   return tabs
@@ -180,28 +180,16 @@ function Resources({ page }: { page: DocPage }) {
           </dd>
         </div>
       )}
-      {page.source && (
-        <div>
-          <dt>Source</dt>
-          <dd><code>{page.source}</code></dd>
-        </div>
-      )}
-      {page.source && page.exports && (
-        <div>
-          <dt>Import</dt>
-          <dd><code>{`import { ${page.exports.join(', ')} } from './components/${page.source.split('/').pop()}'`}</code></dd>
-        </div>
-      )}
       {page.tokens && (
         <div>
-          <dt>Tokens</dt>
+          <dt>Figma variables &amp; styles</dt>
           <dd className={styles.tokenList}>
             {page.tokens.map((t) => {
               const link = tokenHref(t)
               return link ? (
-                <a key={t} href={link} className={styles.tokenLink}><code>{t}</code></a>
+                <a key={t} href={link} className={styles.tokenLink}><code>{docName(t)}</code></a>
               ) : (
-                <code key={t} title="No foundation page for this token family yet">{t}</code>
+                <code key={t} title="No foundation page for this token family yet">{docName(t)}</code>
               )
             })}
           </dd>

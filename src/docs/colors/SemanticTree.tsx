@@ -151,10 +151,10 @@ export function SemanticTree({ filter, copied, onCopy }: { filter: string; copie
     roles.length === 0 ? <p className={styles.empty}>No tokens match.</p> : (
       <ul className={styles.leaves}>
         {roles.map((r) => {
-          const v = `var(${cssVar(r.token)})`
+          const v = displayName(r.token)
           return (
             <li key={r.token}>
-              <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${displayName(r.token)} (${r.role}). Copy ${v}`} title={`${r.use}\nClick to copy ${v}`} {...hover(r.token)}>
+              <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${displayName(r.token)} (${r.role}). Copy the name`} title={`${r.use}\nClick to copy ${v}`} {...hover(r.token)}>
                 <span className={styles.swatch} data-kind={isBorder(r.token) ? 'border' : 'fill'} style={{ color: v }} aria-hidden="true" />
                 <span className={styles.leafText}>
                   <code className={styles.leafName}>{copied === v ? 'Copied' : displayName(r.token)}</code>
@@ -202,11 +202,11 @@ export function SemanticTree({ filter, copied, onCopy }: { filter: string; copie
                   {group(`ag:${g.id}`)}
                   <ul className={styles.leaves}>
                     {families.map((f) => {
-                      const v = `var(${cssVar(`surface/accent/${f.path}-default` as ThemeToken)})`
+                      const v = displayName(`surface/accent/${f.path}-default`)
                       const soft = `var(${cssVar(`surface/accent/${f.path}-light` as ThemeToken)})`
                       return (
                         <li key={f.id}>
-                          <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${f.label}: solid and soft. Copy ${v}`} title={`${f.use}\nSolid: surface-accent-${f.path.replace('/', '-')}-default · Soft: …-light\nClick to copy the solid color`} {...hover(`af:${f.id}`)}>
+                          <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${f.label}: solid and soft. Copy the solid color's name`} title={`${f.use}\nSolid: ${v} · Soft: …-light\nClick to copy the solid color`} {...hover(`af:${f.id}`)}>
                             {/* Split swatch: solid (top-left) · soft (bottom-right). */}
                             <span className={styles.swatch} data-kind="split" style={{ background: `linear-gradient(135deg, ${v} 50%, ${soft} 50%)` }} aria-hidden="true" />
                             <span className={styles.leafText}>

@@ -1,5 +1,5 @@
 // Browse / search the full Material Symbols set (like Google's picker). Loaded lazily by the docs.
-import { useDeferredValue, useMemo, useState } from 'react'
+import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { Button } from '../components/Button'
 import { Icon, type IconSize } from '../components/Icon'
 import { Tabs } from '../components/Tabs'
@@ -9,7 +9,6 @@ import icons from '../icons/material/icons.json'
 // URLs only (not inlined), so the browser fetches just the icons on screen.
 const urls = import.meta.glob<string>('../icons/material/rounded/*.svg', { query: '?url&no-inline', import: 'default', eager: true })
 const urlFor = (name: string, fill: boolean) => urls[`../icons/material/rounded/${name}${fill ? '-fill' : ''}.svg`]
-const ident = (name: string) => 'ms' + name.split('_').map((p) => p[0].toUpperCase() + p.slice(1)).join('')
 
 type Entry = (typeof icons)[number]
 const categories = ['All', ...[...new Set(icons.flatMap((i) => i.categories))].sort()]
@@ -22,7 +21,8 @@ export function IconsBrowser() {
   const [fill, setFill] = useState<'outline' | 'fill'>('outline')
   const [limit, setLimit] = useState(PAGE)
   const [picked, setPicked] = useState<Entry | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [done, setDone] = useState<string | null>(null)
+  const [svg, setSvg] = useState<{ url: string; text: string } | null>(null)
   const q = useDeferredValue(query.trim().toLowerCase())
 
   const results = useMemo(() => {
@@ -34,7 +34,33 @@ export function IconsBrowser() {
   }, [q, category])
 
   const isFill = fill === 'fill'
-  const importLine = picked && `import { ${ident(picked.name)}${isFill && picked.hasFill ? 'Fill' : ''} } from '../icons/material'`
+  const fileName = picked && `${picked.name}${isFill && picked.hasFill ? '-fill' : ''}.svg`
+
+  const svgUrl = picked && urlFor(picked.name, isFill && picked.hasFill)
+
+  // Load the picked icon's SVG up front, so Copy runs straight from the click (Safari drops clipboard access after an await).
+  useEffect(() => {
+    if (!svgUrl) return
+    let live = true
+    fetch(svgUrl).then((r) => r.text()).then((text) => { if (live) setSvg({ url: svgUrl, text }) })
+    return () => { live = false }
+  }, [svgUrl])
+  const svgText = svg?.url === svgUrl ? svg.text : null
+
+  // Brief feedback on the button that was used. SVG markup on the clipboard pastes into Figma as an editable vector.
+  const flash = (action: string) => { setDone(action); setTimeout(() => setDone((d) => (d === action ? null : d)), 1500) }
+  const copyText = (action: string, text: string) => {
+    if (!navigator.clipboard) return flash(`${action}-failed`)
+    navigator.clipboard.writeText(text).then(() => flash(action), () => flash(`${action}-failed`))
+  }
+  const label = (action: string, idle: string, ok = 'Copied') =>
+    done === action ? ok : done === `${action}-failed` ? 'Copy blocked' : idle
+  const downloadSvg = () => {
+    const href = URL.createObjectURL(new Blob([svgText!], { type: 'image/svg+xml' }))
+    Object.assign(document.createElement('a'), { href, download: fileName! }).click()
+    setTimeout(() => URL.revokeObjectURL(href))
+    flash('download')
+  }
 
   return (
     <div className="icons-browser">
@@ -65,12 +91,14 @@ export function IconsBrowser() {
           </div>
           <div className="icons-detail-text">
             <strong>{picked.name}</strong>
-            <code>{importLine}</code>
             {!picked.hasFill && isFill && <span className="grid-note">No separate filled version — the outline is used.</span>}
+            <span className="grid-note">Copy SVG, then paste in Figma to get an editable vector (24 × 24).</span>
           </div>
-          <Button size="sm" variant="tertiary" onClick={() => { navigator.clipboard?.writeText(importLine!); setCopied(true); setTimeout(() => setCopied(false), 1500) }}>
-            {copied ? 'Copied' : 'Copy import'}
-          </Button>
+          <div className="icons-detail-actions">
+            <Button size="sm" variant="tertiary" disabled={!svgText} onClick={() => copyText('svg', svgText!)}>{label('svg', 'Copy SVG')}</Button>
+            <Button size="sm" variant="tertiary" disabled={!svgText} onClick={downloadSvg}>{label('download', 'Download SVG', 'Downloaded')}</Button>
+            <Button size="sm" variant="tertiary" onClick={() => copyText('name', picked.name)}>{label('name', 'Copy name')}</Button>
+          </div>
         </div>
       )}
 

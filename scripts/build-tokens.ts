@@ -112,7 +112,7 @@ const fontValue = (value: string) => String(fontTokens.get(refPath(value))?.$val
 const fontLines = [...fontTokens].map(([path, leaf]) =>
   `  ${varName(path)}: ${leaf.$type === 'fontFamily' ? `'${leaf.$value}', sans-serif` : leaf.$value};`)
 
-// Role styles (Figma text styles): text.heading.primary.14 → --l3-text-heading-primary-14 (+ -size, -weight, …).
+// Role styles (Figma text styles): text.heading.14 → --l3-text-heading-14 (+ -size, -weight, …).
 const styleLines = [...textStyles].flatMap(([path, leaf]) => {
   const v = leaf.$value as TypographyValue
   const name = varName(path)
@@ -152,7 +152,7 @@ writeFileSync(root + 'generated/themes.css', `${header}${themeBlocks.join('\n\n'
 writeFileSync(
   root + 'generated/tokens.ts',
   `${header}
-/** Theme token (Figma name without the "🔷 L3/color/" prefix) → CSS custom property. */
+/** Theme token (Figma name without the "L3/color/" prefix) → CSS custom property. */
 export const themeTokenVars = {
 ${tokenPaths.map((p) => `  '${figmaName(p)}': '${varName(p)}',`).join('\n')}
 } as const
@@ -168,8 +168,8 @@ ${[...numbers.keys()].map((p) => `  '${figmaName(p)}': '${varName(p)}',`).join('
 } as const
 
 /**
- * Figma text styles (🔷 L3/…) → CSS custom property. Use as \`font: var(--l3-text-label-primary-12)\`.
- * role: heading-primary · heading-secondary · label-primary · label-secondary · description.
+ * Figma text styles (L3/<Role>/<size>) → CSS custom property. Use as \`font: var(--l3-text-label-12)\`.
+ * role: heading · label · description.
  */
 export const textStyles = [
 ${[...textStyles].map(([path, leaf]) => {

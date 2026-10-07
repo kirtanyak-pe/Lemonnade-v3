@@ -2,10 +2,11 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { textStyles } from '../../tokens'
 import { ComponentTree, type ComponentTreeSpec, type TreeLeaf } from '../ComponentTree'
 import { Switch } from '../../components/Switch'
+import { docName } from '../names'
 import styles from './TypographyPage.module.css'
 
 // Typography foundation page: three roles — Heading (750), Label (650), Description (500) — each a size scale,
-// every style one token: --l3-text-<role>-<size>. Usage rules per role are still a draft.
+// every style a Figma text style (<role>-<size>, e.g. label-14). Code tokens are in the agent docs. Usage rules per role are still a draft.
 
 type Style = (typeof textStyles)[number]
 type Role = Style['role']
@@ -20,7 +21,6 @@ const sizes = [10, 12, 14, 16, 18, 20, 24, 28, 32, 36]
 const inScale = textStyles.filter((s) => !('local' in s))
 const styleFor = (role: Role, size: number) => inScale.find((s) => s.role === role && s.size === String(size))
 const lineHeight = (size: number) => inScale.find((s) => s.fontSize === size)?.lineHeight
-const short = (cssVar: string) => cssVar.replace('--l3-text-', '')
 
 function Section({ id, title, lede, children }: { id: string; title: string; lede?: ReactNode; children: ReactNode }) {
   return (
@@ -63,7 +63,7 @@ export function TypographyPage() {
         <strong>Work in progress.</strong> The styles match Figma; the rules for when to use each role are still being defined, so the guidance below may change.
       </p>
 
-      <Section id="roles" title="Type roles" lede="Every style is Manrope. The role says what the text is (Heading, Label, Description) and sets the weight; the size says how loud it is. LH = line height, PS = paragraph spacing. Hover a box to trace it.">
+      <Section id="roles" title="Type roles" lede="Every style is Manrope, as an L3 text style in Figma (heading-16, label-14…). The role says what the text is (Heading, Label, Description) and sets the weight; the size says how loud it is. LH = line height, PS = paragraph spacing. Hover a box to trace it.">
         <ComponentTree
           spec={tree}
           inlineNotes
@@ -121,7 +121,7 @@ export function TypographyPage() {
                     return (
                       <td key={r.role} data-token={s?.cssVar.replace('--l3-', '')}>
                         {s
-                          ? <span className={styles.cell} style={{ font: `var(${s.cssVar})` }} title={`${s.cssVar} · ${s.figmaName}${s.paragraphSpacing ? ` · paragraph spacing ${s.paragraphSpacing}` : ''}`}>Aa</span>
+                          ? <span className={styles.cell} style={{ font: `var(${s.cssVar})` }} title={`${docName(s.figmaName)}${s.paragraphSpacing ? ` · paragraph spacing ${s.paragraphSpacing}` : ''}`}>Aa</span>
                           : <span className={styles.none} aria-label="Not available">—</span>}
                       </td>
                     )
@@ -133,33 +133,13 @@ export function TypographyPage() {
         </div>
       </Section>
 
-      <Section id="code" title="Using it in code" lede="Each style is one font shorthand token: --l3-text-<role>-<size>. Never set font-size, weight or line-height on their own.">
-        <pre className={styles.code}><code>{`.title {
-  font: var(--l3-text-heading-14);        /* section title, 750 */
-}
-
-.price {
-  font: var(--l3-text-heading-24);        /* key number, 750 */
-}
-
-.tab {
-  font: var(--l3-text-label-14);          /* UI label, 650 */
-}
-
-.helper p + p {
-  font: var(--l3-text-description-12);    /* reading text, 500 */
-  margin-top: var(--l3-text-description-12-paragraph-spacing);
-}`}</code></pre>
-        <p className={styles.lede}>Every style also has parts: <code>-size</code>, <code>-weight</code>, <code>-line-height</code>, <code>-letter-spacing</code> and <code>-paragraph-spacing</code>. The base values are tokens too: <code>--l3-font-size-200</code>, <code>--l3-line-height-200</code>, <code>--l3-font-weight-750</code>.</p>
-      </Section>
-
       {local.length > 0 && (
         <Section id="local" title="Local styles" lede="Used in code but not part of the scale — set directly on one layer in Figma.">
           <ul className={styles.legacy}>
             {local.map((s) => (
               <li key={s.cssVar} data-token={s.cssVar.replace('--l3-', '')}>
                 <span className={styles.legacySample} style={{ font: `var(${s.cssVar})` }}>Aa</span>
-                <code>{short(s.cssVar)}</code>
+                <code>{docName(s.cssVar.replace('--l3-text-', ''))}</code>
                 <span>{s.fontSize}/{s.lineHeight}</span>
                 <span className={styles.legacyNote}>{'local' in s ? s.local : ''}</span>
               </li>

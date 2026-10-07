@@ -1,6 +1,7 @@
 // Data for the Colors foundation page: token groups, usage notes and the alias (base color + opacity)
 // each theme token resolves to, read from the DTCG sources in src/tokens/source.
 import { baseColorVars, themeTokenVars, type ThemeToken } from '../../tokens'
+import { docName } from '../names'
 
 type Leaf = { $value: string; $description?: string; $extensions?: Record<string, string> }
 type Tree = { [key: string]: Tree | Leaf }
@@ -36,6 +37,9 @@ export function aliasOf(token: string, theme: string): string {
   return pct === null ? target : `${target} · ${pct}%`
 }
 
+/** aliasOf for display: dashed names. */
+export const aliasLabel = (token: string, theme: string) => docName(aliasOf(token, theme))
+
 export const cssVar = (token: ThemeToken) => themeTokenVars[token]
 export const allTokens = Object.keys(themeTokenVars) as ThemeToken[]
 
@@ -44,12 +48,12 @@ export const allTokens = Object.keys(themeTokenVars) as ThemeToken[]
 /** `role` is a short display label shown in brackets after the name — presentation only, not part of the token. */
 export type Role = { token: ThemeToken; role: string; use: string }
 
-/** Display form of a token name: dashes instead of slashes (surface/default → surface-default). */
-export const displayName = (token: string) => token.replaceAll('/', '-')
+/** Display form of a token name on the site: parts joined with "-" (surface/default → surface-default). */
+export const displayName = (token: string) => docName(token)
 
 export const surfaces: Role[] = [
   { token: 'surface/default', role: 'Screen BG', use: 'Screen background — the page everything sits on.' },
-  { token: 'surface/primary', role: 'Card', use: 'Raised surfaces: clickable cards, sheets, bars, chips. Same as default in light mode — add border/light.' },
+  { token: 'surface/primary', role: 'Card', use: 'Raised surfaces: clickable cards, sheets, bars, chips. Same as default in light mode — add border-light.' },
   { token: 'surface/secondary', role: 'Tags / targeted emphasis inside a card', use: 'Tags and targeted emphasis inside a card: inner panels, input wells, neutral soft tags.' },
   { token: 'surface/tertiary', role: 'Selected / pressed', use: 'Stronger subtle fill: selected or pressed neutral areas.' },
   { token: 'surface/quaternary', role: 'Strongest fill', use: 'Strongest neutral fill, e.g. an off switch track.' },
@@ -99,7 +103,7 @@ export const accents: Accent[] = [
   { id: 'up', group: 'market', label: 'Profit (indicator up)', path: 'indicator/up', use: 'Price up, positive P&L, buy side. Tag color “profit”.' },
   { id: 'down', group: 'market', label: 'Loss (indicator down)', path: 'indicator/down', use: 'Price down, negative P&L, sell side. Tag color “loss”.' },
   { id: 'success', group: 'status', label: 'Success', path: 'success', use: 'Done: order placed, verified, saved.' },
-  { id: 'warning', group: 'status', label: 'Warning', path: 'warning', use: 'Needs attention, not blocking. Solid fill takes static/black text.' },
+  { id: 'warning', group: 'status', label: 'Warning', path: 'warning', use: 'Needs attention, not blocking. Solid fill takes static-black text.' },
   { id: 'error', group: 'status', label: 'Error', path: 'error', use: 'Failed or blocking: rejected, invalid.' },
   { id: 'discover', group: 'status', label: 'Discover (info)', path: 'discover', use: 'Information, tips, links and inline text actions.' },
   { id: 'orange', group: 'status', label: 'Orange (processing)', path: 'orange', use: 'In progress: open, pending. Tag color “processing”.' },

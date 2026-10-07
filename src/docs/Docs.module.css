@@ -1485,11 +1485,6 @@ legend.sectionLabel {
   color: var(--l3-content-primary);
 }
 
-.propName {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: var(--l3-font-size-regular-100);
-  color: var(--l3-content-tertiary);
-}
 
 /* Pill Tabs as a choice group: wrap onto more lines instead of scrolling options out of view. */
 .controlChoices {
@@ -1504,21 +1499,8 @@ legend.sectionLabel {
   margin-inline: 1px;
 }
 
-.codeWrap {
-  position: relative;
-}
 
-.codeWrap .codeBlock {
-  margin: 0;
-  padding-right: var(--l3-size-80);
-  white-space: pre;
-}
 
-.copyButton {
-  position: absolute;
-  top: var(--l3-spacing-08);
-  right: var(--l3-spacing-08);
-}
 
 
 
@@ -2459,4 +2441,19 @@ legend.sectionLabel {
   }
 
 
+}
+
+/* Home: numbered getting-started steps for designers. */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  margin: 0;
+  padding-left: var(--l3-spacing-24);
+  font: var(--l3-text-description-14);
+  color: var(--l3-content-secondary);
+}
+
+.steps strong {
+  color: var(--l3-content-primary);
 }

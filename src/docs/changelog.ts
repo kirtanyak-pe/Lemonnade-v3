@@ -12,7 +12,8 @@ export type Release = {
   /** Short git commit. */
   commit?: string
   summary: string
-  changes: { kind: ChangeKind; text: string }[]
+  /** `dev`: a code-only change (props, tokens, warnings) — hidden on the designer site, kept in the agent docs. */
+  changes: { kind: ChangeKind; text: string; dev?: boolean }[]
 }
 
 export const changeKindLabels: Record<ChangeKind, string> = {
@@ -31,10 +32,17 @@ const iconsMigration = (): Release['changes'][number] => ({
 export const changelog: Record<string, Release[]> = {
   typography: [
     {
+      version: '3.0.2', date: '2026-10-07',
+      summary: 'Style names match Figma',
+      changes: [
+        { kind: 'figma', text: 'Label styles match Figma (label-10 … 18; were label-primary-sb-…). Names on the site use “-” instead of Figma’s “/”, and drop the 🔷 marker. No visual change.' },
+      ],
+    },
+    {
       version: '3.0.1', date: '2026-10-06',
       summary: 'Figma variable names',
       changes: [
-        { kind: 'figma', text: 'Figma weight variables renamed to L3/typography/base/weight/heading · label · description (750 · 650 · 500). No visual change.' },
+        { kind: 'figma', text: 'Figma weight variables renamed to L3-typography-base-weight-heading · label · description (750 · 650 · 500). No visual change.' },
       ],
     },
     {
@@ -42,7 +50,7 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Three roles',
       changes: [
         { kind: 'changed', text: 'Five roles merged into three: Heading (weight 750, sizes 10–36), Label (650, 10–18) and Description (500, 10–18, with paragraph spacing).' },
-        { kind: 'changed', text: 'Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description.' },
+        { dev: true, kind: 'changed', text: 'Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description.' },
         { kind: 'added', text: 'Manrope is loaded as a variable font (200–800) so 750 and 650 render. Figma styles still to be updated to these weights.' },
       ],
     },
@@ -51,24 +59,33 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Typography from Figma roles',
       changes: [
         { kind: 'figma', text: 'Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles.' },
-        { kind: 'changed', text: 'Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing).' },
-        { kind: 'changed', text: 'Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.' },
+        { dev: true, kind: 'changed', text: 'Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing).' },
+        { dev: true, kind: 'changed', text: 'Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.' },
       ],
     },
   ],
 
   colors: [
     {
+      version: '1.2.0', date: '2026-10-07',
+      summary: 'Figma variable names',
+      changes: [
+        { kind: 'changed', text: 'Colors are shown and copied by their variable name with “-” (surface-secondary), not the code name.' },
+        { kind: 'changed', text: 'Token naming shows full names joined with “-”: L3-color-surface-accent-success-light (Figma groups them with “/”).' },
+        { dev: true, kind: 'changed', text: 'CSS (--l3-…) and TS forms are documented in the agent docs (color-tokens.md) only.' },
+      ],
+    },
+    {
       version: '1.1.0', date: '2026-10-01',
       summary: '♿ Accessible themes and Figma token sync',
       changes: [
-        { kind: 'added', text: '5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with data-contrast="accessible" or the ♿ button in the header.' },
-        { kind: 'figma', text: 'New surface/overlay (the brand’s darkest neutral at 80%) and gradient-stop-0/static/white · black.' },
-        { kind: 'figma', text: 'surface/accent/us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover.' },
+        { kind: 'added', text: '5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with the ♿ button in the header.' },
+        { kind: 'figma', text: 'New surface-overlay (the brand’s darkest neutral at 80%) and gradient-stop-0-static-white · black.' },
+        { kind: 'figma', text: 'surface-accent-us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover.' },
         { kind: 'changed', text: 'New Colors page: how the three color layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy.' },
         { kind: 'added', text: 'Accent groups: Brand · Market indicators (profit / loss) · Status (success, warning, error, discover, orange) · Sub-brands (US stocks, Zing) · Miscellaneous (purple, indigo, teal — exceptional cases only). Also in DESIGN_SYSTEM.md 3.1.' },
         { kind: 'changed', text: 'Accents are shown as one table per group, and border tokens are previewed as outlines instead of fills.' },
-        { kind: 'changed', text: '“How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface/content/border, Button and Tag — with hover-to-trace, plus four illustrated rule cards.' },
+        { kind: 'changed', text: '“How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface-content-border, Button and Tag — with hover-to-trace, plus four illustrated rule cards.' },
         { kind: 'added', text: 'Token naming: anatomy of semantic, accent, component and base names (namespace · property · group · intent · modifier · state), the same token in Figma / CSS / TS, naming rules and a parts glossary. Also in DESIGN_SYSTEM.md 3.2.' },
         { kind: 'changed', text: 'Token names shown with dashes plus a role in brackets, e.g. surface-default (Screen BG) — display only.' },
         { kind: 'added', text: 'List / Tree toggle for surface, content and border. Tree view: Colors → Surface · Icon · Text · Border, with Icon + Text merging into Content, then each role’s tokens (hover to trace, click to copy). The choice is remembered.' },
@@ -93,17 +110,17 @@ export const changelog: Record<string, Release[]> = {
       version: '1.1.0', date: '2026-09-29',
       summary: 'Flat variant',
       changes: [
-        { kind: 'added', text: 'variant="flat": not rounded, no border, no shadow, transparent background; still clickable.' },
-        { kind: 'added', text: 'surface prop to set a card background manually (surface tokens only).' },
-        { kind: 'changed', text: 'Static cards (rounded + border/light) use surface/default; clickable cards stay surface/primary.' },
+        { kind: 'added', text: 'Flat style: not rounded, no border, no shadow, transparent background; still clickable.' },
+        { kind: 'added', text: 'A card background can be set manually (surface variables only).' },
+        { kind: 'changed', text: 'Static cards (rounded + border-light) use surface-default; clickable cards stay surface-primary.' },
       ],
     },
     {
       version: '1.0.0', date: '2026-09-29',
       summary: 'First release',
       changes: [
-        { kind: 'added', text: 'Clickable cards (onClick / href): surface/primary, border/light, elevation-low, press scale 0.98.' },
-        { kind: 'added', text: 'Static cards for information or decoration: surface/primary + border/light, no shadow or press.' },
+        { kind: 'added', text: 'Clickable cards: surface-primary, border-light, elevation-low, press scale 0.98.' },
+        { kind: 'added', text: 'Static cards for information or decoration: surface-primary + border-light, no shadow or press.' },
         { kind: 'a11y', text: 'Development warnings: a clickable card with controls inside, or a static card holding a single action.' },
       ],
     },
@@ -123,12 +140,21 @@ export const changelog: Record<string, Release[]> = {
 
   icons: [
     {
+      version: '1.1.0', date: '2026-10-07',
+      summary: 'Copy and download SVG',
+      changes: [
+        { kind: 'added', text: 'Pick an icon to Copy SVG (pastes into Figma as an editable vector), Download SVG or Copy name.' },
+        { kind: 'changed', text: 'Usage guidance for designers: Figma icon library, sizes, color and fill.' },
+        { dev: true, kind: 'changed', text: 'The import snippet and Copy import button moved to the agent docs.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-09-26', commit: '2998418',
       summary: 'Full Material Symbols Rounded library',
       changes: [
         { kind: 'added', text: '3,900+ icons (outlined + filled), weight 400, grade 0, 24dp optical size, downloaded from Google.' },
-        { kind: 'added', text: '<Icon> component with size tokens and an optional label for meaningful icons.' },
-        { kind: 'added', text: 'npm run icons to pull new icons; only imported icons end up in the app.' },
+        { dev: true, kind: 'added', text: '<Icon> component with size tokens and an optional label for meaningful icons.' },
+        { dev: true, kind: 'added', text: 'npm run icons to pull new icons; only imported icons end up in the app.' },
       ],
     },
   ],
@@ -145,23 +171,23 @@ export const changelog: Record<string, Release[]> = {
       version: '1.4.2', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
       version: '1.4.1', date: '2026-10-01',
       summary: 'CS PRO primary is gold',
       changes: [
-        { kind: 'figma', text: 'CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.' },
+        { kind: 'figma', text: 'CS PRO: Primary button uses the brand gold (surface-accent-brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.' },
       ],
     },
     {
       version: '1.4.0', date: '2026-09-30',
       summary: 'Label & icon rule, usage rules',
       changes: [
-        { kind: 'changed', text: 'At least one of label / iconLeft / iconRight must show, and icon-only buttons have exactly one icon — enforced in TypeScript, with a runtime fallback (left icon wins).' },
+        { dev: true, kind: 'changed', text: 'At least one of label / iconLeft / iconRight must show, and icon-only buttons have exactly one icon — enforced in TypeScript, with a runtime fallback (left icon wins).' },
         { kind: 'added', text: 'Usage rules in src/components/Button/USAGE.md: secondary only next to a stronger button, tertiary when alone (View all), Large only in docks.' },
-        { kind: 'added', text: 'ButtonGroup warns in development when a button isn’t size="lg".' },
+        { dev: true, kind: 'added', text: 'ButtonGroup warns in development when a button isn’t size="lg".' },
       ],
     },
     {
@@ -173,7 +199,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.2.0', date: '2026-09-26', commit: '790abbc',
       summary: 'Built for touch',
       changes: [
-        { kind: 'changed', text: 'Tap area grows to 32px (size/tap-target) without changing the drawn size.' },
+        { kind: 'changed', text: 'Tap area grows to 32px (size-tap-target) without changing the drawn size.' },
         { kind: 'changed', text: 'Hover only on devices that can hover, so taps don’t leave buttons stuck highlighted.' },
       ],
     },
@@ -211,7 +237,7 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Dock rules',
       changes: [
         { kind: 'added', text: 'Usage rules in src/components/ButtonGroup/USAGE.md: what goes in a dock, direction and order, placement, scroll indicator.' },
-        { kind: 'a11y', text: 'Development warnings: non-Large buttons, no strong button (secondary alone), missing aria-label.' },
+        { dev: true, kind: 'a11y', text: 'Development warnings: non-Large buttons, no strong button (secondary alone), missing aria-label.' },
       ],
     },
     {
@@ -312,7 +338,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.0.0', date: '2026-09-26', commit: 'e0dcfb2',
       summary: 'First release',
       changes: [
-        { kind: 'added', text: 'Medium and small sizes, role="switch" on a native checkbox.' },
+        { kind: 'added', text: 'Medium and small sizes.' },
         { kind: 'added', text: 'Knob slides between states (respects reduced motion).' },
       ],
     },
@@ -330,7 +356,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.6.0', date: '2026-10-04',
       summary: 'Typography from Figma',
       changes: [
-        { kind: 'figma', text: 'Text styles follow the new Figma typography: labels use Label / primary (🔷 L3/Label/primary-sb).' },
+        { kind: 'figma', text: 'Text styles follow the new Figma typography: labels use Label primary (label-primary-sb).' },
         { kind: 'changed', text: 'Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).' },
       ],
     },
@@ -338,7 +364,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.5.0', date: '2026-10-02',
       summary: 'Hug or fill width',
       changes: [
-        { kind: 'added', text: 'width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group\'s track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills.' },
+        { kind: 'added', text: 'Width: Hug or Fill. Hug (default): tabs as wide as their labels, and a pill group\'s track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills.' },
         { kind: 'fixed', text: 'A pill group no longer stretches across a flex or grid parent when it should hug.' },
       ],
     },
@@ -347,8 +373,8 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Pill group',
       changes: [
         { kind: 'figma', text: 'Figma “L3: Tabs” is now “L3: Tabs group” (Type: Flat tabs · Pill tabs · Pill group); base tab isChip is now isPill.' },
-        { kind: 'added', text: 'appearance="pill-group": tertiary pills in a surface/secondary track for switching views (Tree / List). Selected pill is a black fill; the rest blend into the track.' },
-        { kind: 'changed', text: 'The separate SegmentedControl component is gone — Figma merged it into the Tabs group as Pill group. Use <Tabs appearance="pill-group"> instead.' },
+        { kind: 'added', text: 'Pill group: tertiary pills in a surface-secondary track for switching views (Tree / List). Selected pill is a black fill; the rest blend into the track.' },
+        { dev: true, kind: 'changed', text: 'The separate SegmentedControl component is gone — Figma merged it into the Tabs group as Pill group. Use <Tabs appearance="pill-group"> instead.' },
       ],
     },
     {
@@ -356,7 +382,7 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Tertiary chips',
       changes: [
         { kind: 'figma', text: 'Figma Type is now Primary · Secondary · Tertiary, each with a selected and an unselected look (Ghost removed, typos fixed).' },
-        { kind: 'added', text: 'emphasis="tertiary": selected black fill, unselected subtle fill (surface/secondary) with no border or elevation.' },
+        { kind: 'added', text: 'Tertiary pills: selected black fill, unselected subtle fill (surface-secondary) with no border or elevation.' },
         { kind: 'changed', text: 'Switching between views moved to the new Segmented control; pill tabs are for filtering.' },
       ],
     },
@@ -373,8 +399,8 @@ export const changelog: Record<string, Release[]> = {
       version: '1.1.0', date: '2026-09-29',
       summary: 'Chip tabs are tappable surfaces',
       changes: [
-        { kind: 'changed', text: 'Unselected chip (pill) tabs add elevation-low to their surface/primary + border/light.' },
-        { kind: 'added', text: 'Chip tabs scale to motion/scale/press-default (0.98) while pressed.' },
+        { kind: 'changed', text: 'Unselected chip (pill) tabs add elevation-low to their surface-primary + border-light.' },
+        { kind: 'added', text: 'Chip tabs scale to motion-scale-press-default (0.98) while pressed.' },
       ],
     },
     {
@@ -407,7 +433,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -419,7 +445,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.1.0', date: '2026-09-29',
       summary: 'Shadow on scroll',
       changes: [
-        { kind: 'added', text: 'elevation-low when content scrolls under the bar: automatic with sticky, or via the new elevated prop.' },
+        { kind: 'added', text: 'elevation-low when content scrolls under the bar.' },
         { kind: 'changed', text: 'Rule: flat tabs at the top go in the bottom slot (docs demos updated).' },
       ],
     },
@@ -445,7 +471,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.0.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -478,15 +504,15 @@ export const changelog: Record<string, Release[]> = {
       version: '2.1.1', date: '2026-10-01',
       summary: 'Overlay token',
       changes: [
-        { kind: 'figma', text: 'The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.' },
+        { kind: 'figma', text: 'The backdrop uses the new surface-overlay token (brand-tinted neutral at 80%) instead of black at 80%.' },
       ],
     },
     {
       version: '2.1.0', date: '2026-09-30',
       summary: 'Stacking rule: back button only on a second sheet',
       changes: [
-        { kind: 'added', text: 'Rule: at most 2 sheets. The first sheet over a screen has no back button; a second sheet on top of it does. A third warns in development.' },
-        { kind: 'changed', text: 'BottomSheetHeader hides onBack on the first sheet inside a modal BottomSheet (development warning).' },
+        { kind: 'added', text: 'Rule: at most 2 sheets. The first sheet over a screen has no back button; a second sheet on top of it does. Never open a third.' },
+        { dev: true, kind: 'changed', text: 'BottomSheetHeader hides onBack on the first sheet inside a modal BottomSheet (development warning).' },
         { kind: 'changed', text: 'Demo: the Buy sheet’s ⓘ opens an “Order types” sheet on top, with back. Playground back button is off by default.' },
       ],
     },
@@ -494,7 +520,7 @@ export const changelog: Record<string, Release[]> = {
       version: '2.0.0', date: '2026-09-30',
       summary: 'Invisible closing, all Figma properties',
       changes: [
-        { kind: 'changed', text: 'Removed the drag handle (dragHandle prop) and the header close button (BottomSheetHeader onClose). Sheets close by tapping the backdrop or dragging.' },
+        { kind: 'changed', text: 'Removed the drag handle and the header close button. Sheets close by tapping the backdrop or dragging.' },
         { kind: 'added', text: 'The whole sheet drags to dismiss: header and footer always, the content once scrolled to the top. Top sheets drag up.' },
         { kind: 'a11y', text: 'A visually hidden Close button (closeLabel) for screen-reader and keyboard users; Esc still closes.' },
         { kind: 'figma', text: '👁️ Content Slot: leaving out children hides the content area and its padding.' },
@@ -546,14 +572,14 @@ export const changelog: Record<string, Release[]> = {
       version: '1.3.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
       version: '1.3.0', date: '2026-09-28', commit: '1718d5d',
       summary: 'Figma color update',
       changes: [
-        { kind: 'figma', text: 'Soft bars: paragraph is content/secondary at 60%.' },
+        { kind: 'figma', text: 'Soft bars: paragraph is content-secondary at 60%.' },
         { kind: 'figma', text: 'Solid Danger and Success use static white text (stays white in dark mode).' },
         { kind: 'figma', text: 'The action keeps Figma’s dark state layer on every bar.' },
       ],
@@ -601,7 +627,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.0.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -626,7 +652,7 @@ export const changelog: Record<string, Release[]> = {
       version: '1.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
@@ -656,14 +682,14 @@ export const changelog: Record<string, Release[]> = {
       version: '2.1.1', date: '2026-10-04',
       summary: 'Typography tokens renamed',
       changes: [
-        { kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
+        { dev: true, kind: 'changed', text: 'Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.' },
       ],
     },
     {
       version: '2.1.0', date: '2026-10-02',
       summary: 'White text on solid success and error',
       changes: [
-        { kind: 'figma', text: 'Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode).' },
+        { kind: 'figma', text: 'Primary (solid) success and error tags use static-white text and icons, like profit and loss (was content-inverted, which turned black in dark mode).' },
         { kind: 'figma', text: 'Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).' },
       ],
     },
@@ -672,9 +698,9 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Figma color set: profit, loss, zing, processing',
       changes: [
         { kind: 'figma', text: 'Colors follow Figma: neutral, profit, loss, success, error, warning, discover, processing, indigo, teal, purple, zing.' },
-        { kind: 'added', text: 'profit / loss use indicator/up·down tokens (white text on solid); zing uses the zing accent.' },
+        { kind: 'added', text: 'profit / loss use indicator-up·down tokens (white text on solid); zing uses the zing accent.' },
         { kind: 'changed', text: 'Renamed green → success, red → error, yellow → warning, orange → processing. The old names still work (deprecated).' },
-        { kind: 'figma', text: 'Neutral Secondary / Tertiary background: surface/tertiary → surface/secondary.' },
+        { kind: 'figma', text: 'Neutral Secondary / Tertiary background: surface-tertiary → surface-secondary.' },
         { kind: 'added', text: 'hideLabel (Figma 👁️ Label): icon-only square tag; the label stays as screen-reader text.' },
         { kind: 'changed', text: 'Docs demos: price changes and Buy/Sell sides use profit / loss, order status uses processing / error.' },
       ],
@@ -687,7 +713,7 @@ export const changelog: Record<string, Release[]> = {
     {
       version: '1.1.0', date: '2026-09-26', commit: '2c82c18',
       summary: 'Accessibility pass',
-      changes: [{ kind: 'a11y', text: 'Removed aria-disabled from static tags (they aren’t controls).' }],
+      changes: [{ dev: true, kind: 'a11y', text: 'Removed aria-disabled from static tags (they aren’t controls).' }],
     },
     {
       version: '1.0.1', date: '2026-09-26', commit: '8d68e35',

@@ -24,6 +24,7 @@ import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, Stoc
 import { PhoneFrame } from './PhoneFrame'
 import { IconsBrowserLazy } from './IconsBrowserLazy'
 import { HomePage } from './HomePage'
+import { DevOnly } from './DevOnly'
 import type { DocPage } from './types'
 import styles from './Docs.module.css'
 
@@ -84,19 +85,31 @@ export const pages: DocPage[] = [
     progress: 'done',
     title: 'Icons',
     group: 'Foundations',
-    description: 'The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.',
+    description: 'The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.',
     content: (
       <>
         <section className={styles.section}>
           <h2>Using an icon</h2>
-          <pre className={styles.codeBlock}><code>{`import { Icon } from './components/Icon'
+          <p>In Figma, place icons from the <strong>👁️ Lemonnade V3 → Icons</strong> library and swap them through a component's ↪ icon properties. Every icon is Material Symbols Rounded (weight 400, grade 0, 24dp) — never mix in another icon set or the 48px version.</p>
+          <ul>
+            <li><strong>Size:</strong> 24 by default; 16 inside small buttons, tabs and tags; 12–24 from the icon-size variables.</li>
+            <li><strong>Color:</strong> icons take the color of the text next to them — use content color variables, never a custom color.</li>
+            <li><strong>Fill off</strong> is the default; the filled version marks a selected or active state.</li>
+            <li>Missing an icon in Figma? Find it below, <strong>Copy SVG</strong> and paste it into Figma, or download it.</li>
+          </ul>
+        </section>
+        <DevOnly>
+          <section>
+            <h2>Using an icon in code</h2>
+            <pre><code>{`import { Icon } from './components/Icon'
 import { msWallet, msWalletFill } from './icons/material'
 
 <Icon icon={msWallet} size={24} />            // decorative
 <Icon icon={msWalletFill} label="Wallet" />    // meaningful → announced
 <Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`}</code></pre>
-          <p>Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google.</p>
-        </section>
+            <p>Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run <code>npm run icons</code> to pull new icons from Google. Import name: <code>ms</code> + the icon name in PascalCase (<code>content_copy</code> → <code>msContentCopy</code>, filled: <code>msContentCopyFill</code>).</p>
+          </section>
+        </DevOnly>
         <IconsBrowserLazy />
       </>
     ),
@@ -121,7 +134,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </div>
         <section className={styles.section}>
           <h2>Full or mark</h2>
-          <p>Use the full logo where there's room: headers, splash, sign-in. Use the mark (<code>variant="icon"</code>) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p>
+          <p>Use the full logo (isFull = True) where there's room: headers, splash, sign-in. Use the mark (isFull = False) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p>
+          <DevOnly><p>Use the full logo where there's room: headers, splash, sign-in. Use the mark (<code>variant="icon"</code>) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Colors stay on brand</h2>
@@ -129,7 +143,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
-          <p>The logo is announced as its brand name. Pass <code>label</code> for something more specific ("Lemonn home"), or <code>decorative</code> when the name is already written next to it.</p>
+          <p>Screen readers read the logo as its brand name. If the brand name is already written next to it, note in the handoff that the logo is decorative.</p>
+          <DevOnly><p>The logo is announced as its brand name. Pass <code>label</code> for something more specific ("Lemonn home"), or <code>decorative</code> when the name is already written next to it.</p></DevOnly>
         </section>
       </>
     ),
@@ -154,7 +169,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4471:29225',
     source: 'src/components/Button',
     exports: ['Button'],
-    tokens: ['component/button/*', 'state-layer/*', 'text-heading-14 · 16', 'text-label-12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
+    tokens: ['component/button/*', 'state-layer/*', 'Heading/14 · 16', 'Label/12', 'size/control-sm · md · lg', 'radius/08 · 12', 'icon-size/16 · 20 · 24', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Order ticket using Buy and Sell buttons">
@@ -184,7 +199,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Label and icons</h2>
-          <p>Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an <code>aria-label</code>). TypeScript rejects the other combinations.</p>
+          <p>👁️ Label, ↪ Icon-L and ↪ Icon-R can each be hidden, but at least one must show. An icon-only button has exactly one icon — and the handoff needs the action's name (e.g. "Share") for screen readers.</p>
+          <DevOnly><p>Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an <code>aria-label</code>). TypeScript rejects the other combinations.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>States</h2>
@@ -233,7 +249,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>What goes in a dock</h2>
-          <p>The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with <code>aria-label</code>.</p>
+          <p>The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen.</p>
+          <DevOnly><p>The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with <code>aria-label</code>.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Scroll indicator</h2>
@@ -293,7 +310,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66091',
     source: 'src/components/TextField',
     exports: ['TextField'],
-    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'text-label-12', 'text-description-12 · 14', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
+    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'Label/12', 'Description/12 · 14', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
     overview: (
       <>
         <PhoneFrame label="Buy order form with quantity, limit price, note and a disabled exchange field">
@@ -301,11 +318,13 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>States come from the input</h2>
-          <p>Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with <code>status</code> — try a quantity of 0 or a price outside the band above.</p>
+          <p>Figma draws six states. Default, Typing (dark border, blue caret) and Typed happen on their own as people type, and Disabled is for fields that can't be used yet. Design Error and Success yourself, with helper text that says what to do — try a quantity of 0 or a price outside the band above.</p>
+          <DevOnly><p>Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with <code>status</code> — try a quantity of 0 or a price outside the band above.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Text box counter</h2>
-          <p>With <code>multiline</code> and <code>maxLength</code> the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.</p>
+          <p>A text box (isInputBox) with a character limit shows “n/max” under it. Typing past the limit is allowed but switches to the Error state with “Character limit reached”.</p>
+          <DevOnly><p>With <code>multiline</code> and <code>maxLength</code> the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.</p></DevOnly>
         </section>
       </>
     ),
@@ -349,7 +368,7 @@ import { msWallet, msWalletFill } from './icons/material'
     props: [
       { name: 'checked', type: 'boolean', description: 'Controlled state (or use defaultChecked).' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: md 34×20, sm 28×16.' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: 'Not drawn in Figma; uses content/disabled.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Not drawn in Figma; uses content-disabled.' },
       { name: '…input props', type: 'InputHTMLAttributes', description: 'onChange, aria-label, id, etc. Renders role="switch".' },
     ],
   },
@@ -365,7 +384,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65938',
     source: 'src/components/Tabs',
     exports: ['Tabs', 'Tab'],
-    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'text-label-08 · 10 · 12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
+    tokens: ['content/primary · secondary · inverted', 'surface/primary · secondary · inverted', 'border/light · dark', 'state-layer/*', 'Label/08 · 10 · 12 · 14', 'radius/12 · full', 'size/24 · 32 · 40', 'spacing/36', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Portfolio screen with underline section tabs and pill filters">
@@ -417,7 +436,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65480',
     source: 'src/components/Actionbar',
     exports: ['Actionbar', 'ActionbarAction'],
-    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'text-heading-14', 'text-description-12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
+    tokens: ['surface/default', 'border/light · dark', 'content/primary · secondary · disabled', 'content/accent/discover (caret)', 'Heading/14', 'Description/12 · 14', 'size/32 · 48', 'state-layer/*', 'radius/full'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an actionbar: back, title, search and watchlist actions, and tabs underneath">
@@ -425,11 +444,13 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Title or search</h2>
-          <p>Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass <code>search</code> and the middle becomes a real search input — tap the search action above.</p>
+          <p>The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.</p>
+          <DevOnly><p>Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass <code>search</code> and the middle becomes a real search input — tap the search action above.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Actions and bottom content</h2>
-          <p><code>ActionbarAction</code> is Figma's round 32px icon button; give it a label so it's announced. <code>bottom</code> is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).</p>
+          <p>The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.</p>
+          <DevOnly><p><code>ActionbarAction</code> is Figma's round 32px icon button; give it a label so it's announced. <code>bottom</code> is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).</p></DevOnly>
         </section>
       </>
     ),
@@ -455,7 +476,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:61961',
     source: 'src/components/BottomNavbar',
     exports: ['BottomNavbar', 'NavIcon', 'navIconNames'],
-    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'text-label-10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
+    tokens: ['surface/primary', 'border/light', 'content/tertiary (unselected)', 'content/accent/success-default (selected)', 'content/primary (nav icon mask)', 'Label/10', 'size/64', 'spacing/04 · 10', 'icon-size/24', 'shadow/elevation-medium', 'state-layer/dark/*'],
     overview: (
       <>
         <PhoneFrame label="App home screen with the bottom navbar: tap Mutual Fund or F&O to open their sub-navs, and Home to come back">
@@ -463,7 +484,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Main nav and sub-navs</h2>
-          <p>The main bar has Stocks, Market, Portfolio, Mutual Fund and F&amp;O. Mutual Fund and F&amp;O each have their own bar. Pass <code>home</code> to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.</p>
+          <p>The main bar has Stocks, Market, Portfolio, Mutual Fund and F&amp;O. Mutual Fund and F&amp;O each have their own bar, which starts with a Home item and a separator to get back. Tap Mutual Fund in the demo above to try it.</p>
+          <DevOnly><p>The main bar has Stocks, Market, Portfolio, Mutual Fund and F&amp;O. Mutual Fund and F&amp;O each have their own bar. Pass <code>home</code> to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Moving between navs</h2>
@@ -471,11 +493,13 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Nav icons</h2>
-          <p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content/tertiary, or success green when selected.</p>
+          <p>The nav icons are custom artwork. Unselected icons are one color and follow the theme; selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. Any other icon is a Material Symbol in content-tertiary, or success green when selected.</p>
+          <DevOnly><p><code>NavIcon</code> is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with <code>&lt;Icon&gt;</code>: it's shown in content-tertiary, or success green when selected.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
-          <p>The bar is a <code>&lt;nav&gt;</code> landmark. Give it a name with <code>aria-label</code>. Each option is a button, or a link when you pass <code>href</code>. The current option is marked with <code>aria-current="page"</code>, and the label is always shown. With <code>fixed</code>, the bar sticks to the bottom of the screen and adds space for the home indicator.</p>
+          <p>Every option always shows its label, and the current one is marked for screen readers. The bar stays at the bottom of the screen and leaves room for the phone's home indicator.</p>
+          <DevOnly><p>The bar is a <code>&lt;nav&gt;</code> landmark. Give it a name with <code>aria-label</code>. Each option is a button, or a link when you pass <code>href</code>. The current option is marked with <code>aria-current="page"</code>, and the label is always shown. With <code>fixed</code>, the bar sticks to the bottom of the screen and adds space for the home indicator.</p></DevOnly>
         </section>
       </>
     ),
@@ -496,7 +520,7 @@ import { msWallet, msWalletFill } from './icons/material'
     title: 'Card',
     group: 'Surfaces',
     description: 'A surface that groups related content. Clickable cards are one tap target; static cards just show information.',
-    status: 'Code first',
+    status: 'Not in Figma yet',
     altNames: 'Tile, panel, container, list item card',
     source: 'src/components/Card',
     exports: ['Card'],
@@ -508,7 +532,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Clickable or static</h2>
-          <p>Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A <strong>clickable</strong> card (<code>onClick</code> or <code>href</code>) also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration: rounded with a border/light outline on surface/default, and no shadow or press.</p>
+          <p>Cards sit on the screen background (surface-default). In light mode that and surface-primary are both white, so every card has a 1px border-light outline. A <strong>clickable</strong> card also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration: rounded with a border-light outline on surface-default, and no shadow or press.</p>
+          <DevOnly><p>Cards sit on the screen background (surface-default). In light mode that and surface-primary are both white, so every card has a 1px border-light outline. A <strong>clickable</strong> card (<code>onClick</code> or <code>href</code>) also gets elevation-low and scales to 0.98 while pressed. A <strong>static</strong> card is for information or decoration: rounded with a border-light outline on surface-default, and no shadow or press.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>One action means a clickable card</h2>
@@ -516,11 +541,12 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Flat cards</h2>
-          <p>A card that isn’t rounded and has no border (<code>variant="flat"</code>) has no background unless you set one with <code>surface</code> — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.</p>
+          <p>A flat card — not rounded, no border — has no background unless you give it one: it's transparent, with no border and no shadow. It can still be clickable: it keeps the press scale and hover tint.</p>
+          <DevOnly><p>A card that isn’t rounded and has no border (<code>variant="flat"</code>) has no background unless you set one with <code>surface</code> — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Same rule for chip tabs</h2>
-          <p>Chip (pill) tabs are tappable surfaces too: unselected chips use surface/primary with border/light and elevation-low, and scale to 0.98 while pressed.</p>
+          <p>Chip (pill) tabs are tappable surfaces too: unselected chips use surface-primary with border-light and elevation-low, and scale to 0.98 while pressed.</p>
         </section>
       </>
     ),
@@ -546,7 +572,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:63932',
     source: 'src/components/BottomSheet',
     exports: ['BottomSheet', 'BottomSheetHeader', 'BottomSheetSurface'],
-    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'text-heading-16 · 20', 'text-description-12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
+    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'Heading/16 · 20', 'Description/12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Stock screen that opens an order bottom sheet, a result sheet and a top sheet">
@@ -601,7 +627,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65562',
     source: 'src/components/Aerobar',
     exports: ['Aerobar'],
-    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'text-label-14', 'text-description-12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
+    tokens: ['surface/tertiary · inverted', 'surface/accent/* (light · default)', 'content/primary · secondary · inverted', 'static/white · black', 'opacity/60 · 80', 'Label/14', 'Description/12', 'radius/12', 'shadow/elevation-low · medium', 'motion/* (local)'],
     overview: (
       <>
         <PhoneFrame label="Stock screen with an inline warning aerobar and floating success or danger toasts">
@@ -618,11 +644,13 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Inline or floating</h2>
-          <p>Without <code>floating</code> it's a full-width strip that sits in the layout (the market-hours warning above). With <code>floating</code> it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.</p>
+          <p>Inline, it's a full-width strip that sits in the layout (the market-hours warning above). Floating (isFloating), it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.</p>
+          <DevOnly><p>Without <code>floating</code> it's a full-width strip that sits in the layout (the market-hours warning above). With <code>floating</code> it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Soft or solid</h2>
-          <p>Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p>
+          <p>Figma's isPrimary: the light tint (False) suits information that can wait; the solid color (True) is for results people should notice straight away. Danger is read out to screen readers immediately; the others politely.</p>
+          <DevOnly><p>Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass <code>role="status"</code> so it isn't read out as an alert on every visit.</p></DevOnly>
         </section>
       </>
     ),
@@ -648,7 +676,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66488',
     source: 'src/components/EmptyState',
     exports: ['EmptyState', 'NoResultsIllustration'],
-    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'text-heading-16', 'text-label-14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
+    tokens: ['surface/default', 'content/primary · secondary', 'surface/accent/brand-default (illustration)', 'static/black · white (illustration)', 'Heading/16', 'Label/14', 'spacing/04 · 16 · 24', 'size/illustration (local, 120px)'],
     overview: (
       <>
         <PhoneFrame label="Stock search with no matches: the empty state with a Clear button">
@@ -660,11 +688,13 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Illustration</h2>
-          <p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p>
+          <p>The default is Figma's magnifier, and it follows the theme, including the brand color. You can swap in your own 120px artwork through the Illustration slot, or hide it.</p>
+          <DevOnly><p>The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to <code>illustration</code>, or <code>null</code> to hide it.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Layout and accessibility</h2>
-          <p>The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use <code>headingLevel=&#123;3&#125;</code> under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.</p>
+          <p>The empty state fills the space it's in and centres itself; Figma's frame is a fixed 412px tall. If results change as someone types, the result count should be announced to screen readers — note it in the handoff.</p>
+          <DevOnly><p>The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use <code>headingLevel=&#123;3&#125;</code> under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.</p></DevOnly>
         </section>
       </>
     ),
@@ -687,7 +717,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65400',
     source: 'src/components/ListCell',
     exports: ['ListCell'],
-    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'text-label-14 · 16', 'text-description-12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'Label/14 · 16', 'Description/12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
     overview: (
       <>
         <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
@@ -699,7 +729,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Tappable rows</h2>
-          <p>Use <code>as="button"</code> or <code>href</code> to make the whole row tappable with a pressed tint. Use <code>as="label"</code> with a Switch or Checkbox in <code>trailing</code> so tapping anywhere on the row toggles it — try “Biometric login”.</p>
+          <p>A whole row can be tappable, with a pressed tint — show a chevron or a control on the right so people know. A row with a Switch or Checkbox toggles it when tapped anywhere — try “Biometric login”.</p>
+          <DevOnly><p>Use <code>as="button"</code> or <code>href</code> to make the whole row tappable with a pressed tint. Use <code>as="label"</code> with a Switch or Checkbox in <code>trailing</code> so tapping anywhere on the row toggles it — try “Biometric login”.</p></DevOnly>
         </section>
       </>
     ),
@@ -725,7 +756,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4464:27218',
     source: 'src/components/Tag',
     exports: ['Tag'],
-    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'text-label-10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
+    tokens: ['surface/accent/*', 'content/accent/*', 'border/accent/*', 'surface/accent/indicator/*', 'surface/inverted', 'surface/secondary', 'static/black', 'static/white', 'Label/10 · 12 · 14', 'radius/04', 'size/16 · 20 · 24'],
     overview: (
       <>
         <PhoneFrame label="Watchlist using tags for exchange, segment and price change">

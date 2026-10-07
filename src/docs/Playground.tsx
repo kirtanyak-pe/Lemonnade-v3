@@ -5,7 +5,7 @@ import { ListCell } from '../components/ListCell'
 import { Switch } from '../components/Switch'
 import { Tabs } from '../components/Tabs'
 import { TextField } from '../components/TextField'
-import { msCheck, msContentCopy, msRestartAlt } from '../icons/material'
+import { msRestartAlt } from '../icons/material'
 import { PhoneFrame } from './PhoneFrame'
 import styles from './Docs.module.css'
 
@@ -15,12 +15,12 @@ type ControlBase = {
   label?: string
   /** Only show the control when it applies (e.g. indeterminate only for a checkbox). */
   showIf?: (v: Values) => boolean
-  /** The real prop it sets, shown under the label; defaults to `name`, `false` hides it (demo-only controls). */
+  /** The code prop it sets (for reference; the site shows Figma names only). `false` = demo-only control. */
   prop?: string | false
 }
 
 export type Control =
-  | (ControlBase & { type: 'select'; options: readonly string[]; default: string })
+  | (ControlBase & { type: 'select'; options: readonly string[]; default: string; /** Figma names for the options; default: capitalized value. */ optionLabels?: Record<string, string> })
   | (ControlBase & { type: 'boolean'; default: boolean })
   | (ControlBase & { type: 'text'; default: string })
 
@@ -48,12 +48,11 @@ const groups: { type: Control['type']; title: string }[] = [
   { type: 'boolean', title: 'Options' },
 ]
 
-/** Live preview + controls + the matching JSX, with a copy button. */
+/** Live preview + controls, labelled with Figma property names (designer-facing: no code). */
 export function Playground({ def }: { def: PlaygroundDef }) {
   const initial = defaults(def)
   const [values, setValues] = useState<Values>(initial)
   const set = (name: string, value: string | boolean) => setValues((v) => ({ ...v, [name]: value }))
-  const code = def.code(values)
   const visible = def.controls.filter((c) => !c.showIf || c.showIf(values))
   const changed = def.controls.filter((c) => values[c.name] !== initial[c.name]).length
 
@@ -62,9 +61,9 @@ export function Playground({ def }: { def: PlaygroundDef }) {
       <PhoneFrame compact label="Playground preview">
         <div className={styles.playgroundCanvas}>{def.render(values)}</div>
       </PhoneFrame>
-      <aside className={styles.controls} aria-label="Props">
+      <aside className={styles.controls} aria-label="Properties">
         <div className={styles.controlsHeader}>
-          <h3>Props</h3>
+          <h3>Properties</h3>
           <Button
             size="sm"
             variant="ghost"
@@ -88,15 +87,12 @@ export function Playground({ def }: { def: PlaygroundDef }) {
           )
         })}
       </aside>
-      <CodeBlock code={code} />
     </div>
   )
 }
 
 function ControlInput({ control, value, onChange }: { control: Control; value: string | boolean; onChange: (v: string | boolean) => void }) {
   const label = control.label ?? humanize(control.name)
-  const prop = control.prop === undefined ? control.name : control.prop
-  const propName = prop ? <code className={styles.propName}>{prop}</code> : undefined
 
   if (control.type === 'boolean') {
     // The whole row is the label, so tapping anywhere on it flips the switch.
@@ -106,7 +102,6 @@ function ControlInput({ control, value, onChange }: { control: Control; value: s
         size="sm"
         className={styles.controlCell}
         label={label}
-        description={propName}
         trailing={<Switch size="sm" checked={value as boolean} onChange={(e) => onChange(e.target.checked)} />}
       />
     )
@@ -115,13 +110,13 @@ function ControlInput({ control, value, onChange }: { control: Control; value: s
   if (control.type === 'select') {
     return (
       <div className={styles.controlField}>
-        <span className={styles.controlLabel} aria-hidden="true">{label}{propName && <> {propName}</>}</span>
+        <span className={styles.controlLabel} aria-hidden="true">{label}</span>
         <Tabs
           appearance="pill"
           size="md"
           className={styles.controlChoices}
           aria-label={label}
-          items={control.options.map((o) => ({ value: o, label: o }))}
+          items={control.options.map((o) => ({ value: o, label: control.optionLabels?.[o] ?? o[0].toUpperCase() + o.slice(1) }))}
           value={value as string}
           onChange={onChange}
         />
@@ -133,8 +128,6 @@ function ControlInput({ control, value, onChange }: { control: Control; value: s
     <TextField
       className={styles.controlText}
       label={label}
-      helperText={propName}
-      helperIcon={false}
       value={value as string}
       placeholder="Empty"
       onChange={(e) => onChange(e.target.value)}
@@ -142,30 +135,7 @@ function ControlInput({ control, value, onChange }: { control: Control; value: s
   )
 }
 
-/** Code sample with a Copy button (announces "Copied"). */
-export function CodeBlock({ code }: { code: string }) {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1600)
-    } catch {
-      setCopied(false)
-    }
-  }
-  return (
-    <div className={styles.codeWrap}>
-      <pre className={styles.codeBlock}><code>{code}</code></pre>
-      <Button size="sm" variant="secondary" className={styles.copyButton} iconLeft={<Icon icon={copied ? msCheck : msContentCopy} size={16} />} onClick={copy}>
-        {copied ? 'Copied' : 'Copy'}
-      </Button>
-      <span className={styles.visuallyHidden} aria-live="polite">{copied ? 'Code copied' : ''}</span>
-    </div>
-  )
-}
-
-// ---- JSX string helpers -------------------------------------------------------
+// ---- JSX string helpers (playground `code`: kept for reference, not shown on the site) -------------------------------------------------------
 
 type Attr = [name: string, value: string | boolean | undefined, defaultValue?: string | boolean]
 

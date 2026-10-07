@@ -49,9 +49,9 @@ export const buttonTree: ComponentTreeSpec = {
       label: 'Size',
       note: 'Where it sits',
       leaves: [
-        { id: 's-lg', label: 'lg · 48', note: 'Docks / ButtonGroup (always) and the main CTA.', preview: <Button size="lg">Continue</Button> },
-        { id: 's-md', label: 'md · 40', note: 'Inside content: cards, sheet bodies, forms.', preview: <Button size="md">Continue</Button> },
-        { id: 's-sm', label: 'sm · 32', note: 'Compact spots: empty states, inline rows, toolbars.', preview: <Button size="sm">Continue</Button> },
+        { id: 's-lg', label: 'Large · 48', note: 'Button docks (always) and the main CTA.', preview: <Button size="lg">Continue</Button> },
+        { id: 's-md', label: 'Medium · 40', note: 'Inside content: cards, sheet bodies, forms.', preview: <Button size="md">Continue</Button> },
+        { id: 's-sm', label: 'Small · 32', note: 'Compact spots: empty states, inline rows, toolbars.', preview: <Button size="sm">Continue</Button> },
       ],
     },
     {
@@ -72,7 +72,7 @@ export const buttonTree: ComponentTreeSpec = {
         { id: 'c-label', label: 'label', note: 'Verb first, 1–3 words.', preview: <Button size="md" variant="tertiary">Add funds</Button> },
         { id: 'c-left', label: 'icon left + label', note: 'Icon reinforces the action.', preview: <Button size="md" variant="tertiary" iconLeft={<Icon icon={msAdd} />}>Add</Button> },
         { id: 'c-right', label: 'label + icon right', note: 'Icon shows direction.', preview: <Button size="md" variant="tertiary" iconRight={<Icon icon={msArrowForward} />}>Continue</Button> },
-        { id: 'c-icon', label: 'icon only', note: 'Exactly one icon + aria-label. Never two icons without a label.', preview: <Button size="md" variant="tertiary" aria-label="Share" iconLeft={<Icon icon={msShare} />} /> },
+        { id: 'c-icon', label: 'icon only', note: 'Exactly one icon, named for screen readers. Never two icons without a label.', preview: <Button size="md" variant="tertiary" aria-label="Share" iconLeft={<Icon icon={msShare} />} /> },
       ],
     },
   ],

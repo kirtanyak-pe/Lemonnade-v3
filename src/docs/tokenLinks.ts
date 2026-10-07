@@ -3,7 +3,7 @@ import { href } from './useHashRoute'
 
 /**
  * Turns a token name — or a Resources chip like "content/primary · secondary",
- * "text-label-primary-12 · 14", "state-layer/*" — into a link to the foundation page that shows it,
+ * "Label/12 · 14" (a text style), "state-layer/*" — into a link to the foundation page that shows it,
  * with ?token= so that page scrolls to and highlights it. Returns null for families without a page
  * (shadow, motion, opacity).
  */
@@ -11,7 +11,8 @@ export function tokenHref(label: string): string | null {
   const name = label.trim().split(/\s/)[0]
   if (/^(surface|content|border|component|static)\//.test(name)) return href('colors', undefined, { token: name })
   if (name.startsWith('state-layer/')) return href('colors', undefined, { token: `component/${name}` })
-  if (name.startsWith('text-')) return href('typography', undefined, { token: name })
+  const style = /^(Heading|Label|Description)\/(\d+)$/.exec(name)
+  if (style) return href('typography', undefined, { token: `text-${style[1].toLowerCase()}-${style[2]}` })
   if (/^(spacing|radius|size|icon-size)\//.test(name)) return href('spacing', undefined, { token: name })
   return null
 }

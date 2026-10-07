@@ -4,7 +4,7 @@
 
 Themes are chosen with `data-product` (lm · cspro · kuber), `data-mode` (light · dark) and optional `data-contrast="accessible"` on `<html>` or any wrapper. CS PRO is dark only.
 
-| Token (Figma: 🔷 L3/color/…) | CSS variable | 🍋 LM → Light | 🍋 LM → Dark | CS PRO → Dark | 🐲 Kuber → Light | 🐲 Kuber → Dark |
+| Token (Figma: L3/color/…) | CSS variable | 🍋 LM → Light | 🍋 LM → Dark | CS PRO → Dark | 🐲 Kuber → Light | 🐲 Kuber → Dark |
 |---|---|---|---|---|---|---|
 | `surface/default` | `--l3-surface-default` | `#ffffff` | `#000000` | `#000000` | `#ffffff` | `#000000` |
 | `surface/primary` | `--l3-surface-primary` | `#ffffff` | `#161616` | `#11141c` | `#ffffff` | `#101110` |

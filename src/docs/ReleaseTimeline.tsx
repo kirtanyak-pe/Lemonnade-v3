@@ -38,18 +38,17 @@ export function ReleaseTimeline({ releases }: { releases: Release[] }) {
                 {state === 'upcoming' && <Tag variant="secondary" color="neutral" size="sm">Not in code yet</Tag>}
                 <span className={styles.releaseMeta}>
                   <time dateTime={r.date}>{formatDate(r.date)}</time>
-                  {r.commit && <> · <code>{r.commit}</code></>}
                 </span>
               </div>
               <p className={styles.releaseSummary}>{r.summary}</p>
-              <ul className={styles.releaseChanges}>
-                {r.changes.map((c) => (
+              {r.changes.some((c) => !c.dev) && <ul className={styles.releaseChanges}>
+                {r.changes.filter((c) => !c.dev).map((c) => (
                   <li key={c.text}>
                     <Tag variant="secondary" color={kindColors[c.kind]} size="sm">{changeKindLabels[c.kind]}</Tag>
                     <span>{c.text}</span>
                   </li>
                 ))}
-              </ul>
+              </ul>}
             </li>
           )
         })}

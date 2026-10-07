@@ -22,72 +22,65 @@ const partLabels: Record<PartKind, string> = {
 type Example = {
   value: string
   label: string
-  /** `alts`: other values the part can take, shown faded above it (nearest first; up to 4 — fewer when that's all there is). */
+  /** The name split into parts, joined with "-". `alts`: other values the part can take, shown faded above it (nearest first; up to 4). */
   parts: { text: string; kind: PartKind; alts?: string[] }[]
-  figma: string
-  ts: string
 }
 
 const examples: Example[] = [
   {
     value: 'semantic',
     label: 'Semantic',
-    parts: [{ text: 'l3', kind: 'namespace' }, { text: 'surface', kind: 'property', alts: ['content', 'border'] }, { text: 'secondary', kind: 'modifier', alts: ['primary', 'tertiary', 'default', 'inverted'] }],
-    figma: '🔷 L3/color/surface/secondary',
-    ts: "token('surface/secondary')",
+    parts: [{ text: 'L3-color', kind: 'namespace' }, { text: 'surface', kind: 'property', alts: ['content', 'border'] }, { text: 'secondary', kind: 'modifier', alts: ['primary', 'tertiary', 'default', 'inverted'] }],
   },
   {
     value: 'accent',
     label: 'Accent',
     parts: [
-      { text: 'l3', kind: 'namespace' },
+      { text: 'L3-color', kind: 'namespace' },
       { text: 'surface', kind: 'property', alts: ['content', 'border'] },
       { text: 'accent', kind: 'group' },
       { text: 'success', kind: 'intent', alts: ['error', 'warning', 'discover', 'brand'] },
       { text: 'light', kind: 'modifier', alts: ['default'] },
     ],
-    figma: '🔷 L3/color/surface/accent/success-light',
-    ts: "token('surface/accent/success-light')",
   },
   {
     value: 'component',
     label: 'Component',
     parts: [
-      { text: 'l3', kind: 'namespace' },
+      { text: 'L3-color', kind: 'namespace' },
+      { text: 'component', kind: 'tier' },
       { text: 'button', kind: 'component' },
       { text: 'primary', kind: 'variant', alts: ['buy', 'sell', 'brand', 'ghost'] },
       { text: 'surface', kind: 'property', alts: ['content', 'border'] },
       { text: 'disabled', kind: 'state', alts: ['loading'] },
     ],
-    figma: '🔷 L3/color/component/button/primary/surface-disabled',
-    ts: "token('component/button/primary/surface-disabled')",
   },
   {
     value: 'base',
     label: 'Base palette',
     parts: [
-      { text: 'l3', kind: 'namespace' },
+      { text: 'L3-color', kind: 'namespace' },
       { text: 'base', kind: 'tier' },
       { text: 'hue', kind: 'group' },
       { text: 'green', kind: 'intent', alts: ['red', 'blue', 'yellow', 'orange'] },
       { text: '500', kind: 'modifier', alts: ['400', '600', '100', '900'] },
     ],
-    figma: 'L3-color-base/hue/green/500',
-    ts: "baseColorVars['hue/green/500']",
   },
 ]
 
+const fullName = (e: Example) => e.parts.map((p) => p.text).join('-')
+
 /** What each part can be. */
 const glossary: { kind: PartKind; values: string; note: string }[] = [
-  { kind: 'namespace', values: 'l3', note: 'Every Lemonnade V3 token starts with it (--l3-…), so it never clashes with other CSS.' },
+  { kind: 'namespace', values: 'L3-color', note: 'Every Lemonnade V3 color variable starts with it; the site leaves it out of short names (surface-secondary).' },
   { kind: 'property', values: 'surface · content · border', note: 'What it paints: a fill, text and icons, or an outline.' },
-  { kind: 'group', values: 'accent (semantic) · hue / neutral (base)', note: 'Optional. Marks a color family; neutrals have none.' },
+  { kind: 'group', values: 'accent (semantic) · hue · neutral (base)', note: 'Optional. Marks a color family; neutrals have none.' },
   { kind: 'intent', values: 'brand · indicator-up · indicator-down · success · warning · error · discover · orange · us-stock · zing · purple · indigo · teal', note: 'The meaning — see Accent groups.' },
   { kind: 'modifier', values: 'neutrals: default · primary · secondary · tertiary · quaternary · inverted · disabled · overlay — accents: light · default', note: 'Level or emphasis within the property.' },
-  { kind: 'component', values: 'button · state-layer', note: 'Component tokens only.' },
-  { kind: 'variant', values: 'primary · secondary · tertiary · ghost · brand · buy · sell (state-layer: light · dark)', note: 'Matches the component’s variant prop.' },
+  { kind: 'component', values: 'button · state-layer', note: 'Component variables only.' },
+  { kind: 'variant', values: 'primary · secondary · tertiary · ghost · brand · buy · sell (state-layer: light · dark)', note: 'Matches the component’s Type property.' },
   { kind: 'state', values: 'loading · disabled (state-layer: default · hover · pressed)', note: 'Optional. No suffix = the default state.' },
-  { kind: 'tier', values: 'base', note: 'Primitives. Never used in UI.' },
+  { kind: 'tier', values: 'component · base', note: 'component = variables owned by one component; base = primitives, never used in UI.' },
 ]
 
 /**
@@ -133,8 +126,7 @@ function Anatomy({ example }: { example: Example }) {
   const maxRow = Math.max(0, ...rows)
   return (
     <div className={styles.anatomyScroll}>
-      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow, '--alt-rows': altRows } as CSSProperties} role="img" aria-label={`--${example.parts.map((p) => p.text).join('-')}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
-        <span className={styles.prefix} aria-hidden="true">--</span>
+      <div ref={ref} className={styles.anatomy} style={{ '--rows': maxRow, '--alt-rows': altRows } as CSSProperties} role="img" aria-label={`${fullName(example)}: ${example.parts.map((p) => `${p.text} is the ${partLabels[p.kind].toLowerCase()}`).join(', ')}`}>
         {example.parts.map((p, i) => (
           <span key={i} className={styles.partGroup} aria-hidden="true">
             {i > 0 && <span className={styles.sep}>-</span>}
@@ -176,14 +168,12 @@ export function TokenNaming() {
       </div>
 
       <dl className={styles.forms}>
-        <div><dt>Figma</dt><dd><code>{example.figma}</code></dd></div>
-        <div><dt>CSS</dt><dd><code>var(--{example.parts.map((p) => p.text).join('-')})</code></dd></div>
-        <div><dt>TS</dt><dd><code>{example.ts}</code></dd></div>
+        <div><dt>Full name</dt><dd><code>{fullName(example)}</code></dd></div>
       </dl>
 
       <ul className={styles.rules}>
         <li><strong>Order is fixed:</strong> namespace · (component · variant) · property · (group · intent) · modifier · (state).</li>
-        <li><strong>Lowercase, words joined by dashes.</strong> Figma separates parts with “/”, CSS with “-”.</li>
+        <li><strong>Parts are joined with “-”.</strong> Figma shows “/” only to group variables in its panels: <code>surface-accent-success-light</code> is <code>surface/accent/success-light</code> there.</li>
         <li><strong>Name by role, never by color:</strong> <code>content-secondary</code>, not <code>grey-60</code>. Only the base palette names colors.</li>
         <li><strong>Leave out what's default:</strong> no state = default state; neutrals have no group or intent.</li>
       </ul>

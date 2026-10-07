@@ -1,4 +1,5 @@
 import { numberVars, type NumberToken } from '../tokens'
+import { docName } from '../docs/names'
 
 const names = Object.keys(numberVars) as NumberToken[]
 const byGroup = (prefix: string) => names.filter((n) => n.startsWith(prefix))
@@ -11,7 +12,7 @@ export function NumbersPreview() {
         <ul className="num-list">
           {byGroup('spacing/').map((n) => (
             <li key={n} data-token={n}>
-              <span className="num-name">{n}</span>
+              <span className="num-name">{docName(n)}</span>
               <span className="num-bar" style={{ width: `var(${numberVars[n]})` }} />
             </li>
           ))}
@@ -24,7 +25,7 @@ export function NumbersPreview() {
           {byGroup('radius/').map((n) => (
             <li key={n} data-token={n}>
               <span className="num-box" style={{ borderRadius: `var(${numberVars[n]})` }} />
-              <span className="num-name">{n}</span>
+              <span className="num-name">{docName(n)}</span>
             </li>
           ))}
         </ul>
@@ -36,7 +37,7 @@ export function NumbersPreview() {
           {[...byGroup('size/'), ...byGroup('icon-size/')].map((n) => (
             <li key={n} data-token={n}>
               <span className="num-square" style={{ width: `var(${numberVars[n]})`, height: `var(${numberVars[n]})` }} />
-              <span className="num-name">{n}</span>
+              <span className="num-name">{docName(n)}</span>
             </li>
           ))}
         </ul>

@@ -8,8 +8,8 @@ import { msAccountTree, msSearch, msViewList } from '../../icons/material'
 import { productLabels, productModes, products, type ThemeToken } from '../../tokens'
 import { useTheme } from '../../theme'
 import {
-  accentGroups, accentSlots, accents, aliasOf, allTokens, baseVar, borders, buttonParts, buttonStates, buttonVariants,
-  contents, cssVar, displayName, isToken, opacityScale, ramps, stateLayers, statics, surfaces, themeId, type Role,
+  accentGroups, accentSlots, accents, allTokens, baseVar, borders, buttonParts, buttonStates, buttonVariants,
+  aliasLabel, contents, cssVar, displayName, isToken, opacityScale, ramps, stateLayers, statics, surfaces, themeId, type Role,
 } from './colorData'
 import styles from './ColorsPage.module.css'
 import { TokenNaming } from './TokenNaming'
@@ -74,10 +74,10 @@ function TokenRow({ role, filter, theme, copy }: { role: Role; filter: string; t
   const [ref, hex] = useResolved(theme.key)
   const v = cssVar(role.token)
   if (!matches(filter, role.token, displayName(role.token), role.role, role.use)) return null
-  const copied = copy.copied === `var(${v})`
+  const copied = copy.copied === displayName(role.token)
   return (
     <li className={styles.row} data-token={role.token}>
-      <button type="button" className={styles.rowButton} onClick={() => copy.copy(`var(${v})`)} aria-label={`Copy var(${v})`}>
+      <button type="button" className={styles.rowButton} onClick={() => copy.copy(displayName(role.token))} aria-label={`Copy ${displayName(role.token)}`}>
         <span ref={ref} className={styles.chip} data-kind={isBorder(role.token) ? 'border' : 'fill'} style={{ color: `var(${v})` }} aria-hidden="true" />
         <span className={styles.rowText}>
           <span className={styles.tokenName}>
@@ -86,8 +86,8 @@ function TokenRow({ role, filter, theme, copy }: { role: Role; filter: string; t
           <span className={styles.use}>{role.use}</span>
         </span>
         <span className={styles.rowMeta}>
-          <code className={styles.var}>{copied ? 'Copied' : v}</code>
-          <span className={styles.value}>{hex}{aliasOf(role.token, theme.id) && <> → {aliasOf(role.token, theme.id)}</>}</span>
+          <code className={styles.var}>{copied ? 'Copied' : 'Copy name'}</code>
+          <span className={styles.value}>{hex}{aliasLabel(role.token, theme.id) && <> → {aliasLabel(role.token, theme.id)}</>}</span>
         </span>
       </button>
     </li>
@@ -108,12 +108,12 @@ function MiniChip({ token, theme, copy, label }: { token: ThemeToken; theme: Ret
       type="button"
       className={styles.mini}
       data-token={token}
-      onClick={() => copy.copy(`var(${v})`)}
-      title={`${token}\n${hex}${aliasOf(token, theme.id) ? ' → ' + aliasOf(token, theme.id) : ''}\nClick to copy var(${v})`}
-      aria-label={`${label ?? token}: ${hex}. Copy var(${v})`}
+      onClick={() => copy.copy(displayName(token))}
+      title={`${displayName(token)}\n${hex}${aliasLabel(token, theme.id) ? ' → ' + aliasLabel(token, theme.id) : ''}\nClick to copy the name`}
+      aria-label={`${label ?? displayName(token)}: ${hex}. Copy the name`}
     >
       <span ref={ref} className={styles.miniChip} data-kind={isBorder(token) ? 'border' : 'fill'} style={{ color: `var(${v})` }} aria-hidden="true" />
-      <span className={styles.miniHex}>{copy.copied === `var(${v})` ? 'Copied' : hex}</span>
+      <span className={styles.miniHex}>{copy.copied === displayName(token) ? 'Copied' : hex}</span>
     </button>
   )
 }
@@ -180,14 +180,14 @@ function HowItWorks({ theme }: { theme: ReturnType<typeof useThemeKey> }) {
             <span />
           </div>
           <strong>Raised = border</strong>
-          <span>light mode: default and primary are both white — add border/light</span>
+          <span>light mode: default and primary are both white — add border-light</span>
         </li>
         <li className={styles.ruleCard}>
           <div className={`${styles.ruleVisual} ${styles.overlayDemo}`} aria-hidden="true">
             <span />
           </div>
           <strong>Overlays</strong>
-          <span>backdrops use surface/overlay</span>
+          <span>backdrops use surface-overlay</span>
         </li>
       </ul>
     </Section>
@@ -304,7 +304,7 @@ function ComponentTokens({ filter, theme, copy }: { filter: string; theme: Retur
         <div className={styles.layerDemo}>
           {(['dark', 'light'] as const).map((tone) => (
             <div key={tone} className={styles.layerGroup} data-tone={tone}>
-              <span className={styles.familyName}>{tone} · on {tone === 'dark' ? 'surface/primary' : 'surface/inverted'}</span>
+              <span className={styles.familyName}>{tone} · on {tone === 'dark' ? 'surface-primary' : 'surface-inverted'}</span>
               <div className={styles.layerRow}>
                 {(['default', 'hover', 'pressed'] as const).map((state) => {
                   const t = `component/state-layer/${tone}/${state}` as ThemeToken
@@ -334,8 +334,8 @@ function MoreTokens({ filter, theme, copy }: { filter: string; theme: ReturnType
 
       <h3 className={styles.h3}>Gradient stops</h3>
       <p className={styles.lede}>
-        <code>gradient-stop-0/x</code> is token <code>x</code> at 0% opacity — the transparent end of a fade, so the gradient stays in the
-        same hue (no grey band). Fade a surface: <code>linear-gradient(var(--l3-gradient-stop-0-surface-primary), var(--l3-surface-primary))</code>.
+        <code>gradient-stop-0-x</code> is token <code>x</code> at 0% opacity — the transparent end of a fade, so the gradient stays in the
+        same hue (no grey band). To fade a surface, run a gradient from <code>gradient-stop-0-surface-primary</code> to <code>surface-primary</code>.
       </p>
       <div className={styles.fades}>
         {['surface/primary', 'surface/inverted', 'accent/brand-default', 'accent/discover-light'].map((n) => {
@@ -359,7 +359,7 @@ function MoreTokens({ filter, theme, copy }: { filter: string; theme: ReturnType
         </details>
       )}
 
-      <h3 className={styles.h3}>extra/gold</h3>
+      <h3 className={styles.h3}>extra-gold</h3>
       <p className={styles.lede}>A copy of the honey ramp, reversed in dark mode. <strong>Known gap</strong> — no values of its own yet; don't rely on it.</p>
       <div className={styles.rampRow}>
         {gold.map((t) => <div key={t} className={styles.miniLabelled}><MiniChip token={t} theme={theme} copy={copy} /><code>{t.split('/').pop()}</code></div>)}
@@ -371,7 +371,7 @@ function MoreTokens({ filter, theme, copy }: { filter: string; theme: ReturnType
 function Palette({ filter, copy }: { filter: string; copy: CopyApi }) {
   const shown = ramps.filter((r) => matches(filter, r.ramp))
   return (
-    <Section id="palette" title="Base palette" lede={<>The primitives every theme is built from. <strong>Reference only — don't use these in UI</strong>; the same ramps exist in every theme (only <code>BrandLogo</code> uses them directly).</>}>
+    <Section id="palette" title="Base palette" lede={<>The primitives every theme is built from. <strong>Reference only — don't use these in UI</strong>; the same ramps exist in every theme (only the brand logo uses them directly).</>}>
       <div className={styles.ramps}>
         {shown.map(({ ramp, steps }) => (
           <div key={ramp} className={styles.ramp}>
@@ -381,8 +381,8 @@ function Palette({ filter, copy }: { filter: string; copy: CopyApi }) {
                 const v = baseVar(s)
                 const step = s.split('/').pop()
                 return (
-                  <button key={s} type="button" className={styles.step} style={{ background: `var(${v})` }} onClick={() => copy.copy(`var(${v})`)} aria-label={`${s}. Copy var(${v})`} title={`${s}\n${v}`} data-step={step}>
-                    <span className={styles.stepLabel}>{copy.copied === `var(${v})` ? '✓' : step}</span>
+                  <button key={s} type="button" className={styles.step} style={{ background: `var(${v})` }} onClick={() => copy.copy(displayName(s))} aria-label={`${displayName(s)}. Copy the name`} title={displayName(s)} data-step={step}>
+                    <span className={styles.stepLabel}>{copy.copied === displayName(s) ? '✓' : step}</span>
                   </button>
                 )
               })}
@@ -391,7 +391,7 @@ function Palette({ filter, copy }: { filter: string; copy: CopyApi }) {
         ))}
       </div>
       <h3 className={styles.h3}>Opacity</h3>
-      <p className={styles.lede}>Opacity steps used by tokens such as content/secondary (60%) and surface/overlay (80%).</p>
+      <p className={styles.lede}>Opacity steps used by tokens such as content-secondary (60%) and surface-overlay (80%).</p>
       <div className={styles.opacityRow}>
         {opacityScale.map((o) => (
           <div key={o.step} className={styles.opacityStep}>
@@ -440,7 +440,7 @@ function CompareThemes({ filter }: { filter: string }) {
                 <th scope="row"><code className={styles.var}>{displayName(tok)}</code></th>
                 {allThemes.map((t) => (
                   <td key={`${t.product}-${t.mode}-${t.accessible}`} data-product={t.product} data-mode={t.mode} data-contrast={t.accessible ? 'accessible' : undefined} className={styles.compareCell}>
-                    <span className={styles.compareChip} data-kind={isBorder(tok) ? 'border' : 'fill'} style={{ color: `var(${cssVar(tok)})` }} title={`${tok} · ${aliasOf(tok, themeId(t.product, t.mode, t.accessible ? 'accessible' : 'default'))}`} />
+                    <span className={styles.compareChip} data-kind={isBorder(tok) ? 'border' : 'fill'} style={{ color: `var(${cssVar(tok)})` }} title={`${tok} · ${aliasLabel(tok, themeId(t.product, t.mode, t.accessible ? 'accessible' : 'default'))}`} />
                   </td>
                 ))}
               </tr>

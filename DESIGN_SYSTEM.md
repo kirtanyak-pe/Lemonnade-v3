@@ -169,9 +169,8 @@ Still waiting for the exact text from your notes on:
   - **Label** — a literal label (tab, tag, field label), the text typed into an input field, or a **small number** (under 18px, or not the page's key number).
   - **Description** — describes a heading or a label. **Never use Description for a number** — numbers are Label (or Heading when prominent and ≥ 18px).
 - **Figma is the source of truth.** Style weights are bound to `L3/typography/base/weight/heading · label · description`
-  (750 · 650 · 500) and render exactly that — same as code.
-  Figma still has extra style names to merge (`Heading/primary/*`, `Heading/Section`, `Label/secondary-m/*`) — use the
-  code roles: they render the same.
+  (750 · 650 · 500) and render exactly that — same as code. Figma has exactly these 20 styles: `L3/Heading/10…36`,
+  `L3/Label/10…18`, `L3/Description/10…18`.
 - Local (not part of the scale): `label-08` — 650 8/10, chip tab sub label only.
   <!-- PENDING: final usage rules per role and size -->
 
