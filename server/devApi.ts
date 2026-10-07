@@ -4,7 +4,17 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { loadEnv, type Plugin } from 'vite'
 import icons from '../src/icons/material/icons.json' with { type: 'json' }
-import { generate, UserError, type GenerateRequest } from './generate.ts'
+// generate.ts needs @anthropic-ai/sdk (optional): it's loaded only when the Build chat calls the API, so the docs
+// build and dev server work on machines where the package can't be installed.
+import type { GenerateRequest, GenerateResult } from './types.ts'
+
+type Generator = {
+  generate: (req: GenerateRequest, env: Record<string, string>, rules: string, iconNames: ReadonlySet<string>) => Promise<GenerateResult>
+  UserError: new (message?: string) => Error
+}
+// A computed URL, so neither the bundler nor tsc pulls generate.ts (and the SDK) in up front.
+const generatorUrl = new URL('./generate.ts', import.meta.url).href
+const loadGenerator = () => (import(/* @vite-ignore */ generatorUrl) as Promise<Generator>).catch(() => null)
 
 const iconNames: ReadonlySet<string> = new Set(icons.map((i) => i.name))
 const MAX_BODY = 20 * 1024 * 1024 // a PDF as base64
@@ -41,6 +51,9 @@ export function buildApi(): Plugin {
           chunks.push(c)
         })
         req.on('end', async () => {
+          const generator = await loadGenerator()
+          if (!generator) return send(503, { error: 'The Build chat needs the @anthropic-ai/sdk package, which isn’t installed here. Run npm install where it’s available.' })
+          const { generate, UserError } = generator
           try {
             const body = JSON.parse(Buffer.concat(chunks).toString('utf8')) as GenerateRequest
             if (typeof body.prompt !== 'string' || !body.prompt.trim()) return send(400, { error: 'Type what you want to build.' })

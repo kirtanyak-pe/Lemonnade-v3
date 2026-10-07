@@ -20,9 +20,13 @@ import { Actionbar, ActionbarAction } from './components/Actionbar' // path rela
 
 ### Title or search
 
+The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.
+
 Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass `search` and the middle becomes a real search input — tap the search action above.
 
 ### Actions and bottom content
+
+The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.
 
 `ActionbarAction` is Figma's round 32px icon button; give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
 
@@ -71,8 +75,8 @@ Actionbar — The top bar of a screen
 - `border/light · dark`
 - `content/primary · secondary · disabled`
 - `content/accent/discover (caret)`
-- `text-heading-14`
-- `text-description-12 · 14`
+- `Heading/14`
+- `Description/12 · 14`
 - `size/32 · 48`
 - `state-layer/*`
 - `radius/full`

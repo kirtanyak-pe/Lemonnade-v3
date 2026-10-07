@@ -24,6 +24,8 @@ Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border
 
 ### Tappable rows
 
+A whole row can be tappable, with a pressed tint — show a chevron or a control on the right so people know. A row with a Switch or Checkbox toggles it when tapped anywhere — try “Biometric login”.
+
 Use `as="button"` or `href` to make the whole row tappable with a pressed tint. Use `as="label"` with a Switch or Checkbox in `trailing` so tapping anywhere on the row toggles it — try “Biometric login”.
 
 ## Do / Don't
@@ -67,8 +69,8 @@ List cell — Rows of settings, accounts, items
 - `border/light`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
-- `text-label-14 · 16`
-- `text-description-12`
+- `Label/14 · 16`
+- `Description/12`
 - `radius/12 · full`
 - `icon-size/16 · 24`
 - `state-layer/* (tappable rows)`

@@ -1,0 +1,7 @@
+{
+  // The Build chat server, including generate.ts (needs @anthropic-ai/sdk). Run: npm run typecheck:server
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": { "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.server.tsbuildinfo" },
+  "include": ["server"],
+  "exclude": []
+}

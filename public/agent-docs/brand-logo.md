@@ -20,6 +20,8 @@ import { BrandLogo } from './components/BrandLogo' // path relative to src/
 
 ### Full or mark
 
+Use the full logo (isFull = True) where there's room: headers, splash, sign-in. Use the mark (isFull = False) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.
+
 Use the full logo where there's room: headers, splash, sign-in. Use the mark (`variant="icon"`) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.
 
 ### Colors stay on brand
@@ -27,6 +29,8 @@ Use the full logo where there's room: headers, splash, sign-in. Use the mark (`v
 The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)
 
 ### Accessibility
+
+Screen readers read the logo as its brand name. If the brand name is already written next to it, note in the handoff that the logo is decorative.
 
 The logo is announced as its brand name. Pass `label` for something more specific ("Lemonn home"), or `decorative` when the name is already written next to it.
 

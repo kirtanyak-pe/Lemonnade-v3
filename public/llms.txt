@@ -15,7 +15,7 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
 - [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
-- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
 - [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).

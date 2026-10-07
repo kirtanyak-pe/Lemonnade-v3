@@ -173,6 +173,8 @@ Secondary (dark border) only appears next to a stronger button — primary, buy,
 
 ### Label and icons
 
+👁️ Label, ↪ Icon-L and ↪ Icon-R can each be hidden, but at least one must show. An icon-only button has exactly one icon — and the handoff needs the action's name (e.g. "Share") for screen readers.
+
 Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an `aria-label`). TypeScript rejects the other combinations.
 
 ### States
@@ -214,9 +216,9 @@ Button — 7 variants · 3 sizes · 3 states
     - `buy` — Buy side.
     - `sell` — Sell side. Never a "danger" button.
 - **Size** — Where it sits
-  - `lg · 48` — Docks / ButtonGroup (always) and the main CTA.
-  - `md · 40` — Inside content: cards, sheet bodies, forms.
-  - `sm · 32` — Compact spots: empty states, inline rows, toolbars.
+  - `Large · 48` — Button docks (always) and the main CTA.
+  - `Medium · 40` — Inside content: cards, sheet bodies, forms.
+  - `Small · 32` — Compact spots: empty states, inline rows, toolbars.
 - **State** — What it is doing
   - `default` — Ready to tap.
   - `loading` — While the action runs. Keeps its width, ignores taps.
@@ -225,7 +227,7 @@ Button — 7 variants · 3 sizes · 3 states
   - `label` — Verb first, 1–3 words.
   - `icon left + label` — Icon reinforces the action.
   - `label + icon right` — Icon shows direction.
-  - `icon only` — Exactly one icon + aria-label. Never two icons without a label.
+  - `icon only` — Exactly one icon, named for screen readers. Never two icons without a label.
 
 ## Props
 
@@ -246,8 +248,8 @@ Button — 7 variants · 3 sizes · 3 states
 
 - `component/button/*`
 - `state-layer/*`
-- `text-heading-14 · 16`
-- `text-label-12`
+- `Heading/14 · 16`
+- `Label/12`
 - `size/control-sm · md · lg`
 - `radius/08 · 12`
 - `icon-size/16 · 20 · 24`
@@ -257,4 +259,4 @@ Button — 7 variants · 3 sizes · 3 states
 
 - **1.5.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
+- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface-accent-brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.

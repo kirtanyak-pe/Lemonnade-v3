@@ -222,8 +222,8 @@ Bottom sheet — A modal panel over the screen
 - `surface/primary`
 - `border/light · intense`
 - `content/primary · secondary`
-- `text-heading-16 · 20`
-- `text-description-12 · 14`
+- `Heading/16 · 20`
+- `Description/12 · 14`
 - `radius/24 · full`
 - `shadow/elevation-high`
 - `static/black + opacity/80 (overlay)`
@@ -234,4 +234,4 @@ Bottom sheet — A modal panel over the screen
 
 - **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
 - **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
-- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.
+- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface-overlay token (brand-tinted neutral at 80%) instead of black at 80%.

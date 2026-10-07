@@ -15,7 +15,7 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
 - [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
-- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+- [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
 - [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
@@ -754,11 +754,12 @@ There is **no skeleton or spinner component** yet.
 
 - Group: Foundations
 - Lifecycle: done
-- Version: 1.1.0
+- Version: 1.2.0
 
 ## Recent changes
 
-- **1.1.0** (2026-10-01) ♿ Accessible themes and Figma token sync: 5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with data-contrast="accessible" or the ♿ button in the header. New surface/overlay (the brand’s darkest neutral at 80%) and gradient-stop-0/static/white · black. surface/accent/us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover. New Colors page: how the three color layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy. Accent groups: Brand · Market indicators (profit / loss) · Status (success, warning, error, discover, orange) · Sub-brands (US stocks, Zing) · Miscellaneous (purple, indigo, teal — exceptional cases only). Also in DESIGN_SYSTEM.md 3.1. Accents are shown as one table per group, and border tokens are previewed as outlines instead of fills. “How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface/content/border, Button and Tag — with hover-to-trace, plus four illustrated rule cards. Token naming: anatomy of semantic, accent, component and base names (namespace · property · group · intent · modifier · state), the same token in Figma / CSS / TS, naming rules and a parts glossary. Also in DESIGN_SYSTEM.md 3.2. Token names shown with dashes plus a role in brackets, e.g. surface-default (Screen BG) — display only. List / Tree toggle for surface, content and border. Tree view: Colors → Surface · Icon · Text · Border, with Icon + Text merging into Content, then each role’s tokens (hover to trace, click to copy). The choice is remembered. Tree view: accents branch off the root in the brand color, then fan out into the 5 accent groups and their colors. Clearer List / Tree switch with icons. “How colors are mapped” (was “How colour works”): pick any base color to see every semantic token it feeds in the current theme (gradient stops skipped), the components that use them (found from their styles) and live previews — e.g. the input field in its success or error state. US spelling (“color”) across the docs. Color mapping: each component now says where it uses the color (read from its stylesheet, e.g. “caret (search)”, “message (status=success)”), and previews show that state — solid vs soft tags, Aerobar type and emphasis, input field success / error, list cell dot. Tag and Aerobar are split into solid and soft nodes, each linked only to the tokens that state reads — e.g. the soft success toast links to success-light (its text is content-primary), not success-default.
+- **1.2.0** (2026-10-07) Figma variable names: Colors are shown and copied by their variable name with “-” (surface-secondary), not the code name. Token naming shows full names joined with “-”: L3-color-surface-accent-success-light (Figma groups them with “/”). CSS (--l3-…) and TS forms are documented in the agent docs (color-tokens.md) only.
+- **1.1.0** (2026-10-01) ♿ Accessible themes and Figma token sync: 5 ♿ Accessible themes (Figma "♿ Accessible" modes) for every brand and mode: higher-contrast secondary/tertiary text, stronger dark-mode borders, one-step-stronger accents. Turn on with the ♿ button in the header. New surface-overlay (the brand’s darkest neutral at 80%) and gradient-stop-0-static-white · black. surface-accent-us-stock-default is now blue-500 in Lemonn and Kuber dark (was 400) — first split from discover. New Colors page: how the three color layers work, every semantic token with “use for” guidance, live hex + alias per theme, an accent matrix, button and state-layer tokens, base palette, and a 10-theme comparison. Filter and click-to-copy. Accent groups: Brand · Market indicators (profit / loss) · Status (success, warning, error, discover, orange) · Sub-brands (US stocks, Zing) · Miscellaneous (purple, indigo, teal — exceptional cases only). Also in DESIGN_SYSTEM.md 3.1. Accents are shown as one table per group, and border tokens are previewed as outlines instead of fills. “How color works” is now a live token flow (base → semantic → component → UI) built around green — profit and success, surface-content-border, Button and Tag — with hover-to-trace, plus four illustrated rule cards. Token naming: anatomy of semantic, accent, component and base names (namespace · property · group · intent · modifier · state), the same token in Figma / CSS / TS, naming rules and a parts glossary. Also in DESIGN_SYSTEM.md 3.2. Token names shown with dashes plus a role in brackets, e.g. surface-default (Screen BG) — display only. List / Tree toggle for surface, content and border. Tree view: Colors → Surface · Icon · Text · Border, with Icon + Text merging into Content, then each role’s tokens (hover to trace, click to copy). The choice is remembered. Tree view: accents branch off the root in the brand color, then fan out into the 5 accent groups and their colors. Clearer List / Tree switch with icons. “How colors are mapped” (was “How colour works”): pick any base color to see every semantic token it feeds in the current theme (gradient stops skipped), the components that use them (found from their styles) and live previews — e.g. the input field in its success or error state. US spelling (“color”) across the docs. Color mapping: each component now says where it uses the color (read from its stylesheet, e.g. “caret (search)”, “message (status=success)”), and previews show that state — solid vs soft tags, Aerobar type and emphasis, input field success / error, list cell dot. Tag and Aerobar are split into solid and soft nodes, each linked only to the tokens that state reads — e.g. the soft success toast links to success-light (its text is content-primary), not success-default.
 
 ---
 
@@ -768,13 +769,13 @@ There is **no skeleton or spinner component** yet.
 
 - Group: Foundations
 - Lifecycle: wip
-- Version: 3.0.1
+- Version: 3.0.2
 
 ## Recent changes
 
-- **3.0.1** (2026-10-06) Figma variable names: Figma weight variables renamed to L3/typography/base/weight/heading · label · description (750 · 650 · 500). No visual change.
+- **3.0.2** (2026-10-07) Style names match Figma: Label styles match Figma (label-10 … 18; were label-primary-sb-…). Names on the site use “-” instead of Figma’s “/”, and drop the 🔷 marker. No visual change.
+- **3.0.1** (2026-10-06) Figma variable names: Figma weight variables renamed to L3-typography-base-weight-heading · label · description (750 · 650 · 500). No visual change.
 - **3.0.0** (2026-10-05) Three roles: Five roles merged into three: Heading (weight 750, sizes 10–36), Label (650, 10–18) and Description (500, 10–18, with paragraph spacing). Tokens renamed: --l3-text-heading-*, --l3-text-label-*, --l3-text-description-*. Heading primary/secondary and the Section style merge into Heading; Label secondary uses move to Description. Manrope is loaded as a variable font (200–800) so 750 and 650 render. Figma styles still to be updated to these weights.
-- **2.0.0** (2026-10-04) Typography from Figma roles: Synced with Figma "🅰️ Typography": base variables (size, line height, weight, paragraph spacing) and 34 role styles. Tokens are named after the Figma styles: --l3-text-heading-primary-*, heading-secondary-* (+ section), label-primary-*, label-secondary-*, description-* (with paragraph spacing). Removed the weight-named tokens (--l3-text-semibold-12 …), Regular, and the Display / Paragraph roles — Heading primary replaces Display, Description replaces Paragraph. Every component and docs page migrated.
 
 ---
 
@@ -789,15 +790,24 @@ There is **no skeleton or spinner component** yet.
 
 # Icons
 
-> The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant) — straight from Google, stored in the repo and imported one icon at a time.
+> The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
 
 - Group: Foundations
 - Lifecycle: done
-- Version: 1.0.0
+- Version: 1.1.0
 
 ## Overview
 
 ### Using an icon
+
+In Figma, place icons from the **👁️ Lemonnade V3 → Icons** library and swap them through a component's ↪ icon properties. Every icon is Material Symbols Rounded (weight 400, grade 0, 24dp) — never mix in another icon set or the 48px version.
+
+- **Size:** 24 by default; 16 inside small buttons, tabs and tags; 12–24 from the icon-size variables.
+- **Color:** icons take the color of the text next to them — use content color variables, never a custom color.
+- **Fill off** is the default; the filled version marks a selected or active state.
+- Missing an icon in Figma? Find it below, **Copy SVG** and paste it into Figma, or download it.
+
+### Using an icon in code
 
 ```
 `import { Icon } from './components/Icon'
@@ -808,10 +818,11 @@ import { msWallet, msWalletFill } from './icons/material'
 <Button iconLeft={<Icon icon={msAdd} />}>Add funds</Button>`
 ```
 
-Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run `npm run icons` to pull new icons from Google.
+Only the icons you import end up in the app. Color comes from the surrounding text color; sizes use the icon-size tokens (12–24). Run `npm run icons` to pull new icons from Google. Import name: `ms` + the icon name in PascalCase (`content_copy` → `msContentCopy`, filled: `msContentCopyFill`).
 
 ## Recent changes
 
+- **1.1.0** (2026-10-07) Copy and download SVG: Pick an icon to Copy SVG (pastes into Figma as an editable vector), Download SVG or Copy name. Usage guidance for designers: Figma icon library, sizes, color and fill. The import snippet and Copy import button moved to the agent docs.
 - **1.0.0** (2026-09-26) Full Material Symbols Rounded library: 3,900+ icons (outlined + filled), weight 400, grade 0, 24dp optical size, downloaded from Google. <Icon> component with size tokens and an optional label for meaningful icons. npm run icons to pull new icons; only imported icons end up in the app.
 
 ---
@@ -838,6 +849,8 @@ import { BrandLogo } from './components/BrandLogo' // path relative to src/
 
 ### Full or mark
 
+Use the full logo (isFull = True) where there's room: headers, splash, sign-in. Use the mark (isFull = False) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.
+
 Use the full logo where there's room: headers, splash, sign-in. Use the mark (`variant="icon"`) in tight spots like avatars, app bars and list rows. Both come in 24, 32, 40 and 48px heights; the width follows the logo's proportions.
 
 ### Colors stay on brand
@@ -845,6 +858,8 @@ Use the full logo where there's room: headers, splash, sign-in. Use the mark (`v
 The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)
 
 ### Accessibility
+
+Screen readers read the logo as its brand name. If the brand name is already written next to it, note in the handoff that the logo is decorative.
 
 The logo is announced as its brand name. Pass `label` for something more specific ("Lemonn home"), or `decorative` when the name is already written next to it.
 
@@ -1363,6 +1378,8 @@ Secondary (dark border) only appears next to a stronger button — primary, buy,
 
 ### Label and icons
 
+👁️ Label, ↪ Icon-L and ↪ Icon-R can each be hidden, but at least one must show. An icon-only button has exactly one icon — and the handoff needs the action's name (e.g. "Share") for screen readers.
+
 Label, left icon and right icon can each be hidden, but at least one must show, and an icon-only button has exactly one icon (plus an `aria-label`). TypeScript rejects the other combinations.
 
 ### States
@@ -1404,9 +1421,9 @@ Button — 7 variants · 3 sizes · 3 states
     - `buy` — Buy side.
     - `sell` — Sell side. Never a "danger" button.
 - **Size** — Where it sits
-  - `lg · 48` — Docks / ButtonGroup (always) and the main CTA.
-  - `md · 40` — Inside content: cards, sheet bodies, forms.
-  - `sm · 32` — Compact spots: empty states, inline rows, toolbars.
+  - `Large · 48` — Button docks (always) and the main CTA.
+  - `Medium · 40` — Inside content: cards, sheet bodies, forms.
+  - `Small · 32` — Compact spots: empty states, inline rows, toolbars.
 - **State** — What it is doing
   - `default` — Ready to tap.
   - `loading` — While the action runs. Keeps its width, ignores taps.
@@ -1415,7 +1432,7 @@ Button — 7 variants · 3 sizes · 3 states
   - `label` — Verb first, 1–3 words.
   - `icon left + label` — Icon reinforces the action.
   - `label + icon right` — Icon shows direction.
-  - `icon only` — Exactly one icon + aria-label. Never two icons without a label.
+  - `icon only` — Exactly one icon, named for screen readers. Never two icons without a label.
 
 ## Props
 
@@ -1436,8 +1453,8 @@ Button — 7 variants · 3 sizes · 3 states
 
 - `component/button/*`
 - `state-layer/*`
-- `text-heading-14 · 16`
-- `text-label-12`
+- `Heading/14 · 16`
+- `Label/12`
 - `size/control-sm · md · lg`
 - `radius/08 · 12`
 - `icon-size/16 · 20 · 24`
@@ -1447,7 +1464,7 @@ Button — 7 variants · 3 sizes · 3 states
 
 - **1.5.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface/accent/brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
+- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface-accent-brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.
 
 ---
 
@@ -1589,6 +1606,8 @@ Don't use it for:
 Vertical stacks full-width buttons with the primary on top. Horizontal shares the width equally with the primary on the right — the Order ticket and Filters demos use it.
 
 ### What goes in a dock
+
+The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen.
 
 The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with `aria-label`.
 
@@ -1741,9 +1760,13 @@ import { TextField } from './components/TextField' // path relative to src/
 
 ### States come from the input
 
+Figma draws six states. Default, Typing (dark border, blue caret) and Typed happen on their own as people type, and Disabled is for fields that can't be used yet. Design Error and Success yourself, with helper text that says what to do — try a quantity of 0 or a price outside the band above.
+
 Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with `status` — try a quantity of 0 or a price outside the band above.
 
 ### Text box counter
+
+A text box (isInputBox) with a character limit shows “n/max” under it. Typing past the limit is allowed but switches to the Error state with “Character limit reached”.
 
 With `multiline` and `maxLength` the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.
 
@@ -1796,8 +1819,8 @@ Input field — Single line or text box
 - `border/light · dark · accent/error`
 - `content/primary · secondary · tertiary · disabled`
 - `content/accent/error · success · discover`
-- `text-label-12`
-- `text-description-12 · 14`
+- `Label/12`
+- `Description/12 · 14`
 - `radius/12`
 - `shadow/elevation-low`
 - `icon-size/14 · 16`
@@ -1861,7 +1884,7 @@ Toggle switch — A setting that applies immediately
 |---|---|---|---|
 | `checked` | `boolean` |  | Controlled state (or use defaultChecked). |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: md 34×20, sm 28×16. |
-| `disabled` | `boolean` | `false` | Not drawn in Figma; uses content/disabled. |
+| `disabled` | `boolean` | `false` | Not drawn in Figma; uses content-disabled. |
 | `…input props` | `InputHTMLAttributes` |  | onChange, aria-label, id, etc. Renders role="switch". |
 
 ## Tokens used
@@ -1968,7 +1991,7 @@ Tabs — Switch sections, filter or switch views
 - `surface/primary · secondary · inverted`
 - `border/light · dark`
 - `state-layer/*`
-- `text-label-08 · 10 · 12 · 14`
+- `Label/08 · 10 · 12 · 14`
 - `radius/12 · full`
 - `size/24 · 32 · 40`
 - `spacing/36`
@@ -1977,8 +2000,8 @@ Tabs — Switch sections, filter or switch views
 ## Recent changes
 
 - **1.7.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
-- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label / primary (L3/Label/primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
-- **1.5.0** (2026-10-02) Hug or fill width: width="hug" | "fill". Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
+- **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label primary (label-primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
+- **1.5.0** (2026-10-02) Hug or fill width: Width: Hug or Fill. Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
 
 ---
 
@@ -2004,9 +2027,13 @@ import { Actionbar, ActionbarAction } from './components/Actionbar' // path rela
 
 ### Title or search
 
+The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.
+
 Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass `search` and the middle becomes a real search input — tap the search action above.
 
 ### Actions and bottom content
+
+The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.
 
 `ActionbarAction` is Figma's round 32px icon button; give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
 
@@ -2055,8 +2082,8 @@ Actionbar — The top bar of a screen
 - `border/light · dark`
 - `content/primary · secondary · disabled`
 - `content/accent/discover (caret)`
-- `text-heading-14`
-- `text-description-12 · 14`
+- `Heading/14`
+- `Description/12 · 14`
 - `size/32 · 48`
 - `state-layer/*`
 - `radius/full`
@@ -2091,6 +2118,8 @@ import { BottomNavbar, NavIcon, navIconNames } from './components/BottomNavbar' 
 
 ### Main nav and sub-navs
 
+The main bar has Stocks, Market, Portfolio, Mutual Fund and F&O. Mutual Fund and F&O each have their own bar, which starts with a Home item and a separator to get back. Tap Mutual Fund in the demo above to try it.
+
 The main bar has Stocks, Market, Portfolio, Mutual Fund and F&O. Mutual Fund and F&O each have their own bar. Pass `home` to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.
 
 ### Moving between navs
@@ -2099,9 +2128,13 @@ When the options change, the bar animates. The option you tapped glides into its
 
 ### Nav icons
 
-`NavIcon` is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with `<Icon>`: it's shown in content/tertiary, or success green when selected.
+The nav icons are custom artwork. Unselected icons are one color and follow the theme; selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. Any other icon is a Material Symbol in content-tertiary, or success green when selected.
+
+`NavIcon` is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with `<Icon>`: it's shown in content-tertiary, or success green when selected.
 
 ### Accessibility
+
+Every option always shows its label, and the current one is marked for screen readers. The bar stays at the bottom of the screen and leaves room for the phone's home indicator.
 
 The bar is a `<nav>` landmark. Give it a name with `aria-label`. Each option is a button, or a link when you pass `href`. The current option is marked with `aria-current="page"`, and the label is always shown. With `fixed`, the bar sticks to the bottom of the screen and adds space for the home indicator.
 
@@ -2142,7 +2175,7 @@ Bottom navbar — App sections, 3–5 items
 - `content/tertiary (unselected)`
 - `content/accent/success-default (selected)`
 - `content/primary (nav icon mask)`
-- `text-label-10`
+- `Label/10`
 - `size/64`
 - `spacing/04 · 10`
 - `icon-size/24`
@@ -2163,7 +2196,7 @@ Bottom navbar — App sections, 3–5 items
 
 - Group: Surfaces
 - Lifecycle: wip
-- Status: Code first
+- Status: Not in Figma yet
 - Version: 1.2.0
 - Source: `src/components/Card`
 - Also called: Tile, panel, container, list item card
@@ -2178,7 +2211,9 @@ import { Card } from './components/Card' // path relative to src/
 
 ### Clickable or static
 
-Cards sit on the screen background (surface/default). In light mode that and surface/primary are both white, so every card has a 1px border/light outline. A **clickable** card (`onClick` or `href`) also gets elevation-low and scales to 0.98 while pressed. A **static** card is for information or decoration: rounded with a border/light outline on surface/default, and no shadow or press.
+Cards sit on the screen background (surface-default). In light mode that and surface-primary are both white, so every card has a 1px border-light outline. A **clickable** card also gets elevation-low and scales to 0.98 while pressed. A **static** card is for information or decoration: rounded with a border-light outline on surface-default, and no shadow or press.
+
+Cards sit on the screen background (surface-default). In light mode that and surface-primary are both white, so every card has a 1px border-light outline. A **clickable** card (`onClick` or `href`) also gets elevation-low and scales to 0.98 while pressed. A **static** card is for information or decoration: rounded with a border-light outline on surface-default, and no shadow or press.
 
 ### One action means a clickable card
 
@@ -2186,11 +2221,13 @@ If a card would hold a single button, make the whole card clickable instead. A c
 
 ### Flat cards
 
+A flat card — not rounded, no border — has no background unless you give it one: it's transparent, with no border and no shadow. It can still be clickable: it keeps the press scale and hover tint.
+
 A card that isn’t rounded and has no border (`variant="flat"`) has no background unless you set one with `surface` — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.
 
 ### Same rule for chip tabs
 
-Chip (pill) tabs are tappable surfaces too: unselected chips use surface/primary with border/light and elevation-low, and scale to 0.98 while pressed.
+Chip (pill) tabs are tappable surfaces too: unselected chips use surface-primary with border-light and elevation-low, and scale to 0.98 while pressed.
 
 ## Do / Don't
 
@@ -2240,8 +2277,8 @@ Card — Groups related content
 ## Recent changes
 
 - **1.2.0** (2026-09-29) Figma card spec: Padding 16 → 12 and radius 16 → 12, matching the Figma Order card (row gap stays 8). Orders demo: 16 between cards, Body/12 meta line, Tertiary status tags, sort + filters toolbar.
-- **1.1.0** (2026-09-29) Flat variant: variant="flat": not rounded, no border, no shadow, transparent background; still clickable. surface prop to set a card background manually (surface tokens only). Static cards (rounded + border/light) use surface/default; clickable cards stay surface/primary.
-- **1.0.0** (2026-09-29) First release: Clickable cards (onClick / href): surface/primary, border/light, elevation-low, press scale 0.98. Static cards for information or decoration: surface/primary + border/light, no shadow or press. Development warnings: a clickable card with controls inside, or a static card holding a single action.
+- **1.1.0** (2026-09-29) Flat variant: Flat style: not rounded, no border, no shadow, transparent background; still clickable. A card background can be set manually (surface variables only). Static cards (rounded + border-light) use surface-default; clickable cards stay surface-primary.
+- **1.0.0** (2026-09-29) First release: Clickable cards: surface-primary, border-light, elevation-low, press scale 0.98. Static cards for information or decoration: surface-primary + border-light, no shadow or press. Development warnings: a clickable card with controls inside, or a static card holding a single action.
 
 ---
 
@@ -2469,8 +2506,8 @@ Bottom sheet — A modal panel over the screen
 - `surface/primary`
 - `border/light · intense`
 - `content/primary · secondary`
-- `text-heading-16 · 20`
-- `text-description-12 · 14`
+- `Heading/16 · 20`
+- `Description/12 · 14`
 - `radius/24 · full`
 - `shadow/elevation-high`
 - `static/black + opacity/80 (overlay)`
@@ -2481,7 +2518,7 @@ Bottom sheet — A modal panel over the screen
 
 - **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
 - **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
-- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface/overlay token (brand-tinted neutral at 80%) instead of black at 80%.
+- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface-overlay token (brand-tinted neutral at 80%) instead of black at 80%.
 
 ---
 
@@ -2511,9 +2548,13 @@ Floating, solid toasts for results people should notice — always shown here; i
 
 ### Inline or floating
 
+Inline, it's a full-width strip that sits in the layout (the market-hours warning above). Floating (isFloating), it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.
+
 Without `floating` it's a full-width strip that sits in the layout (the market-hours warning above). With `floating` it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.
 
 ### Soft or solid
+
+Figma's isPrimary: the light tint (False) suits information that can wait; the solid color (True) is for results people should notice straight away. Danger is read out to screen readers immediately; the others politely.
 
 Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass `role="status"` so it isn't read out as an alert on every visit.
 
@@ -2559,8 +2600,8 @@ Aerobar & toast — Status on the page, or a result
 - `content/primary · secondary · inverted`
 - `static/white · black`
 - `opacity/60 · 80`
-- `text-label-14`
-- `text-description-12`
+- `Label/14`
+- `Description/12`
 - `radius/12`
 - `shadow/elevation-low · medium`
 - `motion/* (local)`
@@ -2569,7 +2610,7 @@ Aerobar & toast — Status on the page, or a result
 
 - **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content/secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
+- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content-secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
 
 ---
 
@@ -2599,9 +2640,13 @@ Use the heading to say what's missing ("No results found") and the description t
 
 ### Illustration
 
+The default is Figma's magnifier, and it follows the theme, including the brand color. You can swap in your own 120px artwork through the Illustration slot, or hide it.
+
 The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to `illustration`, or `null` to hide it.
 
 ### Layout and accessibility
+
+The empty state fills the space it's in and centres itself; Figma's frame is a fixed 412px tall. If results change as someone types, the result count should be announced to screen readers — note it in the handoff.
 
 The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use `headingLevel={3}` under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.
 
@@ -2639,8 +2684,8 @@ Empty state — Nothing to show, or no results
 - `content/primary · secondary`
 - `surface/accent/brand-default (illustration)`
 - `static/black · white (illustration)`
-- `text-heading-16`
-- `text-label-14`
+- `Heading/16`
+- `Label/14`
 - `spacing/04 · 16 · 24`
 - `size/illustration (local, 120px)`
 
@@ -2677,6 +2722,8 @@ import { ListCell } from './components/ListCell' // path relative to src/
 Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
 
 ### Tappable rows
+
+A whole row can be tappable, with a pressed tint — show a chevron or a control on the right so people know. A row with a Switch or Checkbox toggles it when tapped anywhere — try “Biometric login”.
 
 Use `as="button"` or `href` to make the whole row tappable with a pressed tint. Use `as="label"` with a Switch or Checkbox in `trailing` so tapping anywhere on the row toggles it — try “Biometric login”.
 
@@ -2721,8 +2768,8 @@ List cell — Rows of settings, accounts, items
 - `border/light`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
-- `text-label-14 · 16`
-- `text-description-12`
+- `Label/14 · 16`
+- `Description/12`
 - `radius/12 · full`
 - `icon-size/16 · 24`
 - `state-layer/* (tappable rows)`
@@ -2825,7 +2872,7 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - `surface/secondary`
 - `static/black`
 - `static/white`
-- `text-label-10 · 12 · 14`
+- `Label/10 · 12 · 14`
 - `radius/04`
 - `size/16 · 20 · 24`
 
@@ -2833,4 +2880,4 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 
 - **2.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).
+- **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static-white text and icons, like profit and loss (was content-inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).

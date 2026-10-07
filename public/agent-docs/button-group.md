@@ -137,6 +137,8 @@ Vertical stacks full-width buttons with the primary on top. Horizontal shares th
 
 ### What goes in a dock
 
+The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen.
+
 The main action(s) of a screen or sheet, always Large: one strong button (primary, buy, sell or brand), optionally a secondary next to it, or sell + buy. Figma's bottom-sheet footer also stacks a ghost option last with helper text below. One dock per screen, and name it with `aria-label`.
 
 ### Scroll indicator

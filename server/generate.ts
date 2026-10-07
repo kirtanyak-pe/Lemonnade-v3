@@ -2,32 +2,11 @@
 // reaches the browser. Written against plain inputs so the same code can move into a Supabase Edge Function later.
 import Anthropic from '@anthropic-ai/sdk'
 import type { DesignNode } from '../src/build/design.ts'
+import type { GenerateRequest, GenerateResult } from './types.ts'
 import { fromFlat, mockDesign, outputSchema, toFlat, type FlatNode } from '../src/build/generation.ts'
 import { defaultModel, models, textSizes } from '../src/build/schema.ts'
 
-export type GenerateRequest = {
-  /** Claude model id from the picker; checked against the allowlist in schema.ts. */
-  model?: string
-  prompt: string
-  /** Product theme name, for tone: Lemonn, Kuber or CS PRO. */
-  product: string
-  /** The design on the canvas now (empty on the first request). */
-  tree: DesignNode[]
-  /** The item the user has selected, when the request is about one item. */
-  selectedId?: string | null
-  /** Earlier turns of the chat, oldest first. */
-  history: { role: 'user' | 'assistant'; text: string }[]
-  /** An attached PRD: plain text, or a PDF as base64. */
-  prd?: { name: string; kind: 'text' | 'pdf'; data: string } | null
-}
-
-export type GenerateResult = {
-  reply: string
-  /** The new design, or null when nothing changed (Plan mode, demo notes). */
-  tree: DesignNode[] | null
-  warnings: string[]
-  live: boolean
-}
+export type { GenerateRequest, GenerateResult } from './types.ts'
 
 type Env = { ANTHROPIC_API_KEY?: string; BUILD_MODEL?: string; BUILD_EFFORT?: string }
 

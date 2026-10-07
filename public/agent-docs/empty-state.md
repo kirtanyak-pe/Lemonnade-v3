@@ -24,9 +24,13 @@ Use the heading to say what's missing ("No results found") and the description t
 
 ### Illustration
 
+The default is Figma's magnifier, and it follows the theme, including the brand color. You can swap in your own 120px artwork through the Illustration slot, or hide it.
+
 The default is Figma's magnifier. It's an inline SVG and every fill is a token, so it follows the theme, including the brand color. Pass your own 120px artwork to `illustration`, or `null` to hide it.
 
 ### Layout and accessibility
+
+The empty state fills the space it's in and centres itself; Figma's frame is a fixed 412px tall. If results change as someone types, the result count should be announced to screen readers — note it in the handoff.
 
 The empty state fills its flex parent and centres itself; Figma's frame is a fixed 412px tall. The heading is an h2 by default (use `headingLevel={3}` under a section heading). The illustration is hidden from screen readers. If results change as someone types, announce the count separately, for example in a live region next to the search field.
 
@@ -64,8 +68,8 @@ Empty state — Nothing to show, or no results
 - `content/primary · secondary`
 - `surface/accent/brand-default (illustration)`
 - `static/black · white (illustration)`
-- `text-heading-16`
-- `text-label-14`
+- `Heading/16`
+- `Label/14`
 - `spacing/04 · 16 · 24`
 - `size/illustration (local, 120px)`
 

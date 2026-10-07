@@ -24,9 +24,13 @@ Floating, solid toasts for results people should notice — always shown here; i
 
 ### Inline or floating
 
+Inline, it's a full-width strip that sits in the layout (the market-hours warning above). Floating (isFloating), it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.
+
 Without `floating` it's a full-width strip that sits in the layout (the market-hours warning above). With `floating` it's a rounded, shadowed toast inset 16px from the edges that rises in when shown.
 
 ### Soft or solid
+
+Figma's isPrimary: the light tint (False) suits information that can wait; the solid color (True) is for results people should notice straight away. Danger is read out to screen readers immediately; the others politely.
 
 Figma's isPrimary: the default light tint suits information that can wait; the solid color (emphasis="primary") is for results people should notice straight away. Danger is announced immediately to screen readers (role="alert"); the rest politely (role="status"). For a danger bar that is part of the page rather than a new event, pass `role="status"` so it isn't read out as an alert on every visit.
 
@@ -72,8 +76,8 @@ Aerobar & toast — Status on the page, or a result
 - `content/primary · secondary · inverted`
 - `static/white · black`
 - `opacity/60 · 80`
-- `text-label-14`
-- `text-description-12`
+- `Label/14`
+- `Description/12`
 - `radius/12`
 - `shadow/elevation-low · medium`
 - `motion/* (local)`
@@ -82,4 +86,4 @@ Aerobar & toast — Status on the page, or a result
 
 - **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content/secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.
+- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content-secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.

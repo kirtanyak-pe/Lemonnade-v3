@@ -10,6 +10,7 @@
     "prebuild": "npm run tokens && npm run agent-docs",
     "agent-docs": "node --no-warnings scripts/build-agent-docs.ts",
     "build": "tsc -b && vite build",
+    "typecheck:server": "tsc -p tsconfig.server.json",
     "lint": "oxlint",
     "preview": "vite preview",
     "icons": "node scripts/sync-icons.ts",
@@ -20,7 +21,6 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "0.129.0",
     "@types/node": "24.13.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
@@ -31,5 +31,8 @@
   },
   "overrides": {
     "rolldown": "1.2.9"
+  },
+  "optionalDependencies": {
+    "@anthropic-ai/sdk": "0.129.0"
   }
 }

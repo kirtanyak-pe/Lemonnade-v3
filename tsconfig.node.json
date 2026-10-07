@@ -20,5 +20,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "scripts", "server"]
+  "include": ["vite.config.ts", "scripts", "server"],
+  // generate.ts needs the optional @anthropic-ai/sdk: checked by `npm run typecheck:server` where it's installed.
+  "exclude": ["server/generate.ts"]
 }

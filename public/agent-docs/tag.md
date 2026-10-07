@@ -88,7 +88,7 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - `surface/secondary`
 - `static/black`
 - `static/white`
-- `text-label-10 · 12 · 14`
+- `Label/10 · 12 · 14`
 - `radius/04`
 - `size/16 · 20 · 24`
 
@@ -96,4 +96,4 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 
 - **2.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static/white text and icons, like profit and loss (was content/inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).
+- **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static-white text and icons, like profit and loss (was content-inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).

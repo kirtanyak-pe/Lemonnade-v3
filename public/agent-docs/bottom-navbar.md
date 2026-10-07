@@ -20,6 +20,8 @@ import { BottomNavbar, NavIcon, navIconNames } from './components/BottomNavbar' 
 
 ### Main nav and sub-navs
 
+The main bar has Stocks, Market, Portfolio, Mutual Fund and F&O. Mutual Fund and F&O each have their own bar, which starts with a Home item and a separator to get back. Tap Mutual Fund in the demo above to try it.
+
 The main bar has Stocks, Market, Portfolio, Mutual Fund and F&O. Mutual Fund and F&O each have their own bar. Pass `home` to add the Home item and the separator after it. Tap Mutual Fund in the demo above to try it.
 
 ### Moving between navs
@@ -28,9 +30,13 @@ When the options change, the bar animates. The option you tapped glides into its
 
 ### Nav icons
 
-`NavIcon` is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with `<Icon>`: it's shown in content/tertiary, or success green when selected.
+The nav icons are custom artwork. Unselected icons are one color and follow the theme; selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. Any other icon is a Material Symbol in content-tertiary, or success green when selected.
+
+`NavIcon` is Figma's nav icon set. Unselected icons are one color, with the tertiary and secondary parts built into the artwork, and follow the theme. Selected icons are two-tone brand artwork with fixed colors, so they look the same in every theme. For any other icon, pass a Material Symbol with `<Icon>`: it's shown in content-tertiary, or success green when selected.
 
 ### Accessibility
+
+Every option always shows its label, and the current one is marked for screen readers. The bar stays at the bottom of the screen and leaves room for the phone's home indicator.
 
 The bar is a `<nav>` landmark. Give it a name with `aria-label`. Each option is a button, or a link when you pass `href`. The current option is marked with `aria-current="page"`, and the label is always shown. With `fixed`, the bar sticks to the bottom of the screen and adds space for the home indicator.
 
@@ -71,7 +77,7 @@ Bottom navbar — App sections, 3–5 items
 - `content/tertiary (unselected)`
 - `content/accent/success-default (selected)`
 - `content/primary (nav icon mask)`
-- `text-label-10`
+- `Label/10`
 - `size/64`
 - `spacing/04 · 10`
 - `icon-size/24`

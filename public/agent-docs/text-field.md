@@ -20,9 +20,13 @@ import { TextField } from './components/TextField' // path relative to src/
 
 ### States come from the input
 
+Figma draws six states. Default, Typing (dark border, blue caret) and Typed happen on their own as people type, and Disabled is for fields that can't be used yet. Design Error and Success yourself, with helper text that says what to do — try a quantity of 0 or a price outside the band above.
+
 Figma draws six states. In code, Typing is focus (dark border, blue caret), Typed is simply having a value, and Disabled is the disabled attribute. Only Error and Success are set by you with `status` — try a quantity of 0 or a price outside the band above.
 
 ### Text box counter
+
+A text box (isInputBox) with a character limit shows “n/max” under it. Typing past the limit is allowed but switches to the Error state with “Character limit reached”.
 
 With `multiline` and `maxLength` the text box shows “n/max”. Typing past the limit is allowed but switches to the error state with “Character limit reached”, as in Figma.
 
@@ -75,8 +79,8 @@ Input field — Single line or text box
 - `border/light · dark · accent/error`
 - `content/primary · secondary · tertiary · disabled`
 - `content/accent/error · success · discover`
-- `text-label-12`
-- `text-description-12 · 14`
+- `Label/12`
+- `Description/12 · 14`
 - `radius/12`
 - `shadow/elevation-low`
 - `icon-size/14 · 16`

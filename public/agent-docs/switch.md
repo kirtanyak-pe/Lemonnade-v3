@@ -49,7 +49,7 @@ Toggle switch — A setting that applies immediately
 |---|---|---|---|
 | `checked` | `boolean` |  | Controlled state (or use defaultChecked). |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: md 34×20, sm 28×16. |
-| `disabled` | `boolean` | `false` | Not drawn in Figma; uses content/disabled. |
+| `disabled` | `boolean` | `false` | Not drawn in Figma; uses content-disabled. |
 | `…input props` | `InputHTMLAttributes` |  | onChange, aria-label, id, etc. Renders role="switch". |
 
 ## Tokens used
