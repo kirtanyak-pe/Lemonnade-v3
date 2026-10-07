@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { ButtonGroup } from '../components/ButtonGroup'
@@ -16,7 +17,13 @@ import {
   radiusVar, spacingVar, textFont, updateNode,
   type DesignNode, type IconSpec, type NodeKind,
 } from './design'
-import { readPrd, requestDesign, type PrdFile } from './generateClient'
+import { importFigma, readPrd, requestDesign, type PrdFile } from './generateClient'
+import { findFigmaLinks, isOnlyFigmaLinks, type FigmaBoard } from './figmaLinks'
+import { addAutoLayout, findLayer, insertLayer, layerPath, removeAutoLayout, removeLayer, updateLayer, type Layer } from './figmaLayers'
+import { linkTokens, readPalette, type Stats } from './figmaTokens'
+import { findDrop, layerElement, makeGhost, sameDrop, zoomOf, type Drop as LayerDrop } from './figmaDrag'
+import { FigmaBoardView } from './FigmaBoardView'
+import { FigmaInspector } from './FigmaInspector'
 import { Canvas } from './Canvas'
 import { Inspector } from './Inspector'
 import { Leaf } from './leaves'
@@ -32,6 +39,8 @@ type Message = {
   /** The item a request was about, e.g. "Button · Continue". */
   target?: string
   pending?: boolean
+  /** What the pending reply says it is doing; "Designing…" when unset. */
+  working?: string
   failed?: boolean
   seconds?: number
   /** Things Build changed to keep the design within the rules. */
@@ -105,7 +114,7 @@ const initialTree: DesignNode[] = [
 const welcome: Message = {
   id: 0,
   role: 'assistant',
-  text: 'Hey! Describe a screen, or attach a PRD (.pdf, .md or .txt), and I’ll design it with Lemonnade components. Turn on the cursor in the chat box to edit any part of it.',
+  text: 'Hey! Describe a screen, attach a PRD (.pdf, .md or .txt), or paste a link to a Figma frame or section, and I’ll design it with Lemonnade components. Turn on the cursor in the chat box to edit any part of it.',
 }
 
 const alignItems = { stretch: 'stretch', start: 'flex-start', center: 'center', end: 'flex-end' } as const
@@ -219,9 +228,183 @@ export function BuildPage() {
   const mode = resolveMode(product, canvasMode ?? appMode) // e.g. CS PRO is dark-only
   const canToggleMode = productModes[product].length > 1
 
+
   // Cursor tool: off = normal canvas. On = hover outlines, click selects (drilling into sections, then parts),
   // the inspector edits the selection, and a selected node can be dragged to a new position.
   const [tree, setTree] = useState<DesignNode[]>(initialTree)
+  // Figma frames pasted into the chat, shown beside the phone exactly as they look in Figma.
+  const [boards, setBoards] = useState<FigmaBoard[]>([])
+  const [fitKey, setFitKey] = useState(0)
+  // Figma boards show the design's own colors until the canvas theme changes; from then on they follow it. Kept apart
+  // from the boards themselves, so undo never switches a board back.
+  const [themedBoards, setThemedBoards] = useState<ReadonlySet<string>>(new Set())
+  const themeKey = `${product}/${mode}`
+  const [seenTheme, setSeenTheme] = useState(themeKey)
+  if (seenTheme !== themeKey) {
+    setSeenTheme(themeKey)
+    setThemedBoards(new Set(boards.map((b) => b.id)))
+  }
+
+  // The selected layer of a Figma board, and the text layer being typed into.
+  const [figmaSel, setFigmaSel] = useState<{ boardId: string; layerId: string } | null>(null)
+  const [figmaEditing, setFigmaEditing] = useState<string | null>(null)
+  // Undo / redo for boards: snapshots of the whole list. Quick edits of one field share a snapshot.
+  const undoStack = useRef<FigmaBoard[][]>([])
+  const redoStack = useRef<FigmaBoard[][]>([])
+  const lastEdit = useRef<{ key: string; at: number } | null>(null)
+  const boardsRef = useRef(boards)
+  useEffect(() => { boardsRef.current = boards }, [boards])
+  const snapshot = (key?: string) => {
+    const now = Date.now()
+    if (key && lastEdit.current?.key === key && now - lastEdit.current.at < 1000) { lastEdit.current.at = now; return }
+    lastEdit.current = key ? { key, at: now } : null
+    undoStack.current = [...undoStack.current.slice(-49), boardsRef.current]
+    redoStack.current = []
+  }
+  const undoBoards = (redo = false) => {
+    const from = redo ? redoStack : undoStack
+    const to = redo ? undoStack : redoStack
+    const previous = from.current.pop()
+    if (!previous) return
+    to.current.push(boardsRef.current)
+    lastEdit.current = null
+    setBoards(previous)
+    setFigmaEditing(null)
+    setFigmaSel((sel) => (sel && previous.some((b) => b.id === sel.boardId && findLayer(b.root, sel.layerId)) ? sel : null))
+  }
+  /** `key` merges quick edits of one field into one undo step; `false` records none (a drag records once, at its start). */
+  const changeLayer = (boardId: string, layerId: string, change: (l: Layer) => Layer, key?: string | false) => {
+    if (key !== false) snapshot(key && `${boardId}/${layerId}/${key}`)
+    setBoards((all) => all.map((b) => (b.id === boardId ? { ...b, root: updateLayer(b.root, layerId, change) } : b)))
+  }
+  const deleteLayer = (boardId: string, layerId: string) => {
+    const board = boards.find((b) => b.id === boardId)
+    if (!board || board.root.id === layerId) return
+    const parent = layerPath(board.root, layerId)?.at(-2)
+    snapshot()
+    setBoards((all) => all.map((b) => (b.id === boardId ? { ...b, root: removeLayer(b.root, layerId) } : b)))
+    setFigmaSel(parent ? { boardId, layerId: parent.id } : null)
+  }
+  const selectLayer = (boardId: string, layerId: string | null) => {
+    setFigmaEditing(null)
+    setFigmaSel(layerId ? { boardId, layerId } : null)
+    if (layerId) select(null)
+  }
+  /* ---- Dragging layers, within a board or to another one ---- */
+
+  // Where a dropped layer lands: into an auto-layout frame at the insertion line, or anywhere else where it was let go.
+  const dropLayer = (from: { boardId: string; layerId: string }, drop: LayerDrop, at: { left: number; top: number }, zoom: number, size: { w: number; h: number }) => {
+    const board = boards.find((b) => b.id === from.boardId)
+    const path = board && layerPath(board.root, from.layerId)
+    const layer = path?.at(-1)
+    const oldParent = path?.at(-2)
+    if (!board || !layer || !oldParent || drop.parentId === layer.id) return
+    const plain = Math.abs(layer.t[1]) < 1e-6 && Math.abs(layer.t[2]) < 1e-6
+    snapshot()
+    if (drop.kind === 'free') {
+      // Outside auto layout, Fill means nothing: keep the size it has now.
+      const x = Math.round((at.left - drop.box.left) / zoom)
+      const y = Math.round((at.top - drop.box.top) / zoom)
+      const placed: Layer = {
+        ...layer,
+        absolute: undefined,
+        w: layer.sizeW === 'fill' ? size.w : layer.w,
+        h: layer.sizeH === 'fill' ? size.h : layer.h,
+        sizeW: layer.sizeW === 'fill' ? undefined : layer.sizeW,
+        sizeH: layer.sizeH === 'fill' ? undefined : layer.sizeH,
+        t: plain ? [layer.t[0], 0, 0, layer.t[3], layer.t[0] < 0 ? x + size.w : x, layer.t[3] < 0 ? y + size.h : y] : layer.t,
+      }
+      if (drop.parentId === oldParent.id && drop.boardId === from.boardId) {
+        // Same frame: just a new position; the layer keeps its place in the stacking order.
+        setBoards((all) => all.map((b) => (b.id === board.id ? { ...b, root: updateLayer(b.root, layer.id, () => placed) } : b)))
+        return
+      }
+      moveTo(board.id, layer.id, placed, drop.boardId, drop.parentId, null)
+    } else {
+      moveTo(board.id, layer.id, { ...layer, absolute: undefined, t: [layer.t[0], layer.t[1], layer.t[2], layer.t[3], 0, 0] }, drop.boardId, drop.parentId, drop.beforeId)
+    }
+  }
+  /** Take a layer out of its parent and put `layer` into another container (any board), before `beforeId` or last. */
+  const moveTo = (fromBoard: string, layerId: string, layer: Layer, toBoard: string, parentId: string, beforeId: string | null) => {
+    setBoards((all) => {
+      const without = all.map((b) => (b.id === fromBoard ? { ...b, root: removeLayer(b.root, layerId) } : b))
+      return without.map((b) => {
+        if (b.id !== toBoard) return b
+        const kids = findLayer(b.root, parentId)?.children ?? []
+        const index = beforeId ? kids.findIndex((k) => k.id === beforeId) : -1
+        return { ...b, root: insertLayer(b.root, parentId, index < 0 ? kids.length : index, layer) }
+      })
+    })
+    setFigmaSel({ boardId: toBoard, layerId })
+  }
+
+  const [dropHint, setDropHint] = useState<LayerDrop | null>(null)
+  const pressLayer = (boardId: string, layerId: string, e: ReactPointerEvent) => {
+    const el = layerElement(boardId, layerId)
+    if (!el) return
+    const startX = e.clientX
+    const startY = e.clientY
+    const zoom = zoomOf(el)
+    const size = { w: el.offsetWidth, h: el.offsetHeight }
+    const start = el.getBoundingClientRect()
+    // The auto-layout frame the layer sits in now: hovering over its siblings reorders.
+    const home = el.parentElement?.closest<HTMLElement>('[data-layer]') ?? null
+    let ghost: HTMLElement | null = null
+    let drop: LayerDrop | null = null
+    const move = (ev: PointerEvent) => {
+      const dx = ev.clientX - startX
+      const dy = ev.clientY - startY
+      if (!ghost) {
+        if (Math.hypot(dx, dy) < 4) return
+        // Start: a see-through copy follows the pointer; the layer stays dimmed in place until it is dropped.
+        const board = el.closest<HTMLElement>('[data-board]')
+        ghost = makeGhost(el, document.body, zoom, board?.getAttribute('style') ?? '')
+        ghost.dataset.product = product
+        ghost.dataset.mode = mode
+        el.setAttribute('data-dragging', '')
+        el.style.opacity = '0.3'
+        el.style.pointerEvents = 'none'
+      }
+      ghost.style.translate = `${dx}px ${dy}px`
+      const next = findDrop(ev.clientX, ev.clientY, home)
+      if (!sameDrop(next, drop)) { drop = next; setDropHint(next) }
+    }
+    const up = (ev: PointerEvent) => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
+      if (!ghost) return
+      ghost.remove()
+      el.removeAttribute('data-dragging')
+      el.style.opacity = ''
+      el.style.pointerEvents = ''
+      setDropHint(null)
+      // The click that ends a drag must not select something else.
+      const stop = (c: Event) => { c.stopPropagation(); c.preventDefault() }
+      window.addEventListener('click', stop, { capture: true, once: true })
+      setTimeout(() => window.removeEventListener('click', stop, { capture: true }), 0)
+      if (drop) dropLayer({ boardId, layerId }, drop, { left: start.left + ev.clientX - startX, top: start.top + ev.clientY - startY }, zoom, size)
+    }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
+  }
+
+  /** Measure where each child of a frame sits now, in the frame's own units (for taking it out of auto layout). */
+  const measureChildren = (boardId: string, frameId: string) => {
+    const frame = layerElement(boardId, frameId)
+    if (!frame) return {}
+    const zoom = zoomOf(frame)
+    const box = frame.getBoundingClientRect()
+    const places: Record<string, { x: number; y: number; w: number; h: number }> = {}
+    for (const child of frame.children) {
+      const id = (child as HTMLElement).dataset?.layer
+      if (!id) continue
+      const r = child.getBoundingClientRect()
+      places[id] = { x: Math.round((r.left - box.left) / zoom), y: Math.round((r.top - box.top) / zoom), w: (child as HTMLElement).offsetWidth, h: (child as HTMLElement).offsetHeight }
+    }
+    return places
+  }
   const [picking, setPicking] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [hoverId, setHoverId] = useState<string | null>(null)
@@ -288,11 +471,61 @@ export function BuildPage() {
     }
   }
 
+  // A message that is only Figma links: place each linked frame on the canvas as it is. Figma API only, no Claude, so free.
+  const placeFigma = async (text: string) => {
+    if (busy) return
+    const userId = nextId.current++
+    const replyId = nextId.current++
+    setMessages((all) => [...all, { id: userId, role: 'user', text }, { id: replyId, role: 'assistant', text: '', pending: true, working: 'Fetching from Figma… (long pages can take up to a minute)' }])
+    setBusy(true)
+    const controller = new AbortController()
+    abortRef.current = controller
+    const started = Date.now()
+    try {
+      const placed: string[] = []
+      // New boards go to the right of the phone and of everything already placed.
+      let left = Math.max(560, ...boards.map((b) => b.x + b.width + 120))
+      const added: FigmaBoard[] = []
+      // Link the design to the Lemonnade design system (colors and text styles), matched against Lemonn's own colors.
+      const palettes = { light: readPalette('lm', 'light'), dark: readPalette('lm', 'dark') }
+      const stats: Stats = { colors: 0, linkedColors: 0, texts: 0, linkedTexts: 0 }
+      for (const link of findFigmaLinks(text)) {
+        const result = await importFigma(link.url, controller.signal)
+        for (const b of result.boards) {
+          // Layer ids are made unique per board, so the same frame can be pasted twice and layers can move between boards.
+          const id = `figma-${nextId.current++}`
+          const prefix = (l: Layer): Layer => ({ ...l, id: `${id}/${l.id}`, children: l.children?.map(prefix) })
+          added.push({ ...b, id, root: linkTokens(prefix(b.root), palettes, stats), x: left + b.x, y: b.y })
+        }
+        left = Math.max(...added.map((b) => b.x + b.width + 120))
+        placed.push(result.boards.length > 1 ? `${result.boards.length} frames from “${result.name}”` : `“${result.boards[0].name}” (${result.boards[0].width} × ${result.boards[0].height})`)
+      }
+      snapshot()
+      setBoards((all) => [...all, ...added])
+      setFitKey((k) => k + 1)
+      const seconds = Math.max(1, Math.round((Date.now() - started) / 1000))
+      patchMessage(replyId, {
+        text: `Placed ${placed.join(' and ')} on the canvas, exactly as in Figma, and linked it to Lemonnade: ${stats.linkedColors} of ${stats.colors} colors match an L3 color token, and all ${stats.texts} texts use the nearest L3 text style. Switch the theme (Lemonn, Kuber, CS PRO, light or dark) and the linked parts take that theme's colors and L3 typography. Colors with no L3 match keep their Figma value. Click any part to edit it, drag to move it, double-click text to type. ⌘Z undoes.`,
+        pending: false,
+        seconds,
+      })
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setMessages((all) => all.filter((m) => m.id !== replyId))
+      } else {
+        patchMessage(replyId, { text: err instanceof Error ? err.message : 'Something went wrong.', pending: false, failed: true })
+      }
+    } finally {
+      setBusy(false)
+      abortRef.current = null
+    }
+  }
+
   const send = () => {
     if (!canSend) return
     const text = prompt.trim() || `Design the screens described in ${prd?.name}.`
     setPrompt('')
-    void run(text)
+    void (isOnlyFigmaLinks(text) && !prd ? placeFigma(text) : run(text))
   }
   const newChat = () => {
     abortRef.current?.abort()
@@ -510,6 +743,57 @@ export function BuildPage() {
     return () => document.removeEventListener('keydown', onKey)
   }, [picking, selectedId, drag])
 
+  // Figma boards: Esc steps up to the parent layer, Delete removes, arrows nudge (Shift: 10px), ⌘Z / ⇧⌘Z undo and redo.
+  useEffect(() => {
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      const t = e.target as HTMLElement
+      if (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+        if (!undoStack.current.length && !redoStack.current.length) return
+        e.preventDefault()
+        undoBoards(e.shiftKey)
+        return
+      }
+      if (!figmaSel) return
+      const board = boards.find((b) => b.id === figmaSel.boardId)
+      if (!board) return
+      if (e.key === 'Escape') {
+        const parent = layerPath(board.root, figmaSel.layerId)?.at(-2)
+        setFigmaSel(parent ? { boardId: board.id, layerId: parent.id } : null)
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault()
+        deleteLayer(board.id, figmaSel.layerId)
+      } else if (e.key.startsWith('Arrow') && figmaSel.layerId !== board.root.id) {
+        e.preventDefault()
+        const path = layerPath(board.root, figmaSel.layerId)
+        const layer = path?.at(-1)
+        const parent = path?.at(-2)
+        if (layer && parent?.layout && !layer.absolute) {
+          // Inside auto layout the arrows move the layer one place earlier or later, as in Figma.
+          const kids = parent.children ?? []
+          const i = kids.findIndex((k) => k.id === layer.id)
+          const j = i + (e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 1)
+          if (j < 0 || j >= kids.length) return
+          const order = [...kids]
+          order.splice(i, 1)
+          order.splice(j, 0, layer)
+          changeLayer(board.id, parent.id, (p) => ({ ...p, children: order }))
+          return
+        }
+        const step = e.shiftKey ? 10 : 1
+        const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0
+        const dy = e.key === 'ArrowUp' ? -step : e.key === 'ArrowDown' ? step : 0
+        changeLayer(board.id, figmaSel.layerId, (l) => ({ ...l, t: [l.t[0], l.t[1], l.t[2], l.t[3], l.t[4] + dx, l.t[5] + dy] }), 'nudge')
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  })
+
+  const figmaBoard = figmaSel ? boards.find((b) => b.id === figmaSel.boardId) : undefined
+  const figmaPath = figmaBoard && figmaSel ? layerPath(figmaBoard.root, figmaSel.layerId) : null
+  const figmaLayer = figmaPath?.at(-1)
+
   /* ---- Rendering the tree ---- */
 
   // A button's icon on one side: its chosen Material Symbol (defaults: + on the left, an arrow on the right), sized for the
@@ -673,7 +957,7 @@ export function BuildPage() {
                 {m.role === 'assistant' ? (
                   <>
                     <p className={styles.worked} data-pending={m.pending || undefined}>
-                      {m.pending ? 'Designing…' : m.failed ? 'Could not finish' : m.seconds ? `Worked for ${m.seconds}s` : 'Build'} <Icon icon={msChevronRight} size={16} />
+                      {m.pending ? m.working ?? 'Designing…' : m.failed ? 'Could not finish' : m.seconds ? `Worked for ${m.seconds}s` : 'Build'} <Icon icon={msChevronRight} size={16} />
                     </p>
                     {!m.pending && <p className={styles.reply} data-failed={m.failed || undefined}>{m.text}</p>}
                     {m.warnings && m.warnings.length > 0 && (
@@ -734,7 +1018,7 @@ export function BuildPage() {
             <textarea
               className={styles.prompt}
               rows={3}
-              placeholder={busy ? 'Working…' : 'Describe a screen, or ask for changes'}
+              placeholder={busy ? 'Working…' : 'Describe a screen, paste a Figma link, or ask for changes'}
               aria-label="Message"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -816,7 +1100,37 @@ export function BuildPage() {
                 onMouseLeave={() => setHoverId(null)}
               >
                 {tab === 'browser' ? (
-                  <Canvas onViewChange={place}>
+                  <Canvas
+                    onViewChange={place}
+                    boards={boards}
+                    fitKey={fitKey}
+                    onMoveBoard={(id, x, y) => setBoards((all) => all.map((b) => (b.id === id ? { ...b, x, y } : b)))}
+                    onRemoveBoard={(id) => {
+                      snapshot()
+                      setBoards((all) => all.filter((b) => b.id !== id))
+                      if (figmaSel?.boardId === id) setFigmaSel(null)
+                    }}
+                    renderBoard={(b, zoom) => (
+                      <FigmaBoardView
+                        boardId={b.id}
+                        root={b.root}
+                        product={product}
+                        followTheme={themedBoards.has(b.id)}
+                        zoom={zoom}
+                        selectedId={figmaSel?.boardId === b.id ? figmaSel.layerId : null}
+                        editingId={figmaSel?.boardId === b.id ? figmaEditing : null}
+                        onSelect={(layerId) => { if (figmaSel?.layerId !== layerId || figmaSel.boardId !== b.id) selectLayer(b.id, layerId) }}
+                        onPress={(layerId, e) => pressLayer(b.id, layerId, e)}
+                        onEditText={(layerId) => { if (findLayer(b.root, layerId)?.type === 'text') { setFigmaSel({ boardId: b.id, layerId }); setFigmaEditing(layerId) } }}
+                        onCommitText={(layerId, text) => {
+                          setFigmaEditing(null)
+                          const l = findLayer(b.root, layerId)
+                          if (!l?.text || l.text.runs.map((r) => r.text).join('') === text) return
+                          changeLayer(b.id, layerId, (x) => (x.text ? { ...x, text: { ...x.text, runs: [{ text, style: x.text.runs[0]?.style ?? {} }] } } : x))
+                        }}
+                      />
+                    )}
+                  >
                     <div
                       className={styles.sample}
                       data-container="root"
@@ -887,6 +1201,30 @@ export function BuildPage() {
                     onAsk={ask}
                   />
                 </div>
+              )}
+
+              {figmaBoard && figmaLayer && !(picking && selected) && (
+                <div className={styles.figmaPanel}>
+                  <FigmaInspector
+                    key={figmaLayer.id}
+                    layer={figmaLayer}
+                    parent={figmaPath!.at(-2) ?? null}
+                    isRoot={figmaLayer.id === figmaBoard.root.id}
+                    onChange={(change, key) => changeLayer(figmaBoard.id, figmaLayer.id, change, key)}
+                    onSelect={(id) => selectLayer(figmaBoard.id, id)}
+                    onDelete={() => deleteLayer(figmaBoard.id, figmaLayer.id)}
+                    theme={{ product, mode }}
+                    onAutoLayout={(on) => changeLayer(figmaBoard.id, figmaLayer.id, (l) => (on ? addAutoLayout(l) : removeAutoLayout(l, measureChildren(figmaBoard.id, l.id))))}
+                  />
+                </div>
+              )}
+
+              {dropHint && createPortal(
+                <>
+                  <div className={styles.figmaDropBox} style={{ left: dropHint.box.left, top: dropHint.box.top, width: dropHint.box.width, height: dropHint.box.height }} aria-hidden="true" />
+                  {dropHint.kind === 'flow' && <div className={styles.figmaDropLine} style={{ left: dropHint.line.left, top: dropHint.line.top, width: dropHint.line.width, height: dropHint.line.height }} aria-hidden="true" />}
+                </>,
+                document.body,
               )}
 
               {drag?.drop && (

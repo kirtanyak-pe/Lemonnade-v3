@@ -5,10 +5,14 @@ import type { DesignNode } from '../src/build/design.ts'
 import type { GenerateRequest, GenerateResult } from './types.ts'
 import { fromFlat, mockDesign, outputSchema, toFlat, type FlatNode } from '../src/build/generation.ts'
 import { defaultModel, models, textSizes } from '../src/build/schema.ts'
+import { UserError } from './errors.ts'
+import { findFigmaLinks, readFigmaLinks, type FigmaFrame } from './figma.ts'
+
+export { UserError }
 
 export type { GenerateRequest, GenerateResult } from './types.ts'
 
-type Env = { ANTHROPIC_API_KEY?: string; BUILD_MODEL?: string; BUILD_EFFORT?: string }
+type Env = { ANTHROPIC_API_KEY?: string; BUILD_MODEL?: string; BUILD_EFFORT?: string; FIGMA_TOKEN?: string }
 
 const INTRO = `You are the design engine inside Build, a tool at Lemonn where product managers turn a PRD or a short brief into mobile screens made only of Lemonnade V3 (L3) design-system components. Lemonn is an Indian investing app: stocks, mutual funds, F&O, portfolio. Write realistic copy for that world (rupee amounts, tickers, order and KYC flows), never lorem ipsum.
 
@@ -42,6 +46,8 @@ Follow the design-system rules below. Sections marked PENDING are undecided: do 
 
 If the PRD needs something that has no component (a chart, an image, a select, a stepper, a bottom sheet), do not fake it. Leave it out or represent the content as plainly as you can, and say exactly what is missing in the reply.
 
+When the request links a Figma frame or section, you get a rendered image of it and an outline of its layers (component instances with their properties, and the text). Rebuild it as faithfully as you can with the components above, using the outline's copy word for word. Instances of the "✅ Lemonnade V3" library map to components as described in docs/figma-code-map.md below. A section holds several screens; the canvas shows one, so build the one the request names, or the first, and say which in the reply. Anything in the Figma design with no matching component follows the rule above: leave it out and say so.
+
 When a current design is provided, return the WHOLE updated design, not just the change. Keep the ids and content of everything you were not asked to change. When an item is selected, the request is about that item unless it clearly says otherwise.
 
 Reply in one to three short sentences: what you built or changed, then at most three assumptions or open questions. Plain text only, no markdown.`
@@ -51,7 +57,7 @@ function client(env: Env) {
 }
 
 /** Build the messages: earlier chat turns as real turns, then this request with the current design and any PRD. */
-function buildMessages(req: GenerateRequest): Anthropic.Beta.BetaMessageParam[] {
+function buildMessages(req: GenerateRequest, figma: FigmaFrame[]): Anthropic.Beta.BetaMessageParam[] {
   const messages: Anthropic.Beta.BetaMessageParam[] = []
   for (const h of req.history.slice(-8)) {
     if (!h.text.trim()) continue
@@ -71,11 +77,21 @@ function buildMessages(req: GenerateRequest): Anthropic.Beta.BetaMessageParam[] 
     parts.push('There is no design yet.')
   }
   if (req.prd?.kind === 'text') parts.push(`Attached PRD (${req.prd.name}):\n${req.prd.data.slice(0, 120_000)}`)
+  for (const f of figma) {
+    const shown = f.images.map((i) => `"${i.name}"`).join(', ')
+    parts.push(`Linked Figma ${f.type.toLowerCase()} "${f.name}" (${f.link.url}). Rendered above: ${shown || 'no image could be rendered'}. Layer outline:\n${f.outline}`)
+  }
   parts.push(`Request: ${req.prompt}`)
 
   const content: Anthropic.Beta.BetaContentBlockParam[] = []
   if (req.prd?.kind === 'pdf') {
     content.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: req.prd.data } })
+  }
+  for (const f of figma) {
+    for (const image of f.images) {
+      content.push({ type: 'text', text: `Figma frame "${image.name}":` })
+      content.push({ type: 'image', source: { type: 'base64', media_type: 'image/png', data: image.data } })
+    }
   }
   content.push({ type: 'text', text: parts.join('\n\n') })
   messages.push({ role: 'user', content })
@@ -85,6 +101,9 @@ function buildMessages(req: GenerateRequest): Anthropic.Beta.BetaMessageParam[] 
 export async function generate(req: GenerateRequest, env: Env, rules: string, iconNames: ReadonlySet<string>): Promise<GenerateResult> {
   // No key: a canned screen, so the whole flow can be tried without one.
   if (!env.ANTHROPIC_API_KEY) {
+    if (findFigmaLinks(req.prompt).length) {
+      throw new UserError(`Building from a Figma link needs a Claude key. Add ANTHROPIC_API_KEY${env.FIGMA_TOKEN ? '' : ' and FIGMA_TOKEN'} to .env.local, then restart npm run dev.`)
+    }
     const mock = mockDesign(req.prompt, req.tree.length > 0)
     if (!mock.nodes.length) {
       const note: DesignNode = { id: `note-${Date.now() % 10000}`, kind: 'text', name: 'Text', text: `Note: ${req.prompt}`, weight: 'regular', size: 12, color: 'tertiary' }
@@ -99,6 +118,7 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
   // Only models on the allowlist can be chosen; anything else falls back to the default.
   const chosen = models.find((m) => m.id === req.model) ?? models.find((m) => m.id === env.BUILD_MODEL) ?? models.find((m) => m.id === defaultModel)!
   const effort = (['low', 'medium', 'high', 'xhigh', 'max'] as const).find((e) => e === env.BUILD_EFFORT) ?? 'medium'
+  const figma = await readFigmaLinks(req.prompt, env.FIGMA_TOKEN)
 
   // The rules are identical on every request, so they are cached: repeat requests read them at a fraction of the price.
   const system: Anthropic.Beta.BetaTextBlockParam[] = [
@@ -113,7 +133,7 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
       // If a safety classifier declines, the API retries on its default fallback model inside the same call.
       ...(chosen.fallbacks ? { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' as const } : {}),
       system,
-      messages: buildMessages(req),
+      messages: buildMessages(req, figma),
       // Haiku 4.5 does not accept `effort`.
       output_config: { ...(chosen.effort ? { effort } : {}), format: { type: 'json_schema', schema: outputSchema as unknown as Record<string, unknown> } },
     })
@@ -141,6 +161,3 @@ export async function generate(req: GenerateRequest, env: Env, rules: string, ic
     throw err
   }
 }
-
-/** An error whose message is safe and useful to show the user. */
-export class UserError extends Error {}
