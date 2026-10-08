@@ -31,6 +31,8 @@ ask, or list it under "Open questions" in your answer.
   card 16; card padding 12 on every side. Gaps are the container's auto-layout gap, bound to spacing tokens. Section
   titles are always `SectionHeader` (title required; tag / info / description ≤ 2 lines / one action — View all or a
   switcher — optional).
+- **Layering:** screen → inset (filled) → content (static) → raised (clickable, shadow low) → bars → toast → scrim →
+  sheet → second sheet (max 2). Higher = heavier shadow; only tappable things are lifted (DESIGN_SYSTEM 6.1).
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
   inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.

@@ -19,6 +19,7 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
 - [Layout](agent-docs/layout.md): How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.
+- [Layering](agent-docs/layering.md): How surfaces stack, from the screen up to a second bottom sheet: what lives on each layer, its surface and its shadow.
 - [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
 - [Brand logo](agent-docs/brand-logo.md): The Lemonn, Zing and Coinswitch logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.

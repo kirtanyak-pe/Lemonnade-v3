@@ -266,6 +266,28 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 
 ## 6. Screen anatomy
 
+### 6.1 Layering (elevation), bottom → top
+
+| # | Layer | What lives there | Surface | Shadow (Figma effect style) |
+|---|---|---|---|---|
+| 0 | Screen | page background | `surface-default` | none |
+| 1 | Inset | filled cards (grey detail panels) | `surface-secondary` | none |
+| 2 | Content | static cards, list rows, text, charts | `surface-default` + `border-light` | none |
+| 3 | Raised | clickable cards, chip tabs, text fields | `surface-primary` + `border-light` | `elevation-low` |
+| 4 | Bars | Actionbar (sticky), BottomNavbar, ButtonGroup dock | `surface-default` / `surface-primary` | low (Actionbar, once scrolled) · medium (navbar) · high (dock) |
+| 5 | Floating | toast (`Aerobar floating`) | `surface-inverted` | `elevation-medium` |
+| 6 | Scrim | `Overlay` | `surface-overlay` | none |
+| 7 | Sheet | `BottomSheet` | `surface-primary` | `elevation-high` |
+| 8 | Second sheet | a sheet on a sheet (max 2; only it has a back button) | `surface-primary` | `elevation-high` |
+
+- Higher layer = heavier shadow; never give a lower layer a heavier shadow than one above it.
+- Lifted means tappable: on the page only raised things get a shadow; information stays flat with a border.
+- Inset sinks: no border, no shadow, nothing grey inside it.
+- Light mode: `surface-default` = `surface-primary` (white), so border + shadow separate layers; dark mode also lightens
+  higher surfaces.
+- Only the scrim dims, and only a sheet sits above it. Content scrolls under the bars, never over them.
+- Docs: Foundations → **Layering**.
+
 <!-- PENDING: screen structure (top bar, body, dock vs bottom navbar, toast and sheet placement) -->
 
 ---

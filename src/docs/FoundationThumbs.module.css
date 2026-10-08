@@ -83,3 +83,23 @@
   border-radius: var(--l3-radius-08);
   box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px hairline */
 }
+
+/* Layering: four offset planes, each a step higher (more shadow). */
+.layering {
+  position: relative;
+  width: var(--l3-size-96);
+  height: var(--l3-size-64);
+}
+
+.layering > span {
+  position: absolute;
+  top: calc(var(--l3-spacing-08) * (3 - var(--i)));
+  left: calc(var(--l3-spacing-12) * var(--i));
+  width: var(--l3-size-56);
+  height: var(--l3-size-32);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low); /* 1px hairline */
+}
+
+.layering > span:nth-child(4) { box-shadow: var(--l3-shadow-elevation-high); }

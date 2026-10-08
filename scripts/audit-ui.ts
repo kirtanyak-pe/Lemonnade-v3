@@ -97,7 +97,11 @@ const classTokens = (code: string) => [...code.matchAll(/className=(?:["'`]([^"'
 const classHit = (token: string, kw: string) => { const t = token.toLowerCase(); return t === kw || t.endsWith('-' + kw) || t.endsWith('_' + kw) || new RegExp(kw + '$', 'i').test(token) && /[a-z]/.test(token[token.length - kw.length - 1] ?? '') && token[token.length - kw.length] === kw[0].toUpperCase() }
 function handRolled(code: string): string | null {
   for (const [re, use] of HAND_TAGS) if (re.test(code)) { if (use === 'Tabs' && /<Tab[\s>]/.test(code)) continue; return use } // role="tablist" around L3 <Tab> is composition
-  for (const tok of classTokens(code)) for (const [kws, use] of HAND_CLASSES) if (kws.some((kw) => classHit(tok, kw))) return use
+  for (const tok of classTokens(code)) {
+    // An empty self-closing element with this class is a drawn shape (a diagram's mini toast), not a lookalike component.
+    if (new RegExp(`<\\w+[^>]*className=\\{?\\s*(?:styles\\.)?["'\`]?${tok}\\b[^>]*/>`).test(code)) continue
+    for (const [kws, use] of HAND_CLASSES) if (kws.some((kw) => classHit(tok, kw))) return use
+  }
   return null
 }
 const SIGN = /(className=["'`][^"'`]*\b(green|red|profit|loss|positive|negative|gain|up|down)\b[^"'`]*["'`][^>]*>[^<]*[+\-−]?\{|[+\-−]\{[^}]*\}%)/

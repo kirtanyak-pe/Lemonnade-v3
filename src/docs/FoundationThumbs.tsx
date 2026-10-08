@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { BrandLogo } from '../components/BrandLogo'
 import { Icon } from '../components/Icon'
 import { msAccountBalanceWallet, msCandlestickChart, msNotifications, msSearch, msShowChart, msStar } from '../icons/material'
@@ -44,6 +44,12 @@ const LayoutThumb = () => (
   </div>
 )
 
+const LayeringThumb = () => (
+  <div className={styles.layering}>
+    {[0, 1, 2, 3].map((i) => <span key={i} style={{ '--i': i } as CSSProperties} />)}
+  </div>
+)
+
 const IconsThumb = () => (
   <div className={styles.icons}>
     {[msSearch, msStar, msNotifications, msShowChart, msCandlestickChart, msAccountBalanceWallet].map((icon, i) => <Icon key={i} icon={icon} size={24} />)}
@@ -63,6 +69,7 @@ export const foundationThumbs: Record<string, { thumb: ReactNode; meta: string }
   typography: { thumb: <TypographyThumb />, meta: `Manrope · ${new Set(textStyles.map((s) => s.role)).size} roles · ${textStyles.filter((s) => !('local' in s)).length} styles` },
   spacing: { thumb: <SpacingThumb />, meta: `${Object.keys(numberVars).length} spacing, radius & size tokens` },
   layout: { thumb: <LayoutThumb />, meta: 'Page 16 · sections 24 / 32 · heading 16 · card 12' },
+  layering: { thumb: <LayeringThumb />, meta: '9 layers · screen → sheets' },
   icons: { thumb: <IconsThumb />, meta: 'Material Symbols · 3,900+' },
   'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing · Coinswitch' },
 }

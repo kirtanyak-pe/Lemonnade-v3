@@ -1,0 +1,137 @@
+/* Layering foundation page — every value is an --l3-* token (angles are geometry, not design values). */
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--l3-spacing-32);
+  align-items: center;
+  margin-bottom: var(--l3-spacing-40);
+}
+
+/* ---- Exploded 3D stack ------------------------------------------------------- */
+.stage {
+  display: flex;
+  flex: 1 1 auto;
+  width: calc(var(--l3-size-128) * 3);
+  max-width: 100%;
+  justify-content: center;
+  min-width: 0;
+  padding: calc(var(--l3-size-128) * 1.6) 0 var(--l3-spacing-48);
+  overflow: hidden;
+  perspective: calc(var(--l3-size-128) * 12);
+}
+
+.stack {
+  --step: var(--l3-spacing-32);
+  position: relative;
+  width: calc(var(--l3-size-128) * 1.4);
+  height: calc(var(--l3-size-128) * 2.4);
+  transform: rotateX(58deg) rotateZ(-38deg);
+  transform-style: preserve-3d;
+}
+
+.plane {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--l3-radius-16);
+  box-shadow: inset 0 0 0 1px var(--l3-border-intense); /* 1px hairline */
+  transform: translateZ(calc(var(--step) * var(--n)));
+  transition: opacity var(--l3-motion-duration-short) var(--l3-motion-easing-standard), transform var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+.plane[data-dim] { opacity: var(--l3-opacity-15); }
+.plane[data-layer='screen'] { background: var(--l3-surface-default); box-shadow: inset 0 0 0 1px var(--l3-border-intense); }
+
+
+/* the things on each plane, drawn with that layer's real surface + effect */
+.miniInset, .miniStatic, .miniRaised, .miniChip, .miniTopBar, .miniDock, .miniToast, .miniScrim, .miniSheet, .miniSheetTwo { position: absolute; }
+.miniInset { inset: 38% 10% 40%; border-radius: var(--l3-radius-12); background: var(--l3-surface-secondary); }
+.miniStatic { inset: 10% 10% 66%; border-radius: var(--l3-radius-12); background: var(--l3-surface-default); box-shadow: inset 0 0 0 1px var(--l3-border-light); }
+.miniRaised { inset: 64% 10% 18%; border-radius: var(--l3-radius-12); background: var(--l3-surface-primary); box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low); }
+.miniChip { inset: 3% 55% 91% 10%; border-radius: var(--l3-radius-full); background: var(--l3-surface-primary); box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low); }
+.miniTopBar { inset: 0 0 92%; border-radius: var(--l3-radius-16) var(--l3-radius-16) 0 0; background: var(--l3-surface-default); box-shadow: inset 0 -1px 0 var(--l3-border-light), var(--l3-shadow-elevation-low); }
+.miniDock { inset: 88% 0 0; border-radius: 0 0 var(--l3-radius-16) var(--l3-radius-16); background: var(--l3-surface-primary); box-shadow: inset 0 1px 0 var(--l3-border-light), var(--l3-shadow-elevation-high); }
+.miniToast { inset: 74% 8% 16%; border-radius: var(--l3-radius-12); background: var(--l3-surface-inverted); box-shadow: var(--l3-shadow-elevation-medium); }
+.miniScrim { inset: 0; border-radius: var(--l3-radius-16); background: var(--l3-surface-overlay); }
+.miniSheet { inset: 40% 0 0; border-radius: var(--l3-radius-24) var(--l3-radius-24) var(--l3-radius-16) var(--l3-radius-16); background: var(--l3-surface-primary); box-shadow: var(--l3-shadow-elevation-high); }
+.miniSheetTwo { inset: 58% 0 0; border-radius: var(--l3-radius-24) var(--l3-radius-24) var(--l3-radius-16) var(--l3-radius-16); background: var(--l3-surface-primary); box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-high); }
+
+/* planes other than screen / scrim are transparent glass so the stack reads */
+.plane:not([data-layer='screen']):not([data-layer='scrim']) { background: rgb(from var(--l3-surface-accent-discover-default) r g b / var(--l3-opacity-5)); }
+
+/* ---- Layer list ------------------------------------------------------------------ */
+.list {
+  display: flex;
+  flex: 1 1 auto;
+  width: calc(var(--l3-size-128) * 2.4);
+  max-width: 100%;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--l3-size-24);
+  height: var(--l3-size-24);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+  font: var(--l3-text-label-12);
+}
+
+/* ---- Table + rules --------------------------------------------------------------- */
+.block { margin-bottom: var(--l3-spacing-40); }
+.block h2 { margin: 0 0 var(--l3-spacing-16); font: var(--l3-text-heading-20); }
+.tableWrap { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-14);
+}
+
+.table th {
+  padding: var(--l3-spacing-08) var(--l3-spacing-12);
+  border-bottom: 1px solid var(--l3-border-intense); /* 1px hairline */
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--l3-spacing-12);
+  border-bottom: 1px solid var(--l3-border-light); /* 1px hairline */
+  vertical-align: top;
+}
+
+.table td strong { color: var(--l3-content-primary); font: var(--l3-text-label-14); white-space: nowrap; }
+.table code { white-space: nowrap; }
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-12);
+  padding-left: var(--l3-spacing-20);
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-14);
+}
+
+.rules strong { color: var(--l3-content-primary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .plane { transition: none; }
+}
+
+/* Phones: the exploded stack is wider than the column — scale it down so nothing is clipped. */
+@media (max-width: 480px) {
+  .stack { transform: scale(0.72) rotateX(58deg) rotateZ(-38deg); }
+  .stage { padding: var(--l3-size-96) 0 var(--l3-spacing-16); }
+}

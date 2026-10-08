@@ -28,6 +28,7 @@ import { SectionHeaderVariants } from '../preview/SectionHeaderVariants'
 import { ColorsPage } from './colors/ColorsPage'
 import { TypographyPage } from './typography/TypographyPage'
 import { LayoutPage } from './layout/LayoutPage'
+import { LayeringPage } from './layering/LayeringPage'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
@@ -95,6 +96,14 @@ export const pages: DocPage[] = [
     group: 'Foundations',
     description: 'How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.',
     content: <LayoutPage />,
+  },
+  {
+    id: 'layering',
+    progress: 'done',
+    title: 'Layering',
+    group: 'Foundations',
+    description: 'How surfaces stack, from the screen up to a second bottom sheet: what lives on each layer, its surface and its shadow.',
+    content: <LayeringPage />,
   },
 
   {
