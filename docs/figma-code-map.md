@@ -48,7 +48,8 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 |---|---|
 | ↔ On = True · False | `checked` / `defaultChecked` |
 | isSmall = True | `size="sm"` (default `md`) |
-| isSelected = True | `selected` — plain: surface/secondary · card: border/dark |
+| isTappable = True · False | `onClick` / `href` / `as="label"` · none — card rows: Clickable (surface/primary + elevation-low) · Static (no fill + border/light) |
+| isSelected = True (tappable only) | `selected` — plain: surface/secondary · card: border/dark |
 | (no Figma variant) | `disabled` |
 
 ### L3: Radio button & check box → `<Checkbox>` / `<Radio>` (`components/Checkbox`)

@@ -314,8 +314,11 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   margin** — never touching their container's edges (16 from the screen edge, 16 between cards). Only a **flat** card
   may drop its padding (`padding="none"`, Figma isPadded = False), and a flat card **always runs edge to edge** in its
   container. The margin comes from the parent (padding / gap) — cards have no outer margin of their own.
-- **List cell follows the same rules:** a plain row has no fill and runs edge to edge; a card row is rounded with
-  `border-light` and sits inside a margin. Selected: plain → `surface-secondary`, card → `border-dark`.
+- **List cell follows the Card rules** (it is a card with specific content — dropdown options, settings, lists):
+  - plain row = Flat card: no fill, runs edge to edge;
+  - card row, **not tappable** = Static card: **no fill** (takes the colour it sits on) + `border-light`, no shadow;
+  - card row, **tappable** = Clickable card: `surface-primary` + `border-light` + `elevation-low`, press 0.98;
+  - selected (tappable only): plain → `surface-secondary`, card → `border-dark`. Figma: isPlain · isTappable · isSelected.
 - **Selected cards** (the chosen option in a list of choices — a contract, a plan, an account): only clickable cards
   can be selected (`selected`, Figma `isSelected = True`).
   - **Bordered** (rounded + border) card: swap `border-light` for **`border-dark`**. Nothing else changes — same

@@ -27,7 +27,7 @@ The heading row of a section. Heading (Heading/14) is required; Tag, Info and De
 Code: `<SectionHeader title description tag onInfo action>` · Docs: #/section-header
 
 ### L3: list cell (4543:65400)
-A row: icon, label with optional description, and something on the right (chevron, switch, tag or value). Tappable rows show a chevron or trailing control. A row holding a switch or checkbox is tappable as a whole (label row). isPlain = plain row: no fill (takes the colour of what it sits on), edge to edge; otherwise card style: rounded, border/light, always inside a margin. isSelected = True (chosen row in a list of choices): plain → surface/secondary, card → border/dark. Dots carry screen-reader text ("New").
+A row: icon, label with optional description, and something on the right (chevron, switch, tag or value). Tappable rows show a chevron or trailing control. A row holding a switch or checkbox is tappable as a whole (label row). A list cell follows the Card rules. isPlain = plain row (Flat): no fill (takes the colour of what it sits on), edge to edge; otherwise card style: rounded, border/light, always inside a margin — isTappable = False (Static): no fill, no shadow; isTappable = True (Clickable): surface/primary + elevation-low, press 0.98. isSelected = True (chosen row in a list of choices): plain → surface/secondary, card → border/dark. Dots carry screen-reader text ("New").
 Code: `<ListCell label description variant size selected>` · Docs: #/list-cell
 
 ### L3: Actionbar (4543:65480)

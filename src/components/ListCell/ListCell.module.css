@@ -40,7 +40,13 @@
   padding: var(--l3-spacing-08) var(--l3-spacing-16);
 }
 
+/*
+ * Card rows follow the Card rules (a list cell is a card with specific content):
+ * not tappable = Static → no fill (takes the colour of what it sits on) + border-light, no shadow;
+ * tappable = Clickable → surface-primary + border-light + elevation-low, scales to 0.98 while pressed.
+ */
 .cell[data-variant='card'] {
+  background-color: transparent;
   gap: var(--l3-spacing-12);
   border-radius: var(--l3-radius-12);
   box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
@@ -160,6 +166,26 @@
 
 .cell[data-interactive]:active {
   --cell-layer: var(--l3-state-layer-dark-pressed);
+}
+
+.cell[data-variant='card'][data-interactive] {
+  background-color: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light), var(--l3-shadow-elevation-low); /* 1px: Figma stroke weight has no variable */
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+.cell[data-variant='card'][data-interactive][data-selected] {
+  box-shadow: inset 0 0 0 1px var(--l3-border-dark), var(--l3-shadow-elevation-low); /* 1px */
+}
+
+/* Press: clickable surfaces (card rows and flat rows alike, as in Card) scale down while pressed. */
+.cell[data-interactive]:active {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell[data-variant='card'][data-interactive] { transition: none; }
+  .cell[data-interactive]:active { transform: none; }
 }
 
 .cell[data-interactive]:focus-visible {

@@ -9,6 +9,7 @@ const cells = [
   { title: 'isPlain=True · isSmall', variant: 'plain', size: 'sm' },
   { title: 'isPlain=False', variant: 'card', size: 'md' },
   { title: 'isPlain=False · isSmall', variant: 'card', size: 'sm' },
+  { title: 'isPlain=False · isTappable (clickable card)', variant: 'card', size: 'md', tappable: true },
   { title: 'isPlain=True · isSelected', variant: 'plain', size: 'md', selected: true },
   { title: 'isPlain=False · isSelected', variant: 'card', size: 'md', selected: true },
 ] as const
@@ -39,7 +40,7 @@ export function ListCellVariants() {
               iconRight={show.iconRight ? <ChevronDownIcon /> : undefined}
               dotLeft={show.dotLeft}
               dotRight={show.dotRight}
-              {...('selected' in c ? { selected: true, onClick: () => {} } : {})}
+              {...('selected' in c ? { selected: true, onClick: () => {} } : 'tappable' in c ? { onClick: () => {} } : {})}
             />
           </figure>
         ))}

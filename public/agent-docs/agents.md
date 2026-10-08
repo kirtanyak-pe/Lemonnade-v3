@@ -66,8 +66,9 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   (`surface-secondary`, no border/shadow) for grouped details. Selected (chosen option in a list of choices, clickable
   only, `selected`): bordered → `border-dark` instead of `border-light`; flat → `surface-secondary` (flat is otherwise
   unfilled). Rounded cards are always padded and inside a margin; only flat cards drop padding, and flat cards run edge
-  to edge. **ListCell** the same: plain = no fill, edge to edge; card = inside a margin; `selected` → plain
-  `surface-secondary`, card `border-dark`.
+  to edge. **ListCell** follows the Card rules: plain = flat (no fill, edge to edge); card row not tappable = static (no
+  fill + border-light); tappable = clickable (surface-primary + border-light + elevation-low, press 0.98); `selected` →
+  plain `surface-secondary`, card `border-dark`.
 
 ## 3. Workflow for UI tasks
 

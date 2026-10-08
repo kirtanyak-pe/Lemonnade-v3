@@ -784,6 +784,15 @@ export const changelog: Record<string, Release[]> = {
 
   'list-cell': [
     {
+      version: '1.4.0', date: '2026-10-09',
+      summary: 'Follows the Card rules',
+      changes: [
+        { kind: 'changed', text: 'A list cell is a card with specific content, so it follows Card: a card row that isn\'t tappable has no fill (it takes the colour it sits on) and border-light; a tappable card row is surface-primary + border-light + elevation-low and scales to 0.98 when pressed.' },
+        { kind: 'figma', text: 'L3: list cell gets isTappable = True · False (selected only when tappable).' },
+        { kind: 'changed', text: 'Tappable = onClick, href or as="label" — no new prop.', dev: true },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-10-09',
       summary: 'Selected rows, no fill on plain rows',
       changes: [

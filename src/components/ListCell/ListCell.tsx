@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import styles from './ListCell.module.css'
 
-/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`, isSelected → `selected`. */
+/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
 export type ListCellProps = {
   /** Figma "Label goes here". */
   label: ReactNode
@@ -10,7 +10,9 @@ export type ListCellProps = {
   size?: 'md' | 'sm'
   /**
    * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
-   * margin, never touching its container's edges).
+   * margin, never touching its container's edges). A list cell follows the Card rules: a card row that isn't tappable is
+   * a Static card (no fill + border-light); a tappable one (onClick / href / as="label") is a Clickable card
+   * (surface-primary + border-light + elevation-low, press 0.98). Figma isTappable.
    */
   variant?: 'plain' | 'card'
   /** Figma Icon-L slot (24 md / 16 sm). */

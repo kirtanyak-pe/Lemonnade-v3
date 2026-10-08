@@ -161,7 +161,7 @@
       "page": "List",
       "status": "CURRENT",
       "code": "ListCell",
-      "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Icon - L:BOOLEAN; 👁️ Icon - R:BOOLEAN; Icon-l:SLOT; icon-r:SLOT; 👁️ Dot-L:BOOLEAN; 👁️ Dot-R:BOOLEAN; isSelected=[False|True]; isSmall=[False|True]; isPlain=[True|False]"
+      "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Icon - L:BOOLEAN; 👁️ Icon - R:BOOLEAN; Icon-l:SLOT; icon-r:SLOT; 👁️ Dot-L:BOOLEAN; 👁️ Dot-R:BOOLEAN; isSelected=[False|True]; isSmall=[False|True]; isPlain=[True|False]; isTappable=[True|False] (selected only when True)"
     },
     {
       "name": "L3: Card",

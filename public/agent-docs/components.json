@@ -627,7 +627,7 @@
     "nodeId": "4543:65400",
     "key": "03f756534075245c50dcf64c9b5282fdabcbd354",
     "status": "CURRENT",
-    "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Icon - L:BOOLEAN; 👁️ Icon - R:BOOLEAN; Icon-l:SLOT; icon-r:SLOT; 👁️ Dot-L:BOOLEAN; 👁️ Dot-R:BOOLEAN; isSelected=[False|True]; isSmall=[False|True]; isPlain=[True|False]"
+    "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Icon - L:BOOLEAN; 👁️ Icon - R:BOOLEAN; Icon-l:SLOT; icon-r:SLOT; 👁️ Dot-L:BOOLEAN; 👁️ Dot-R:BOOLEAN; isSelected=[False|True]; isSmall=[False|True]; isPlain=[True|False]; isTappable=[True|False] (selected only when True)"
    },
    "props": [
     "label / description",
@@ -641,10 +641,12 @@
     "as / href / onClick"
    ],
    "tokens": [
-    "surface/primary (card)",
+    "surface/primary (tappable card)",
     "surface/secondary (plain selected)",
     "border/light",
     "border/dark (card selected)",
+    "shadow/elevation-low (tappable card)",
+    "motion/scale/press-default",
     "content/primary · secondary",
     "content/accent/discover (dot)",
     "Label/14 · 16",

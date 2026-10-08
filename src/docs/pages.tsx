@@ -760,7 +760,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65400',
     source: 'src/components/ListCell',
     exports: ['ListCell'],
-    tokens: ['surface/primary (card)', 'surface/secondary (plain selected)', 'border/light', 'border/dark (card selected)', 'content/primary · secondary', 'content/accent/discover (dot)', 'Label/14 · 16', 'Description/12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    tokens: ['surface/primary (tappable card)', 'surface/secondary (plain selected)', 'border/light', 'border/dark (card selected)', 'shadow/elevation-low (tappable card)', 'motion/scale/press-default', 'content/primary · secondary', 'content/accent/discover (dot)', 'Label/14 · 16', 'Description/12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
     overview: (
       <>
         <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
@@ -768,7 +768,12 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Plain or card</h2>
-          <p>Plain rows have no fill — they take the colour of whatever they sit on, the screen or a card — and always run edge to edge in their container. Card rows (Figma isPlain=False) have a border and rounded corners, always sit inside a margin (16 from the screen edge) and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).</p>
+          <p>A list cell is a card with more specific content — dropdown options, settings, lists — so it follows the <strong>Card rules</strong>. Plain rows are flat cards: no fill, they take the colour of whatever they sit on, and they run edge to edge. Card rows (Figma isPlain=False) are rounded with border-light and always sit inside a margin (16 from the screen edge):</p>
+          <ul>
+            <li><strong>Not tappable</strong> (a static card): no fill — it takes the colour it sits on — and border-light, no shadow.</li>
+            <li><strong>Tappable</strong> (a clickable card, Figma isTappable): surface-primary, border-light and elevation-low, and it scales to 0.98 while pressed.</li>
+          </ul>
+          <p>Both come in default (48) and small (32).</p>
         </section>
         <section className={styles.section}>
           <h2>Selected rows</h2>
@@ -786,7 +791,7 @@ import { msWallet, msWalletFill } from './icons/material'
     props: [
       { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
-      { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin).' },
+      { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },
       { name: 'trailing', type: 'ReactNode', description: 'Anything else on the right: Switch, Checkbox, Tag, value text.' },
