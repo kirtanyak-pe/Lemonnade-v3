@@ -99,6 +99,13 @@ export const changelog: Record<string, Release[]> = {
   ],
   card: [
     {
+      version: '1.3.0', date: '2026-10-08',
+      summary: 'In Figma',
+      changes: [
+        { kind: 'figma', text: 'New Figma component L3: Card: Type = Clickable · Static · Flat, isPadded = True · False, and one content slot. Same tokens as code: surface-primary or surface-default, border-light, elevation-low on clickable cards, radius-12, padding-12, rows 8 apart.' },
+      ],
+    },
+    {
       version: '1.2.0', date: '2026-09-29',
       summary: 'Figma card spec',
       changes: [

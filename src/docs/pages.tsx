@@ -516,11 +516,11 @@ import { msWallet, msWalletFill } from './icons/material'
   },
   {
     id: 'card',
-    progress: 'wip',
     title: 'Card',
     group: 'Surfaces',
     description: 'A surface that groups related content. Clickable cards are one tap target; static cards just show information.',
-    status: 'Not in Figma yet',
+    status: 'Figma synced',
+    figmaNodeId: '5364:38',
     altNames: 'Tile, panel, container, list item card',
     source: 'src/components/Card',
     exports: ['Card'],

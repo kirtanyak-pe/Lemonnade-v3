@@ -122,7 +122,15 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | right slot (👁️ Action - right) | `trailing` |
 | Content bottom (👁️) | `bottom` — tabs or search |
 
-### Card → `<Card>` (`components/Card`) — code first, no Figma component yet
+### L3: Card → `<Card>` (`components/Card`)
+| Figma | React |
+|---|---|
+| Type = Clickable | `onClick` or `href` (the whole card is the tap target) |
+| Type = Static | neither `onClick` nor `href` |
+| Type = Flat | `variant="flat"` (+ `onClick`/`href` if it's clickable) |
+| isPadded = True · False | `padding="default" \| "none"` |
+| content (slot) | children |
+| (manual background) | `surface` |
 
 ## Feedback & status
 

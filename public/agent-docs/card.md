@@ -3,9 +3,10 @@
 > A surface that groups related content. Clickable cards are one tap target; static cards just show information.
 
 - Group: Surfaces
-- Lifecycle: wip
-- Status: Not in Figma yet
-- Version: 1.2.0
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.3.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5364-38
 - Source: `src/components/Card`
 - Also called: Tile, panel, container, list item card
 
@@ -84,6 +85,6 @@ Card — Groups related content
 
 ## Recent changes
 
+- **1.3.0** (2026-10-08) In Figma: New Figma component L3: Card: Type = Clickable · Static · Flat, isPadded = True · False, and one content slot. Same tokens as code: surface-primary or surface-default, border-light, elevation-low on clickable cards, radius-12, padding-12, rows 8 apart.
 - **1.2.0** (2026-09-29) Figma card spec: Padding 16 → 12 and radius 16 → 12, matching the Figma Order card (row gap stays 8). Orders demo: 16 between cards, Body/12 meta line, Tertiary status tags, sort + filters toolbar.
 - **1.1.0** (2026-09-29) Flat variant: Flat style: not rounded, no border, no shadow, transparent background; still clickable. A card background can be set manually (surface variables only). Static cards (rounded + border-light) use surface-default; clickable cards stay surface-primary.
-- **1.0.0** (2026-09-29) First release: Clickable cards: surface-primary, border-light, elevation-low, press scale 0.98. Static cards for information or decoration: surface-primary + border-light, no shadow or press. Development warnings: a clickable card with controls inside, or a static card holding a single action.

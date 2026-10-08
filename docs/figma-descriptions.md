@@ -54,6 +54,10 @@ Code: `<EmptyState title description action>` · Docs: #/empty-state
 The Lemonn or Zing logo. isFull = mark + wordmark; otherwise just the mark. 24–48px high. Brand artwork — don't redraw or recolor.
 Code: `<BrandLogo brand variant>` · Docs: #/brand-logo
 
+### L3: Card (5364:38)
+A surface that groups related content. Clickable: the whole card is one tap target (surface/primary, border/light, elevation-low, scales down when pressed) — never put a button inside. Static: rounded, border/light on surface/default, no shadow. Flat: no radius, border or shadow. isPadded = False for edge-to-edge media or lists. Cards in a list sit 16px apart.
+Code: `<Card onClick variant padding surface>` · Docs: #/card
+
 ### L3: Title (4543:84634)
 A title with an optional description, in Large / Medium / Small / Mini. Figma-only — there is no code component; in code, compose it from Heading + Description text styles.
 Code: — (Figma-only) · Docs: —
