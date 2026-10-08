@@ -327,7 +327,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:66091',
     source: 'src/components/TextField',
     exports: ['TextField'],
-    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error', 'content/primary · secondary · tertiary · disabled', 'content/accent/error · success · discover', 'Label/12', 'Description/12 · 14', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
+    tokens: ['surface/primary · disabled', 'border/light · dark · accent/error-default', 'content/primary · secondary · tertiary · disabled', 'content/accent/error-default · success-default · discover-default', 'Label/12', 'Description/12 · 14', 'radius/12', 'shadow/elevation-low', 'icon-size/14 · 16'],
     overview: (
       <>
         <PhoneFrame label="Buy order form with quantity, limit price, note and a disabled exchange field">
@@ -606,7 +606,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:63932',
     source: 'src/components/BottomSheet',
     exports: ['BottomSheet', 'BottomSheetHeader', 'BottomSheetSurface'],
-    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'Heading/16 · 20', 'Description/12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'static/black + opacity/80 (overlay)', 'motion/* (local)', 'size/tap-target'],
+    tokens: ['surface/primary', 'border/light · intense', 'content/primary · secondary', 'Heading/16 · 20', 'Description/12 · 14', 'radius/24 · full', 'shadow/elevation-high', 'surface/overlay (Overlay)', 'motion/* (local)', 'size/tap-target'],
     overview: (
       <>
         <PhoneFrame label="Stock screen that opens an order bottom sheet, a result sheet and a top sheet">

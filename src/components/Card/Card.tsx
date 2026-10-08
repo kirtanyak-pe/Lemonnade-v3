@@ -56,12 +56,14 @@ export function Card({ children, onClick, href, as = 'div', padding = 'default',
     // Skip illustrations (e.g. docs Don't examples), which are rendered inert on purpose.
     if (!import.meta.env.DEV || !ref.current || ref.current.closest('[inert]')) return
     const controls = ref.current.querySelectorAll('button, a[href], input, select, textarea')
+    // "One action" means one button or link — a card holding just a switch or a field is a settings card.
+    const actions = ref.current.querySelectorAll('button, a[href]')
     if (selected && !clickable) {
       console.warn('[L3] <Card selected> needs onClick or href — only clickable cards can be selected.', ref.current)
     }
     if (clickable && controls.length > 0) {
       console.warn('[L3] <Card> is clickable but contains another control. A clickable card has one action: the card itself.', ref.current)
-    } else if (!clickable && controls.length === 1) {
+    } else if (!clickable && controls.length === 1 && actions.length === 1) {
       console.warn('[L3] <Card> has a single action inside. Make the whole card clickable (onClick / href) instead of placing one button in it.', ref.current)
     }
   })

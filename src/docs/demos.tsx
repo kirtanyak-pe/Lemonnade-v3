@@ -9,7 +9,7 @@ import { ListCell } from '../components/ListCell'
 import { ChevronDownIcon } from '../components/icons'
 import { Icon } from '../components/Icon'
 import { Actionbar, ActionbarAction } from '../components/Actionbar'
-import { msAdd, msInfo, msRemove, msAccountBalance, msDeleteForever, msUnfoldMore, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
+import { msInfo, msAccountBalance, msDeleteForever, msSearch as msSearchIcon, msStar, msStarFill, msFingerprint, msMail, msNotifications, msPerson, msCall, msWorkspacePremium } from '../icons/material'
 import { Tag } from '../components/Tag'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { Switch } from '../components/Switch'
@@ -17,6 +17,8 @@ import { Tabs } from '../components/Tabs'
 import { BottomNavbar } from '../components/BottomNavbar'
 import { EmptyState } from '../components/EmptyState'
 import { Card } from '../components/Card'
+import { Select } from '../components/Select'
+import { Stepper } from '../components/Stepper'
 import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import styles from './Docs.module.css'
 
@@ -348,11 +350,7 @@ export function SheetsDemo() {
       >
         <div className={styles.qtyRow}>
           <span className={styles.rowTitle}>Quantity</span>
-          <span className={styles.qtyStepper}>
-            <Button size="sm" variant="tertiary" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">−</Button>
-            <span className={styles.rowValue}>{qty}</span>
-            <Button size="sm" variant="tertiary" onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity">+</Button>
-          </span>
+          <Stepper label="Quantity" value={qty} onChange={setQty} min={1} />
         </div>
       </BottomSheet>
 
@@ -719,8 +717,8 @@ export function OrdersDemo() {
         <Tabs appearance="pill" aria-label="Order status" value={status} onChange={setStatus} items={[{ value: 'open', label: 'Open (4)' }, { value: 'history', label: 'History (2)' }]} />
         {/* Toolbar: sort on the left (bold-16 + 20px icon), filters link with a count badge on the right. */}
         <div className={styles.cardRow}>
-          <button type="button" className={styles.sortButton}>All Orders <Icon icon={msUnfoldMore} size={20} /></button>
-          <button type="button" className={styles.filterLink}>Filters <Tag variant="primary" color="discover" size="md">2</Tag></button>
+          <Select size="lg" onClick={() => {}}>All Orders</Select>
+          <Button variant="ghost" size="sm" onClick={() => {}} iconRight={<Tag variant="primary" color="discover" size="sm">2</Tag>}>Filters</Button>
         </div>
         {/* Static (decorative) card: information only, no action. */}
         <Card as="section" aria-label="Today">
@@ -774,13 +772,7 @@ export function OrdersDemo() {
 type TpSlUnit = 'pts' | '%'
 
 function TpSlStepper({ label, value, onChange, min = 0 }: { label: string; value: number; onChange: (v: number) => void; min?: number }) {
-  return (
-    <span className={styles.tpslStepper} role="group" aria-label={label}>
-      <Button size="sm" variant="tertiary" aria-label={`Decrease ${label.toLowerCase()}`} disabled={value <= min} onClick={() => onChange(Math.max(min, value - 1))} iconLeft={<Icon icon={msRemove} />} />
-      <span className={styles.tpslValue} aria-live="polite">{value}</span>
-      <Button size="sm" variant="tertiary" aria-label={`Increase ${label.toLowerCase()}`} onClick={() => onChange(value + 1)} iconLeft={<Icon icon={msAdd} />} />
-    </span>
-  )
+  return <Stepper label={label} value={value} onChange={onChange} min={min} />
 }
 
 function TpSlPanel({ kind }: { kind: 'TP' | 'SL' }) {
@@ -801,9 +793,9 @@ function TpSlPanel({ kind }: { kind: 'TP' | 'SL' }) {
         <span className={styles.tpslTitleRow}>
           <span className={styles.tpslTitle}>{title}</span>
           {enabled && (
-            <button type="button" className={styles.tpslSelect} onClick={() => setOrderType((t) => (t === 'LMT' ? 'MKT' : 'LMT'))} aria-label={`Order type: ${orderType === 'LMT' ? 'Limit' : 'Market'}. Change`}>
-              {orderType} <Icon icon={msUnfoldMore} size={12} />
-            </button>
+            <Select size="sm" onClick={() => setOrderType((t) => (t === 'LMT' ? 'MKT' : 'LMT'))} aria-label={`Order type: ${orderType === 'LMT' ? 'Limit' : 'Market'}. Change`}>
+              {orderType}
+            </Select>
           )}
         </span>
         <Switch aria-label={title} checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
@@ -815,9 +807,9 @@ function TpSlPanel({ kind }: { kind: 'TP' | 'SL' }) {
             <div className={styles.tpslField}>
               <span className={styles.tpslLabel}>
                 Trigger at
-                <button type="button" className={`${styles.tpslSelect} ${styles.tpslSelectNeutral}`} onClick={() => setUnit((u) => (u === 'pts' ? '%' : 'pts'))} aria-label={`Trigger unit: ${unit === 'pts' ? 'points' : 'percent'}. Change`}>
-                  {unit === 'pts' ? 'Points' : 'Percent'} <Icon icon={msUnfoldMore} size={12} />
-                </button>
+                <Select size="sm" subtle onClick={() => setUnit((u) => (u === 'pts' ? '%' : 'pts'))} aria-label={`Trigger unit: ${unit === 'pts' ? 'points' : 'percent'}. Change`}>
+                  {unit === 'pts' ? 'Points' : 'Percent'}
+                </Select>
               </span>
               <TpSlStepper label="Trigger" value={trigger} onChange={setTrigger} />
             </div>
@@ -844,7 +836,7 @@ function TpSlPanel({ kind }: { kind: 'TP' | 'SL' }) {
               Trail 1.0 {unit === 'pts' ? 'Pts' : '%'}
             </label>
             <Icon icon={msInfo} size={16} label="Trailing: the target moves with the price in steps of 1.0" />
-            <button type="button" className={styles.tpslSelect} aria-label="Edit trail step">Edit</button>
+            <Button variant="ghost" size="sm" onClick={() => {}} aria-label="Edit trail step">Edit</Button>
           </div>
         </>
       )}

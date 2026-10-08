@@ -76,9 +76,9 @@ Input field — Single line or text box
 ## Tokens used
 
 - `surface/primary · disabled`
-- `border/light · dark · accent/error`
+- `border/light · dark · accent/error-default`
 - `content/primary · secondary · tertiary · disabled`
-- `content/accent/error · success · discover`
+- `content/accent/error-default · success-default · discover-default`
 - `Label/12`
 - `Description/12 · 14`
 - `radius/12`

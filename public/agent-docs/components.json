@@ -206,9 +206,9 @@
    ],
    "tokens": [
     "surface/primary · disabled",
-    "border/light · dark · accent/error",
+    "border/light · dark · accent/error-default",
     "content/primary · secondary · tertiary · disabled",
-    "content/accent/error · success · discover",
+    "content/accent/error-default · success-default · discover-default",
     "Label/12",
     "Description/12 · 14",
     "radius/12",
@@ -510,7 +510,7 @@
     "Description/12 · 14",
     "radius/24 · full",
     "shadow/elevation-high",
-    "static/black + opacity/80 (overlay)",
+    "surface/overlay (Overlay)",
     "motion/* (local)",
     "size/tap-target"
    ],

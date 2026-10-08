@@ -226,7 +226,7 @@ Bottom sheet — A modal panel over the screen
 - `Description/12 · 14`
 - `radius/24 · full`
 - `shadow/elevation-high`
-- `static/black + opacity/80 (overlay)`
+- `surface/overlay (Overlay)`
 - `motion/* (local)`
 - `size/tap-target`
 

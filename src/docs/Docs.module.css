@@ -803,12 +803,6 @@
   justify-content: space-between;
 }
 
-.qtyStepper {
-  display: flex;
-  align-items: center;
-  gap: var(--l3-spacing-12);
-}
-
 .finePrint {
   display: block;
   padding: var(--l3-spacing-16) var(--l3-spacing-16) 0;
@@ -1485,7 +1479,6 @@ legend.sectionLabel {
   color: var(--l3-content-primary);
 }
 
-
 /* Pill Tabs as a choice group: wrap onto more lines instead of scrolling options out of view. */
 .controlChoices {
   flex-wrap: wrap;
@@ -1498,11 +1491,6 @@ legend.sectionLabel {
   width: calc(100% - 2px);
   margin-inline: 1px;
 }
-
-
-
-
-
 
 .playRow {
   display: flex;
@@ -1928,35 +1916,6 @@ legend.sectionLabel {
   color: var(--l3-content-secondary);
 }
 
-.sortButton,
-.filterLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  min-height: var(--l3-size-tap-target);
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.sortButton {
-  font: var(--l3-text-heading-16);
-  color: var(--l3-content-primary);
-}
-
-.filterLink {
-  font: var(--l3-text-label-14);
-  color: var(--l3-content-accent-discover-default);
-}
-
-.sortButton:focus-visible,
-.filterLink:focus-visible {
-  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
-  outline-offset: var(--l3-spacing-02);
-  border-radius: var(--l3-radius-04);
-}
-
 .cardTitle {
   font: var(--l3-text-heading-16);
 }
@@ -2234,43 +2193,6 @@ legend.sectionLabel {
   color: var(--l3-content-primary);
 }
 
-/* Inline text action standing in for a dropdown (no Select component yet). */
-.tpslSelect {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--l3-spacing-02);
-  padding: 0;
-  border: 0;
-  background: none;
-  font: var(--l3-text-label-12);
-  color: var(--l3-content-accent-discover-default);
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.tpslSelect::after {
-  content: '';
-  position: absolute;
-  inset: calc((100% - var(--l3-size-tap-target)) / 2) calc(-1 * var(--l3-spacing-04));
-}
-
-.tpslSelect:focus-visible {
-  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
-  outline-offset: var(--l3-spacing-02);
-  border-radius: var(--l3-radius-04);
-}
-
-.tpslSelectNeutral {
-  color: var(--l3-content-primary);
-}
-
-.tpslTrail .tpslSelect {
-  margin-left: auto;
-  font: var(--l3-text-heading-12);
-}
-
 /* Figma inner panel: surface/secondary, 8 · 12 padding, rows 12 apart. */
 .tpslFields {
   display: flex;
@@ -2292,25 +2214,6 @@ legend.sectionLabel {
   gap: var(--l3-spacing-04);
   font: var(--l3-text-label-12);
   color: var(--l3-content-secondary);
-}
-
-/* Figma stepper: surface/default pill, radius 8, 4 padding; value bold 14. */
-.tpslStepper {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: var(--l3-spacing-04);
-  padding: var(--l3-spacing-02);
-  border-radius: var(--l3-radius-08);
-  background: var(--l3-surface-default);
-}
-
-.tpslValue {
-  min-width: var(--l3-size-48);
-  font: var(--l3-text-heading-14);
-  color: var(--l3-content-primary);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
 }
 
 .tpslDivider,
@@ -2439,7 +2342,6 @@ legend.sectionLabel {
   .pageHeader {
     padding: var(--l3-spacing-20) var(--l3-spacing-16);
   }
-
 
 }
 

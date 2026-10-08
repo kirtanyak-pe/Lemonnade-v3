@@ -54,6 +54,7 @@ const LogoThumb = () => (
   <div className={styles.logos}>
     <BrandLogo brand="lemonn" size={32} decorative />
     <BrandLogo brand="zing" size={32} decorative />
+    <BrandLogo brand="coinswitch" size={32} decorative />
   </div>
 )
 
@@ -63,5 +64,5 @@ export const foundationThumbs: Record<string, { thumb: ReactNode; meta: string }
   spacing: { thumb: <SpacingThumb />, meta: `${Object.keys(numberVars).length} spacing, radius & size tokens` },
   layout: { thumb: <LayoutThumb />, meta: 'Page 16 · sections 24 / 32 · heading 16 · card 12' },
   icons: { thumb: <IconsThumb />, meta: 'Material Symbols · 3,900+' },
-  'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing' },
+  'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing · Coinswitch' },
 }
