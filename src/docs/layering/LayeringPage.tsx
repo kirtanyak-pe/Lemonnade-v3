@@ -5,23 +5,36 @@ import styles from './LayeringPage.module.css'
 // Layering foundation page: how L3 surfaces stack, bottom → top, taken from the components (surfaces, effect styles,
 // sticky / fixed positioning). Shown as an exploded 3D stack drawn with the real tokens, plus the rules.
 
-type Layer = { id: string; n: number; name: string; what: string; surface: string; shadow: string; note: string }
+type Layer = { id: string; n: number; name: string; what: string; surface: string; shadow: string; note: string; fills: string[]; borders: string[]; shadows: string[] }
 
 const layers: Layer[] = [
-  { id: 'screen', n: 0, name: 'Screen', what: 'The page background', surface: 'surface/default', shadow: 'none', note: 'Everything starts here. The 16 page margin is measured from its edges.' },
-  { id: 'inset', n: 1, name: 'Inset', what: 'Filled cards — grey panels of details', surface: 'surface/secondary', shadow: 'none', note: 'Sits into the layer it is on, not above it: no border, no shadow. Never grey on grey.' },
-  { id: 'content', n: 2, name: 'Content', what: 'Static cards, list rows, text, charts', surface: 'surface/default + border/light', shadow: 'none', note: 'Information only. The border separates it — it is not lifted.' },
-  { id: 'raised', n: 3, name: 'Raised', what: 'Clickable cards, chip tabs, text fields', surface: 'surface/primary + border/light', shadow: 'elevation-low', note: 'Lifted because it can be tapped. Pressing it sinks it back (scale 0.98).' },
-  { id: 'bars', n: 4, name: 'Bars', what: 'Action bar (top), bottom navbar, button dock', surface: 'surface/default · surface/primary', shadow: 'elevation-low · medium · high', note: 'Stay put while content scrolls under them. The action bar gets elevation-low only once something scrolls under it.' },
-  { id: 'toast', n: 5, name: 'Floating', what: 'Toast (floating Aerobar)', surface: 'surface/inverted', shadow: 'elevation-medium', note: 'Floats over content and bars to report the result of an action, then goes away.' },
-  { id: 'scrim', n: 6, name: 'Scrim', what: 'Overlay', surface: 'surface/overlay', shadow: 'none', note: 'Dims everything below and blocks it. It only ever appears under a sheet.' },
-  { id: 'sheet', n: 7, name: 'Sheet', what: 'Bottom sheet', surface: 'surface/primary', shadow: 'elevation-high', note: 'The top of the stack: a task on top of the screen. Closes by tapping the scrim or dragging down.' },
-  { id: 'sheet2', n: 8, name: 'Second sheet', what: 'A bottom sheet on a bottom sheet', surface: 'surface/primary', shadow: 'elevation-high', note: 'At most two sheets. Only this one has a back button. Never a third.' },
+  { id: 'screen', n: 0, name: 'Screen', what: 'The page background', surface: 'surface/default', shadow: 'none', note: 'Everything starts here. The 16 page margin is measured from its edges.', fills: ['surface/default'], borders: [], shadows: [] },
+  { id: 'inset', n: 1, name: 'Inset', what: 'Filled cards — grey panels of details', surface: 'surface/secondary', shadow: 'none', note: 'Sits into the layer it is on, not above it: no border, no shadow. Never grey on grey.', fills: ['surface/secondary'], borders: [], shadows: [] },
+  { id: 'content', n: 2, name: 'Content', what: 'Static cards, list rows, text, charts', surface: 'surface/default + border/light', shadow: 'none', note: 'Information only. The border separates it — it is not lifted.', fills: ['surface/default'], borders: ['border/light'], shadows: [] },
+  { id: 'raised', n: 3, name: 'Raised', what: 'Clickable cards, chip tabs, text fields', surface: 'surface/primary + border/light', shadow: 'elevation-low', note: 'Lifted because it can be tapped. Pressing it sinks it back (scale 0.98).', fills: ['surface/primary'], borders: ['border/light'], shadows: ['elevation-low'] },
+  { id: 'bars', n: 4, name: 'Bars', what: 'Action bar (top), bottom navbar, button dock', surface: 'surface/default · surface/primary', shadow: 'elevation-low · medium · high', note: 'Stay put while content scrolls under them. The action bar gets elevation-low only once something scrolls under it.', fills: ['surface/default', 'surface/primary'], borders: ['border/light'], shadows: ['elevation-low', 'elevation-medium', 'elevation-high'] },
+  { id: 'toast', n: 5, name: 'Floating', what: 'Toast (floating Aerobar)', surface: 'surface/inverted', shadow: 'elevation-medium', note: 'Floats over content and bars to report the result of an action, then goes away.', fills: ['surface/inverted'], borders: [], shadows: ['elevation-medium'] },
+  { id: 'scrim', n: 6, name: 'Scrim', what: 'Overlay', surface: 'surface/overlay', shadow: 'none', note: 'Dims everything below and blocks it. It only ever appears under a sheet.', fills: ['surface/overlay'], borders: [], shadows: [] },
+  { id: 'sheet', n: 7, name: 'Sheet', what: 'Bottom sheet', surface: 'surface/primary', shadow: 'elevation-high', note: 'The top of the stack: a task on top of the screen. Closes by tapping the scrim or dragging down.', fills: ['surface/primary'], borders: ['border/light'], shadows: ['elevation-high'] },
+  { id: 'sheet2', n: 8, name: 'Second sheet', what: 'A bottom sheet on a bottom sheet', surface: 'surface/primary', shadow: 'elevation-high', note: 'At most two sheets. Only this one has a back button. Never a third.', fills: ['surface/primary'], borders: ['border/light'], shadows: ['elevation-high'] },
 ]
+
+const cssVar = (token: string) => `var(--l3-${token.replace(/\//g, '-')})`
+
+/** The layer's real surface / border / shadow tokens, drawn live (they follow the theme switcher). */
+function Tokens({ layer }: { layer: Layer }) {
+  return (
+    <span className={styles.tokens}>
+      {layer.fills.map((t) => <span key={t} className={styles.token}><span className={styles.fillSwatch} style={{ background: cssVar(t) }} />{t}</span>)}
+      {layer.borders.map((t) => <span key={t} className={styles.token}><span className={styles.borderSwatch} style={{ boxShadow: `inset 0 0 0 var(--l3-spacing-02) ${cssVar(t)}` }} />{t}</span>)}
+      {layer.shadows.map((t) => <span key={t} className={styles.token}><span className={styles.shadowSwatch} style={{ boxShadow: `var(--l3-shadow-${t})` }} />{t.replace('elevation-', 'shadow ')}</span>)}
+    </span>
+  )
+}
 
 function Plane({ layer, active }: { layer: Layer; active: string | null }) {
   return (
-    <div className={styles.plane} data-layer={layer.id} data-dim={active !== null && active !== layer.id ? '' : undefined} style={{ '--n': layer.n } as CSSProperties} aria-hidden="true">
+    <div className={styles.plane} data-layer={layer.id} data-dim={active !== null && active !== layer.id ? '' : undefined} style={{ '--n': layer.n, '--plane': cssVar(layer.fills[0]) } as CSSProperties} aria-hidden="true">
       {layer.id === 'inset' && <span className={styles.miniInset} />}
       {layer.id === 'content' && <span className={styles.miniStatic} />}
       {layer.id === 'raised' && <><span className={styles.miniRaised} /><span className={styles.miniChip} /></>}
@@ -50,6 +63,7 @@ export function LayeringPage() {
               <span onMouseEnter={() => setActive(l.id)} onMouseLeave={() => setActive(null)}>
                 <ListCell size="sm" label={l.name} description={l.what} iconLeft={<span className={styles.num}>{l.n}</span>} selected={active === l.id} onClick={() => setActive((a) => (a === l.id ? null : l.id))} />
               </span>
+              <Tokens layer={l} />
             </li>
           ))}
         </ol>

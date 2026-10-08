@@ -142,7 +142,8 @@ function auditFile(file: string) {
       }
       // lengths
       const pxs = [...value.matchAll(/(?<![\w.-])(\d+(?:\.\d+)?)px\b/g)].map((m) => Number(m[1])).filter((v) => v > 1)
-      if (pxs.length && !prop.includes('shadow') && !/^font|line-height|letter-spacing/.test(prop)) {
+      // @media / @container conditions can't use custom properties — a px breakpoint there is not a raw length
+      if (pxs.length && !/^\s*@(media|container)\b/.test(line) && !prop.includes('shadow') && !/^font|line-height|letter-spacing/.test(prop)) {
         const list = /radius/.test(prop) ? radius : /^(padding|margin|gap|row-gap|column-gap|inset|top|right|bottom|left)/.test(prop) ? spacing : /^(width|height|min-|max-)/.test(prop) ? size : null
         if (list && list.length) for (const v of pxs) add({ rule: 'raw-length', level: 'warn', file: rel, line: n, found: `${prop}: ${v}px`, use: nearestNumber(list, v) })
       }
