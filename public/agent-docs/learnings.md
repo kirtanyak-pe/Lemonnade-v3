@@ -5,6 +5,15 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 
 ## 2026-10-09 — building and dogfooding the playbook tools
 
+- **Slot content inside nested instances behaves differently.** Swapping 57 price texts that live in a sheet's slot
+  inside nested instances worked, but `remove()` then threw "node does not exist" (ids change once a node is placed
+  in slot content), and the per-item undo never ran. Nothing was lost (62 Price changes, 0 hidden, 0 duplicates), but
+  only a follow-up check proved it. Fix: after any per-item error, re-check the area (hidden originals, duplicates,
+  overflow) instead of trusting the error; never leave `old.visible = false` before a step that can throw.
+- **Curate before swapping.** A structural guess found 88 "clickable cards" — including 360×536 screen blocks and
+  input rows. Grouping by name + size + tokens gave exact matches (90), and the content check still refused 4.
+  F&O run 2026-10-09: 14 section headers, 62 price changes, 86 cards (66 Clickable, 18 Filled, 2 Static).
+
 - **A token's display name is not a colour.** The Colors page set swatches to `surface-default` (the copyable name)
   instead of `var(--l3-surface-default)` — twice (accent band, then the whole semantic tree). The browser drops an
   invalid value silently, so every swatch fell back to the text colour (all black). Fix: always `var(${cssVar(token)})`.

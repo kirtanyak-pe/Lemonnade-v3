@@ -464,7 +464,7 @@
       "id": "5407:124",
       "key": "9cc0bfe8b84405da715c3baa64177530907278c1",
       "page": "Section header",
-      "status": "UNPUBLISHED",
+      "status": "CURRENT",
       "code": "SectionHeader",
       "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; CTA=[None|View all|Switcher]"
     }

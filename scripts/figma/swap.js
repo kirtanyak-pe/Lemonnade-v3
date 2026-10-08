@@ -10,7 +10,8 @@
 //   onMismatch: 'skip',        'skip' = undo that one swap and report it · 'stop' = throw (the whole call rolls back)
 //   groupReserveMs: 15000,     don't start a main-component edit with less time left than this (it continues next call)
 // }
-// match:    { mainName, mainNameRe, variant: {prop: value}, signature: 'select'|'stepper'|'price-change'|'card'|'list-row', nameRe, discontinued: true }
+// match:    { mainName, mainNameRe, variant: {prop: value}, signature: 'select'|'stepper'|'price-change'|'card'|'list-row'|'section-header'|'chart', nameRe, discontinued: true,
+//             textStyles: ['Label/12'], fillRe: 'indicator/(up|down)', height: 20 }   ← extra filters for signature matches
 //           (with a signature, variant filters what the classifier found, e.g. { signature: 'card', variant: { Type: 'Filled' } })
 // strategy: 'latest' | 'variant-swap' | 'icon-swap' | 'slot-wrap' | 'select' | 'stepper' | 'list-cell' | 'price-change' | 'chart'
 // to / toKey: an L3 registry name, or any component key (icons: find keys with search_design_system, in one batched call)
@@ -69,6 +70,9 @@ async function collect(rootList) {
         const c = classify(n)
         if (!c || c.kind !== m.signature) continue
         if (m.variant && !Object.entries(m.variant).every(([k, v]) => c.variant && c.variant[k] === String(v))) continue // e.g. card Type=Filled
+        if (m.textStyles && !(n.type === 'TEXT' && m.textStyles.includes(l3StyleOfId(n.textStyleId)))) continue // e.g. ['Label/12']
+        if (m.fillRe && !new RegExp(m.fillRe).test((await paintToken(n.fills)) || '')) continue // e.g. 'indicator/(up|down)'
+        if (m.height && Math.round(n.height) !== m.height) continue // only rows that keep their height
         if (nameRe && !nameRe.test(n.name)) continue
       } else {
         const info = await mainInfo(n)
@@ -335,8 +339,28 @@ const STRATEGIES = {
     const nu = (await target(rule, { Direction: dir, Size: size })).createInstance()
     placeLike(nu, old)
     nu.name = 'L3: Price change'
-    nu.setProperties({ [propKey(nu, '✏️ Value')]: s.replace(/^[+\-−]\s?/, '') })
+    const arrow = propKey(nu, '👁️ Arrow')
+    nu.setProperties({ [propKey(nu, '✏️ Value')]: s.replace(/^[+\-−]\s?/, ''), ...(arrow ? { [arrow]: false } : {}) }) // old text had no arrow
     if (old.layoutSizingHorizontal === 'FILL') nu.layoutSizingHorizontal = 'FILL'
+    return { node: nu }
+  },
+
+  // Hand-built section title row → L3: Section header (title, optional ⓘ, description; CTA only for "View all").
+  async 'section-header'(old, rule) {
+    const kids = visibleKids(old)
+    const title = kids[0]
+    const rest = kids.slice(1)
+    const info = rest.find((k) => k.type === 'INSTANCE' && /info/i.test(k.name))
+    const desc = rest.find((k) => k.type === 'TEXT')
+    const other = rest.filter((k) => k !== info && k !== desc)
+    const viewAll = other.length === 1 && /view all|see all/i.test(other[0].findAll ? other[0].findAll((t) => t.type === 'TEXT').map((t) => t.characters).join(' ') : '')
+    if (other.length && !viewAll) throw new Error('has an action that is not View all — left as is')
+    const nu = (await target(rule, { CTA: viewAll ? 'View all' : 'None' })).createInstance()
+    placeLike(nu, old)
+    nu.name = 'L3: Section header'
+    nu.setProperties({ [propKey(nu, '✏️ Heading')]: title.characters, [propKey(nu, '👁️ Info')]: Boolean(info), [propKey(nu, '👁️ Description')]: Boolean(desc), ...(desc ? { [propKey(nu, '✏️ Description')]: desc.characters } : {}) })
+    try { nu.layoutSizingHorizontal = old.layoutSizingHorizontal === 'HUG' ? 'FIXED' : old.layoutSizingHorizontal } catch (e) {}
+    if (nu.layoutSizingHorizontal === 'FIXED') nu.resize(old.width, nu.height)
     return { node: nu }
   },
 }

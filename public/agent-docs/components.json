@@ -975,7 +975,7 @@
     "name": "L3: Section header",
     "nodeId": "5407:124",
     "key": "9cc0bfe8b84405da715c3baa64177530907278c1",
-    "status": "UNPUBLISHED",
+    "status": "CURRENT",
     "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; CTA=[None|View all|Switcher]"
    },
    "props": [

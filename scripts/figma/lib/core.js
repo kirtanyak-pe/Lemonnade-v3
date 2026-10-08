@@ -254,6 +254,9 @@ function classify(n) {
   const kids = visibleKids(n)
   const texts = kids.filter((k) => k.type === 'TEXT')
   const horiz = n.layoutMode === 'HORIZONTAL'
+  // Section header: a header-named row ≤ 48 tall starting with a Heading/14 title (+ optional ⓘ, tag, one action)
+  if (n.layoutMode && n.layoutMode !== 'NONE' && n.height <= 48 && n.width >= 200 && kids.length >= 1 && kids.length <= 4 && /header|heading|title|section/i.test(n.name) && kids[0].type === 'TEXT' && l3StyleOfId(kids[0].textStyleId) === 'Heading/14')
+    return { kind: 'section-header', to: 'L3: Section header', confidence: 0.8, why: 'Heading/14 title row' }
   // Select: [text, ↕/⌄ icon]
   if (horiz && kids.length === 2 && kids[0].type === 'TEXT' && kids[1].type === 'INSTANCE' && ICON_SWAP.test(kids[1].name))
     return { kind: 'select', to: 'L3: Select', confidence: 0.9, why: 'text followed by a ↕/⌄ icon' }
@@ -305,7 +308,7 @@ function classify(n) {
 // Which swap strategy fits each L3 target (containers wrap their content into the slot; rebuilds read the old content).
 const STRATEGY_FOR = {
   'L3: Card': 'slot-wrap', 'L3: Button Dock': 'slot-wrap', 'L3: Select': 'select', 'L3: Stepper': 'stepper',
-  'L3: list cell': 'list-cell', 'L3: Price change': 'price-change', 'L3: Chart': 'chart',
+  'L3: list cell': 'list-cell', 'L3: Price change': 'price-change', 'L3: Chart': 'chart', 'L3: Section header': 'section-header',
 }
 const strategyFor = (to, kind) => STRATEGY_FOR[to] || ({ card: 'slot-wrap', 'list-row': 'list-cell' })[kind] || kind || 'variant-swap'
 
