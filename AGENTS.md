@@ -27,12 +27,16 @@ ask, or list it under "Open questions" in your answer.
 - **Tokens only.** No hex/rgb, raw px spacing, font sizes or shadows in styles. Only `--l3-*` variables (the one
   accepted literal is `1px` for hairlines). Missing value → add it to `src/tokens/source/local.*.json`, run
   `npm run tokens`, and say so.
+- **Screen layout:** page padding 16 left/right; sections 24 apart (32 for a bigger break); section heading → its
+  card 16; card padding 12 on every side. Gaps are the container's auto-layout gap, bound to spacing tokens. Section
+  titles are always `SectionHeader` (title required; tag / info / description ≤ 2 lines / one action — View all or a
+  switcher — optional).
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
   inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
-- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a select, stepper, chart,
-  skeleton), say so and ask — don't build a one-off lookalike inside a screen.
+- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a dialog), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
+  ProgressBar, Chart / Sparkline, PriceChange and Overlay exist now.
 
 Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
@@ -56,7 +60,12 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
   `surface-secondary` (grey). Never fill a whole section grey.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
-  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow.
+  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
+  (`surface-secondary`, no border/shadow) for grouped details. Selected (chosen option in a list of choices, clickable
+  only, `selected`): bordered → `border-dark` instead of `border-light`; flat → `surface-secondary` (flat is otherwise
+  unfilled). Rounded cards are always padded and inside a margin; only flat cards drop padding, and flat cards run edge
+  to edge. **ListCell** the same: plain = no fill, edge to edge; card = inside a margin; `selected` → plain
+  `surface-secondary`, card `border-dark`.
 
 ## 3. Workflow for UI tasks
 
@@ -81,7 +90,22 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - Put content into a component's **slots** (e.g. tabs in the Actionbar's `↓ Content bottom`), don't stack siblings.
 - Frames are 360 wide; Manrope via L3 text styles.
 
-## 5. Repo conventions
+## 5. Migrate, audit, extend, generate — use the tools (docs/PLAYBOOK.md)
+
+- **Before building anything:** `npm run find -- "<the job>"`. Follow the reuse ladder: use → configure → compose
+  (recipe) → extend (variant, same job) → create (new job, 3+ uses, spec first). Never build a lookalike.
+- **Old code:** `npm run audit:ui -- <src>`; fix errors, then warnings; re-run until clean.
+- **Old Figma designs:** Figma `audit` → `migrate-tokens` (dryRun first) → `swap` (dryRun → sandbox → run) → audit
+  again. Bundle scripts with `npm run figma -- <script> --config '{…}'` and paste into `use_figma`.
+- **New screens:** `npm run screen -- new <archetype>` → edit the spec → `score` (≥ 85, no blocking) → `gen` (code,
+  written outside this repo) and/or Figma `build-screen` (sandbox first). How screens should look:
+  `docs/DESIGN_LANGUAGE.md`.
+- **Efficiency:** cheapest lookup first (`components.json`, code map, registry) · batch + parallel reads · one page per
+  Figma call, ≤ ~10k nodes · dry-run → sandbox → run · numbers over screenshots · read `timing` before optimising.
+- **Improve the system, not the one-off:** after each task add to `docs/LEARNINGS.md` and fix the data or script that
+  caused the trouble.
+
+## 6. Repo conventions
 
 - Every component change gets a release in `src/docs/changelog.ts` (semver per component).
 - Don't commit, push or publish unless asked. The public docs site (`npm run deploy:docs`) is only updated on

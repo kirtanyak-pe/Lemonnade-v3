@@ -1,0 +1,130 @@
+/* Layout foundation page — every value is an --l3-* token. */
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--l3-spacing-32);
+  align-items: flex-start;
+  margin-bottom: var(--l3-spacing-40);
+}
+
+/* A 360-wide screen with its 16 page padding drawn as tinted columns. */
+.phone {
+  display: flex;
+  width: calc(var(--l3-size-128) * 2 + var(--l3-size-96) + var(--l3-size-08)); /* 360: the mobile frame */
+  max-width: 100%;
+  padding: var(--l3-spacing-16) 0 var(--l3-spacing-24);
+  border-radius: var(--l3-radius-16);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px hairline */
+}
+
+.pad {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  justify-content: center;
+  width: var(--l3-spacing-16);
+  background: var(--l3-surface-accent-discover-light);
+  color: var(--l3-content-accent-discover-default);
+  font: var(--l3-text-label-10);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.gap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--l3-surface-accent-discover-light);
+}
+
+.gapLabel {
+  padding: 0 var(--l3-spacing-04);
+  color: var(--l3-content-accent-discover-default);
+  font: var(--l3-text-label-10);
+}
+
+.heading {
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-14);
+}
+
+.cardLabel {
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+
+.cardValue {
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-20);
+  font-variant-numeric: tabular-nums;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+}
+
+.row > :last-child {
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12);
+}
+
+.cell {
+  padding-inline: 0;
+}
+
+.rules {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-16);
+  min-width: 0;
+  margin: 0;
+  flex-basis: calc(var(--l3-size-128) * 2 + var(--l3-size-24));
+}
+
+.rule dt {
+  display: flex;
+  gap: var(--l3-spacing-08);
+  align-items: baseline;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-16);
+}
+
+.rule dd {
+  margin: var(--l3-spacing-04) 0 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-14);
+}
+
+.value {
+  min-width: var(--l3-spacing-32);
+  color: var(--l3-content-accent-discover-default);
+  font: var(--l3-text-heading-20);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  padding-left: var(--l3-spacing-20);
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-14);
+}
+
+/* Card padding shown as a tinted inset ring (12 on every side). */
+.padded.padded {
+  box-shadow: inset 0 0 0 var(--l3-spacing-12) var(--l3-surface-accent-discover-light), inset 0 0 0 1px var(--l3-border-light);
+}

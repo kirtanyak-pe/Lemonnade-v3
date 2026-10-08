@@ -1,0 +1,76 @@
+/*
+ * L3 Chart + Sparkline — every colour is an --l3-* token (Figma L3: Chart, L3: Sparkline).
+ * Candles surface/accent/indicator/up|down-default · volume the -light versions · line border/accent/indicator/up|down-default
+ * · area surface/accent/indicator/*-light → gradient-stop-0 (transparent) · grid border/light dashed · axis Description/10
+ * content/secondary · last-price tag surface/inverted + content/inverted (Label/10).
+ * Line width 1.5: Figma stroke weight has no variable.
+ */
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  --line: var(--l3-border-accent-indicator-up-default);
+  --area-top: var(--l3-surface-accent-indicator-up-light);
+  --area-end: var(--l3-gradient-stop-0-accent-indicator-up-light);
+}
+
+.chart[data-trend='down'],
+.sparkline[data-trend='down'] {
+  --line: var(--l3-border-accent-indicator-down-default);
+  --area-top: var(--l3-surface-accent-indicator-down-light);
+  --area-end: var(--l3-gradient-stop-0-accent-indicator-down-light);
+}
+
+.sparkline {
+  --line: var(--l3-border-accent-indicator-up-default);
+  display: block;
+  flex: none;
+  width: var(--l3-size-64);
+  height: var(--l3-size-24);
+  overflow: visible;
+}
+
+.grid line {
+  stroke: var(--l3-border-light);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+.axis text {
+  fill: var(--l3-content-secondary);
+  font: var(--l3-text-description-10); /* L3/Description/10 */
+}
+
+.up rect { fill: var(--l3-surface-accent-indicator-up-default); }
+.down rect { fill: var(--l3-surface-accent-indicator-down-default); }
+.volUp { fill: var(--l3-surface-accent-indicator-up-light); }
+.volDown { fill: var(--l3-surface-accent-indicator-down-light); }
+
+.line {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.areaTop { stop-color: var(--area-top); }
+.areaEnd { stop-color: var(--area-end); }
+
+.last line {
+  stroke: var(--l3-border-intense);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+.last rect {
+  fill: var(--l3-surface-inverted);
+  rx: var(--l3-radius-04); /* the rx attribute is the fallback */
+}
+
+.last text {
+  fill: var(--l3-content-inverted);
+  font: var(--l3-text-label-10); /* L3/Label/10 */
+}

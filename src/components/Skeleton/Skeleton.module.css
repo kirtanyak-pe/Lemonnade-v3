@@ -1,0 +1,71 @@
+/*
+ * L3 Skeleton — every value is an --l3-* token (Figma L3: Skeleton + L3: Skeleton pattern).
+ * surface/secondary on white; surface/tertiary on grey (isOnGrey). Line radius/04 · Circle radius/full · Box radius/08.
+ * The shimmer is a moving surface/primary highlight at opacity/60; it is off under prefers-reduced-motion.
+ */
+
+.skeleton {
+  --sk-fill: var(--l3-surface-secondary);
+  display: block;
+  flex: none;
+  width: var(--sk-w);
+  height: var(--sk-h);
+  border-radius: var(--l3-radius-04);
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--l3-surface-primary) calc(var(--l3-opacity-60) * 100%), transparent), transparent) 0 0 / 50% 100% no-repeat,
+    var(--sk-fill);
+  animation: shimmer 1.4s linear infinite; /* no duration token this long; local */
+}
+
+.skeleton[data-on-grey] {
+  --sk-fill: var(--l3-surface-tertiary);
+}
+
+.skeleton[data-shape='circle'] {
+  border-radius: var(--l3-radius-full);
+}
+
+.skeleton[data-shape='box'] {
+  border-radius: var(--l3-radius-08);
+}
+
+@keyframes shimmer {
+  from { background-position: -100% 0, 0 0; }
+  to { background-position: 200% 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--sk-fill);
+  }
+}
+
+/* Patterns */
+.listRow {
+  display: flex;
+  align-items: center;
+  gap: var(--l3-spacing-12);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--l3-spacing-12);
+}
+
+.lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-02);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--l3-spacing-12);
+  border-radius: var(--l3-radius-12);
+  background: var(--l3-surface-default);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light); /* 1px: Figma stroke weight has no variable */
+}

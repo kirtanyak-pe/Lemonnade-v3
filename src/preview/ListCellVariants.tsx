@@ -3,12 +3,14 @@ import { PlaceholderIcon } from '../components/Button'
 import { ChevronDownIcon } from '../components/icons'
 import { ListCell } from '../components/ListCell'
 
-// Same 2×2 grid as the Figma frame: plain / card × default / isSmall.
+// Same grid as the Figma frame: plain / card × default / isSmall, plus the selected rows.
 const cells = [
   { title: 'isPlain=True', variant: 'plain', size: 'md' },
   { title: 'isPlain=True · isSmall', variant: 'plain', size: 'sm' },
   { title: 'isPlain=False', variant: 'card', size: 'md' },
   { title: 'isPlain=False · isSmall', variant: 'card', size: 'sm' },
+  { title: 'isPlain=True · isSelected', variant: 'plain', size: 'md', selected: true },
+  { title: 'isPlain=False · isSelected', variant: 'card', size: 'md', selected: true },
 ] as const
 
 export function ListCellVariants() {
@@ -37,6 +39,7 @@ export function ListCellVariants() {
               iconRight={show.iconRight ? <ChevronDownIcon /> : undefined}
               dotLeft={show.dotLeft}
               dotRight={show.dotRight}
+              {...('selected' in c ? { selected: true, onClick: () => {} } : {})}
             />
           </figure>
         ))}

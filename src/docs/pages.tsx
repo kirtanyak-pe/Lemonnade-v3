@@ -17,8 +17,17 @@ import { EmptyStateVariants } from '../preview/EmptyStateVariants'
 import { BrandLogoVariants } from '../preview/BrandLogoVariants'
 import { CardVariants } from '../preview/CardVariants'
 import { BrandLogo } from '../components/BrandLogo'
+import { StepperVariants } from '../preview/StepperVariants'
+import { SelectVariants } from '../preview/SelectVariants'
+import { SkeletonVariants } from '../preview/SkeletonVariants'
+import { ProgressBarVariants } from '../preview/ProgressBarVariants'
+import { ChartVariants } from '../preview/ChartVariants'
+import { DatePickerVariants } from '../preview/DatePickerVariants'
+import { PriceChangeVariants } from '../preview/PriceChangeVariants'
+import { SectionHeaderVariants } from '../preview/SectionHeaderVariants'
 import { ColorsPage } from './colors/ColorsPage'
 import { TypographyPage } from './typography/TypographyPage'
+import { LayoutPage } from './layout/LayoutPage'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
@@ -79,6 +88,14 @@ export const pages: DocPage[] = [
     description: 'Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.',
     content: <NumbersPreview />,
   },
+  {
+    id: 'layout',
+    progress: 'done',
+    title: 'Layout',
+    group: 'Foundations',
+    description: 'How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.',
+    content: <LayoutPage />,
+  },
 
   {
     id: 'icons',
@@ -119,13 +136,13 @@ import { msWallet, msWalletFill } from './icons/material'
     id: 'brand-logo',
     title: 'Brand logo',
     group: 'Foundations',
-    description: 'The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.',
+    description: 'The Lemonn, Zing and Coinswitch logos: full (mark + wordmark) or just the mark, at 24–48px high.',
     status: 'Figma synced',
     altNames: 'Logo, logotype, wordmark, brand mark, app icon',
     figmaNodeId: '4735:1466',
     source: 'src/components/BrandLogo',
     exports: ['BrandLogo'],
-    tokens: ['base/hue/brand-lemonn-500 · 700 (Lemonn mark)', 'surface/inverted (Lemonn wordmark)', 'base/hue/honey-300 → 500 (Zing gradient)', 'size/24 · 32 · 40 · 48'],
+    tokens: ['base/hue/brand-lemonn-500 · 700 (Lemonn mark)', 'surface/inverted (Lemonn wordmark)', 'base/hue/honey-300 → 500 (Zing gradient)', 'base/hue/brand-coinswitch-green · deep (local, raw in Figma)', 'size/24 · 32 · 40 · 48'],
     overview: (
       <>
         <div className={styles.logoHero}>
@@ -139,7 +156,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Colors stay on brand</h2>
-          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
+          <p>The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Coinswitch keeps its two greens; its dot and “coin” follow the theme like the Lemonn wordmark. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)</p>
         </section>
         <section className={styles.section}>
           <h2>Accessibility</h2>
@@ -150,7 +167,7 @@ import { msWallet, msWalletFill } from './icons/material'
     ),
     variants: <BrandLogoVariants />,
     props: [
-      { name: 'brand', type: "'lemonn' | 'zing'", description: 'Figma Brand.' },
+      { name: 'brand', type: "'lemonn' | 'zing' | 'coinswitch'", description: 'Figma Brand.' },
       { name: 'variant', type: "'full' | 'icon'", default: "'full'", description: 'Figma isFull: mark + wordmark, or the 24×24 mark.' },
       { name: 'size', type: '24 | 32 | 40 | 48', default: '24', description: 'Height in px from the size tokens; width keeps the proportions.' },
       { name: 'label', type: 'string', description: 'Accessible name; defaults to the brand name.' },
@@ -462,6 +479,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'actions', type: 'ReactNode', description: 'Figma → content right — usually <ActionbarAction icon label onClick />.' },
       { name: 'bottom', type: 'ReactNode', description: 'Figma ↓ Content bottom — Tabs, filters…' },
       { name: 'search', type: '{ value, onChange, placeholder?, label?, autoFocus? }', description: 'Figma base content Type=Search / Searched: the middle becomes a search input.' },
+      { name: 'elevated', type: 'boolean', description: 'Show the scrolled state (elevation-low) yourself, when a sibling scroll area moves under the bar. Overrides sticky\'s automatic behaviour.' },
       { name: 'sticky', type: 'boolean', default: 'false', description: 'Stick to the top while the page scrolls.' },
       { name: 'ActionbarAction', type: '{ icon, label, onClick, pressed? }', description: 'Round 32px icon button; pressed shows a toggle state (e.g. watchlist).' },
     ],
@@ -524,7 +542,7 @@ import { msWallet, msWalletFill } from './icons/material'
     altNames: 'Tile, panel, container, list item card',
     source: 'src/components/Card',
     exports: ['Card'],
-    tokens: ['surface/primary', 'border/light', 'shadow/elevation-low (clickable)', 'motion/scale/press-default (local, 0.98)', 'motion/duration-short', 'state-layer/dark/hover', 'radius/12', 'spacing/12 · 08'],
+    tokens: ['surface/primary', 'surface/secondary (filled, flat selected)', 'border/light', 'border/dark (selected)', 'shadow/elevation-low (clickable)', 'motion/scale/press-default (local, 0.98)', 'motion/duration-short', 'state-layer/dark/hover', 'radius/12', 'spacing/12 · 08'],
     overview: (
       <>
         <PhoneFrame label="Portfolio orders: tabs in the actionbar, chip tabs, a static summary card and clickable order cards">
@@ -545,6 +563,21 @@ import { msWallet, msWalletFill } from './icons/material'
           <DevOnly><p>A card that isn’t rounded and has no border (<code>variant="flat"</code>) has no background unless you set one with <code>surface</code> — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.</p></DevOnly>
         </section>
         <section className={styles.section}>
+          <h2>Filled cards</h2>
+          <p>A filled card is a grey inset panel: rounded, surface-secondary, no border and no shadow. Use it to group details on a white screen — contract info, performance stats, market depth. Anything inside that needs its own fill (a skeleton, a tag, an inner panel) uses the grey-friendly version, surface-tertiary.</p>
+          <DevOnly><p><code>variant="filled"</code>. Inside it, use <code>Skeleton onGrey</code> and surface-tertiary for inner fills.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
+          <h2>Padding and placement</h2>
+          <p>Rounded cards — clickable, static and filled — are always padded (12) and always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). Only a flat card can drop its padding, for edge-to-edge media or lists, and a flat card always runs edge to edge in its container.</p>
+          <DevOnly><p><code>padding="none"</code> is only allowed with <code>variant="flat"</code> (TypeScript enforces it). The margin around rounded cards comes from the parent's padding or gap — cards have no outer margin of their own.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
+          <h2>Selected cards</h2>
+          <p>When cards are a list of choices — pick a contract, a plan, an account — the chosen one is selected. A card with a border keeps everything and only swaps border-light for the darker border-dark. A flat card has no border, so it shows its selection with a surface-secondary background; unselected, a flat card has no fill at all and takes the colour of whatever it sits on — another card or the screen. Only clickable cards can be selected; static and filled cards never are.</p>
+          <DevOnly><p><code>selected</code> on a clickable card (<code>onClick</code> / <code>href</code>). It's announced as pressed (button) or current (link); a development warning flags <code>selected</code> on a card that isn't clickable.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
           <h2>Same rule for chip tabs</h2>
           <p>Chip (pill) tabs are tappable surfaces too: unselected chips use surface-primary with border-light and elevation-low, and scale to 0.98 while pressed.</p>
         </section>
@@ -556,9 +589,10 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'onClick', type: '() => void', description: 'Makes the whole card a button (clickable card).' },
       { name: 'href', type: 'string', description: 'Makes the whole card a link (clickable card).' },
       { name: 'as', type: "'div' | 'article' | 'section' | 'li'", default: "'div'", description: 'Element for a static card.' },
-      { name: 'variant', type: "'default' | 'flat'", default: "'default'", description: 'flat: not rounded, no border, no shadow, transparent background. Can still be clickable.' },
+      { name: 'variant', type: "'default' | 'flat' | 'filled'", default: "'default'", description: 'flat: not rounded, no border, no shadow, transparent background. filled: grey inset panel (surface-secondary, no border, no shadow). Both can still be clickable.' },
       { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
-      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px, or none for edge-to-edge content.' },
+      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px. none (edge-to-edge content) only on flat cards — rounded cards are always padded.' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
   },
@@ -602,8 +636,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'placement', type: "'bottom' | 'top'", default: "'bottom'", description: 'Figma isBottom.' },
       { name: 'header', type: 'ReactNode', description: 'Figma 👁️ Header — usually <BottomSheetHeader />.' },
       { name: 'children', type: 'ReactNode', description: 'Figma content slot; scrolls if the sheet would be taller than the screen.' },
-      { name: 'footer', type: 'ReactNode', description: 'Figma "Buttons" — usually <ButtonGroup>.' },
-      { name: 'utility', type: 'ReactNode', description: 'Figma Utility slot, below the buttons.' },
+      { name: 'footer', type: 'ReactNode', description: 'Figma Utility slot: the area under the content — usually the button dock (<ButtonGroup>).' },
+      { name: 'utility', type: 'ReactNode', description: 'Code-only extra area under footer (e.g. a note under the buttons). In Figma it goes inside the Utility slot.' },
       { name: 'closeLabel', type: 'string', default: "'Close'", description: 'Name of the visually hidden close button (screen readers / keyboard). There is no visible close button or drag handle; the whole sheet drags to dismiss.' },
       { name: 'container', type: 'HTMLElement | null', default: 'document.body', description: 'Render inside another element instead of covering the page.' },
       { name: 'aria-labelledby', type: 'string', description: 'Point at the header heading (headingId) to name the dialog.' },
@@ -717,7 +751,7 @@ import { msWallet, msWalletFill } from './icons/material'
     figmaNodeId: '4543:65400',
     source: 'src/components/ListCell',
     exports: ['ListCell'],
-    tokens: ['surface/primary', 'border/light', 'content/primary · secondary', 'content/accent/discover (dot)', 'Label/14 · 16', 'Description/12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
+    tokens: ['surface/primary (card)', 'surface/secondary (plain selected)', 'border/light', 'border/dark (card selected)', 'content/primary · secondary', 'content/accent/discover (dot)', 'Label/14 · 16', 'Description/12', 'radius/12 · full', 'icon-size/16 · 24', 'state-layer/* (tappable rows)'],
     overview: (
       <>
         <PhoneFrame label="Account screen built from list cells with chevrons, a switch, a tag and bank-account cards">
@@ -725,7 +759,12 @@ import { msWallet, msWalletFill } from './icons/material'
         </PhoneFrame>
         <section className={styles.section}>
           <h2>Plain or card</h2>
-          <p>Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).</p>
+          <p>Plain rows have no fill — they take the colour of whatever they sit on, the screen or a card — and always run edge to edge in their container. Card rows (Figma isPlain=False) have a border and rounded corners, always sit inside a margin (16 from the screen edge) and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Selected rows</h2>
+          <p>When rows are a list of choices, the chosen one is selected. A plain row gets a surface-secondary background; a card row swaps border-light for the darker border-dark and nothing else changes. Only tappable rows can be selected.</p>
+          <DevOnly><p><code>selected</code> on a tappable row (<code>onClick</code>, <code>href</code> or <code>as="label"</code>). Announced as pressed (button) or current (link); in a label row the Radio or Checkbox carries the state.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Tappable rows</h2>
@@ -738,7 +777,8 @@ import { msWallet, msWalletFill } from './icons/material'
     props: [
       { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
-      { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row, or bordered rounded card.' },
+      { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin).' },
+      { name: 'selected', type: 'boolean', default: 'false', description: 'Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },
       { name: 'trailing', type: 'ReactNode', description: 'Anything else on the right: Switch, Checkbox, Tag, value text.' },
       { name: 'dotLeft / dotRight', type: 'boolean', default: 'false', description: 'Figma Dot-L / Dot-R: unread dot on the icon.' },
@@ -782,6 +822,318 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Figma Type=Disabled; overrides variant and color.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Icon slots, sized and colored by the tag.' },
       { name: 'hideLabel', type: 'boolean', default: 'false', description: 'Figma 👁️ Label off: icon-only (square) tag. Needs one icon; children stay as the screen-reader text.' },
+    ],
+  },
+
+  {
+    id: 'overlay',
+    title: 'Overlay',
+    group: 'Surfaces',
+    description: 'The dimmed backdrop behind a bottom sheet or any other modal.',
+    status: 'Figma synced',
+    figmaNodeId: '4603:91773',
+    altNames: 'Scrim, backdrop, dim, modal background',
+    source: 'src/components/Overlay',
+    exports: ['Overlay'],
+    tokens: ['surface/overlay', 'motion/duration-medium · easing-standard (local)'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>Behind every modal</h2>
+          <p>The overlay dims the screen behind a sheet so the task in front gets all the attention. Tapping it closes the sheet. Bottom sheets already include it — use Version = Latest in Figma.</p>
+          <DevOnly><p><code>&lt;BottomSheet&gt;</code> renders it for you. For another modal, render <code>&lt;Overlay open onClick={'{close}'} /&gt;</code> inside a positioned container, then the panel after it. It's decorative (aria-hidden): the panel owns the dialog role and its keyboard close.</p></DevOnly>
+        </section>
+      </>
+    ),
+    props: [
+      { name: 'open', type: 'boolean', description: 'Fades in when true.' },
+      { name: 'onClick', type: '() => void', description: 'Tap on the scrim — usually closes the modal above it.' },
+    ],
+  },
+  // ---- Added 2026-10-09: components that were Figma gaps -------------------
+  {
+    id: 'stepper',
+    title: 'Stepper',
+    group: 'Input & control',
+    description: 'A number with − and + buttons, for quantity and lots in the order pad.',
+    status: 'Figma synced',
+    figmaNodeId: '5374:18184',
+    altNames: 'Quantity input, counter, number input, lot picker, spinner',
+    source: 'src/components/Stepper',
+    exports: ['Stepper'],
+    tokens: ['surface/secondary (Small)', 'surface/accent/discover-light + content/accent/discover-default (Small buttons)', 'surface/primary + border/intense (Large buttons)', 'surface/disabled + content/disabled (at the limit)', 'Heading/12 · 14', 'Label/10 (sublabel)', 'size/20 · 32 · 48 · tap-target', 'radius/04 · 08 · full', 'spacing/02 · 04'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>Small or Large</h2>
+          <p><strong>Small</strong> sits inline in an order-pad row, next to its label (“Quantity (100 = 1 Lot)”): a 104×28 grey pill with 20px square buttons. <strong>Large</strong> stands on its own, like in Scalp Pro: round outlined buttons, a bigger value and an optional sublabel such as “91 Lots”.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Limits</h2>
+          <p>Each tap adds or removes one step — usually the lot size. At the lowest value the − button turns grey (State = Disabled), and the same for + at the highest. Never let the value go below one lot.</p>
+          <DevOnly><p><code>min</code>, <code>max</code> and <code>step</code> clamp the value and disable the buttons. The value is an <code>&lt;output aria-live="polite"&gt;</code>, so screen readers hear each change. The Small buttons are 20px but their tap area is 32px.</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <StepperVariants />,
+    props: [
+      { name: 'value', type: 'number', description: 'Current value.' },
+      { name: 'onChange', type: '(value: number) => void', description: 'Called with the new, clamped value.' },
+      { name: 'min · max', type: 'number', default: '0 · Infinity', description: 'Limits; the − / + button disables at each.' },
+      { name: 'step', type: 'number', default: '1', description: 'Amount per tap (e.g. the lot size).' },
+      { name: 'size', type: "'sm' | 'lg'", default: "'sm'", description: 'Figma Size: Small · Large.' },
+      { name: 'sublabel', type: 'ReactNode', description: 'Large only: a line under the value, e.g. "91 Lots".' },
+      { name: 'format', type: '(value) => string', description: 'How the value is shown; default Indian grouping.' },
+      { name: 'label', type: 'string', description: 'Accessible name of the group, e.g. "Quantity". Required.' },
+      { name: 'disabled', type: 'boolean', description: 'Disables both buttons.' },
+    ],
+  },
+  {
+    id: 'select',
+    title: 'Select',
+    group: 'Input & control',
+    description: 'An inline trigger — a label and an icon — that opens a sheet of options.',
+    status: 'Figma synced',
+    figmaNodeId: '5377:49',
+    altNames: 'Dropdown, picker, switcher, toggle, mode selector, filter',
+    source: 'src/components/Select',
+    exports: ['Select'],
+    tokens: ['content/primary · secondary (subtle)', 'Label/12 · 14', 'Heading/14', 'spacing/02 · 04', 'size/tap-target'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>No box</h2>
+          <p>Select is just the current choice and an icon. It sits in a row or a header; tapping it opens a bottom sheet with the options as radio rows. Use <strong>↕</strong> when it switches between a few modes (Quantity ↔ Amount, Total P&amp;L ↔ Day P&amp;L, the asset in a title). Use the <strong>chevron</strong> for a filter list (Deposit &amp; Credits).</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Sizes</h2>
+          <p><strong>Small</strong> (Label-12) in form rows, <strong>Medium</strong> (Label-14) for filters, <strong>Large</strong> (Heading-14) for titles. <strong>Subtle</strong> makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text.</p>
+          <DevOnly><p>A <code>&lt;button aria-haspopup="dialog"&gt;</code>; pass <code>expanded</code> while the sheet is open. Its tap area grows to 32px.</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <SelectVariants />,
+    props: [
+      { name: 'children', type: 'ReactNode', description: 'The current choice, e.g. "Quantity".' },
+      { name: 'onClick', type: '() => void', description: 'Open the options (usually a BottomSheet with Radio rows).' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'sm'", description: 'Figma Size: Small · Medium · Large.' },
+      { name: 'subtle', type: 'boolean', default: 'false', description: 'Figma isSubtle: content/secondary.' },
+      { name: 'icon', type: "'swap' | 'chevron'", default: "'swap'", description: 'Figma ↪ Icon: ↕ for modes, chevron for filter lists.' },
+      { name: 'expanded', type: 'boolean', description: 'Sets aria-expanded while the options are open.' },
+      { name: 'aria-label', type: 'string', description: 'When the visible text alone is not a good name.' },
+    ],
+  },
+  {
+    id: 'date-picker',
+    title: 'Date picker',
+    group: 'Input & control',
+    description: 'A month calendar for picking one day or a date range.',
+    status: 'Figma synced',
+    figmaNodeId: '5387:279',
+    altNames: 'Calendar, date range, period picker, date input',
+    source: 'src/components/DatePicker',
+    exports: ['DatePicker'],
+    tokens: ['surface/inverted + content/inverted (selected)', 'surface/secondary (range band)', 'border/accent/discover-default + content/accent/discover-default (today)', 'content/disabled', 'Heading/14 · 16', 'Label/12 · 14', 'size/32 · 40', 'radius/full'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>In a bottom sheet</h2>
+          <p>Open the picker in a bottom sheet with a title (“Select date range”) and a button dock — Clear and Apply. Add quick presets (1W · 1M · 3M · 1Y) above it as pill tabs when people mostly want a standard period, like for P&amp;L and tax reports.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Single or Range</h2>
+          <p><strong>Single</strong> picks one day (black circle). <strong>Range</strong> picks a start and an end, joined by a grey band. Today has a blue ring. Weeks start on Monday and the grid is always six weeks tall, so the sheet doesn't jump between months.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Disable what can't be picked</h2>
+          <p>For reports and history, days after today are disabled. For future dates (GTT or order expiry), days before today are.</p>
+          <DevOnly><p>Use <code>max</code> / <code>min</code>. Keyboard: arrows move by day and week, Home / End to the week's ends, PageUp / PageDown by month, Enter picks. Range: the first tap sets the start, the second the end.</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <DatePickerVariants />,
+    props: [
+      { name: 'mode', type: "'single' | 'range'", default: "'single'", description: 'Figma Mode.' },
+      { name: 'value', type: 'Date | null  ·  { start, end }', description: 'Selected day, or the range.' },
+      { name: 'onChange', type: '(value) => void', description: 'Called with the new day or range.' },
+      { name: 'min · max', type: 'Date', description: 'Days outside are disabled (Figma State = Disabled).' },
+      { name: 'initialMonth', type: 'Date', description: 'Month shown first; defaults to the selection or today.' },
+      { name: 'label', type: 'string', description: 'Accessible name of the calendar, e.g. "Report period". Required.' },
+    ],
+  },
+  {
+    id: 'skeleton',
+    title: 'Skeleton',
+    group: 'Feedback & status',
+    description: 'A grey placeholder that mirrors the layout while content loads.',
+    status: 'Figma synced',
+    figmaNodeId: '5380:30',
+    altNames: 'Loading, shimmer, placeholder, loader, ghost',
+    source: 'src/components/Skeleton',
+    exports: ['Skeleton', 'SkeletonListRow', 'SkeletonCard'],
+    tokens: ['surface/secondary', 'surface/tertiary (on grey)', 'surface/primary at opacity/60 (shimmer)', 'radius/04 · 08 · full', 'size/*'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>Mirror the real layout</h2>
+          <p>Draw the skeleton in the same places and sizes as the content that's coming, so nothing jumps when it loads. <strong>Line</strong> is a line of text (12, 16 or 20 tall — the text's line height), <strong>Circle</strong> an icon or avatar, <strong>Box</strong> an image, chart or button. For lists and cards, use the ready-made patterns: a list row matches the 58px list cell.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>On white or on grey</h2>
+          <p>On white screens the skeleton is surface-secondary. On grey cards and panels, switch on <strong>isOnGrey</strong> (surface-tertiary) so it stays visible. It shimmers, and stays still for people who turn off animations.</p>
+          <DevOnly><p>Skeletons are hidden from screen readers. Mark the loading region with <code>aria-busy="true"</code> and give it a name (“Loading watchlist”).</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <SkeletonVariants />,
+    props: [
+      { name: 'shape', type: "'line' | 'circle' | 'box'", default: "'line'", description: 'Figma Shape.' },
+      { name: 'width · height', type: 'string (CSS)', description: 'Ideally tokens (var(--l3-size-96)) or %. Line height = the text line height.' },
+      { name: 'onGrey', type: 'boolean', default: 'false', description: 'Figma isOnGrey: surface/tertiary.' },
+      { name: 'SkeletonListRow', type: '{ onGrey? }', description: 'Figma pattern Type=List row (matches ListCell).' },
+      { name: 'SkeletonCard', type: '—', description: 'Figma pattern Type=Card.' },
+    ],
+  },
+  {
+    id: 'progress-bar',
+    title: 'Progress bar',
+    group: 'Feedback & status',
+    description: 'Shows how much of something is used or done, or where a value sits in a range.',
+    status: 'Figma synced',
+    figmaNodeId: '5384:321',
+    altNames: 'Progress, meter, range bar, usage bar, 24H range, slider (read-only)',
+    source: 'src/components/ProgressBar',
+    exports: ['ProgressBar'],
+    tokens: ['surface/tertiary (track)', 'surface/accent/discover · success · warning · error -default', 'surface/primary (marker ring)', 'size/04 · 08 · 12 · 16', 'radius/full'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>Progress or Range</h2>
+          <p><strong>Progress</strong> fills a track from the left: funds or margin used, steps done. <strong>Range</strong> puts a marker on the track: where today's price sits between the 24H low and high. Always write the value next to the bar — colour alone isn't enough.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Status</h2>
+          <p>Default is blue. Use <strong>Warning</strong> when something is close to a limit (margin above 80%), <strong>Error</strong> when it's over, and <strong>Success</strong> when it's complete. In Figma, pick the value in steps of 10; the bar keeps its percentage at any width.</p>
+          <DevOnly><p>Progress is <code>role="progressbar"</code>, Range is <code>role="meter"</code>. Pass <code>valueText</code> for what to announce (“₹3,42,000 of ₹5,00,000”).</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <ProgressBarVariants />,
+    props: [
+      { name: 'value', type: 'number', description: '0–100.' },
+      { name: 'type', type: "'progress' | 'range'", default: "'progress'", description: 'Figma Type.' },
+      { name: 'size', type: "'sm' | 'md'", default: "'sm'", description: 'Figma Size: 4px · 8px bar.' },
+      { name: 'status', type: "'default' | 'success' | 'warning' | 'error'", default: "'default'", description: 'Figma Status.' },
+      { name: 'label', type: 'string', description: 'Accessible name. Required.' },
+      { name: 'valueText', type: 'string', description: 'What screen readers announce; defaults to the percentage.' },
+    ],
+  },
+  {
+    id: 'section-header',
+    title: 'Section header',
+    group: 'Data display',
+    description: 'The heading row of a section: a title, with an optional tag, info icon, short description and one action — View all or a switcher.',
+    status: 'Figma synced',
+    figmaNodeId: '5407:124',
+    altNames: 'Section title, section heading, list header, group header, view all',
+    source: 'src/components/SectionHeader',
+    exports: ['SectionHeader'],
+    tokens: ['content/primary (title)', 'content/secondary (description, info)', 'Heading/14', 'Description/12', 'spacing/08 · 04', 'size/48 (touch area)'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>What goes in it</h2>
+          <p>The <strong>heading</strong> is always there. Everything else is optional: a <strong>tag</strong> and an <strong>info</strong> icon after the heading, a <strong>description</strong> under it, and one <strong>action</strong> on the right.</p>
+          <ul>
+            <li><strong>Description:</strong> aim for one line. It never goes past two — longer text is cut with “…”.</li>
+            <li><strong>Action:</strong> either <strong>View all</strong> (opens the full list) or a <strong>switcher</strong> — a Select like “Day P&amp;L ↕” or a filter that opens a sheet of choices. Never two actions.</li>
+            <li><strong>Touch area:</strong> the action and the info icon are at least 48 × 48 to tap, whatever they look like — without making the row taller.</li>
+          </ul>
+        </section>
+        <section className={styles.section}>
+          <h2>Spacing</h2>
+          <p>The section header sits 16 above its card or list, and sections are 24 apart (32 for a bigger break) inside the 16 page padding — see Layout.</p>
+        </section>
+      </>
+    ),
+    variants: <SectionHeaderVariants />,
+    props: [
+      { name: 'title', type: 'ReactNode', description: 'Figma ✏️ Heading — required.' },
+      { name: 'description', type: 'ReactNode', description: 'Figma ✏️ Description — one line ideally, two at most (cut with an ellipsis).' },
+      { name: 'tag', type: 'ReactNode', description: 'Figma 👁️ Tag: a small Tag after the title.' },
+      { name: 'onInfo / infoLabel', type: '() => void · string', description: 'Figma 👁️ Info: an ⓘ button after the title (name defaults to “About <title>”).' },
+      { name: 'action', type: "{ type: 'view-all', onClick, label? } | { type: 'switcher', label, onClick, expanded? }", description: 'Figma CTA = View all · Switcher. Touch area ≥ 48 × 48.' },
+      { name: 'headingLevel', type: '2 | 3 | 4', default: '2', description: 'Heading level of the title.' },
+    ],
+  },
+  {
+    id: 'price-change',
+    title: 'Price change',
+    group: 'Data display',
+    description: 'A signed change — price, P&L or returns — in green when up and red when down.',
+    status: 'Figma synced',
+    figmaNodeId: '5391:79',
+    altNames: 'Change, delta, percent change, returns, gain/loss, P&L change, LTP change',
+    source: 'src/components/PriceChange',
+    exports: ['PriceChange'],
+    tokens: ['content/accent/indicator/up-default · down-default', 'content/secondary (flat)', 'Label/12 · 14 · 16', 'size/16 · 20 · 24 (arrow)'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>The sign decides the colour</h2>
+          <p>Up is green with “+”, down is red with “−”, and no change is grey with no sign. In Figma you pick the Direction and type only the number in ✏️ Value, so the sign and the colour can never disagree — a falling price can't end up green.</p>
+          <DevOnly><p>Pass the signed number as <code>value</code>; direction, sign, colour and arrow all come from it. Screen readers hear “up” / “down” / “unchanged” first.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
+          <h2>Sizes and arrow</h2>
+          <p><strong>Small</strong> (Label-12) in rows and cards, <strong>Medium</strong> (Label-14), <strong>Large</strong> (Label-16) next to a big number like Total P&amp;L. Turn on the ▲/▼ <strong>arrow</strong> for headline numbers; leave it off in lists. For an absolute change with a percentage, write both: +252.89 (0.05%).</p>
+        </section>
+      </>
+    ),
+    variants: <PriceChangeVariants />,
+    props: [
+      { name: 'value', type: 'number', description: 'The signed change; sets direction, sign, colour and arrow.' },
+      { name: 'unit', type: "'percent' | 'currency' | 'number'", default: "'percent'", description: 'How the absolute value is written.' },
+      { name: 'percent', type: 'number', description: 'Optional % in brackets after an absolute change.' },
+      { name: 'decimals', type: 'number', default: '2', description: 'Decimal places.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'sm'", description: 'Figma Size.' },
+      { name: 'arrow', type: 'boolean', default: 'false', description: 'Figma 👁️ Arrow: ▲ / ▼.' },
+    ],
+  },
+  {
+    id: 'chart',
+    title: 'Chart',
+    group: 'Data display',
+    description: 'Price charts — candles, line or area — and a small sparkline for lists.',
+    status: 'Figma synced',
+    figmaNodeId: '5386:678',
+    altNames: 'Graph, candlestick, price chart, line chart, area chart, sparkline, trend line',
+    source: 'src/components/Chart',
+    exports: ['Chart', 'Sparkline'],
+    tokens: ['surface/accent/indicator/up · down -default (candles)', 'surface/accent/indicator/* -light (volume, area)', 'gradient-stop-0/accent/indicator/* -light (area fade)', 'border/accent/indicator/* -default (line)', 'border/light (grid) · border/intense (price line)', 'surface/inverted + content/inverted (last price)', 'Description/10 · Label/10'],
+    overview: (
+      <>
+        <section className={styles.section}>
+          <h2>Which chart</h2>
+          <p><strong>Candle</strong> for trading views (asset page, Scalp Pro). <strong>Line</strong> for simple price history. <strong>Area</strong> for portfolio value or P&amp;L over time. <strong>Sparkline</strong> is a tiny trend line for watchlist and holdings rows — always next to the price and % change as text.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Keep the trend honest</h2>
+          <p>Up is green and down is red, from the first to the last price. In mockups, pick the Trend that matches the change shown on the screen — a falling price uses Trend = Down. Hide volume, grid, axes or the last-price tag when the space is small.</p>
+          <DevOnly><p>Pass <code>data</code> (open, high, low, close, volume); <code>trend</code> defaults to first vs last close. The SVG is a 360×200 viewBox that scales to its container, with a text summary for screen readers.</p></DevOnly>
+        </section>
+      </>
+    ),
+    variants: <ChartVariants />,
+    props: [
+      { name: 'data', type: '{ open, high, low, close, volume? }[]', description: 'Oldest first. Line and Area use close.' },
+      { name: 'type', type: "'candle' | 'line' | 'area'", default: "'candle'", description: 'Figma Type.' },
+      { name: 'trend', type: "'up' | 'down'", description: 'Figma Trend; defaults to first vs last close.' },
+      { name: 'timeLabels', type: 'string[]', description: 'Spread along the x axis.' },
+      { name: 'showVolume · showGrid · showAxes · showLastPrice', type: 'boolean', default: 'true', description: 'Figma 👁️ toggles.' },
+      { name: 'format', type: '(value) => string', description: 'Axis and last-price formatting.' },
+      { name: 'label', type: 'string', description: 'What the chart shows; read with the trend and range. Required.' },
+      { name: 'Sparkline', type: '{ data: number[]; trend?; label? }', description: 'Figma L3: Sparkline, 64×24. Decorative unless label is set.' },
     ],
   },
 ]

@@ -1,0 +1,126 @@
+/*
+ * L3 Stepper — every value is an --l3-* token (Figma L3: Stepper + .L3: Stepper button).
+ * Small: 104×28 pill on surface/secondary, 20px square buttons (discover accent when enabled, surface/disabled at the limit).
+ * Large: 32px round outlined buttons, value Heading/14 with an optional Label/10 sublabel.
+ * The Small buttons are 20px to keep the order-pad rows compact; an invisible ::before grows the tap area to size/tap-target (32px).
+ */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-04);
+  color: var(--l3-content-primary);
+}
+
+.stepper[data-size='sm'] {
+  padding: var(--l3-spacing-04);
+  border-radius: var(--l3-radius-08);
+  background: var(--l3-surface-secondary);
+}
+
+.button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--l3-motion-duration-short) var(--l3-motion-easing-standard);
+}
+
+/* Tap area: at least size/tap-target, centred on the visible button. */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--l3-size-tap-target));
+  height: max(100%, var(--l3-size-tap-target));
+  transform: translate(-50%, -50%);
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button:not(:disabled):active {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+
+.button:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+/* Small */
+.stepper[data-size='sm'] .button {
+  width: var(--l3-size-20);
+  height: var(--l3-size-20);
+  border-radius: var(--l3-radius-04);
+  background: var(--l3-surface-accent-discover-light);
+  color: var(--l3-content-accent-discover-default);
+}
+
+.stepper[data-size='sm'] .button:disabled {
+  background: var(--l3-surface-disabled);
+  color: var(--l3-content-disabled);
+}
+
+/* Large */
+.stepper[data-size='lg'] .button {
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-primary);
+  box-shadow: inset 0 0 0 1px var(--l3-border-intense); /* 1px: Figma stroke weight has no variable */
+  color: var(--l3-content-secondary);
+}
+
+.stepper[data-size='lg'] .button:disabled {
+  background: var(--l3-surface-disabled);
+  box-shadow: inset 0 0 0 1px var(--l3-border-light);
+  color: var(--l3-content-disabled);
+}
+
+@media (hover: hover) {
+  .button:not(:disabled):hover {
+    background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover));
+  }
+}
+
+.value {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  min-width: var(--l3-size-48);
+  text-align: center;
+}
+
+.number {
+  font: var(--l3-text-heading-12); /* L3/Heading/12 */
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper[data-size='lg'] .number {
+  font: var(--l3-text-heading-14); /* L3/Heading/14 */
+}
+
+.sublabel {
+  font: var(--l3-text-label-10); /* L3/Label/10 */
+  color: var(--l3-content-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:not(:disabled):active {
+    transform: none;
+  }
+}

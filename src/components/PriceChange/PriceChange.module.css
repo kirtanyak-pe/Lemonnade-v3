@@ -1,0 +1,39 @@
+/*
+ * L3 Price change — every value is an --l3-* token (Figma L3: Price change).
+ * Up content/accent/indicator/up-default · Down content/accent/indicator/down-default · Flat content/secondary.
+ * Small Label/12 · Medium Label/14 · Large Label/16. Arrow icon 16 · 20 · 24, no gap (the glyph has its own padding).
+ */
+
+.change {
+  display: inline-flex;
+  align-items: center;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-label-12); /* L3/Label/12 */
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.change[data-direction='up'] {
+  color: var(--l3-content-accent-indicator-up-default);
+}
+
+.change[data-direction='down'] {
+  color: var(--l3-content-accent-indicator-down-default);
+}
+
+.change[data-size='md'] {
+  font: var(--l3-text-label-14); /* L3/Label/14 */
+}
+
+.change[data-size='lg'] {
+  font: var(--l3-text-label-16); /* L3/Label/16 */
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

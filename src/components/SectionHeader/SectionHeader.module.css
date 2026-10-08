@@ -1,0 +1,99 @@
+/* L3 Section header — every value is an --l3-* token. Figma: row gap 8, content gap 4, heading row gap 8. */
+
+.header {
+  display: flex;
+  gap: var(--l3-spacing-08);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--l3-spacing-04);
+  min-width: 0;
+}
+
+.headingRow {
+  display: flex;
+  gap: var(--l3-spacing-08);
+  align-items: center;
+  min-width: 0;
+}
+
+.title {
+  overflow: hidden;
+  min-width: 0;
+  margin: 0;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-heading-14);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tag {
+  display: inline-flex;
+  flex: none;
+}
+
+/* Description: one line ideally, two at most — longer text gets an ellipsis. */
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--l3-content-secondary);
+  font: var(--l3-text-description-12);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Touch areas: at least 48 × 48 (size/48), centred on the control, without changing the row's height. */
+.info,
+.action {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.info::before,
+.action::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: var(--l3-size-48);
+  min-height: var(--l3-size-48);
+  width: 100%;
+  height: 100%;
+  content: '';
+  transform: translate(-50%, -50%);
+}
+
+.action > * {
+  position: relative; /* the control stays above its touch area */
+}
+
+.info {
+  padding: 0;
+  border: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: var(--l3-content-secondary);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.info:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}
+
+@media (hover: hover) {
+  .info:hover {
+    color: var(--l3-content-primary);
+  }
+}

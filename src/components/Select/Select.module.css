@@ -1,0 +1,64 @@
+/*
+ * L3 Select — every value is an --l3-* token (Figma L3: Select).
+ * Small: Label/12 + 12px icon, gap spacing/02 · Medium: Label/14 + 16px icon, gap spacing/04 · Large: Heading/14 + 16px icon, gap spacing/02.
+ * isSubtle switches text and icon to content/secondary. No box; an invisible ::before grows the tap area to size/tap-target.
+ */
+
+.select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--l3-spacing-02);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--l3-content-primary);
+  font: var(--l3-text-label-12); /* L3/Label/12 */
+  text-align: start;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: var(--l3-radius-04);
+}
+
+.select::before {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--l3-size-tap-target));
+  height: max(100%, var(--l3-size-tap-target));
+  transform: translate(-50%, -50%);
+}
+
+.select[data-size='md'] {
+  gap: var(--l3-spacing-04);
+  font: var(--l3-text-label-14); /* L3/Label/14 */
+}
+
+.select[data-size='lg'] {
+  font: var(--l3-text-heading-14); /* L3/Heading/14 */
+}
+
+.select[data-subtle] {
+  color: var(--l3-content-secondary);
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (hover: hover) {
+  .select:hover .label {
+    text-decoration: underline;
+    text-underline-offset: var(--l3-spacing-02);
+  }
+}
+
+.select:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}

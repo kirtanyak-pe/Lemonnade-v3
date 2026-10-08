@@ -41,7 +41,10 @@ const refPath = (value: string) => {
 const varName = (path: string) =>
   '--l3-' + path.replace(/^component\./, '').replaceAll('.', '-')
 
-const base = flatten(readJson('source/base.colors.json'))
+const base = new Map([
+  ...flatten(readJson('source/base.colors.json')),
+  ...flatten(readJson('source/local.colors.json')), // not in Figma (e.g. Coinswitch logo greens)
+])
 const opacity = flatten(readJson('source/base.opacity.json'))
 // Figma "🌌 Number" (spacing / radius / size) + "ℹ️ L3 → Icon size" (one variable, a mode per size).
 const numbers = new Map([

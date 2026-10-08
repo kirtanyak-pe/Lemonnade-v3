@@ -1,0 +1,131 @@
+/*
+ * L3 Date picker — every value is an --l3-* token (Figma L3: Date picker + .L3: Date cell).
+ * Header: 40px ‹ › buttons, month Heading/16. Weekdays Label/12 content/secondary. Cells 40px tall, fill their column;
+ * day circle size/32. Selected / range ends: surface/inverted + content/inverted (Heading/14). Range band: surface/secondary.
+ * Today: 1px border/accent/discover-default ring, content/accent/discover-default. Disabled: content/disabled.
+ */
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  color: var(--l3-content-primary);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.month {
+  flex: 1;
+  margin: 0;
+  font: var(--l3-text-heading-16); /* L3/Heading/16 */
+  text-align: center;
+}
+
+.nav {
+  display: inline-grid;
+  place-items: center;
+  width: var(--l3-size-40);
+  height: var(--l3-size-40);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: var(--l3-content-primary);
+  cursor: pointer;
+}
+
+.nav:disabled {
+  color: var(--l3-content-disabled);
+  cursor: default;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday {
+  padding-block: var(--l3-spacing-04);
+  font: var(--l3-text-label-12); /* L3/Label/12 */
+  color: var(--l3-content-secondary);
+  text-align: center;
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--l3-size-40);
+}
+
+/* Range band (behind the circle): middle spans the cell, start / end cover the inner half. */
+.cell[data-state^='range']::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--l3-size-40) - var(--l3-size-32)) / 2) 0;
+  background: var(--l3-surface-secondary);
+}
+
+.cell[data-state='range-start']::before { left: 50%; }
+.cell[data-state='range-end']::before { right: 50%; }
+
+.day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--l3-size-32);
+  height: var(--l3-size-32);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  border-radius: var(--l3-radius-full);
+  background: none;
+  color: inherit;
+  font: var(--l3-text-label-14); /* L3/Label/14 */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cell[data-state='selected'] .day,
+.cell[data-state='range-start'] .day,
+.cell[data-state='range-end'] .day {
+  background: var(--l3-surface-inverted);
+  color: var(--l3-content-inverted);
+  font: var(--l3-text-heading-14); /* L3/Heading/14 */
+}
+
+.cell[data-state='today'] .day {
+  box-shadow: inset 0 0 0 1px var(--l3-border-accent-discover-default); /* 1px: Figma stroke weight has no variable */
+  color: var(--l3-content-accent-discover-default);
+  font: var(--l3-text-heading-14);
+}
+
+.cell[data-state='disabled'] .day {
+  color: var(--l3-content-disabled);
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .cell[data-state='default'] .day:hover,
+  .cell[data-state='range-middle'] .day:hover,
+  .nav:not(:disabled):hover {
+    background: var(--l3-state-layer-dark-hover);
+  }
+}
+
+.day:focus-visible,
+.nav:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: var(--l3-spacing-02);
+}

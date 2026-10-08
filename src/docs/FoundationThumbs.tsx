@@ -35,6 +35,15 @@ const SpacingThumb = () => (
   </div>
 )
 
+const LayoutThumb = () => (
+  <div className={styles.layout}>
+    <span className={styles.layoutHead} />
+    <span className={styles.layoutCard} />
+    <span className={styles.layoutHead} />
+    <span className={styles.layoutCard} />
+  </div>
+)
+
 const IconsThumb = () => (
   <div className={styles.icons}>
     {[msSearch, msStar, msNotifications, msShowChart, msCandlestickChart, msAccountBalanceWallet].map((icon, i) => <Icon key={i} icon={icon} size={24} />)}
@@ -52,6 +61,7 @@ export const foundationThumbs: Record<string, { thumb: ReactNode; meta: string }
   colors: { thumb: <ColorsThumb />, meta: `${themeTokenCount} tokens · 10 themes` },
   typography: { thumb: <TypographyThumb />, meta: `Manrope · ${new Set(textStyles.map((s) => s.role)).size} roles · ${textStyles.filter((s) => !('local' in s)).length} styles` },
   spacing: { thumb: <SpacingThumb />, meta: `${Object.keys(numberVars).length} spacing, radius & size tokens` },
+  layout: { thumb: <LayoutThumb />, meta: 'Page 16 · sections 24 / 32 · heading 16 · card 12' },
   icons: { thumb: <IconsThumb />, meta: 'Material Symbols · 3,900+' },
   'brand-logo': { thumb: <LogoThumb />, meta: 'Lemonn · Zing' },
 }

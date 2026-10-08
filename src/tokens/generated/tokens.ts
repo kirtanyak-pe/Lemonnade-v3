@@ -347,6 +347,8 @@ export const baseColorVars = {
   'neutral/sage/900': '--l3-base-neutral-sage-900',
   'neutral/black/base': '--l3-base-neutral-black-base',
   'neutral/white/base': '--l3-base-neutral-white-base',
+  'hue/brand/coinswitch/green': '--l3-base-hue-brand-coinswitch-green',
+  'hue/brand/coinswitch/deep': '--l3-base-hue-brand-coinswitch-deep',
 } as const
 
 /** Spacing / radius / size / icon-size variable (Figma name) → CSS custom property. */

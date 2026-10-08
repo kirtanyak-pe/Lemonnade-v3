@@ -11,6 +11,7 @@ import {
 import { createPortal } from 'react-dom'
 import styles from './BottomSheet.module.css'
 import { SheetDepthContext, sheetStack } from './sheetStack.ts'
+import { Overlay } from '../Overlay'
 
 /** Figma "L3: Bottom sheet" (node 4543:63932). Figma isBottom=False → `placement="top"`. */
 export type BottomSheetPlacement = 'bottom' | 'top'
@@ -21,9 +22,9 @@ type SurfaceProps = {
   header?: ReactNode
   /** Figma "content slot" (👁️ Content Slot: leave it out to hide the area and its top space). Scrolls when the sheet is taller than the screen allows. */
   children?: ReactNode
-  /** Figma "Buttons" — usually <ButtonGroup>. */
+  /** Figma "Utility slot": the area under the content — usually the button dock (<ButtonGroup>). */
   footer?: ReactNode
-  /** Figma "Utility slot" (below the buttons). */
+  /** Code-only extra area under `footer` (e.g. a legal note under the buttons). Figma has no separate slot for it: put it inside the Utility slot there. */
   utility?: ReactNode
   className?: string
 }
@@ -244,7 +245,7 @@ export function BottomSheet({
       data-placement={placement}
       data-dragging={dragY !== 0 ? '' : undefined}
     >
-      <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
+      <Overlay open={open} onClick={onClose} />
       <div
         ref={sheetRef}
         role="dialog"

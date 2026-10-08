@@ -8,6 +8,7 @@ import { BottomSheetHeader, BottomSheetSurface } from '../components/BottomSheet
 import { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from '../components/Button'
 import { ButtonGroup, type ButtonGroupDirection } from '../components/ButtonGroup'
 import { Card } from '../components/Card'
+import { SectionHeader } from '../components/SectionHeader'
 import { Checkbox, Radio } from '../components/Checkbox'
 import { EmptyState } from '../components/EmptyState'
 import { Icon } from '../components/Icon'
@@ -16,6 +17,14 @@ import { Switch, type SwitchSize } from '../components/Switch'
 import { Tabs, type TabEmphasis, type TabSize } from '../components/Tabs'
 import { Tag, type TagColor, type TagSize, type TagVariant } from '../components/Tag'
 import { TextField } from '../components/TextField'
+import { Stepper } from '../components/Stepper'
+import { Select } from '../components/Select'
+import { Skeleton, SkeletonCard, SkeletonListRow } from '../components/Skeleton'
+import { ProgressBar, type ProgressStatus } from '../components/ProgressBar'
+import { Chart, Sparkline, type ChartType } from '../components/Chart'
+import { DatePicker, type DateRange } from '../components/DatePicker'
+import { PriceChange } from '../components/PriceChange'
+import { sampleCandles, sampleSpark } from '../preview/sampleData'
 import { msAdd, msArrowForward, msBlurOn, msChevronRight, msDeleteForever, msSearch, msStar } from '../icons/material'
 import { fnoNavItems, mainNavItems, mfNavItems } from '../preview/BottomNavbarVariants'
 import { attrs, jsx, type PlaygroundDef, type Values } from './Playground'
@@ -34,6 +43,21 @@ const sizeLabels = { sm: 'Small', md: 'Medium', lg: 'Large' }
 const isSmallLabels = { md: 'False', sm: 'True' }
 
 // ---- Stateful wrappers (the playground render can't hold hooks itself) ----------
+
+function StepperPlay({ size, sublabel }: { size: 'sm' | 'lg'; sublabel: boolean }) {
+  const [v, setV] = useState(size === 'lg' ? 10010 : 100)
+  const step = size === 'lg' ? 110 : 100
+  return <Stepper label="Quantity" size={size} value={v} onChange={setV} min={step} step={step} sublabel={sublabel ? `${Math.floor(v / 110)} Lots` : undefined} />
+}
+
+function DatePickerPlay({ mode }: { mode: 'single' | 'range' }) {
+  const today = new Date()
+  const [day, setDay] = useState<Date | null>(today)
+  const [range, setRange] = useState<DateRange>({ start: new Date(today.getFullYear(), today.getMonth(), 1), end: today })
+  return mode === 'range'
+    ? <DatePicker mode="range" label="Report period" value={range} onChange={setRange} max={today} />
+    : <DatePicker label="Statement date" value={day} onChange={setDay} max={today} />
+}
 
 function TabsPlay({ count, ...rest }: { count: number; appearance: 'underline' | 'pill' | 'pill-group'; emphasis: TabEmphasis; size: TabSize; width?: 'hug' | 'fill'; icons: boolean; hideLabel?: boolean; subLabel?: string }) {
   const labels = ['Overview', 'Financials', 'News', 'Events'].slice(0, count)
@@ -139,12 +163,109 @@ const autoTpSlCode = `<BottomSheet
 // There's no Stepper or Select component yet.`
 
 export const playgrounds: Record<string, PlaygroundDef> = {
+  'section-header': {
+    controls: [
+      { name: 'title', label: '✏️ Heading', type: 'text', default: 'Open positions' },
+      { name: 'showDesc', label: '👁️ Description', prop: false, type: 'boolean', default: true },
+      { name: 'description', label: '✏️ Description', type: 'text', default: '3 positions · updated 10:42 AM', showIf: (v) => Boolean(v.showDesc) },
+      { name: 'tag', label: '👁️ Tag', type: 'boolean', default: false },
+      { name: 'info', label: '👁️ Info', type: 'boolean', default: false },
+      { name: 'cta', label: 'CTA', type: 'select', options: ['none', 'view-all', 'switcher'], optionLabels: { none: 'None', 'view-all': 'View all', switcher: 'Switcher' }, default: 'view-all' },
+    ],
+    render: (v) => (
+      <SectionHeader
+        title={s(v, 'title')}
+        description={b(v, 'showDesc') ? s(v, 'description') : undefined}
+        tag={b(v, 'tag') ? <Tag variant="primary" color="neutral" size="sm">New</Tag> : undefined}
+        onInfo={b(v, 'info') ? noop : undefined}
+        action={s(v, 'cta') === 'view-all' ? { type: 'view-all', onClick: noop } : s(v, 'cta') === 'switcher' ? { type: 'switcher', label: 'Day P&L', onClick: noop } : undefined}
+      />
+    ),
+    code: (v) => jsx('SectionHeader', [
+      ['title', s(v, 'title')],
+      ['description', b(v, 'showDesc') ? s(v, 'description') : undefined],
+      ['tag', b(v, 'tag') ? '{<Tag variant="primary" color="neutral" size="sm">New</Tag>}' : undefined],
+      ['onInfo', b(v, 'info') ? '{openInfo}' : undefined],
+      ['action', s(v, 'cta') === 'view-all' ? "{{ type: 'view-all', onClick: openAll }}" : s(v, 'cta') === 'switcher' ? "{{ type: 'switcher', label: 'Day P&L', onClick: openPicker }}" : undefined],
+    ]),
+  },
+
+  'price-change': {
+    controls: [
+      { name: 'direction', label: 'Direction', prop: false, type: 'select', options: ['up', 'down', 'flat'], default: 'up' },
+      { name: 'size', label: 'Size', type: 'select', options: ['sm', 'md', 'lg'], optionLabels: sizeLabels, default: 'sm' },
+      { name: 'arrow', label: '👁️ Arrow', type: 'boolean', default: false },
+      { name: 'unit', label: 'Unit', type: 'select', options: ['percent', 'currency', 'number'], default: 'percent' },
+    ],
+    render: (v) => <PriceChange value={s(v, 'direction') === 'up' ? 0.68 : s(v, 'direction') === 'down' ? -0.81 : 0} unit={s(v, 'unit') as 'percent' | 'currency' | 'number'} size={s(v, 'size') as 'sm' | 'md' | 'lg'} arrow={b(v, 'arrow')} />,
+    code: (v) => jsx('PriceChange', [['value', `{${s(v, 'direction') === 'up' ? '0.68' : s(v, 'direction') === 'down' ? '-0.81' : '0'}}`], ['unit', s(v, 'unit'), 'percent'], ['size', s(v, 'size'), 'sm'], ['arrow', b(v, 'arrow')]]),
+  },
+
+  stepper: {
+    controls: [
+      { name: 'size', label: 'Size', type: 'select', options: ['sm', 'lg'], optionLabels: { sm: 'Small', lg: 'Large' }, default: 'sm' },
+      { name: 'sublabel', label: '👁️ Sublabel', type: 'boolean', default: true, showIf: (v) => v.size === 'lg' },
+    ],
+    render: (v) => <StepperPlay key={s(v, 'size')} size={s(v, 'size') as 'sm' | 'lg'} sublabel={b(v, 'sublabel')} />,
+    code: (v) => jsx('Stepper', [['label', 'Quantity'], ['value', '{qty}'], ['onChange', '{setQty}'], ['min', '{lotSize}'], ['step', '{lotSize}'], ['size', s(v, 'size'), 'sm'], ['sublabel', s(v, 'size') === 'lg' && b(v, 'sublabel') ? '{`${lots} Lots`}' : undefined]]),
+  },
+  select: {
+    controls: [
+      { name: 'size', label: 'Size', type: 'select', options: ['sm', 'md', 'lg'], optionLabels: sizeLabels, default: 'sm' },
+      { name: 'subtle', label: 'isSubtle', type: 'boolean', default: false },
+      { name: 'icon', label: '↪ Icon', type: 'select', options: ['swap', 'chevron'], optionLabels: { swap: '↕ Swap', chevron: '⌄ Chevron' }, default: 'swap' },
+      { name: 'label', label: '✏️ Label', prop: false, type: 'text', default: 'Quantity' },
+    ],
+    render: (v) => <Select onClick={noop} size={s(v, 'size') as 'sm' | 'md' | 'lg'} subtle={b(v, 'subtle')} icon={s(v, 'icon') as 'swap' | 'chevron'}>{s(v, 'label')}</Select>,
+    code: (v) => jsx('Select', [['onClick', '{openSheet}'], ['size', s(v, 'size'), 'sm'], ['subtle', b(v, 'subtle')], ['icon', s(v, 'icon'), 'swap']], s(v, 'label')),
+  },
+  'date-picker': {
+    controls: [{ name: 'mode', label: 'Mode', type: 'select', options: ['single', 'range'], default: 'single' }],
+    render: (v) => <DatePickerPlay key={s(v, 'mode')} mode={s(v, 'mode') as 'single' | 'range'} />,
+    code: (v) => jsx('DatePicker', [['mode', s(v, 'mode'), 'single'], ['label', s(v, 'mode') === 'range' ? 'Report period' : 'Statement date'], ['value', s(v, 'mode') === 'range' ? '{range}' : '{day}'], ['onChange', s(v, 'mode') === 'range' ? '{setRange}' : '{setDay}'], ['max', '{today}']]),
+  },
+  skeleton: {
+    controls: [
+      { name: 'pattern', label: 'Component', type: 'select', options: ['block', 'row', 'card'], optionLabels: { block: 'L3: Skeleton', row: 'Pattern · List row', card: 'Pattern · Card' }, default: 'row' },
+      { name: 'shape', label: 'Shape', type: 'select', options: ['line', 'circle', 'box'], default: 'line', showIf: (v) => v.pattern === 'block' },
+      { name: 'onGrey', label: 'isOnGrey', type: 'boolean', default: false, showIf: (v) => v.pattern !== 'card' },
+    ],
+    render: (v) => s(v, 'pattern') === 'row' ? <span style={{ width: '100%' }}><SkeletonListRow onGrey={b(v, 'onGrey')} /><SkeletonListRow onGrey={b(v, 'onGrey')} /></span> : s(v, 'pattern') === 'card' ? <SkeletonCard /> : <Skeleton shape={s(v, 'shape') as 'line' | 'circle' | 'box'} width={s(v, 'shape') === 'circle' ? undefined : 'var(--l3-size-128)'} onGrey={b(v, 'onGrey')} />,
+    code: (v) => s(v, 'pattern') === 'row' ? jsx('SkeletonListRow', [['onGrey', b(v, 'onGrey')]]) : s(v, 'pattern') === 'card' ? jsx('SkeletonCard', []) : jsx('Skeleton', [['shape', s(v, 'shape'), 'line'], ['width', s(v, 'shape') === 'circle' ? undefined : 'var(--l3-size-128)'], ['onGrey', b(v, 'onGrey')]]),
+  },
+  'progress-bar': {
+    controls: [
+      { name: 'type', label: 'Type', type: 'select', options: ['progress', 'range'], default: 'progress' },
+      { name: 'size', label: 'Size', type: 'select', options: ['sm', 'md'], optionLabels: { sm: 'Small', md: 'Medium' }, default: 'sm' },
+      { name: 'status', label: 'Status', type: 'select', options: ['default', 'success', 'warning', 'error'], default: 'default' },
+      { name: 'value', label: 'Value', type: 'select', options: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'], default: '60' },
+    ],
+    render: (v) => <span style={{ width: '100%' }}><ProgressBar label="Margin used" type={s(v, 'type') as 'progress' | 'range'} size={s(v, 'size') as 'sm' | 'md'} status={s(v, 'status') as ProgressStatus} value={Number(s(v, 'value'))} /></span>,
+    code: (v) => jsx('ProgressBar', [['label', 'Margin used'], ['value', `{${s(v, 'value')}}`], ['type', s(v, 'type'), 'progress'], ['size', s(v, 'size'), 'sm'], ['status', s(v, 'status'), 'default']]),
+  },
+  chart: {
+    controls: [
+      { name: 'type', label: 'Type', type: 'select', options: ['candle', 'line', 'area', 'sparkline'], optionLabels: { candle: 'Candle', line: 'Line', area: 'Area', sparkline: 'Sparkline (L3: Sparkline)' }, default: 'candle' },
+      { name: 'trend', label: 'Trend', type: 'select', options: ['up', 'down'], default: 'down' },
+      { name: 'volume', label: '👁️ Volume', type: 'boolean', default: true, showIf: (v) => v.type !== 'sparkline' },
+      { name: 'grid', label: '👁️ Grid', type: 'boolean', default: true, showIf: (v) => v.type !== 'sparkline' },
+      { name: 'axes', label: '👁️ Axes', type: 'boolean', default: true, showIf: (v) => v.type !== 'sparkline' },
+      { name: 'last', label: '👁️ Last price', type: 'boolean', default: true, showIf: (v) => v.type !== 'sparkline' },
+    ],
+    render: (v) => s(v, 'type') === 'sparkline'
+      ? <Sparkline data={sampleSpark(s(v, 'trend') as 'up' | 'down')} />
+      : <span style={{ width: '100%' }}><Chart label="Gold 5 Dec Fut, today" type={s(v, 'type') as ChartType} data={sampleCandles(s(v, 'trend') as 'up' | 'down')} timeLabels={['9:15', '11:15', '1:15', '3:15']} showVolume={b(v, 'volume')} showGrid={b(v, 'grid')} showAxes={b(v, 'axes')} showLastPrice={b(v, 'last')} /></span>,
+    code: (v) => s(v, 'type') === 'sparkline'
+      ? jsx('Sparkline', [['data', '{closes}']])
+      : jsx('Chart', [['label', 'Gold 5 Dec Fut, today'], ['data', '{candles}'], ['type', s(v, 'type'), 'candle'], ['timeLabels', "{['9:15', '11:15', '1:15', '3:15']}"], ['showVolume', b(v, 'volume') ? undefined : '{false}'], ['showGrid', b(v, 'grid') ? undefined : '{false}'], ['showAxes', b(v, 'axes') ? undefined : '{false}'], ['showLastPrice', b(v, 'last') ? undefined : '{false}']]),
+  },
   card: {
     controls: [
       { name: 'kind', label: 'Kind', type: 'select', options: ['clickable', 'link', 'static'], default: 'clickable' },
-      { name: 'variant', label: 'Style', type: 'select', options: ['default', 'flat'], optionLabels: { default: 'Rounded + border', flat: 'Flat' }, default: 'default' },
+      { name: 'variant', label: 'Style', type: 'select', options: ['default', 'flat', 'filled'], optionLabels: { default: 'Rounded + border', flat: 'Flat', filled: 'Filled (grey inset)' }, default: 'default' },
       { name: 'surface', label: 'Background (manual)', type: 'select', options: ['none', 'primary', 'secondary', 'tertiary'], default: 'none' },
-      { name: 'padding', type: 'select', options: ['default', 'none'], default: 'default' },
+      { name: 'padding', label: 'isPadded', type: 'select', options: ['default', 'none'], optionLabels: { default: 'True', none: 'False (flat only)' }, default: 'default', showIf: (v) => v.variant === 'flat' },
+      { name: 'selected', label: 'isSelected', type: 'boolean', default: false, showIf: (v) => v.kind !== 'static' && v.variant !== 'filled' },
       { name: 'title', label: 'Title', prop: false, type: 'text', default: 'NHPC' },
       { name: 'meta', label: 'Meta', prop: false, type: 'text', default: 'Delivery • Boost (5x)' },
     ],
@@ -156,10 +277,11 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         </>
       )
       const kind = s(v, 'kind')
+      const flat = s(v, 'variant') === 'flat'
       const common = {
-        padding: s(v, 'padding') as 'default' | 'none',
-        variant: s(v, 'variant') as 'default' | 'flat',
+        ...(flat ? { variant: 'flat' as const, padding: s(v, 'padding') as 'default' | 'none' } : { variant: s(v, 'variant') as 'default' | 'filled' }),
         surface: s(v, 'surface') === 'none' ? undefined : (s(v, 'surface') as 'primary' | 'secondary' | 'tertiary'),
+        selected: kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected'),
       }
       return kind === 'static' ? <Card {...common}>{content}</Card> : kind === 'link' ? <Card href="#/card" {...common}>{content}</Card> : <Card onClick={noop} {...common}>{content}</Card>
     },
@@ -171,14 +293,15 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['href', kind === 'link' ? '/orders/nhpc' : undefined],
         ['variant', s(v, 'variant'), 'default'],
         ['surface', s(v, 'surface'), 'none'],
-        ['padding', s(v, 'padding'), 'default'],
+        ['padding', s(v, 'variant') === 'flat' ? s(v, 'padding') : undefined, 'default'],
+        ['selected', kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected')],
       ], body)
     },
   },
 
   'brand-logo': {
     controls: [
-      { name: 'brand', label: 'Brand', type: 'select', options: ['lemonn', 'zing'], optionLabels: { lemonn: '🍋 Lemonn', zing: '⭐ Zing' }, default: 'lemonn' },
+      { name: 'brand', label: 'Brand', type: 'select', options: ['lemonn', 'zing', 'coinswitch'], optionLabels: { lemonn: '🍋 Lemonn', zing: '⭐ Zing', coinswitch: 'Coinswitch' }, default: 'lemonn' },
       { name: 'variant', label: 'isFull', type: 'select', options: ['full', 'icon'], optionLabels: { full: 'True', icon: 'False' }, default: 'full' },
       { name: 'size', type: 'select', options: ['24', '32', '40', '48'], default: '40' },
       { name: 'decorative', label: 'Name written next to it (hide from screen readers)', type: 'boolean', default: false },
@@ -603,6 +726,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'iconLeft', label: '👁️ Icon - L', type: 'boolean', default: false },
       { name: 'trailing', label: 'Right side (👁️ Icon - R / trailing)', type: 'select', options: ['none', 'chevron', 'tag', 'switch'], default: 'chevron' },
       { name: 'dotLeft', label: '👁️ Dot-L (new)', type: 'boolean', default: false },
+      { name: 'selected', label: 'isSelected', type: 'boolean', default: false, showIf: (v) => v.as === 'button' || v.trailing === 'switch' },
     ],
     render: (v) => {
       const trailing = s(v, 'trailing')
@@ -619,6 +743,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
           trailing={trailing === 'tag' ? <Tag variant="secondary" color="profit" size="sm">+4.2%</Tag> : trailing === 'switch' ? <Switch defaultChecked /> : undefined}
           dotLeft={b(v, 'dotLeft')}
           dotLabel={b(v, 'dotLeft') ? 'New' : undefined}
+          selected={b(v, 'selected')}
         />
       )
     },

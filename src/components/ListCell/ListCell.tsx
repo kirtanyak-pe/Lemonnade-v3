@@ -1,14 +1,17 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import styles from './ListCell.module.css'
 
-/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`. */
+/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`, isSelected → `selected`. */
 export type ListCellProps = {
   /** Figma "Label goes here". */
   label: ReactNode
   /** Figma "Type description" (👁️ description). */
   description?: ReactNode
   size?: 'md' | 'sm'
-  /** Figma isPlain: flat row (plain) or bordered, rounded card. */
+  /**
+   * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
+   * margin, never touching its container's edges).
+   */
   variant?: 'plain' | 'card'
   /** Figma Icon-L slot (24 md / 16 sm). */
   iconLeft?: ReactNode
@@ -26,6 +29,12 @@ export type ListCellProps = {
    * `label` lets a Switch or Checkbox in `trailing` toggle from anywhere on the row.
    */
   as?: 'div' | 'button' | 'a' | 'label'
+  /**
+   * Figma isSelected: the chosen row in a list of choices (tappable rows only). Plain → surface/secondary background;
+   * card → border/dark instead of border/light. Announced as pressed (button) or current (link); in a `label` row the
+   * Radio / Checkbox carries the state.
+   */
+  selected?: boolean
   href?: string
   onClick?: () => void
   className?: string
@@ -43,6 +52,7 @@ export function ListCell({
   dotRight = false,
   dotLabel = 'New',
   as,
+  selected = false,
   href,
   onClick,
   className,
@@ -53,7 +63,9 @@ export function ListCell({
 
   // A button/link row can't contain another control (invalid nesting; screen readers get confused).
   useEffect(() => {
-    if (!import.meta.env.DEV || (Element !== 'button' && Element !== 'a')) return
+    if (!import.meta.env.DEV) return
+    if (selected && !interactive) console.warn('[L3] <ListCell selected> needs a tappable row (onClick, href or as="label").')
+    if (Element !== 'button' && Element !== 'a') return
     if (trailingRef.current?.querySelector('input, button, a, select, textarea')) {
       console.warn('[L3] <ListCell> is a button/link but `trailing` contains a control. Use as="label" (for a Switch/Checkbox) or as="div".')
     }
@@ -71,8 +83,9 @@ export function ListCell({
       data-size={size}
       data-variant={variant}
       data-interactive={interactive || undefined}
-      {...(Element === 'button' ? { type: 'button' as const } : {})}
-      {...(Element === 'a' ? { href } : {})}
+      data-selected={(interactive && selected) || undefined}
+      {...(Element === 'button' ? { type: 'button' as const, 'aria-pressed': selected } : {})}
+      {...(Element === 'a' ? { href, 'aria-current': selected ? ('true' as const) : undefined } : {})}
       onClick={onClick}
     >
       {iconLeft && (

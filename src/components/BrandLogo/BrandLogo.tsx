@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'react'
-import { LemonnMark, LemonnWordmark, ZingArt, lemonnMarkOffset } from './BrandArt.tsx'
+import { CoinswitchMark, CoinswitchWordmark, LemonnMark, LemonnWordmark, ZingArt, lemonnMarkOffset } from './BrandArt.tsx'
 import styles from './BrandLogo.module.css'
 
-export type Brand = 'lemonn' | 'zing'
+export type Brand = 'lemonn' | 'zing' | 'coinswitch'
 
-/** Figma "L3 → Brand logo" (node 4735:1466): Brand = 🍋 Lemonn | ⭐ Zing, isFull = True | False. */
+/** Figma "L3 → Brand logo" (node 4735:1466): Brand = 🍋 Lemonn | ⭐ Zing | Coinswitch, isFull = True | False. */
 export type BrandLogoProps = {
   brand: Brand
   /** Figma isFull: `full` = mark + wordmark (default), `icon` = the 24×24 mark only. */
@@ -18,12 +18,13 @@ export type BrandLogoProps = {
   className?: string
 }
 
-const names: Record<Brand, string> = { lemonn: 'Lemonn', zing: 'Zing' }
+const names: Record<Brand, string> = { lemonn: 'Lemonn', zing: 'Zing', coinswitch: 'CoinSwitch' }
 
 // Figma frame sizes (viewBox) per brand and variant.
 const viewBoxes: Record<Brand, Record<'full' | 'icon', string>> = {
   lemonn: { full: '0 0 92 24', icon: '0 0 24 24' },
   zing: { full: '0 0 44 24', icon: '0 0 24 24' },
+  coinswitch: { full: '0 0 169 24', icon: '0 0 24 24' },
 }
 
 export function BrandLogo({ brand, variant = 'full', size = 24, label, decorative = false, className }: BrandLogoProps) {
@@ -50,6 +51,11 @@ export function BrandLogo({ brand, variant = 'full', size = 24, label, decorativ
         ) : (
           <LemonnMark />
         )
+      ) : brand === 'coinswitch' ? (
+        <>
+          <CoinswitchMark />
+          {full && <CoinswitchWordmark />}
+        </>
       ) : (
         <ZingArt full={full} />
       )}

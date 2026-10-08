@@ -1,0 +1,21 @@
+{
+  "$description": "Not in Figma — raw colours from Figma artwork that has no variable yet. Replace when design adds them to the base palette.",
+  "base": {
+    "hue": {
+      "brand": {
+        "coinswitch": {
+          "green": {
+            "$type": "color",
+            "$value": "#20c677",
+            "$description": "Coinswitch logo: mark (left half) and the 'switch' wordmark. Raw fill in Figma L3 → Brand logo (Brand=Coinswitch)."
+          },
+          "deep": {
+            "$type": "color",
+            "$value": "#1e6c55",
+            "$description": "Coinswitch logo: top-right quarter of the mark. Raw fill in Figma."
+          }
+        }
+      }
+    }
+  }
+}

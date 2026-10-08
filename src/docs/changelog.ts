@@ -97,7 +97,126 @@ export const changelog: Record<string, Release[]> = {
       ],
     },
   ],
+  'section-header': [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Section header: a required heading with an optional tag, info icon, description (one line ideally, two at most) and one action — View all or a switcher. The action and info icon have a 48 × 48 touch area.' },
+        { kind: 'figma', text: 'New Figma component L3: Section header (CTA = None · View all · Switcher; ✏️ Heading, ✏️ Description, 👁️ Description · Tag · Info).' },
+        { kind: 'added', text: '<SectionHeader title description tag onInfo action headingLevel />; action is typed to view-all | switcher.', dev: true },
+      ],
+    },
+  ],
+  'price-change': [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Price change: a signed change in green (up, +), red (down, −) or grey (no change), in three sizes with an optional ▲/▼ arrow. The sign and colour come from the direction, so they can never disagree.' },
+        { kind: 'figma', text: 'New Figma component L3: Price change (Direction × Size, ✏️ Value without the sign, 👁️ Arrow).' },
+        { kind: 'a11y', text: 'Screen readers hear “up / down / unchanged” and the value; colour is never the only signal.', dev: true },
+      ],
+    },
+  ],
+  stepper: [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Stepper: a number with − / + buttons for quantity and lots. Small (inline in order-pad rows) and Large (with a sublabel such as “91 Lots”). Each button turns grey at its limit.' },
+        { kind: 'figma', text: 'New Figma components L3: Stepper (Size = Small · Large, ✏️ Value, ✏️ / 👁️ Sublabel) and .L3: Stepper button (Type × State × Size).' },
+        { kind: 'a11y', text: 'Named group, labelled buttons, the value is announced on change, and the 20px Small buttons have a 32px tap area.', dev: true },
+      ],
+    },
+  ],
+  select: [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Select: an inline label + icon that opens a sheet of options — Small, Medium, Large, a subtle version, and ↕ or chevron icons.' },
+        { kind: 'figma', text: 'New Figma component L3: Select (Size × isSubtle, ✏️ Label, ↪ Icon).' },
+        { kind: 'a11y', text: 'A button with aria-haspopup="dialog" and aria-expanded; 32px tap area.', dev: true },
+      ],
+    },
+  ],
+  'date-picker': [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Date picker: a Monday-first month calendar for one day or a range, with today, selected, range and disabled days. Six weeks tall, so sheets don\'t jump between months.' },
+        { kind: 'figma', text: 'New Figma components L3: Date picker (Mode = Single · Range, ✏️ Month) and .L3: Date cell (8 states).' },
+        { kind: 'a11y', text: 'ARIA grid with full-date labels, aria-selected and aria-current; arrows, Home / End and PageUp / PageDown move focus.', dev: true },
+      ],
+    },
+  ],
+  skeleton: [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Skeleton: Line, Circle and Box placeholders that shimmer while content loads, plus ready-made List row and Card patterns. A grey-friendly version for grey cards.' },
+        { kind: 'figma', text: 'New Figma components L3: Skeleton (Shape × isOnGrey) and L3: Skeleton pattern (List row · Card).' },
+        { kind: 'a11y', text: 'Hidden from screen readers (mark the region aria-busy); the shimmer stops under reduced motion.', dev: true },
+      ],
+    },
+  ],
+  'progress-bar': [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Progress bar: Progress (a fill — funds or margin used) and Range (a marker — today\'s price between the 24H low and high), in two sizes and four statuses.' },
+        { kind: 'figma', text: 'New Figma component L3: Progress bar (Type × Size × Status) with Value 0–100 in steps of 10 on the nested fill or marker.' },
+        { kind: 'a11y', text: 'role="progressbar" (Progress) or "meter" (Range) with valueText.', dev: true },
+      ],
+    },
+  ],
+  chart: [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'New component',
+      changes: [
+        { kind: 'added', text: 'Chart: Candle, Line and Area price charts with a price axis, time labels, grid, volume and a last-price tag; and Sparkline, a small trend line for lists. Green up, red down.' },
+        { kind: 'figma', text: 'New Figma components L3: Chart (Type × Trend, 👁️ Volume · Grid · Axes · Last price, ✏️ Last price) and L3: Sparkline (Trend).' },
+        { kind: 'added', text: 'SVG, 360×200 viewBox scaling to the container; role="img" with a trend + range summary.', dev: true },
+      ],
+    },
+  ],
+  overlay: [
+    {
+      version: '1.0.0', date: '2026-10-09',
+      summary: 'Its own component',
+      changes: [
+        { kind: 'added', text: 'Overlay: the dimmed backdrop behind sheets, now a component of its own (it was part of Bottom sheet).' },
+        { kind: 'added', text: '<Overlay open onClick />; BottomSheet uses it.', dev: true },
+      ],
+    },
+  ],
   card: [
+    {
+      version: '1.5.0', date: '2026-10-09',
+      summary: 'Selected cards',
+      changes: [
+        { kind: 'added', text: 'Selected state for clickable cards — the chosen option in a list of choices. A bordered card swaps border-light for border-dark; a flat card gets a surface-secondary background (unselected flat cards stay transparent).' },
+        { kind: 'figma', text: 'L3: Card gets isSelected = True · False (Clickable and Flat, padded and not padded).' },
+        { kind: 'added', text: 'selected prop (aria-pressed on buttons, aria-current on links; warns when the card isn\'t clickable).', dev: true },
+        { kind: 'changed', text: 'No padding is for flat cards only: rounded cards (clickable, static, filled) are always padded and always sit inside a margin; flat cards run edge to edge.' },
+        { kind: 'figma', text: 'L3: Card drops isPadded = False for Clickable, Static and Filled (kept for Flat).' },
+        { kind: 'changed', text: 'padding="none" now only type-checks with variant="flat".', dev: true },
+      ],
+    },
+    {
+      version: '1.4.0', date: '2026-10-09',
+      summary: 'Filled cards',
+      changes: [
+        { kind: 'added', text: 'Filled card: a grey inset panel (surface-secondary, rounded, no border or shadow) for grouping details like contract info or market depth.' },
+        { kind: 'figma', text: 'L3: Card gets Type = Filled (padded and not padded), same content slot.' },
+        { kind: 'added', text: 'variant="filled".', dev: true },
+      ],
+    },
     {
       version: '1.3.0', date: '2026-10-08',
       summary: 'In Figma',
@@ -134,6 +253,14 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'brand-logo': [
+    {
+      version: '1.1.0', date: '2026-10-09',
+      summary: 'Coinswitch',
+      changes: [
+        { kind: 'added', text: 'Coinswitch logo, full and mark only, matching Figma Brand = Coinswitch. Its two greens stay the same in every theme; the dot and “coin” follow the theme.' },
+        { kind: 'added', text: "brand=\"coinswitch\". Greens are local tokens base/hue/brand-coinswitch-green · deep (source/local.colors.json) — raw fills in Figma.", dev: true },
+      ],
+    },
     {
       version: '1.0.0', date: '2026-09-28',
       summary: 'First release',
@@ -494,6 +621,14 @@ export const changelog: Record<string, Release[]> = {
 
   'bottom-sheet': [
     {
+      version: '2.3.1', date: '2026-10-09',
+      summary: 'Overlay is its own component',
+      changes: [
+        { kind: 'changed', text: 'The dimmed backdrop is now the shared Overlay component, so other modals can use it. No visual change.' },
+        { kind: 'fixed', text: 'Slot names match Figma: footer is the Figma Utility slot (the button dock); utility is a code-only area under it.', dev: true },
+      ],
+    },
+    {
       version: '2.3.0', date: '2026-10-05',
       summary: 'New type weights',
       changes: [
@@ -648,6 +783,16 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'list-cell': [
+    {
+      version: '1.3.0', date: '2026-10-09',
+      summary: 'Selected rows, no fill on plain rows',
+      changes: [
+        { kind: 'added', text: 'Selected state for tappable rows: plain rows get a surface-secondary background, card rows swap border-light for border-dark.' },
+        { kind: 'changed', text: 'Plain rows have no fill — they take the colour of whatever they sit on — and run edge to edge. Card rows always sit inside a margin.' },
+        { kind: 'figma', text: 'L3: list cell gets isSelected = True for every isSmall × isPlain; plain rows lose their surface-primary fill.' },
+        { kind: 'added', text: 'selected prop (aria-pressed / aria-current; warns on a row that isn\'t tappable).', dev: true },
+      ],
+    },
     {
       version: '1.2.0', date: '2026-10-05',
       summary: 'New type weights',

@@ -3,9 +3,10 @@ import { BrandLogo, type Brand } from '../components/BrandLogo'
 const brands: { brand: Brand; label: string }[] = [
   { brand: 'lemonn', label: '🍋 Lemonn' },
   { brand: 'zing', label: '⭐ Zing' },
+  { brand: 'coinswitch', label: 'Coinswitch' },
 ]
 
-/** The 4 Figma variants (Brand × isFull), then every size. */
+/** The 6 Figma variants (Brand × isFull), then every size. */
 export function BrandLogoVariants() {
   return (
     <>

@@ -1,0 +1,25 @@
+/* Figma "L3: Overlay": surface/overlay (the product's darkest neutral at 80%). Fades with motion/duration-medium. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--l3-surface-overlay);
+  opacity: 0;
+  transition: opacity var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+.overlay[data-open] {
+  opacity: 1;
+}
+
+/* Enter transition: start transparent when it first appears. */
+@starting-style {
+  .overlay[data-open] {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: none;
+  }
+}

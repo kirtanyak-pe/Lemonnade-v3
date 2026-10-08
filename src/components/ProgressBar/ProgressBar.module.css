@@ -1,0 +1,66 @@
+/*
+ * L3 Progress bar — every value is an --l3-* token (Figma L3: Progress bar).
+ * Track surface/tertiary, radius/full. Small: 4px bar, 12px marker · Medium: 8px bar, 16px marker.
+ * Fill / marker colour by status: surface/accent/discover · success · warning · error -default. Marker ring: 2px surface/primary.
+ */
+
+.bar {
+  --pb-h: var(--l3-size-04);
+  --pb-d: var(--l3-size-12);
+  --pb-color: var(--l3-surface-accent-discover-default);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--pb-h);
+}
+
+.bar[data-size='md'] {
+  --pb-h: var(--l3-size-08);
+  --pb-d: var(--l3-size-16);
+}
+
+.bar[data-type='range'] {
+  height: var(--pb-d);
+}
+
+.bar[data-status='success'] { --pb-color: var(--l3-surface-accent-success-default); }
+.bar[data-status='warning'] { --pb-color: var(--l3-surface-accent-warning-default); }
+.bar[data-status='error'] { --pb-color: var(--l3-surface-accent-error-default); }
+
+.track {
+  position: absolute;
+  inset: auto 0;
+  height: var(--pb-h);
+  border-radius: var(--l3-radius-full);
+  background: var(--l3-surface-tertiary);
+}
+
+.fill {
+  position: absolute;
+  left: 0;
+  width: var(--pb-value);
+  height: var(--pb-h);
+  border-radius: var(--l3-radius-full);
+  background: var(--pb-color);
+  transition: width var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+.marker {
+  position: absolute;
+  left: clamp(0px, calc(var(--pb-value) - var(--pb-d) / 2), calc(100% - var(--pb-d)));
+  box-sizing: border-box;
+  width: var(--pb-d);
+  height: var(--pb-d);
+  border: var(--l3-spacing-02) solid var(--l3-surface-primary);
+  border-radius: var(--l3-radius-full);
+  background: var(--pb-color);
+  transition: left var(--l3-motion-duration-medium) var(--l3-motion-easing-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .marker {
+    transition: none;
+  }
+}

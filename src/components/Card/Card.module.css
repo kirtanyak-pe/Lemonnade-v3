@@ -43,6 +43,12 @@
   box-shadow: none;
 }
 
+/* Filled (Figma Type=Filled): grey inset panel — rounded, surface/secondary, no border, no shadow. */
+.card[data-variant='filled'] {
+  --card-surface: var(--l3-surface-secondary);
+  box-shadow: none;
+}
+
 /* ---- Clickable -------------------------------------------------------------- */
 
 .card[data-interactive] {
@@ -57,6 +63,23 @@
 .card[data-variant='flat'][data-interactive] {
   --card-surface: transparent;
   box-shadow: none;
+}
+
+.card[data-variant='filled'][data-interactive] {
+  --card-surface: var(--l3-surface-secondary);
+  box-shadow: none;
+}
+
+/*
+ * Selected (Figma isSelected = True; clickable cards only): a bordered card swaps border/light for border/dark —
+ * nothing else changes. A flat card has no border, so it gets surface/secondary instead.
+ */
+.card[data-selected] {
+  --card-border: inset 0 0 0 1px var(--l3-border-dark); /* 1px: Figma stroke weight has no variable */
+}
+
+.card[data-variant='flat'][data-interactive][data-selected] {
+  --card-surface: var(--l3-surface-secondary);
 }
 
 .card[data-interactive]:active {

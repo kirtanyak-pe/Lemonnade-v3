@@ -22,9 +22,13 @@ Code: `<Tag variant color size>` · Docs: #/tag
 Text entry. Always a visible label (never the placeholder as the label). Errors say what went wrong and how to fix it. isInputBox = multi-line text box with a character counter. States: Default, Typing, Typed, Error, Success, Disabled.
 Code: `<TextField label status helperText multiline>` · Docs: #/text-field
 
+### L3: Section header (5407:124)
+The heading row of a section. Heading (Heading/14) is required; Tag, Info and Description (Description/12 — one line ideally, never more than two) are optional. CTA (optional): View all (Ghost button) or Switcher (L3: Select, e.g. Day P&L ↕ / a filter). The CTA's touch area is at least 48 × 48 whatever its size. Sits 16 above its card or list; sections 24 apart (32 for a bigger break).
+Code: `<SectionHeader title description tag onInfo action>` · Docs: #/section-header
+
 ### L3: list cell (4543:65400)
-A row: icon, label with optional description, and something on the right (chevron, switch, tag or value). Tappable rows show a chevron or trailing control. A row holding a switch or checkbox is tappable as a whole (label row). isPlain = plain row; otherwise card style. Dots carry screen-reader text ("New").
-Code: `<ListCell label description variant size>` · Docs: #/list-cell
+A row: icon, label with optional description, and something on the right (chevron, switch, tag or value). Tappable rows show a chevron or trailing control. A row holding a switch or checkbox is tappable as a whole (label row). isPlain = plain row: no fill (takes the colour of what it sits on), edge to edge; otherwise card style: rounded, border/light, always inside a margin. isSelected = True (chosen row in a list of choices): plain → surface/secondary, card → border/dark. Dots carry screen-reader text ("New").
+Code: `<ListCell label description variant size selected>` · Docs: #/list-cell
 
 ### L3: Actionbar (4543:65480)
 The top bar of a screen: back, title with optional description, at most 2 actions (Tertiary / Ghost only), or search. Flat tabs at the top go in its ↓ Content bottom slot — never a separate layer below. Actions go in → content right. Gets elevation-low when content scrolls under it.
@@ -55,8 +59,8 @@ The Lemonn or Zing logo. isFull = mark + wordmark; otherwise just the mark. 24�
 Code: `<BrandLogo brand variant>` · Docs: #/brand-logo
 
 ### L3: Card (5364:38)
-A surface that groups related content. Clickable: the whole card is one tap target (surface/primary, border/light, elevation-low, scales down when pressed) — never put a button inside. Static: rounded, border/light on surface/default, no shadow. Flat: no radius, border or shadow. isPadded = False for edge-to-edge media or lists. Cards in a list sit 16px apart.
-Code: `<Card onClick variant padding surface>` · Docs: #/card
+A surface that groups related content. Clickable: the whole card is one tap target (surface/primary, border/light, elevation-low, scales down when pressed) — never put a button inside. Static: rounded, border/light on surface/default, no shadow. Flat: no radius, border or shadow. Filled: grey inset panel (surface/secondary, rounded, no border or shadow) for grouping details on a white screen. Rounded cards (Clickable, Static, Filled) are always padded and always sit inside a margin, never touching their container's edges; only Flat has isPadded = False (edge-to-edge media or lists), and Flat always runs edge to edge. isSelected = True marks the chosen option in a list of choices: Clickable → border/dark instead of border/light; Flat → surface/secondary (unselected Flat has no fill). Static and Filled are never selected. Cards in a list sit 16px apart.
+Code: `<Card onClick variant padding surface>` (`variant="filled"` for Filled) · Docs: #/card
 
 ### L3: Title (4543:84634)
 A title with an optional description, in Large / Medium / Small / Mini. Figma-only — there is no code component; in code, compose it from Heading + Description text styles.
@@ -64,7 +68,7 @@ Code: — (Figma-only) · Docs: —
 
 ### L3: Overlay (4603:91773)
 The backdrop behind modal content (bottom sheets). Uses surface/overlay. Use Version = Latest.
-Code: part of `<BottomSheet>` · Docs: #/bottom-sheet
+Code: `<Overlay open onClick>` (BottomSheet includes it) · Docs: #/overlay
 
 ---
 
@@ -104,3 +108,31 @@ A documentation frame with a heading for presenting components. Not app UI.
 
 ### L3: dev-note (4543:84404)
 A handoff annotation for developers, with a pointer in any direction. Not app UI — never ships.
+
+### L3: Stepper (5374:18184)
+A number with − / + buttons for quantity and lots. Small: inline in order-pad rows (104×28 grey pill, 20px buttons). Large: standalone with round outlined buttons and an optional sublabel ("91 Lots"). Set a button to State = Disabled at the minimum or maximum.
+Code: `<Stepper value onChange min max step size sublabel label>` · Docs: #/stepper
+
+### L3: Select (5377:49)
+An inline trigger — label + ↕ or chevron — that opens a bottom sheet of options. Small (Label/12) in form rows, Medium (Label/14) for filters, Large (Heading/14) for titles; isSubtle = secondary colour. Make the whole row the tap target.
+Code: `<Select onClick size subtle icon>` · Docs: #/select
+
+### L3: Skeleton (5380:30) · L3: Skeleton pattern (5380:54)
+Loading placeholders that mirror the real layout. Line = text (height = line height), Circle = icon, Box = image or chart. isOnGrey on grey cards. Patterns: List row (matches list cell) and Card.
+Code: `<Skeleton shape width height onGrey>`, `<SkeletonListRow>`, `<SkeletonCard>` · Docs: #/skeleton
+
+### L3: Progress bar (5384:321)
+Progress (a fill: funds or margin used, steps done) or Range (a marker: price between 24H low and high). Size Small (4px) / Medium (8px); Status Default · Success · Warning · Error. Pick Value on the nested fill or marker. Always show the value as text too.
+Code: `<ProgressBar value type size status label valueText>` · Docs: #/progress-bar
+
+### L3: Chart (5386:678) · L3: Sparkline (5386:19087)
+Price charts: Candle (trading), Line (history), Area (portfolio / P&L over time); Trend sets green / red. Toggle Volume, Grid, Axes, Last price. Sparkline: 64×24 trend line for list rows, next to the price and % change.
+Code: `<Chart data type trend timeLabels label>`, `<Sparkline data>` · Docs: #/chart
+
+### L3: Date picker (5387:279)
+A Monday-first month calendar for one day (Single) or a range (Range), in a bottom sheet with Clear / Apply. Days after today are disabled for reports; days before today for future dates.
+Code: `<DatePicker mode value onChange min max label>` · Docs: #/date-picker
+
+### L3: Price change (5391:79)
+A signed change — price, P&L, returns. Direction sets the sign and colour (Up green "+", Down red "−", Flat grey), so type only the number in ✏️ Value. Small in rows, Medium, Large next to big numbers; 👁️ Arrow for headline numbers.
+Code: `<PriceChange value unit percent size arrow>` · Docs: #/price-change

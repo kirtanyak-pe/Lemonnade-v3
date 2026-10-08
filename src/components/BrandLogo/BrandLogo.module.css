@@ -34,3 +34,17 @@
 .zingEnd {
   stop-color: var(--l3-base-hue-honey-500);
 }
+
+/* Coinswitch: greens are local tokens (source/local.colors.json — raw in Figma); dot + "coin" follow the theme like the Lemonn wordmark. */
+.csGreen {
+  fill: var(--l3-base-hue-brand-coinswitch-green);
+}
+
+.csDeep {
+  fill: var(--l3-base-hue-brand-coinswitch-deep);
+}
+
+.csInk,
+.csWord {
+  fill: var(--l3-surface-inverted);
+}
