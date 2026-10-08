@@ -155,7 +155,7 @@ export function SemanticTree({ filter, copied, onCopy }: { filter: string; copie
           return (
             <li key={r.token}>
               <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${displayName(r.token)} (${r.role}). Copy the name`} title={`${r.use}\nClick to copy ${v}`} {...hover(r.token)}>
-                <span className={styles.swatch} data-kind={isBorder(r.token) ? 'border' : 'fill'} style={{ color: v }} aria-hidden="true" />
+                <span className={styles.swatch} data-kind={isBorder(r.token) ? 'border' : 'fill'} style={{ color: `var(${cssVar(r.token as ThemeToken)})` }} aria-hidden="true" />
                 <span className={styles.leafText}>
                   <code className={styles.leafName}>{copied === v ? 'Copied' : displayName(r.token)}</code>
                   <span className={styles.leafRole}>{r.role}</span>

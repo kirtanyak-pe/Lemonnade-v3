@@ -1101,6 +1101,12 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 
 ## 2026-10-09 — building and dogfooding the playbook tools
 
+- **A token's display name is not a colour.** The Colors page set swatches to `surface-default` (the copyable name)
+  instead of `var(--l3-surface-default)` — twice (accent band, then the whole semantic tree). The browser drops an
+  invalid value silently, so every swatch fell back to the text colour (all black). Fix: always `var(${cssVar(token)})`.
+  Check that catches it on every page: `CSS.supports(prop, value)` for each inline colour / background / shadow
+  (914 checked, 0 invalid after the fix).
+
 - **Chart labels: the last-price tag is also a number at the right edge.** First chart run read it as a 7th y label →
   axis shifted by one and the component's sample last price (157500) stayed on 896.75 / 640.75 charts. Fix: the last
   price is the number inside a filled frame; y labels are the rest, max 6; no last price found → hide the tag, never
