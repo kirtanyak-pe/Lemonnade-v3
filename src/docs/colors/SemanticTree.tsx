@@ -204,11 +204,12 @@ export function SemanticTree({ filter, copied, onCopy }: { filter: string; copie
                     {families.map((f) => {
                       const v = displayName(`surface/accent/${f.path}-default`)
                       const soft = `var(${cssVar(`surface/accent/${f.path}-light` as ThemeToken)})`
+                      const solid = `var(${cssVar(`surface/accent/${f.path}-default` as ThemeToken)})`
                       return (
                         <li key={f.id}>
                           <button type="button" className={styles.leaf} onClick={() => onCopy(v)} aria-label={`${f.label}: solid and soft. Copy the solid color's name`} title={`${f.use}\nSolid: ${v} · Soft: …-light\nClick to copy the solid color`} {...hover(`af:${f.id}`)}>
                             {/* Split swatch: solid (top-left) · soft (bottom-right). */}
-                            <span className={styles.swatch} data-kind="split" style={{ background: `linear-gradient(135deg, ${v} 50%, ${soft} 50%)` }} aria-hidden="true" />
+                            <span className={styles.swatch} data-kind="split" style={{ background: `linear-gradient(135deg, ${solid} 50%, ${soft} 50%)` }} aria-hidden="true" />
                             <span className={styles.leafText}>
                               <code className={styles.leafName}>{copied === v ? 'Copied' : f.label}</code>
                               <span className={styles.leafRole}>solid · soft</span>
