@@ -5,7 +5,7 @@
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.3.0
+- Version: 2.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -204,8 +204,8 @@ Bottom sheet — A modal panel over the screen
 | `placement` | `'bottom' \| 'top'` | `'bottom'` | Figma isBottom. |
 | `header` | `ReactNode` |  | Figma 👁️ Header — usually <BottomSheetHeader />. |
 | `children` | `ReactNode` |  | Figma content slot; scrolls if the sheet would be taller than the screen. |
-| `footer` | `ReactNode` |  | Figma "Buttons" — usually <ButtonGroup>. |
-| `utility` | `ReactNode` |  | Figma Utility slot, below the buttons. |
+| `footer` | `ReactNode` |  | Figma Utility slot: the area under the content — usually the button dock (<ButtonGroup>). |
+| `utility` | `ReactNode` |  | Code-only extra area under footer (e.g. a note under the buttons). In Figma it goes inside the Utility slot. |
 | `closeLabel` | `string` | `'Close'` | Name of the visually hidden close button (screen readers / keyboard). There is no visible close button or drag handle; the whole sheet drags to dismiss. |
 | `container` | `HTMLElement \| null` | `document.body` | Render inside another element instead of covering the page. |
 | `aria-labelledby` | `string` |  | Point at the header heading (headingId) to name the dialog. |
@@ -232,6 +232,6 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.3.1** (2026-10-09) Overlay is its own component: The dimmed backdrop is now the shared Overlay component, so other modals can use it. No visual change. Slot names match Figma: footer is the Figma Utility slot (the button dock); utility is a code-only area under it.
 - **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
 - **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
-- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface-overlay token (brand-tinted neutral at 80%) instead of black at 80%.

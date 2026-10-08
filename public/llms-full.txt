@@ -9,14 +9,18 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
 - [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
 - [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.
+- [Design language (fintech)](agent-docs/design-language.md): How L3 screens look and read: principles, numbers, colour meaning, archetypes, the quality bar every generated screen is scored on.
+- [Learnings](agent-docs/learnings.md): Dated lessons from real runs (what was slow or wrong, the number, the fix). Read before repeating a task.
+- [Playbook: migrate, audit, extend, generate](agent-docs/playbook.md): Algorithms + tools: find a component, audit code/Figma, migrate old designs, swap components without moving layout, create components, generate screens.
 
 ## Foundations
 
 - [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
 - [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+- [Layout](agent-docs/layout.md): How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.
 - [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
-- [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+- [Brand logo](agent-docs/brand-logo.md): The Lemonn, Zing and Coinswitch logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
 - [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
@@ -31,6 +35,9 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Checkbox & radio](agent-docs/checkbox.md): Checkboxes pick any number of options; radios pick exactly one from a group.
 - [Input field & text box](agent-docs/text-field.md): Fields let people enter text — a single line (input field) or several lines with a character counter (text box).
 - [Toggle switch](agent-docs/switch.md): Switches turn a single setting on or off, and take effect immediately.
+- [Stepper](agent-docs/stepper.md): A number with − and + buttons, for quantity and lots in the order pad.
+- [Select](agent-docs/select.md): An inline trigger — a label and an icon — that opens a sheet of options.
+- [Date picker](agent-docs/date-picker.md): A month calendar for picking one day or a date range.
 
 ## Components · Navigation
 
@@ -42,16 +49,22 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 
 - [Card](agent-docs/card.md): A surface that groups related content. Clickable cards are one tap target; static cards just show information.
 - [Bottom sheet](agent-docs/bottom-sheet.md): A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.
+- [Overlay](agent-docs/overlay.md): The dimmed backdrop behind a bottom sheet or any other modal.
 
 ## Components · Feedback & status
 
 - [Aerobar & toast](agent-docs/aerobar.md): A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.
 - [Empty state](agent-docs/empty-state.md): What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.
+- [Skeleton](agent-docs/skeleton.md): A grey placeholder that mirrors the layout while content loads.
+- [Progress bar](agent-docs/progress-bar.md): Shows how much of something is used or done, or where a value sits in a range.
 
 ## Components · Data display
 
 - [List cell](agent-docs/list-cell.md): A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
 - [Tag](agent-docs/tag.md): Tags label, categorise or show the status of something in a compact form.
+- [Section header](agent-docs/section-header.md): The heading row of a section: a title, with an optional tag, info icon, short description and one action — View all or a switcher.
+- [Price change](agent-docs/price-change.md): A signed change — price, P&L or returns — in green when up and red when down.
+- [Chart](agent-docs/chart.md): Price charts — candles, line or area — and a small sparkline for lists.
 
 
 # Instructions for AI agents
@@ -83,12 +96,16 @@ ask, or list it under "Open questions" in your answer.
 - **Tokens only.** No hex/rgb, raw px spacing, font sizes or shadows in styles. Only `--l3-*` variables (the one
   accepted literal is `1px` for hairlines). Missing value → add it to `src/tokens/source/local.*.json`, run
   `npm run tokens`, and say so.
+- **Screen layout:** page padding 16 left/right; sections 24 apart (32 for a bigger break); section heading → its
+  card 16; card padding 12 on every side. Gaps are the container's auto-layout gap, bound to spacing tokens. Section
+  titles are always `SectionHeader` (title required; tag / info / description ≤ 2 lines / one action — View all or a
+  switcher — optional).
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
   inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
-- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a select, stepper, chart,
-  skeleton), say so and ask — don't build a one-off lookalike inside a screen.
+- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a dialog), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
+  ProgressBar, Chart / Sparkline, PriceChange and Overlay exist now.
 
 Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
@@ -112,7 +129,12 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
   `surface-secondary` (grey). Never fill a whole section grey.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
-  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow.
+  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
+  (`surface-secondary`, no border/shadow) for grouped details. Selected (chosen option in a list of choices, clickable
+  only, `selected`): bordered → `border-dark` instead of `border-light`; flat → `surface-secondary` (flat is otherwise
+  unfilled). Rounded cards are always padded and inside a margin; only flat cards drop padding, and flat cards run edge
+  to edge. **ListCell** the same: plain = no fill, edge to edge; card = inside a margin; `selected` → plain
+  `surface-secondary`, card `border-dark`.
 
 ## 3. Workflow for UI tasks
 
@@ -137,7 +159,22 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - Put content into a component's **slots** (e.g. tabs in the Actionbar's `↓ Content bottom`), don't stack siblings.
 - Frames are 360 wide; Manrope via L3 text styles.
 
-## 5. Repo conventions
+## 5. Migrate, audit, extend, generate — use the tools (docs/PLAYBOOK.md)
+
+- **Before building anything:** `npm run find -- "<the job>"`. Follow the reuse ladder: use → configure → compose
+  (recipe) → extend (variant, same job) → create (new job, 3+ uses, spec first). Never build a lookalike.
+- **Old code:** `npm run audit:ui -- <src>`; fix errors, then warnings; re-run until clean.
+- **Old Figma designs:** Figma `audit` → `migrate-tokens` (dryRun first) → `swap` (dryRun → sandbox → run) → audit
+  again. Bundle scripts with `npm run figma -- <script> --config '{…}'` and paste into `use_figma`.
+- **New screens:** `npm run screen -- new <archetype>` → edit the spec → `score` (≥ 85, no blocking) → `gen` (code,
+  written outside this repo) and/or Figma `build-screen` (sandbox first). How screens should look:
+  `docs/DESIGN_LANGUAGE.md`.
+- **Efficiency:** cheapest lookup first (`components.json`, code map, registry) · batch + parallel reads · one page per
+  Figma call, ≤ ~10k nodes · dry-run → sandbox → run · numbers over screenshots · read `timing` before optimising.
+- **Improve the system, not the one-off:** after each task add to `docs/LEARNINGS.md` and fix the data or script that
+  caused the trouble.
+
+## 6. Repo conventions
 
 - Every component change gets a release in `src/docs/changelog.ts` (semver per component).
 - Don't commit, push or publish unless asked. The public docs site (`npm run deploy:docs`) is only updated on
@@ -195,6 +232,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 |---|---|
 | ↔ On = True · False | `checked` / `defaultChecked` |
 | isSmall = True | `size="sm"` (default `md`) |
+| isSelected = True | `selected` — plain: surface/secondary · card: border/dark |
 | (no Figma variant) | `disabled` |
 
 ### L3: Radio button & check box → `<Checkbox>` / `<Radio>` (`components/Checkbox`)
@@ -204,6 +242,30 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | 👆 State = selected | `checked` |
 | 👆 State = Intermediate | `indeterminate` (Checkbox only) |
 | Disabled = True | `disabled` |
+
+### L3: Stepper → `<Stepper>` (`components/Stepper`)
+| Figma | React |
+|---|---|
+| Size = Small · Large | `size="sm" \| "lg"` |
+| ✏️ Value | `value` (+ `format`) |
+| ✏️ Sublabel / 👁️ Sublabel | `sublabel` (Large only) |
+| .L3: Stepper button State = Disabled | automatic at `min` / `max` (or `disabled`) |
+
+### L3: Select → `<Select>` (`components/Select`)
+| Figma | React |
+|---|---|
+| ✏️ Label | children |
+| Size = Small · Medium · Large | `size="sm" \| "md" \| "lg"` |
+| isSubtle | `subtle` |
+| ↪ Icon (↕ · expand_more) | `icon="swap" \| "chevron"` |
+
+### L3: Date picker → `<DatePicker>` (`components/DatePicker`)
+| Figma | React |
+|---|---|
+| Mode = Single · Range | `mode="single" \| "range"` |
+| ✏️ Month | from `initialMonth` / the selection (navigates itself) |
+| .L3: Date cell State = Disabled | days outside `min` / `max` |
+| State = Today · Selected · Range start/middle/end · Empty | automatic |
 
 ## Navigation
 
@@ -275,9 +337,21 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Type = Clickable | `onClick` or `href` (the whole card is the tap target) |
 | Type = Static | neither `onClick` nor `href` |
 | Type = Flat | `variant="flat"` (+ `onClick`/`href` if it's clickable) |
-| isPadded = True · False | `padding="default" \| "none"` |
+| Type = Filled | `variant="filled"` (grey inset panel) |
+| isPadded = True · False (False: Flat only) | `padding="default" \| "none"` (`none` needs `variant="flat"`) |
+| isSelected = True (Clickable · Flat) | `selected` — Clickable: border/dark · Flat: surface/secondary |
 | content (slot) | children |
 | (manual background) | `surface` |
+
+### L3: Section header → `<SectionHeader>` (`components/SectionHeader`)
+| Figma | React |
+|---|---|
+| ✏️ Heading | `title` (required) |
+| ✏️ Description (👁️ Description) | `description` — one line ideally, max two |
+| 👁️ Tag | `tag` (`<Tag size="sm">`) |
+| 👁️ Info | `onInfo` (+ `infoLabel`) |
+| CTA = None · View all · Switcher | no `action` · `action={{ type: 'view-all', onClick }}` · `action={{ type: 'switcher', label, onClick }}` |
+| touch area (48) | built in (≥ 48 × 48) |
 
 ## Feedback & status
 
@@ -299,6 +373,21 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | ✏️ Description | `description` |
 | Illustration (slot) | `illustration` (default artwork if omitted) |
 | (button under it) | `action` |
+
+### L3: Skeleton → `<Skeleton>` (`components/Skeleton`)
+| Figma | React |
+|---|---|
+| Shape = Line · Circle · Box | `shape="line" \| "circle" \| "box"` (+ `width`, `height`) |
+| isOnGrey | `onGrey` |
+| L3: Skeleton pattern Type = List row · Card | `<SkeletonListRow />` · `<SkeletonCard />` |
+
+### L3: Progress bar → `<ProgressBar>` (`components/ProgressBar`)
+| Figma | React |
+|---|---|
+| Type = Progress · Range | `type="progress" \| "range"` |
+| Size = Small · Medium | `size="sm" \| "md"` |
+| Status = Default · Success · Warning · Error | `status` |
+| Value (nested fill / marker, steps of 10) | `value` (any 0–100) |
 
 ## Data display
 
@@ -324,6 +413,28 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | 👁️ Label off | `hideLabel` (+ one icon; label text still required) |
 | ↪ Icon-L / ↪ Icon-R | `iconLeft` / `iconRight` |
 
+### L3: Price change → `<PriceChange>` (`components/PriceChange`)
+| Figma | React |
+|---|---|
+| Direction = Up · Down · Flat | the sign of `value` |
+| ✏️ Value (number without sign) | `value` (+ `unit`, `percent`, `decimals`) |
+| Size = Small · Medium · Large | `size="sm" \| "md" \| "lg"` |
+| 👁️ Arrow | `arrow` |
+
+### L3: Chart → `<Chart>` (`components/Chart`)
+| Figma | React |
+|---|---|
+| Type = Candle · Line · Area | `type="candle" \| "line" \| "area"` |
+| Trend = Up · Down | `trend` (defaults to first vs last close) |
+| 👁️ Volume · Grid · Axes · Last price | `showVolume` · `showGrid` · `showAxes` · `showLastPrice` |
+| ✏️ Last price | the last `close` (via `format`) |
+| (sample data) | `data` |
+
+### L3: Sparkline → `<Sparkline>` (`components/Chart`)
+| Figma | React |
+|---|---|
+| Trend = Up · Down | `trend` (defaults to first vs last value) |
+
 ## Brand & device
 
 ### L3 → Brand logo → `<BrandLogo>` (`components/BrandLogo`)
@@ -336,6 +447,12 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | isDark = True | `inverted` |
+
+### L3: Overlay → `<Overlay>` (`components/Overlay`)
+| Figma | React |
+|---|---|
+| container slot | render the modal panel after `<Overlay>` in the same positioned container |
+| (shown) | `open` · tap = `onClick` |
 
 ## Not in code
 
@@ -392,7 +509,7 @@ Spacing tokens are used for **padding, gaps and margins only**. Never use arbitr
 no off-scale steps. For sizes (width, height, icon boxes), use `--l3-size-*` / `--l3-icon-size-*`, not spacing tokens.
 
 > The token set also contains 02, 06, 10, 14, 20, 28, 36, 56, 72, 80 and 96. These are **not part of the
-> scale**. Some components still use them (see 2.3).
+> scale**. Some components still use them (see 2.4).
 
 ---
 
@@ -422,7 +539,25 @@ ButtonGroup, Checkbox, EmptyState, ListCell, Switch, Tabs, Tag, TextField).
 Actionbar row (0 16), inline Aerobar (0 16), ListCell (8 16), ButtonGroup (16), BottomSheet header (16).
 This is the de facto **16px screen gutter**.
 
-### 2.3 Inconsistencies found
+### 2.3 Screen layout (rule)
+
+| What | Value | Token |
+|---|---|---|
+| Page padding, left and right | 16 | `spacing/16` |
+| Between two sections (default) | 24 | `spacing/24` |
+| Between two sections (large spacing: a new topic, or after a hero block) | 32 | `spacing/32` |
+| Section heading → its card or list | 16 | `spacing/16` |
+| Card padding, every side | 12 | `spacing/12` |
+
+- A **section** is a `SectionHeader` plus its content (card, list, chart). Never hand-build a section title row. Sections stack with 24; use 32 only for a deliberate
+  bigger break.
+- Gaps belong to the container (the body / section frame's auto-layout gap, bound to the spacing variable) — never
+  spacer layers, never margins on components.
+- Rounded cards sit inside the 16 page padding; edge-to-edge parts (Actionbar, Tabs, ButtonGroup, plain ListCell, flat
+  Card) touch the screen edges.
+- Docs: the **Layout** page under Foundations. Seen in the F&O dev-handoff Delivery / Intraday screens.
+
+### 2.4 Inconsistencies found
 
 1. **Title + description gap differs.** It's 2 in Actionbar content and Aerobar content, but 4 in EmptyState and the
    BottomSheet header. 2 is off-scale.
@@ -562,15 +697,26 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 | `BottomNavbar` + `NavIcon` | `components/BottomNavbar` | `items`, `value` | App-level section nav (3–5), including MF / F&O sub-navs with `home` |
 | `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen. Tabs or search at the top of a sheet go in the header's `bottom` slot |
 | `Aerobar` | `components/Aerobar` | — (`heading` in practice) | A status bar (inline) or toast (`floating`) |
-| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1) |
-| `ListCell` | `components/ListCell` | `label` | Rows: plain or card, with icons, trailing content, dots |
+| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1); `variant="filled"` for a grey inset panel of details; `selected` for the chosen card in a list of choices |
+| `SectionHeader` | `components/SectionHeader` | `title` | A section's heading row: optional tag, info, description (≤ 2 lines) and one action (View all or a switcher); 48 × 48 touch areas |
+| `ListCell` | `components/ListCell` | `label` | Rows: plain (no fill, edge to edge) or card (inside a margin), with icons, trailing content, dots; `selected` for the chosen row |
 | `EmptyState` | `components/EmptyState` | `title` | Nothing to show, or no results |
 | `Icon` | `components/Icon` | `icon` | Any Material Symbol |
-| `BrandLogo` | `components/BrandLogo` | `brand` | Lemonn / Zing logo, full or mark only |
+| `BrandLogo` | `components/BrandLogo` | `brand` | Lemonn / Zing / Coinswitch logo, full or mark only |
+| `Stepper` | `components/Stepper` | `value`, `onChange`, `label` | Quantity / lots with − / + (`size` sm inline in order pads, lg standalone with `sublabel`); set `min`, `max`, `step` |
+| `Select` | `components/Select` | children, `onClick` | An inline label + ↕ / chevron that opens a BottomSheet of Radio rows. There is no boxed dropdown |
+| `DatePicker` | `components/DatePicker` | `value`, `onChange`, `label` | A day or a range (`mode="range"`), inside a BottomSheet with a ButtonGroup; disable with `min` / `max` |
+| `Skeleton` (+ `SkeletonListRow`, `SkeletonCard`) | `components/Skeleton` | — | Loading placeholders in the real layout; `onGrey` on grey surfaces; region gets `aria-busy` |
+| `ProgressBar` | `components/ProgressBar` | `value`, `label` | Used / done (`type="progress"`) or a position in a range (`type="range"`, e.g. 24H low–high); `status` for limits; show the value as text too |
+| `PriceChange` | `components/PriceChange` | `value` | Any signed change (price, P&L, returns): sign, colour and arrow come from the value. Never colour a change by hand |
+| `Chart` / `Sparkline` | `components/Chart` | `data`, `label` (Chart) | Price charts (`candle`, `line`, `area`); Sparkline for list rows next to price + % change |
+| `Overlay` | `components/Overlay` | `open` | The scrim behind a custom modal (BottomSheet already includes it) |
 
 **Use this, not that** (from the component APIs and docs):
 - **Tags are not buttons.** Anything tappable is a `Button`, a `ListCell as="button"`, or a Tab.
 - **There is no Chip component.** For a segmented or filter choice, use `Tabs appearance="pill"`.
+- **There is no boxed dropdown.** Use `Select` (inline trigger) + a `BottomSheet` with `Radio` rows.
+- **Up / down colour comes from the data:** `Chart` / `Sparkline` `trend` and price changes use the indicator tokens (green up, red down); never colour a negative change green.
 - **Cards:** use `Card` (rules in 7.1). For a simple one-line row, `ListCell variant="card"` also exists.
 - **Status:**
   - A message that belongs to the page is an inline `Aerobar`.
@@ -609,6 +755,19 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links.
+- **Padding & placement:** rounded cards (clickable, static, filled) are **always padded** and **always sit inside a
+  margin** — never touching their container's edges (16 from the screen edge, 16 between cards). Only a **flat** card
+  may drop its padding (`padding="none"`, Figma isPadded = False), and a flat card **always runs edge to edge** in its
+  container. The margin comes from the parent (padding / gap) — cards have no outer margin of their own.
+- **List cell follows the same rules:** a plain row has no fill and runs edge to edge; a card row is rounded with
+  `border-light` and sits inside a margin. Selected: plain → `surface-secondary`, card → `border-dark`.
+- **Selected cards** (the chosen option in a list of choices — a contract, a plan, an account): only clickable cards
+  can be selected (`selected`, Figma `isSelected = True`).
+  - **Bordered** (rounded + border) card: swap `border-light` for **`border-dark`**. Nothing else changes — same
+    surface, shadow, radius and padding.
+  - **Flat** card: it has no border, so selection is a **`surface-secondary`** background. Unselected, a flat card has
+    **no fill** and takes the colour of whatever it sits on (another card or the screen).
+  - Static and filled cards are never selected. Don't show selection with a coloured border, a tint or a tick alone.
 
 ### 7.2 Containers & grey fills
 
@@ -643,12 +802,13 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 | State | Use |
 |---|---|
 | Empty / no results | `EmptyState` (illustration + title + description + action) |
+| Loading content | `Skeleton` / `SkeletonListRow` / `SkeletonCard` in the same layout (region `aria-busy`) |
 | Loading an action | `Button loading` (keeps its width, shows the loader) |
 | Field error / success | `TextField status="error" \| "success"` + `helperText` (announced while typing) |
 | Page or result message | `Aerobar` (`danger`, `success`, `warning`, `discover`) |
 | Disabled | The component's own `disabled` prop, which uses the `*-disabled` tokens |
 
-There is **no skeleton or spinner component** yet.
+There is **no spinner** — use `Skeleton` for loading content and `Button loading` for actions.
 
 <!-- PENDING: which states every screen must cover -->
 
@@ -756,6 +916,515 @@ There is **no skeleton or spinner component** yet.
 
 ---
 
+# L3 design language — how a Lemonnade screen looks, reads and behaves
+
+The components say **what** to use; this says **how a great fintech screen comes together**. Every rule below is
+concrete enough to check, and the ones marked **[scored]** are checked automatically by `npm run screen -- score`
+(see docs/PLAYBOOK.md §7). A generated screen ships only at **score ≥ 85** with no blocking issue.
+
+---
+
+## 1. Principles (in priority order — when two collide, the higher one wins)
+
+1. **Trust before delight.** Money screens must feel calm and exact: steady layout, real numbers, charges and risks
+   shown *before* the action, nothing that moves while you read it.
+2. **Numbers first.** The amount, price or P&L is the hero of the screen. Labels support it; decoration never
+   competes with it.
+3. **One job per screen.** One primary action, docked at the bottom in thumb reach **[scored]**. Secondary paths
+   live in the Actionbar, a Select, or a sheet.
+4. **Honest colour.** Green / red mean *up / down* (indicator) or *success / error* (status) — nothing else
+   **[scored]**. The brand lime is for brand moments and Lemonn's Buy, never for decoration.
+5. **Show less, reveal more.** Summary on the screen; detail one tap away (sheet, row, card). Never a wall of numbers.
+6. **Fast on a phone.** 360 px first, thumb zone for actions, skeletons instead of spinners, no layout jump when data
+   arrives.
+7. **Accessible by default.** Names on every control, colour never alone, 32 px tap targets, reduced motion respected.
+
+---
+
+## 2. Layout and rhythm (360 × 800 base, check 392 and 412)
+
+| Thing | Value | Token |
+|---|---|---|
+| Page padding, left and right | 16 | `spacing/16` |
+| Gap between sections (default) | 24 | `spacing/24` |
+| Gap between sections (large — a new topic, or after a hero block) | 32 | `spacing/32` |
+| Section heading → its card / list | 16 | `spacing/16` |
+| Card padding / radius | 12 / 12 | `spacing/12` · `radius/12` |
+| List row height (ListCell md) | 58 | — (component) |
+| Top | Statusbar 32 + Actionbar | `SystemStatusbar` (mockups) · `Actionbar` |
+| Bottom | ButtonGroup dock **or** BottomNavbar — never both on one screen **[scored]** | |
+
+- **Above the fold (≈ 600 px of content on 360 × 800)** must hold the screen's main number and its main action
+  **[scored: estimated]**.
+- Sections are separated by **space**, not lines. A divider only between rows of the same list.
+- Containers: big blocks are white with a light border; **only small info panels are grey** (`Card variant="filled"`).
+  Never a whole grey section.
+
+---
+
+## 3. Numbers (the heart of a fintech screen)
+
+| Rule | Example |
+|---|---|
+| Indian digit grouping | ₹1,42,557.00 — never ₹142,557.00 |
+| Rupee symbol, no space | ₹1,240.50 · −₹252.89 |
+| Prices and money: 2 decimals | ₹1,57,500.00 |
+| Percent: 2 decimals, sign always | +0.68% · −1.24% · 0.00% |
+| Quantities, lots: no decimals | 100 · 91 Lots |
+| Tight spaces: lakh / crore short form | ₹12.4L · ₹3.2Cr |
+| Minus is the real minus (U+2212) | −0.68% (the component does it) |
+| Tabular figures in columns | `font-variant-numeric: tabular-nums` (components do it) |
+| A change is ALWAYS `PriceChange` | sign, colour and arrow come from the value **[scored]** |
+
+**Number hierarchy:** label (Description/12, secondary) above → value (Heading/24–28 for the hero, Label/14 in rows)
+→ change next to or under it (PriceChange md/lg with arrow for the hero, sm in rows).
+
+---
+
+## 4. Colour meaning
+
+| Meaning | Tokens | Never for |
+|---|---|---|
+| Up / down (prices, P&L, buy-sell side) | `*/accent/indicator/up-*` · `down-*` | outcomes, decoration |
+| Success / error (an action's result) | `*/accent/success-*` · `error-*` | price moves |
+| Warning (near a limit, risk) | `*/accent/warning-*` | decoration |
+| Information, links, "new" | `*/accent/discover-*` | errors |
+| Brand | `surface/accent/brand-*` | data, status |
+| Everything else | neutrals: `content/primary · secondary`, `surface/default · secondary`, `border/light` | — |
+
+A screen uses **at most two accent meanings besides up/down** **[scored]**. If everything is coloured, nothing is.
+
+---
+
+## 5. Interaction
+
+- **Money actions are two-step:** the screen collects, a **review sheet** confirms (amount, charges, margin, risk),
+  then a result toast. Never place an order from a single tap on a list **[scored for order archetypes]**.
+- **Reversible beats confirm:** for non-money actions, act immediately and offer Undo in the Aerobar.
+- **Disabled needs a reason:** a disabled primary button has helper text saying what's missing.
+- **Loading:** Skeleton in the real layout for content; `Button loading` for actions; never a full-screen spinner.
+- **Errors:** inline at the field (TextField status="error" + what to do), or an inline Aerobar for the screen.
+- **Choices:** Select → sheet with Radio rows; 2–4 options visible at once → pill Tabs.
+- **Motion:** 150–250 ms, standard easing, nothing bouncy; respect reduced motion.
+
+---
+
+## 6. Copy
+
+- Sentence case everywhere ("Place order", not "Place Order") **[scored]**.
+- Buttons are verbs that say the result: *Place order*, *Add money*, *Apply* — not *OK*, *Submit*, *Click here* **[scored]**.
+- Say the number and the unit: "₹1,240 needed", not "Insufficient funds".
+- Errors say what happened and what to do: "Price is outside today's range (₹1,52,000 – ₹1,62,000)".
+- Trader terms are fine on trader screens (LTP, MTM, lots); explain once on first use elsewhere.
+
+---
+
+## 7. Trust and safety
+
+- Charges, margin and the final amount appear **before** the confirm button.
+- Risky choices are never pre-selected (leverage, MTF, auto-square-off).
+- Market status (open / closed / pre-open) is visible wherever an order can be placed.
+- Risk disclosures use an inline warning Aerobar, not small grey print.
+
+---
+
+## 8. Screen archetypes (anatomy → components)
+
+Each archetype is a starting layout in `docs/patterns/archetypes.json`; `npm run screen -- new <archetype>` writes a
+spec you edit. Top to bottom:
+
+| Archetype | Anatomy |
+|---|---|
+| **home** (dashboard) | Actionbar (brand, 1–2 actions) · summary card (Select + hero value + PriceChange) · quick actions (pill Tabs or cards) · 1–2 short lists ("Top movers") · BottomNavbar |
+| **list** (watchlist, holdings) | Actionbar (title, search) + Tabs in its bottom slot · ListCell rows (symbol · Sparkline · price + PriceChange) · loading: SkeletonListRow × 8 · empty: EmptyState · BottomNavbar |
+| **detail** (asset page) | Actionbar (back, Select asset switcher) · LTP Heading/24 + PriceChange md arrow · Chart + range Tabs · key stats Card filled · ProgressBar range (24H) · ButtonGroup (Buy / Sell) |
+| **order** (order pad) | Actionbar (asset + PriceChange) + Delivery/Intraday Tabs · order-type pill Tabs · Quantity row (Select ↕ + Stepper) · Price TextField · margin/charges Card filled · ButtonGroup (one Buy or Sell, lg) |
+| **review** (confirm sheet) | BottomSheet: header (question) · ListCell rows of facts · charges total · warning Aerobar if risky · ButtonGroup horizontal (secondary Cancel + strong confirm) |
+| **result** | Aerobar floating success / danger on the previous screen, or a full result for big moments: EmptyState-style illustration + heading + next action |
+| **portfolio** (positions) | Actionbar + Tabs · summary Card (Total P&L Select ↕ Day P&L, value, PriceChange lg) · ProgressBar (margin used, warning > 80%) · position Cards (clickable) |
+| **history** (orders, reports) | Actionbar + filter row (Select chevron: period, status) · grouped ListCell rows by date · DatePicker range in a sheet · empty + loading states |
+| **form** (add money, KYC step) | Actionbar (back, step) · ProgressBar (steps) · TextFields · helper / error texts · ButtonGroup (primary, disabled with a reason) |
+| **settings** (profile) | Actionbar · ListCell groups (as="label" + Switch for toggles, chevrons for navigation) · destructive actions last, tertiary |
+| **search** | Actionbar search mode · recent + results as ListCell · SkeletonListRow while loading · EmptyState with Clear |
+
+---
+
+## 9. The quality bar (what `screen score` checks)
+
+**Blocking** (score capped at 60): more than one strong button · a change not using PriceChange · raw colour / px in
+generated CSS · a dock and a BottomNavbar together · an order without a review step.
+
+**Weighted checks** (100 points): primary action docked (15) · hero number + label above the fold (10) · list has
+loading + empty states (10) · form has error states + disabled reasons (8) · sentence-case copy (6) · verb buttons
+(6) · ≤ 2 Actionbar actions (5) · ≤ 2 accent meanings besides up/down (6) · numbers formatted (8) · section rhythm
+from tokens (6) · names on icon-only actions (5) · ≤ 8 blocks above the fold (5) · trust info before money actions (10).
+
+**Then a human look** (2 minutes): squint test (the hero number wins), thumb test (main action reachable one-handed),
+dark mode, 412 px, and "would I trust this with my money?"
+
+---
+
+# Learnings — append after every task
+
+One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
+repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
+
+## 2026-10-09 — building and dogfooding the playbook tools
+
+- **Chart labels: the last-price tag is also a number at the right edge.** First chart run read it as a 7th y label →
+  axis shifted by one and the component's sample last price (157500) stayed on 896.75 / 640.75 charts. Fix: the last
+  price is the number inside a filled frame; y labels are the rest, max 6; no last price found → hide the tag, never
+  show the sample. Also: a stricter detector (price labels + marks ≥ 60% of the height) found 9 real charts, not the 5
+  the old audit counted — the 4 scalper charts were missed before. Report the match count before running.
+
+- **Main edits must restore colour overrides, not just text.** The CMD component kept D2 colours in its main and got
+  L3 colours per instance; replacing its panels made new layers, so instances fell back to the main's light-mode D2
+  colours (dark text on dark). Fix: `restoreTexts` now snapshots and restores each text's fills (per range) too; and the
+  4 cards' D2 colours were rebound to L3 in the main (43 paints + 6 text ranges). Better still: migrate a local
+  component's main to L3 before swapping inside it.
+- **A page-level theme mode is fragile.** The GUI page's CS PRO → Dark was cleared/changed outside the scripts (twice
+  in one session) and every screen flipped to LM Light. Fix: pin the theme on the section that holds the product's
+  screens (`Commodities & Equity F&O` → CS PRO → Dark); report the mode a screen resolves before blaming a swap.
+
+- **Cloning a variant drops more than slots.** The 4 new list-cell isSelected variants lost every
+  componentPropertyReferences link (Label / Description text and visibility, dots) — instances swapped to them showed
+  "Label goes here". Fix: after cloning a variant, copy componentPropertyReferences from the source by layer path, then
+  prove it with a temporary instance + setProperties. Caught by the text check on the first real swap (2 of 11 refused).
+- **Compare node ids, not node objects.** `s !== n` was true for the same layer reached two ways (parent.children vs
+  getNodeByIdAsync), so a "siblings" pass flipped the selected card back. Fix: compare `.id`.
+- **getStyleByIdAsync costs ~44 s on its first call** in a big file. A style id is 'S:<key>,<node>': read the key and
+  compare with the registry (`l3StyleOfId` in core.js) — also stops old 'L3/extrabold - Heading/20' styles passing as L3.
+- **Sandbox copies lose inherited theme modes.** An instance's CS PRO → Dark rendered light on the dark canvas and
+  looked like faint text. Fix: `keepModes` pins the original's resolved modes on the copy.
+- **The outer box can't see inner shifts.** slot-wrap kept card bounds while content moved 4 px (padding 16 vs 12).
+  Fix: nest a chrome-less copy with compensating padding and check every text's position (swapOne `res.texts`).
+- **Group main edits per component** (one getInstancesAsync + snapshot + verify) and revert just that component on a
+  failure; 13 selects in 5 local components took 12 s instead of ~60 s per call.
+
+- **Compute lazily.** A signature rule resolved all 2,151 instances' mains (52 s) to use 13 candidates. Fix: resolve
+  mains only for instance rules; for signature rules check just the candidates' owners, after the cheap structural test.
+- **A shortcut must not change meaning.** The fast lookup trusted every 'D2 → …' instance as an icon, but local
+  components share the prefix (D2 → F&O portfolio) — nested swaps would have been skipped silently. Fix: trust the
+  icon name only for icon-sized instances (≤ 48 px). Caught by reading the bundle before running it.
+
+- **Main-component lookups dominate Figma scans.** KYC page (21,425 nodes, 1,241 instances): `getMainComponentAsync`
+  took 37 s of a 48 s audit (~0.7 s per newly seen library component). Grouping by instance name only cut 1,241 → 125
+  lookups because designers rename instances. Fix: trust registry / icon names, group the rest by component-property
+  ids, resolve exactly only before changing (`mainInfosFast` in `scripts/figma/lib/core.js`).
+- **Structural checks with JS callbacks are the second hot spot.** Chart detection ran `findAll(fn)` on every frame →
+  54 s audit. Fix: size-gate first, `findAllWithCriteria` (native) — classification dropped to 2.3 s.
+- **Sequential imports make builds slow.** First `build-screen` took 66 s. Fix: preload all components / styles /
+  variables in one `Promise.all` (4.7 s). Whole build still ~60 s → next target: per-block timing (now reported).
+- **The sandbox earns its keep.** A rule mapped the local "D2 → F&O Tabs" (one 85 px tab) to "L3: Tabs group"
+  (328 px); the sandbox refused all 6 swaps on bounds. Fix: the audit maps a single tab to `L3: base tab`.
+- **Old colour names come with and without the library prefix** (`color/text/secondary` vs
+  `D2/color/text/secondary`) and as "❌ [Discontinued] button/…". Fix: normalised lookup + role-aware entries +
+  patterns in `docs/migration/d2-to-l3.json`; KYC dry run went to 99.4% mapped (10,263 colours).
+- **Raw colours outside screens are annotations.** #4147D5 (368 uses) were red-line notes. Fix: audits count raw colours
+  and text only inside phone screens.
+- **Nearest-colour bug:** compared a rounded distance with an unrounded one, so ties picked the wrong token (candle
+  green → success instead of indicator). Fix: compare raw distances; ties keep the earlier (indicator) token.
+- **`arrow_forward` matched "row".** Name hints now use whole words; generic names (Frame, Icon, Group) don't get hints.
+- **No `Intl` in the Figma plugin runtime** ("Intl is not defined"). Fix: `groupIN` (Indian grouping by hand), checked
+  against `Intl` on 12 cases.
+- **Pill-group tabs aren't named "Tab N".** "Label Label Label" in the first detail build. Fix: tabs are found as the
+  slot's instance children; extra tabs are cloned.
+- **Scorer rules must match product reality.** Buy + Sell side by side is one trade decision, quick-add chips
+  ("+₹1,000") aren't price changes, history/search screens don't need a dock, market lists are never empty. Fixed
+  in `scripts/screen.ts`; all 11 archetypes now score 100 and a deliberately bad spec still fails with 4 blocking issues.
+- **Code audit false positives come from class prefixes.** `tag-grid`, `sheet-placeholder`, a char `counter` were
+  flagged. Fix: whole class tokens or `-keyword` suffixes only; role="tablist" around L3 `<Tab>` is composition.
+- **Product repos vendor L3.** The kill-switch prototype copies `src/l3/components/*` → 18 noisy line findings. Fix:
+  one `duplicate` finding per component folder (warning if it's a vendored token-based copy).
+- **Find-component: generic words over-match** ("grey box grouping" → Checkbox). Fix: generic words weigh 0.4;
+  synonyms for grey / details / ticket.
+- **Publishing is the gate for every Figma swap and build.** Keep `figma-library.json` statuses current and run
+  `verify-registry` after each publish (2026-10-09: 37/37 importable keys OK; `.` helpers are private by design).
+
+---
+
+# L3 playbook — migrate, audit, extend and generate (for agents and people)
+
+How to move old designs and old code onto Lemonnade V3, how to find out what's missing, when (rarely) to create a new
+component, and how to generate new screens — as algorithms with tools, not advice. Every tool below was run on real
+files while it was written; the numbers quoted are measured. Read with: `AGENTS.md` (rules), `DESIGN_SYSTEM.md`
+(tokens, layout), `docs/DESIGN_LANGUAGE.md` (how screens look), `docs/figma-code-map.md` (Figma ↔ code).
+
+---
+
+## 0. The 60-second version
+
+```
+NEED SOMETHING?   npm run find -- "<the job, in words>"          → component, recipe, or the ladder (§2)
+OLD FIGMA FILE?   audit → migrate-tokens (dry → run) → swap (dry → sandbox → run) → audit again     (§4)
+OLD CODE?         npm run audit:ui -- <src> → fix errors → fix warnings → tsc + build + look          (§5)
+MISSING PIECE?    ladder (§2) → only then spec → Figma → code → docs → registry                       (§6)
+NEW SCREEN?       npm run screen -- new <archetype> → edit spec → score ≥ 85 → gen (code) / build-screen (Figma) (§7)
+AFTER ANY TASK    add what slowed you down or was wrong to docs/LEARNINGS.md, then fix the data/script (§9)
+```
+
+---
+
+## 1. Tools
+
+| Tool | Does | Changes things? |
+|---|---|---|
+| `npm run find -- "<need>"` | Ranks components + recipes for a need (synonyms: modal→sheet, chip→tabs, spinner→skeleton…). Weak match → prints the ladder. `--json` | no |
+| `npm run audit:ui -- <dirs>` | Code audit: raw colour → nearest token **by role**, raw px / fonts / shadows → tokens, hand-rolled controls → L3 component, sign coloured by hand → PriceChange, hover outside `(hover: hover)`, vendored/duplicate component folders. `--json`, `--ci` | no |
+| `npm run screen -- list · new · score · gen` | Screen specs → React (L3 only, token CSS, loading/empty states) + quality score | `gen` writes files outside this repo |
+| `npm run figma -- <script> --config '{…}'` | Bundles a Figma script (CONFIG + DATA + core) for the Figma MCP `use_figma` tool. `--list` | — |
+| Figma `registry` | Exports the library registry (run on the **library** file) | no |
+| Figma `verify-registry` | Imports every key, checks names (run in a consumer file) | no (imports only) |
+| Figma `audit` | Inventory + phased plan + ready swap rules for a section/page | no |
+| Figma `migrate-tokens` | Old colour/number variables + text → L3 (`dryRun`, `bindRawExact`) | yes (idempotent) |
+| Figma `swap` | Rule-based component swaps that keep layout (`dryRun`, `sandbox`, per-swap undo) | yes |
+| Figma `build-screen` | Builds a screen spec from L3 instances (`sandbox`) | yes (or nothing in sandbox) |
+
+Data the tools share (edit these, never one-off scripts): `docs/migration/figma-library.json` (component / style /
+collection keys), `docs/migration/d2-to-l3.json` (old → L3 colours, contexts, number + text rules, component map),
+`docs/patterns/recipes.json` (compositions), `docs/patterns/archetypes.json` (screen starters),
+`public/agent-docs/components.json` (generated index).
+
+---
+
+## 2. Reuse first — the ladder
+
+Work down the ladder and **stop at the first step that solves the job**. Most needs end at step 1–3.
+
+1. **Use** — a component does this job. `npm run find -- "<job>"` (describe the *job* — "pick one order type" — not
+   the look — "grey rounded box").
+2. **Configure** — a variant, prop or slot of an existing component does it (Card `variant="filled"`, Tabs `pill-group`,
+   ListCell `trailing`, Select `icon="chevron"`).
+3. **Compose** — existing components together do it. Use or add a recipe in `docs/patterns/recipes.json`
+   (dropdown = Select + BottomSheet + Radio rows; confirm = BottomSheet + ButtonGroup).
+4. **Extend** — a new *variant* of an existing component, only if it has **the same job and semantics** (Card Filled
+   was added for grey detail panels: same job as Card, new look).
+5. **Create** — only when all of these are true (the "new job" test):
+   - no component has this **job** (what the user does with it), **interaction** (tap → sheet, toggle, input) or
+     **semantics** (button, meter, grid);
+   - the difference can't be expressed as **content** (slot / text / icon) or a **variant**;
+   - it is needed in **3+ places or 2+ products** (count with the Figma audit and `audit:ui`).
+   Otherwise compose it in the screen and add a recipe.
+
+Worked examples from the F&O migration: bordered asset rows → **Card Static** (use) · plain asset rows → **list cell**,
+not Card Flat (use the right one) · grey detail panels → **Card Filled** (extend) · "Quantity − 100 +" → **Stepper**
+(create: new job, 20 uses) · "Filters ②" count badge → **Tag sm** for now (gap logged; create only at 3+ uses).
+
+---
+
+## 3. Research fast — efficiency rules
+
+**Lookup order (cheapest first):** `npm run find` / `components.json` (instant) → `docs/figma-code-map.md` →
+the component's agent doc → `figma-library.json` for keys → only then Figma tools (`search_design_system` for icon
+keys, batched in one call) → reading source.
+
+**Figma performance facts (measured on 16–21k-node pages):**
+- `getMainComponentAsync` costs ~0.7 s per *new* library component (it is fetched). The core trusts registry/icon
+  names first and groups the rest by component-property ids — resolve exactly only what you will change.
+- A full traversal reading fills/strokes/bindings: ~6 s per 20k nodes. Keep each call ≤ ~10k nodes: pass sections
+  or frames, not whole pages.
+- `findAll(fn)` with a JS callback inside a loop is the classic hot spot; use `findAllWithCriteria` (native) and
+  size-gate expensive checks.
+- Imports are slow one-by-one: preload every component / style / variable a script needs with one `Promise.all`
+  (build-screen preload: 4.7 s for 10 components + 6 styles + 7 colours + 6 spacings).
+- Every script returns a `timing` object — read it before optimising; optimise the biggest number.
+- One page per call; run independent *read-only* calls for different pages in parallel; keep *mutating* calls
+  sequential.
+- Respect `budgetMs` (default 50 s); scripts stop between roots and are idempotent — just re-run to continue.
+
+**Pattern for every change: dry-run → sandbox → run → verify.** Dry-run lists matches and checks imports;
+sandbox runs for real on throw-away copies and deletes them; run changes the file; verify re-audits and compares
+numbers. Screenshots are for sampling (one per pattern), numbers are for proof.
+
+---
+
+## 4. Migrate a Figma file to L3 (old D2 / Dash / local components → L3)
+
+**Goal:** same layout, L3 tokens, L3 components. **Invariant:** no screen moves or resizes.
+
+**Phase 0 — check the library.** `npm run figma -- verify-registry` in the file: all CURRENT keys must import
+(private `.L3: …` helpers never import on their own — expected). Missing? Ask the owner to publish.
+
+**Phase 1 — audit (read-only).**
+`npm run figma -- audit --config '{"nodeIds":["<section id>"]}'` → paste into `use_figma`. You get: old colour /
+number bindings, unmapped old names, raw colours with nearest tokens, text-style status, components by source
+(L3 / ❌ Discontinued / other libraries / local), hand-drawn look-alikes by structure, sign/colour mismatches, and
+**ready swap rules**. Unmapped names → add them to `d2-to-l3.json` (role-aware objects or patterns allowed) *before*
+phase 2.
+
+**Phase 2 — tokens + text.** `migrate-tokens` with `dryRun: true` first (expect ≥ 99% mapped; the KYC page dry run:
+10,263 colours, 1,498 numbers, 2,688 texts), then for real, one section per call. It applies text styles first (fonts),
+then colours (brand text keeps exact lime; green/red tints decided by context: indicator vs status), then numbers.
+Guards keep layout: wrapping text → hug → lighter role → exact restore; hidden texts ignored; screens verified.
+`bindRawExact: true` additionally binds raw colours that exactly equal a token for their role.
+
+**Phase 3 — latest variants.** `swap` rule `{ "match": { "discontinued": true }, "strategy": "latest" }`.
+
+**Phase 4 — other libraries.** `variant-swap` (same structure, e.g. D2 Actionbar → L3: Actionbar) and `icon-swap`
+(icons → `👁️ Lemonnade V3 → Icons`, keys from one batched `search_design_system` call, passed as `toKey`).
+
+**Phase 5 — local components + hand-drawn → L3** with the audit's rules. Order **containers before contents**
+(card / list row before the price text inside). Use `dryRun`, then `sandbox`, then run.
+
+**Phase 6 — verify.** Run the audit again (expect ~0 old bindings, ~0 mismatches); spot-check one screenshot per
+swapped pattern; report numbers.
+
+### Swap rules
+
+```json
+{ "id": "bordered asset rows",
+  "match": { "mainName": "❌ Asset list card", "variant": { "isPlain": "False" } },
+  "to": "L3: Card", "variant": { "Type": "Static", "isPadded": "True" },
+  "strategy": "slot-wrap", "options": { "keepFills": true } }
+```
+- `match`: `mainName` · `mainNameRe` · `variant` · `discontinued` (instances) — or `signature`
+  (`select` · `stepper` · `price-change` · `card` · `list-row`, structural, for hand-drawn layers) · `nameRe`.
+- `to` (registry name) or `toKey` (any key) · `variant` · `strategy` · `options` (`keepFills`, `exclude`,
+  `tolerance`, `fit`, `padSide`).
+
+| Strategy | For | How it keeps the layout |
+|---|---|---|
+| `latest` | ❌ Discontinued → Latest | in place; undo if bounds change |
+| `variant-swap` | same-structure components | `swapComponent`, same-named variant props carried, texts restored by order, size made up with **token** padding |
+| `icon-swap` | icons from other libraries | variant-swap by key, no padding fit |
+| `slot-wrap` | containers (Card, Button Dock) | same direction + insets → old children go straight into the slot; otherwise a chrome-less copy of the old container goes in with compensating padding (works for GRID too). Every text must stay put (checked) |
+| `select` · `stepper` · `list-cell` · `price-change` | hand-drawn controls | rebuilt from the old content (label, value, states from disabled tokens, icons, colours) |
+| main-edit (automatic) | layers inside instances of a **local** component | the swap runs once in the main; every instance's text overrides restored by order; all instances re-verified |
+
+**Every swap:** snapshot bounds → build next to the old layer → hide the old one → measure → same (± tolerance)?
+remove the old one : undo. `onMismatch: "stop"` makes the whole call roll back instead.
+Proven: 45 asset cards, 15 order bars, 20 steppers, 52 selects, 10 quick-access rows (main-edit) — 0 layout changes;
+the sandbox refused 6 wrong "Tabs group" swaps (85 px tab → 328 px group) before they touched the file.
+
+---
+
+## 5. Migrate code to L3
+
+1. `npm run audit:ui -- <src> > audit.txt` (product repo). Vendored L3 copies are reported once per folder.
+2. **Errors first**, in this order: hand-rolled controls → the named L3 component (`npm run find` if unsure);
+   sign coloured by hand → `PriceChange`; raw colours → the suggested token **for that role** (check the meaning,
+   not just the Δ); deprecated props.
+3. **Warnings:** raw px → spacing/radius/size tokens; font declarations → one `font: var(--l3-text-…)`; shadows →
+   elevation tokens; `:hover` → inside `@media (hover: hover)`.
+4. Re-run until clean (`--ci` in CI). Then `tsc`, build, and look at 360 / 392 / 412, light + dark.
+
+---
+
+## 6. Audit for missing components — and create one (rarely)
+
+**Find gaps:** Figma `audit` (hand-drawn look-alikes, local components without a suggestion, `badge`-type gaps),
+`audit:ui` (hand-rolled elements without an L3 match), and `npm run find` misses. Count uses. Run the ladder (§2).
+
+**If step 5 is reached, write the spec first** (in the PR or a doc): job · why existing ones don't fit (ladder notes)
+· uses counted · anatomy · variants (Figma names) · props (code names) · tokens · states · a11y · Figma ↔ code map.
+
+**Figma (library file):**
+1. Page `      ↪  <Name>` after related pages. Set name `L3: <Name>`; properties `✏️ Text`, `👁️ Toggle`,
+   `↪ Swap`, variants `Prop=Value`; private building blocks start with `.` (`.L3: Stepper button`).
+2. Tokens only: colours bound with the **resolved colour as the paint base**; spacing / radius / size bound to
+   variables; text styles `🔷 L3/…`.
+3. Values a designer must change on an instance (a percentage, a position) can't be nested-resize overrides — make
+   them a variant on an exposed nested helper (`.L3: Progress fill` Value 0–100).
+4. Description (what it's for + rules) and an examples frame with the real use cases.
+5. Run `registry` → update `figma-library.json` → owner publishes → `verify-registry`.
+
+**Code (this repo):** `src/components/<Name>/` (`<Name>.tsx`, `<Name>.module.css` tokens only, `index.ts`
+named exports) · data-attributes for variants · 32 px tap targets · hover inside `(hover: hover)` · reduced motion ·
+names / roles / dev warnings for misuse · then the docs set: `src/docs/pages.tsx` (designer overview + `DevOnly`
+dev notes + props), `src/preview/<Name>Variants.tsx`, playground, `changelog.ts`, `docs/figma-code-map.md`,
+`docs/figma-descriptions.md`, the table in `DESIGN_SYSTEM.md` §5, recipes if it replaces one. Verify:
+`npx tsc -b --noEmit`, `npm run build`, `npm run audit:ui -- src/components/<Name>`, look at it in the docs.
+
+---
+
+## 7. Generate new screens
+
+**The algorithm:**
+1. **Brief → archetype.** Pick from `npm run screen -- list` (home · list · detail · order · review · result ·
+   portfolio · history · form · settings · search). Multi-screen flows: one spec per screen; money flows always
+   include `review` (+ a `result` toast).
+2. **Spec.** `npm run screen -- new <archetype> --name <Name> --out <Name>.spec.json`, then edit *content only*:
+   real-looking text, data sources (`data:watchlist:6`, `data:holdings:4`, `data:indices:3`, `data:commodities:3`),
+   states. Keep the block order: hero first, main action docked.
+3. **Score.** `npm run screen -- score <spec>` → fix until **≥ 85 with no blocking issue** (rules: docs/DESIGN_LANGUAGE.md §9).
+4. **Code.** `npm run screen -- gen <spec> --out <product repo dir> [--import <L3 path>]` → `<Name>.tsx`,
+   `.module.css`, `.spec.json`, `.score.md`. The generated files are audited automatically (an audit error blocks
+   the score). Wire real data and handlers where the `TODO`s are.
+5. **Figma.** `npm run figma -- build-screen --config '{"spec": <spec>, "parentId": "<page or section>", "sandbox": true}'`
+   to preview, then without `sandbox` to keep it. Blocks that can't be built become a visible ⚠ note + report entry.
+6. **Human look (2 min):** squint test, thumb test, dark mode, 412 px, "would I trust this with my money?".
+
+**Blocks:** `summary` (label/Select + hero value + PriceChange lg) · `price` · `tabs` (pill · pill-group · underline)
+· `list` (`data`, `spark`, `pnl`, `card`, `status`, `empty`) · `stats` (Card filled grid) · `chart` (candle · line ·
+area, `ranges`) · `progress` (progress · range, `status`) · `banner` (Aerobar) · `quantity` (Select + Stepper) ·
+`field` (TextField) · `rows` (settings: toggle · value · chevron) · `filters` (Select chevrons) · `empty`.
+Header: `title` · `description` · `back` · `actions` (≤ 2) · `tabs` · `search` · `select` (switcher) · `change` ·
+`sheet`. Bottom: `dock` (buttons, direction; one strong button — a Buy + Sell pair counts as one) **or** `nav`.
+
+---
+
+## 8. Gotchas (Figma Plugin API + MCP) — each one cost real time
+
+- No `Intl` in the plugin runtime → format numbers by hand (`groupIN` in build-screen).
+- Nested layers inside an instance can't be resized or moved (resize is silently ignored; `x` / `minWidth` throw)
+  → expose a variant on a nested helper instead.
+- `indexOf` on instance sublayers returns −1 → `findIndex((c) => c.id === node.id)`.
+- Read `characters` (and anything else) **before** `remove()` — the node is gone after.
+- Cloning a component that has a SLOT turns the slot into a frame → `createSlot()` (it adds its own SLOT property:
+  delete that duplicate) and reference the existing one via `componentPropertyReferences.slotContentId`.
+- Cloning a variant also drops the componentPropertyReferences of its other layers (text characters / visibility) →
+  copy them from the source by layer path, then prove with a temporary instance + `setProperties`.
+- `getStyleByIdAsync` ~44 s on first call → read the key from the style id (`S:<key>,…`), see `l3StyleOfId`.
+- Compare nodes by `.id` — the same layer reached two ways is two different JS objects.
+- `get_screenshot` can return a stale render right after an edit; `node.screenshot()` inside use_figma is live.
+- Copies outside their context lose inherited variable modes → pin `resolvedVariableModes` on the copy (`keepModes`).
+- `addComponentProperty(name, 'SLOT', '')` needs `''` as the default.
+- Binding a variable to a paint: pass the resolved colour as the base (`resolveForConsumer`) — a black base renders
+  black in main components until refreshed.
+- `gradient-stop-0/…` colour tokens are the **transparent** end of a gradient; pair them with the matching
+  `surface/accent/…` token at the opaque end.
+- Loading a missing font stalls ~40 s → check `hasMissingFont` and skip.
+- Bottom-anchored stacks move siblings while you insert → measure **after** hiding/removing the old layer.
+- Library components import only once **published** (`getPublishStatusAsync` in the library file tells you); private
+  `.` components never import on their own.
+- `keyboard_arrow_down` from older icon libraries isn't importable → `expand_more` from the Icons library.
+- `setCurrentPageAsync` once per call; `page.loadAsync()` to touch another page's nodes (main-edit).
+- `use_figma` code is limited to 50,000 characters — `bundle.ts` warns; trim DATA per script there.
+- `figma.notify` throws; `console.log` is invisible — return everything.
+
+---
+
+## 9. Getting better every time (the improvement loop)
+
+1. **Measure:** every script returns `timing`; every audit returns counts. Write them down.
+2. **Log:** after each task add an entry to `docs/LEARNINGS.md`: what was slow, wrong or surprising, the number,
+   the fix.
+3. **Fix at the source, not in a one-off:** a missing colour → `d2-to-l3.json`; a false positive → the rule in
+   `lib/core.js` / `audit-ui.ts`; a new composition → `recipes.json`; a scorer rule that fights reality → `screen.ts`
+   (with the reason). Re-run the dogfood case that exposed it.
+4. **Promote repeats:** the same manual step twice → a script option; the same composition 3× → a recipe; the same
+   recipe in 3+ places with a new job → a component proposal (§6).
+
+---
+
+## 10. Where things live
+
+```
+docs/PLAYBOOK.md                 this file
+docs/DESIGN_LANGUAGE.md          principles, numbers, colour meaning, archetypes, quality bar
+docs/LEARNINGS.md                dated lessons (append after every task)
+docs/migration/figma-library.json  keys (components, text/effect styles, collections, icons)
+docs/migration/d2-to-l3.json       old → L3 colours, contexts, numbers, text rules, component map
+docs/patterns/recipes.json         compositions        docs/patterns/archetypes.json   screen starters
+scripts/find-component.ts        npm run find         scripts/audit-ui.ts            npm run audit:ui
+scripts/screen.ts (+ screen/data.ts)  npm run screen
+scripts/figma/                   bundle.ts (npm run figma) · lib/core.js · registry · verify-registry · audit ·
+                                 migrate-tokens · swap · build-screen
+public/agent-docs/components.json   generated index    public/agent-docs/figma/*.js   pre-bundled scripts
+```
+
+---
+
 # Colors
 
 > How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
@@ -790,6 +1459,15 @@ There is **no skeleton or spinner component** yet.
 # Spacing & radius
 
 > Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+
+- Group: Foundations
+- Lifecycle: done
+
+---
+
+# Layout
+
+> How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.
 
 - Group: Foundations
 - Lifecycle: done
@@ -837,12 +1515,12 @@ Only the icons you import end up in the app. Color comes from the surrounding te
 
 # Brand logo
 
-> The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+> The Lemonn, Zing and Coinswitch logos: full (mark + wordmark) or just the mark, at 24–48px high.
 
 - Group: Foundations
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.1.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4735-1466
 - Source: `src/components/BrandLogo`
 - Also called: Logo, logotype, wordmark, brand mark, app icon
@@ -863,7 +1541,7 @@ Use the full logo where there's room: headers, splash, sign-in. Use the mark (`v
 
 ### Colors stay on brand
 
-The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)
+The lemon leaf uses the Lemonn brand ramp and Zing uses its honey gradient, in every product theme — a Lemonn logo stays lime even in CS PRO or Kuber. Coinswitch keeps its two greens; its dot and “coin” follow the theme like the Lemonn wordmark. Only the Lemonn wordmark follows the theme, so it reads on light and dark pages. (Figma binds the leaf to the theme's brand color, which would repaint it per product; the code keeps it on the Lemonn ramp.)
 
 ### Accessibility
 
@@ -891,7 +1569,7 @@ Brand logo — Figma artwork — never redraw or recolor
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `brand` | `'lemonn' \| 'zing'` |  | Figma Brand. |
+| `brand` | `'lemonn' \| 'zing' \| 'coinswitch'` |  | Figma Brand. |
 | `variant` | `'full' \| 'icon'` | `'full'` | Figma isFull: mark + wordmark, or the 24×24 mark. |
 | `size` | `24 \| 32 \| 40 \| 48` | `24` | Height in px from the size tokens; width keeps the proportions. |
 | `label` | `string` |  | Accessible name; defaults to the brand name. |
@@ -902,10 +1580,12 @@ Brand logo — Figma artwork — never redraw or recolor
 - `base/hue/brand-lemonn-500 · 700 (Lemonn mark)`
 - `surface/inverted (Lemonn wordmark)`
 - `base/hue/honey-300 → 500 (Zing gradient)`
+- `base/hue/brand-coinswitch-green · deep (local, raw in Figma)`
 - `size/24 · 32 · 40 · 48`
 
 ## Recent changes
 
+- **1.1.0** (2026-10-09) Coinswitch: Coinswitch logo, full and mark only, matching Figma Brand = Coinswitch. Its two greens stay the same in every theme; the dot and “coin” follow the theme. brand="coinswitch". Greens are local tokens base/hue/brand-coinswitch-green · deep (source/local.colors.json) — raw fills in Figma.
 - **1.0.0** (2026-09-28) First release: Lemonn and Zing logos, full or mark only, 24–48px high. Artwork exported from Figma; every color is a token (Lemonn and honey brand ramps, theme wordmark). The lemon leaf stays on the Lemonn ramp in every product theme (Figma binds it to the theme brand color).
 
 ---
@@ -1913,6 +2593,186 @@ Toggle switch — A setting that applies immediately
 
 ---
 
+# Stepper
+
+> A number with − and + buttons, for quantity and lots in the order pad.
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5374-18184
+- Source: `src/components/Stepper`
+- Also called: Quantity input, counter, number input, lot picker, spinner
+
+## Import
+
+```tsx
+import { Stepper } from './components/Stepper' // path relative to src/
+```
+
+## Overview
+
+### Small or Large
+
+**Small** sits inline in an order-pad row, next to its label (“Quantity (100 = 1 Lot)”): a 104×28 grey pill with 20px square buttons. **Large** stands on its own, like in Scalp Pro: round outlined buttons, a bigger value and an optional sublabel such as “91 Lots”.
+
+### Limits
+
+Each tap adds or removes one step — usually the lot size. At the lowest value the − button turns grey (State = Disabled), and the same for + at the highest. Never let the value go below one lot.
+
+`min`, `max` and `step` clamp the value and disable the buttons. The value is an `<output aria-live="polite">`, so screen readers hear each change. The Small buttons are 20px but their tap area is 32px.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` |  | Current value. |
+| `onChange` | `(value: number) => void` |  | Called with the new, clamped value. |
+| `min · max` | `number` | `0 · Infinity` | Limits; the − / + button disables at each. |
+| `step` | `number` | `1` | Amount per tap (e.g. the lot size). |
+| `size` | `'sm' \| 'lg'` | `'sm'` | Figma Size: Small · Large. |
+| `sublabel` | `ReactNode` |  | Large only: a line under the value, e.g. "91 Lots". |
+| `format` | `(value) => string` |  | How the value is shown; default Indian grouping. |
+| `label` | `string` |  | Accessible name of the group, e.g. "Quantity". Required. |
+| `disabled` | `boolean` |  | Disables both buttons. |
+
+## Tokens used
+
+- `surface/secondary (Small)`
+- `surface/accent/discover-light + content/accent/discover-default (Small buttons)`
+- `surface/primary + border/intense (Large buttons)`
+- `surface/disabled + content/disabled (at the limit)`
+- `Heading/12 · 14`
+- `Label/10 (sublabel)`
+- `size/20 · 32 · 48 · tap-target`
+- `radius/04 · 08 · full`
+- `spacing/02 · 04`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Stepper: a number with − / + buttons for quantity and lots. Small (inline in order-pad rows) and Large (with a sublabel such as “91 Lots”). Each button turns grey at its limit. New Figma components L3: Stepper (Size = Small · Large, ✏️ Value, ✏️ / 👁️ Sublabel) and .L3: Stepper button (Type × State × Size). Named group, labelled buttons, the value is announced on change, and the 20px Small buttons have a 32px tap area.
+
+---
+
+# Select
+
+> An inline trigger — a label and an icon — that opens a sheet of options.
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5377-49
+- Source: `src/components/Select`
+- Also called: Dropdown, picker, switcher, toggle, mode selector, filter
+
+## Import
+
+```tsx
+import { Select } from './components/Select' // path relative to src/
+```
+
+## Overview
+
+### No box
+
+Select is just the current choice and an icon. It sits in a row or a header; tapping it opens a bottom sheet with the options as radio rows. Use **↕** when it switches between a few modes (Quantity ↔ Amount, Total P&L ↔ Day P&L, the asset in a title). Use the **chevron** for a filter list (Deposit & Credits).
+
+### Sizes
+
+**Small** (Label-12) in form rows, **Medium** (Label-14) for filters, **Large** (Heading-14) for titles. **Subtle** makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text.
+
+A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. Its tap area grows to 32px.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` |  | The current choice, e.g. "Quantity". |
+| `onClick` | `() => void` |  | Open the options (usually a BottomSheet with Radio rows). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Figma Size: Small · Medium · Large. |
+| `subtle` | `boolean` | `false` | Figma isSubtle: content/secondary. |
+| `icon` | `'swap' \| 'chevron'` | `'swap'` | Figma ↪ Icon: ↕ for modes, chevron for filter lists. |
+| `expanded` | `boolean` |  | Sets aria-expanded while the options are open. |
+| `aria-label` | `string` |  | When the visible text alone is not a good name. |
+
+## Tokens used
+
+- `content/primary · secondary (subtle)`
+- `Label/12 · 14`
+- `Heading/14`
+- `spacing/02 · 04`
+- `size/tap-target`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Select: an inline label + icon that opens a sheet of options — Small, Medium, Large, a subtle version, and ↕ or chevron icons. New Figma component L3: Select (Size × isSubtle, ✏️ Label, ↪ Icon). A button with aria-haspopup="dialog" and aria-expanded; 32px tap area.
+
+---
+
+# Date picker
+
+> A month calendar for picking one day or a date range.
+
+- Group: Input & control
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5387-279
+- Source: `src/components/DatePicker`
+- Also called: Calendar, date range, period picker, date input
+
+## Import
+
+```tsx
+import { DatePicker } from './components/DatePicker' // path relative to src/
+```
+
+## Overview
+
+### In a bottom sheet
+
+Open the picker in a bottom sheet with a title (“Select date range”) and a button dock — Clear and Apply. Add quick presets (1W · 1M · 3M · 1Y) above it as pill tabs when people mostly want a standard period, like for P&L and tax reports.
+
+### Single or Range
+
+**Single** picks one day (black circle). **Range** picks a start and an end, joined by a grey band. Today has a blue ring. Weeks start on Monday and the grid is always six weeks tall, so the sheet doesn't jump between months.
+
+### Disable what can't be picked
+
+For reports and history, days after today are disabled. For future dates (GTT or order expiry), days before today are.
+
+Use `max` / `min`. Keyboard: arrows move by day and week, Home / End to the week's ends, PageUp / PageDown by month, Enter picks. Range: the first tap sets the start, the second the end.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `'single' \| 'range'` | `'single'` | Figma Mode. |
+| `value` | `Date \| null  ·  { start, end }` |  | Selected day, or the range. |
+| `onChange` | `(value) => void` |  | Called with the new day or range. |
+| `min · max` | `Date` |  | Days outside are disabled (Figma State = Disabled). |
+| `initialMonth` | `Date` |  | Month shown first; defaults to the selection or today. |
+| `label` | `string` |  | Accessible name of the calendar, e.g. "Report period". Required. |
+
+## Tokens used
+
+- `surface/inverted + content/inverted (selected)`
+- `surface/secondary (range band)`
+- `border/accent/discover-default + content/accent/discover-default (today)`
+- `content/disabled`
+- `Heading/14 · 16`
+- `Label/12 · 14`
+- `size/32 · 40`
+- `radius/full`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Date picker: a Monday-first month calendar for one day or a range, with today, selected, range and disabled days. Six weeks tall, so sheets don't jump between months. New Figma components L3: Date picker (Mode = Single · Range, ✏️ Month) and .L3: Date cell (8 states). ARIA grid with full-date labels, aria-selected and aria-current; arrows, Home / End and PageUp / PageDown move focus.
+
+---
+
 # Tabs
 
 > Tabs switch between related views on the same screen. Underline tabs split a page into sections, pill tabs filter what's shown, and a pill group switches how content is shown.
@@ -2081,6 +2941,7 @@ Actionbar — The top bar of a screen
 | `actions` | `ReactNode` |  | Figma → content right — usually <ActionbarAction icon label onClick />. |
 | `bottom` | `ReactNode` |  | Figma ↓ Content bottom — Tabs, filters… |
 | `search` | `{ value, onChange, placeholder?, label?, autoFocus? }` |  | Figma base content Type=Search / Searched: the middle becomes a search input. |
+| `elevated` | `boolean` |  | Show the scrolled state (elevation-low) yourself, when a sibling scroll area moves under the bar. Overrides sticky's automatic behaviour. |
 | `sticky` | `boolean` | `false` | Stick to the top while the page scrolls. |
 | `ActionbarAction` | `{ icon, label, onClick, pressed? }` |  | Round 32px icon button; pressed shows a toggle state (e.g. watchlist). |
 
@@ -2205,7 +3066,7 @@ Bottom navbar — App sections, 3–5 items
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.5.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5364-38
 - Source: `src/components/Card`
 - Also called: Tile, panel, container, list item card
@@ -2233,6 +3094,24 @@ If a card would hold a single button, make the whole card clickable instead. A c
 A flat card — not rounded, no border — has no background unless you give it one: it's transparent, with no border and no shadow. It can still be clickable: it keeps the press scale and hover tint.
 
 A card that isn’t rounded and has no border (`variant="flat"`) has no background unless you set one with `surface` — it’s transparent, with no border and no shadow. It can still be clickable: it keeps the press scale, hover tint and focus ring.
+
+### Filled cards
+
+A filled card is a grey inset panel: rounded, surface-secondary, no border and no shadow. Use it to group details on a white screen — contract info, performance stats, market depth. Anything inside that needs its own fill (a skeleton, a tag, an inner panel) uses the grey-friendly version, surface-tertiary.
+
+`variant="filled"`. Inside it, use `Skeleton onGrey` and surface-tertiary for inner fills.
+
+### Padding and placement
+
+Rounded cards — clickable, static and filled — are always padded (12) and always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). Only a flat card can drop its padding, for edge-to-edge media or lists, and a flat card always runs edge to edge in its container.
+
+`padding="none"` is only allowed with `variant="flat"` (TypeScript enforces it). The margin around rounded cards comes from the parent's padding or gap — cards have no outer margin of their own.
+
+### Selected cards
+
+When cards are a list of choices — pick a contract, a plan, an account — the chosen one is selected. A card with a border keeps everything and only swaps border-light for the darker border-dark. A flat card has no border, so it shows its selection with a surface-secondary background; unselected, a flat card has no fill at all and takes the colour of whatever it sits on — another card or the screen. Only clickable cards can be selected; static and filled cards never are.
+
+`selected` on a clickable card (`onClick` / `href`). It's announced as pressed (button) or current (link); a development warning flags `selected` on a card that isn't clickable.
 
 ### Same rule for chip tabs
 
@@ -2267,15 +3146,18 @@ Card — Groups related content
 | `onClick` | `() => void` |  | Makes the whole card a button (clickable card). |
 | `href` | `string` |  | Makes the whole card a link (clickable card). |
 | `as` | `'div' \| 'article' \| 'section' \| 'li'` | `'div'` | Element for a static card. |
-| `variant` | `'default' \| 'flat'` | `'default'` | flat: not rounded, no border, no shadow, transparent background. Can still be clickable. |
+| `variant` | `'default' \| 'flat' \| 'filled'` | `'default'` | flat: not rounded, no border, no shadow, transparent background. filled: grey inset panel (surface-secondary, no border, no shadow). Both can still be clickable. |
 | `surface` | `'default' \| 'primary' \| 'secondary' \| 'tertiary' \| 'inverted'` |  | Set the background yourself (surface token). Flat cards are transparent without it. |
-| `padding` | `'default' \| 'none'` | `'default'` | 12px, or none for edge-to-edge content. |
+| `padding` | `'default' \| 'none'` | `'default'` | 12px. none (edge-to-edge content) only on flat cards — rounded cards are always padded. |
+| `selected` | `boolean` | `false` | The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background. |
 | `aria-label` | `string` |  | Name for a clickable card when its text alone isn’t a good one. |
 
 ## Tokens used
 
 - `surface/primary`
+- `surface/secondary (filled, flat selected)`
 - `border/light`
+- `border/dark (selected)`
 - `shadow/elevation-low (clickable)`
 - `motion/scale/press-default (local, 0.98)`
 - `motion/duration-short`
@@ -2285,9 +3167,9 @@ Card — Groups related content
 
 ## Recent changes
 
+- **1.5.0** (2026-10-09) Selected cards: Selected state for clickable cards — the chosen option in a list of choices. A bordered card swaps border-light for border-dark; a flat card gets a surface-secondary background (unselected flat cards stay transparent). L3: Card gets isSelected = True · False (Clickable and Flat, padded and not padded). selected prop (aria-pressed on buttons, aria-current on links; warns when the card isn't clickable). No padding is for flat cards only: rounded cards (clickable, static, filled) are always padded and always sit inside a margin; flat cards run edge to edge. L3: Card drops isPadded = False for Clickable, Static and Filled (kept for Flat). padding="none" now only type-checks with variant="flat".
+- **1.4.0** (2026-10-09) Filled cards: Filled card: a grey inset panel (surface-secondary, rounded, no border or shadow) for grouping details like contract info or market depth. L3: Card gets Type = Filled (padded and not padded), same content slot. variant="filled".
 - **1.3.0** (2026-10-08) In Figma: New Figma component L3: Card: Type = Clickable · Static · Flat, isPadded = True · False, and one content slot. Same tokens as code: surface-primary or surface-default, border-light, elevation-low on clickable cards, radius-12, padding-12, rows 8 apart.
-- **1.2.0** (2026-09-29) Figma card spec: Padding 16 → 12 and radius 16 → 12, matching the Figma Order card (row gap stays 8). Orders demo: 16 between cards, Body/12 meta line, Tertiary status tags, sort + filters toolbar.
-- **1.1.0** (2026-09-29) Flat variant: Flat style: not rounded, no border, no shadow, transparent background; still clickable. A card background can be set manually (surface variables only). Static cards (rounded + border-light) use surface-default; clickable cards stay surface-primary.
 
 ---
 
@@ -2298,7 +3180,7 @@ Card — Groups related content
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.3.0
+- Version: 2.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -2497,8 +3379,8 @@ Bottom sheet — A modal panel over the screen
 | `placement` | `'bottom' \| 'top'` | `'bottom'` | Figma isBottom. |
 | `header` | `ReactNode` |  | Figma 👁️ Header — usually <BottomSheetHeader />. |
 | `children` | `ReactNode` |  | Figma content slot; scrolls if the sheet would be taller than the screen. |
-| `footer` | `ReactNode` |  | Figma "Buttons" — usually <ButtonGroup>. |
-| `utility` | `ReactNode` |  | Figma Utility slot, below the buttons. |
+| `footer` | `ReactNode` |  | Figma Utility slot: the area under the content — usually the button dock (<ButtonGroup>). |
+| `utility` | `ReactNode` |  | Code-only extra area under footer (e.g. a note under the buttons). In Figma it goes inside the Utility slot. |
 | `closeLabel` | `string` | `'Close'` | Name of the visually hidden close button (screen readers / keyboard). There is no visible close button or drag handle; the whole sheet drags to dismiss. |
 | `container` | `HTMLElement \| null` | `document.body` | Render inside another element instead of covering the page. |
 | `aria-labelledby` | `string` |  | Point at the header heading (headingId) to name the dialog. |
@@ -2525,9 +3407,53 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.3.1** (2026-10-09) Overlay is its own component: The dimmed backdrop is now the shared Overlay component, so other modals can use it. No visual change. Slot names match Figma: footer is the Figma Utility slot (the button dock); utility is a code-only area under it.
 - **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
 - **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.
-- **2.1.1** (2026-10-01) Overlay token: The backdrop uses the new surface-overlay token (brand-tinted neutral at 80%) instead of black at 80%.
+
+---
+
+# Overlay
+
+> The dimmed backdrop behind a bottom sheet or any other modal.
+
+- Group: Surfaces
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4603-91773
+- Source: `src/components/Overlay`
+- Also called: Scrim, backdrop, dim, modal background
+
+## Import
+
+```tsx
+import { Overlay } from './components/Overlay' // path relative to src/
+```
+
+## Overview
+
+### Behind every modal
+
+The overlay dims the screen behind a sheet so the task in front gets all the attention. Tapping it closes the sheet. Bottom sheets already include it — use Version = Latest in Figma.
+
+`<BottomSheet>` renders it for you. For another modal, render `<Overlay open onClick={close} />` inside a positioned container, then the panel after it. It's decorative (aria-hidden): the panel owns the dialog role and its keyboard close.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` |  | Fades in when true. |
+| `onClick` | `() => void` |  | Tap on the scrim — usually closes the modal above it. |
+
+## Tokens used
+
+- `surface/overlay`
+- `motion/duration-medium · easing-standard (local)`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) Its own component: Overlay: the dimmed backdrop behind sheets, now a component of its own (it was part of Bottom sheet). <Overlay open onClick />; BottomSheet uses it.
 
 ---
 
@@ -2706,6 +3632,115 @@ Empty state — Nothing to show, or no results
 
 ---
 
+# Skeleton
+
+> A grey placeholder that mirrors the layout while content loads.
+
+- Group: Feedback & status
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5380-30
+- Source: `src/components/Skeleton`
+- Also called: Loading, shimmer, placeholder, loader, ghost
+
+## Import
+
+```tsx
+import { Skeleton, SkeletonListRow, SkeletonCard } from './components/Skeleton' // path relative to src/
+```
+
+## Overview
+
+### Mirror the real layout
+
+Draw the skeleton in the same places and sizes as the content that's coming, so nothing jumps when it loads. **Line** is a line of text (12, 16 or 20 tall — the text's line height), **Circle** an icon or avatar, **Box** an image, chart or button. For lists and cards, use the ready-made patterns: a list row matches the 58px list cell.
+
+### On white or on grey
+
+On white screens the skeleton is surface-secondary. On grey cards and panels, switch on **isOnGrey** (surface-tertiary) so it stays visible. It shimmers, and stays still for people who turn off animations.
+
+Skeletons are hidden from screen readers. Mark the loading region with `aria-busy="true"` and give it a name (“Loading watchlist”).
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `shape` | `'line' \| 'circle' \| 'box'` | `'line'` | Figma Shape. |
+| `width · height` | `string (CSS)` |  | Ideally tokens (var(--l3-size-96)) or %. Line height = the text line height. |
+| `onGrey` | `boolean` | `false` | Figma isOnGrey: surface/tertiary. |
+| `SkeletonListRow` | `{ onGrey? }` |  | Figma pattern Type=List row (matches ListCell). |
+| `SkeletonCard` | `—` |  | Figma pattern Type=Card. |
+
+## Tokens used
+
+- `surface/secondary`
+- `surface/tertiary (on grey)`
+- `surface/primary at opacity/60 (shimmer)`
+- `radius/04 · 08 · full`
+- `size/*`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Skeleton: Line, Circle and Box placeholders that shimmer while content loads, plus ready-made List row and Card patterns. A grey-friendly version for grey cards. New Figma components L3: Skeleton (Shape × isOnGrey) and L3: Skeleton pattern (List row · Card). Hidden from screen readers (mark the region aria-busy); the shimmer stops under reduced motion.
+
+---
+
+# Progress bar
+
+> Shows how much of something is used or done, or where a value sits in a range.
+
+- Group: Feedback & status
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5384-321
+- Source: `src/components/ProgressBar`
+- Also called: Progress, meter, range bar, usage bar, 24H range, slider (read-only)
+
+## Import
+
+```tsx
+import { ProgressBar } from './components/ProgressBar' // path relative to src/
+```
+
+## Overview
+
+### Progress or Range
+
+**Progress** fills a track from the left: funds or margin used, steps done. **Range** puts a marker on the track: where today's price sits between the 24H low and high. Always write the value next to the bar — colour alone isn't enough.
+
+### Status
+
+Default is blue. Use **Warning** when something is close to a limit (margin above 80%), **Error** when it's over, and **Success** when it's complete. In Figma, pick the value in steps of 10; the bar keeps its percentage at any width.
+
+Progress is `role="progressbar"`, Range is `role="meter"`. Pass `valueText` for what to announce (“₹3,42,000 of ₹5,00,000”).
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` |  | 0–100. |
+| `type` | `'progress' \| 'range'` | `'progress'` | Figma Type. |
+| `size` | `'sm' \| 'md'` | `'sm'` | Figma Size: 4px · 8px bar. |
+| `status` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | Figma Status. |
+| `label` | `string` |  | Accessible name. Required. |
+| `valueText` | `string` |  | What screen readers announce; defaults to the percentage. |
+
+## Tokens used
+
+- `surface/tertiary (track)`
+- `surface/accent/discover · success · warning · error -default`
+- `surface/primary (marker ring)`
+- `size/04 · 08 · 12 · 16`
+- `radius/full`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Progress bar: Progress (a fill — funds or margin used) and Range (a marker — today's price between the 24H low and high), in two sizes and four statuses. New Figma component L3: Progress bar (Type × Size × Status) with Value 0–100 in steps of 10 on the nested fill or marker. role="progressbar" (Progress) or "meter" (Range) with valueText.
+
+---
+
 # List cell
 
 > A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
@@ -2713,7 +3748,7 @@ Empty state — Nothing to show, or no results
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.2.0
+- Version: 1.3.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -2728,7 +3763,13 @@ import { ListCell } from './components/ListCell' // path relative to src/
 
 ### Plain or card
 
-Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
+Plain rows have no fill — they take the colour of whatever they sit on, the screen or a card — and always run edge to edge in their container. Card rows (Figma isPlain=False) have a border and rounded corners, always sit inside a margin (16 from the screen edge) and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
+
+### Selected rows
+
+When rows are a list of choices, the chosen one is selected. A plain row gets a surface-secondary background; a card row swaps border-light for the darker border-dark and nothing else changes. Only tappable rows can be selected.
+
+`selected` on a tappable row (`onClick`, `href` or `as="label"`). Announced as pressed (button) or current (link); in a label row the Radio or Checkbox carries the state.
 
 ### Tappable rows
 
@@ -2764,7 +3805,8 @@ List cell — Rows of settings, accounts, items
 |---|---|---|---|
 | `label / description` | `ReactNode` |  | Figma "Label goes here" / "Type description". |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: 48 / 32 min height, 24 / 16 icons. |
-| `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row, or bordered rounded card. |
+| `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). |
+| `selected` | `boolean` | `false` | Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only. |
 | `iconLeft / iconRight` | `ReactNode` |  | Figma Icon-L / Icon-R slots, sized for you. |
 | `trailing` | `ReactNode` |  | Anything else on the right: Switch, Checkbox, Tag, value text. |
 | `dotLeft / dotRight` | `boolean` | `false` | Figma Dot-L / Dot-R: unread dot on the icon. |
@@ -2773,8 +3815,10 @@ List cell — Rows of settings, accounts, items
 
 ## Tokens used
 
-- `surface/primary`
+- `surface/primary (card)`
+- `surface/secondary (plain selected)`
 - `border/light`
+- `border/dark (card selected)`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
 - `Label/14 · 16`
@@ -2785,9 +3829,9 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
+- **1.3.0** (2026-10-09) Selected rows, no fill on plain rows: Selected state for tappable rows: plain rows get a surface-secondary background, card rows swap border-light for border-dark. Plain rows have no fill — they take the colour of whatever they sit on — and run edge to edge. Card rows always sit inside a margin. L3: list cell gets isSelected = True for every isSmall × isPlain; plain rows lose their surface-primary fill. selected prop (aria-pressed / aria-current; warns on a row that isn't tappable).
 - **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.1.0** (2026-09-26) Accessibility pass: Dots have screen-reader text (dotLabel, default “New”). Development warning when a button row contains another control.
 
 ---
 
@@ -2890,3 +3934,174 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - **2.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **2.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 - **2.1.0** (2026-10-02) White text on solid success and error: Primary (solid) success and error tags use static-white text and icons, like profit and loss (was content-inverted, which turned black in dark mode). Checked the rest against Figma: sizes 16/20/24, padding, radius 4, icon sizes 12/16/18, all 12 colors × primary/secondary/tertiary and disabled — unchanged. Figma’s text styles are now named “Label - SB/10 · 12 · 14” (same values).
+
+---
+
+# Section header
+
+> The heading row of a section: a title, with an optional tag, info icon, short description and one action — View all or a switcher.
+
+- Group: Data display
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5407-124
+- Source: `src/components/SectionHeader`
+- Also called: Section title, section heading, list header, group header, view all
+
+## Import
+
+```tsx
+import { SectionHeader } from './components/SectionHeader' // path relative to src/
+```
+
+## Overview
+
+### What goes in it
+
+The **heading** is always there. Everything else is optional: a **tag** and an **info** icon after the heading, a **description** under it, and one **action** on the right.
+
+- **Description:** aim for one line. It never goes past two — longer text is cut with “…”.
+- **Action:** either **View all** (opens the full list) or a **switcher** — a Select like “Day P&L ↕” or a filter that opens a sheet of choices. Never two actions.
+- **Touch area:** the action and the info icon are at least 48 × 48 to tap, whatever they look like — without making the row taller.
+
+### Spacing
+
+The section header sits 16 above its card or list, and sections are 24 apart (32 for a bigger break) inside the 16 page padding — see Layout.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `ReactNode` |  | Figma ✏️ Heading — required. |
+| `description` | `ReactNode` |  | Figma ✏️ Description — one line ideally, two at most (cut with an ellipsis). |
+| `tag` | `ReactNode` |  | Figma 👁️ Tag: a small Tag after the title. |
+| `onInfo / infoLabel` | `() => void · string` |  | Figma 👁️ Info: an ⓘ button after the title (name defaults to “About <title>”). |
+| `action` | `{ type: 'view-all', onClick, label? } \| { type: 'switcher', label, onClick, expanded? }` |  | Figma CTA = View all · Switcher. Touch area ≥ 48 × 48. |
+| `headingLevel` | `2 \| 3 \| 4` | `2` | Heading level of the title. |
+
+## Tokens used
+
+- `content/primary (title)`
+- `content/secondary (description, info)`
+- `Heading/14`
+- `Description/12`
+- `spacing/08 · 04`
+- `size/48 (touch area)`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Section header: a required heading with an optional tag, info icon, description (one line ideally, two at most) and one action — View all or a switcher. The action and info icon have a 48 × 48 touch area. New Figma component L3: Section header (CTA = None · View all · Switcher; ✏️ Heading, ✏️ Description, 👁️ Description · Tag · Info). <SectionHeader title description tag onInfo action headingLevel />; action is typed to view-all | switcher.
+
+---
+
+# Price change
+
+> A signed change — price, P&L or returns — in green when up and red when down.
+
+- Group: Data display
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5391-79
+- Source: `src/components/PriceChange`
+- Also called: Change, delta, percent change, returns, gain/loss, P&L change, LTP change
+
+## Import
+
+```tsx
+import { PriceChange } from './components/PriceChange' // path relative to src/
+```
+
+## Overview
+
+### The sign decides the colour
+
+Up is green with “+”, down is red with “−”, and no change is grey with no sign. In Figma you pick the Direction and type only the number in ✏️ Value, so the sign and the colour can never disagree — a falling price can't end up green.
+
+Pass the signed number as `value`; direction, sign, colour and arrow all come from it. Screen readers hear “up” / “down” / “unchanged” first.
+
+### Sizes and arrow
+
+**Small** (Label-12) in rows and cards, **Medium** (Label-14), **Large** (Label-16) next to a big number like Total P&L. Turn on the ▲/▼ **arrow** for headline numbers; leave it off in lists. For an absolute change with a percentage, write both: +252.89 (0.05%).
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` |  | The signed change; sets direction, sign, colour and arrow. |
+| `unit` | `'percent' \| 'currency' \| 'number'` | `'percent'` | How the absolute value is written. |
+| `percent` | `number` |  | Optional % in brackets after an absolute change. |
+| `decimals` | `number` | `2` | Decimal places. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Figma Size. |
+| `arrow` | `boolean` | `false` | Figma 👁️ Arrow: ▲ / ▼. |
+
+## Tokens used
+
+- `content/accent/indicator/up-default · down-default`
+- `content/secondary (flat)`
+- `Label/12 · 14 · 16`
+- `size/16 · 20 · 24 (arrow)`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Price change: a signed change in green (up, +), red (down, −) or grey (no change), in three sizes with an optional ▲/▼ arrow. The sign and colour come from the direction, so they can never disagree. New Figma component L3: Price change (Direction × Size, ✏️ Value without the sign, 👁️ Arrow). Screen readers hear “up / down / unchanged” and the value; colour is never the only signal.
+
+---
+
+# Chart
+
+> Price charts — candles, line or area — and a small sparkline for lists.
+
+- Group: Data display
+- Lifecycle: done
+- Status: Figma synced
+- Version: 1.0.0
+- Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5386-678
+- Source: `src/components/Chart`
+- Also called: Graph, candlestick, price chart, line chart, area chart, sparkline, trend line
+
+## Import
+
+```tsx
+import { Chart, Sparkline } from './components/Chart' // path relative to src/
+```
+
+## Overview
+
+### Which chart
+
+**Candle** for trading views (asset page, Scalp Pro). **Line** for simple price history. **Area** for portfolio value or P&L over time. **Sparkline** is a tiny trend line for watchlist and holdings rows — always next to the price and % change as text.
+
+### Keep the trend honest
+
+Up is green and down is red, from the first to the last price. In mockups, pick the Trend that matches the change shown on the screen — a falling price uses Trend = Down. Hide volume, grid, axes or the last-price tag when the space is small.
+
+Pass `data` (open, high, low, close, volume); `trend` defaults to first vs last close. The SVG is a 360×200 viewBox that scales to its container, with a text summary for screen readers.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `{ open, high, low, close, volume? }[]` |  | Oldest first. Line and Area use close. |
+| `type` | `'candle' \| 'line' \| 'area'` | `'candle'` | Figma Type. |
+| `trend` | `'up' \| 'down'` |  | Figma Trend; defaults to first vs last close. |
+| `timeLabels` | `string[]` |  | Spread along the x axis. |
+| `showVolume · showGrid · showAxes · showLastPrice` | `boolean` | `true` | Figma 👁️ toggles. |
+| `format` | `(value) => string` |  | Axis and last-price formatting. |
+| `label` | `string` |  | What the chart shows; read with the trend and range. Required. |
+| `Sparkline` | `{ data: number[]; trend?; label? }` |  | Figma L3: Sparkline, 64×24. Decorative unless label is set. |
+
+## Tokens used
+
+- `surface/accent/indicator/up · down -default (candles)`
+- `surface/accent/indicator/* -light (volume, area)`
+- `gradient-stop-0/accent/indicator/* -light (area fade)`
+- `border/accent/indicator/* -default (line)`
+- `border/light (grid) · border/intense (price line)`
+- `surface/inverted + content/inverted (last price)`
+- `Description/10 · Label/10`
+
+## Recent changes
+
+- **1.0.0** (2026-10-09) New component: Chart: Candle, Line and Area price charts with a price axis, time labels, grid, volume and a last-price tag; and Sparkline, a small trend line for lists. Green up, red down. New Figma components L3: Chart (Type × Trend, 👁️ Volume · Grid · Axes · Last price, ✏️ Last price) and L3: Sparkline (Trend). SVG, 360×200 viewBox scaling to the container; role="img" with a trend + range summary.

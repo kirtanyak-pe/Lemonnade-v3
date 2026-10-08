@@ -1,0 +1,192 @@
+{
+  "$description": "Compositions of existing L3 components for needs that don't have (and shouldn't get) their own component. find-component.ts searches these together with the components. Add a recipe here instead of creating a component when existing pieces cover the need (PLAYBOOK §2, ladder step 3).",
+  "recipes": [
+    {
+      "id": "dropdown",
+      "need": "Dropdown / picker / choose one option from a list",
+      "keywords": "dropdown picker choose option menu select one",
+      "use": [
+        "Select",
+        "BottomSheet",
+        "ListCell",
+        "Radio"
+      ],
+      "how": "Select (inline trigger) opens a BottomSheet; each option is a ListCell as=\"label\" with a Radio. Apply on tap — no confirm button for a single choice."
+    },
+    {
+      "id": "confirm",
+      "need": "Confirmation dialog / are you sure / review before placing",
+      "keywords": "confirm dialog modal popup alert are you sure review",
+      "use": [
+        "BottomSheet",
+        "BottomSheetHeader",
+        "ButtonGroup",
+        "Button"
+      ],
+      "how": "BottomSheet with a BottomSheetHeader (heading = the question), the facts as ListCell rows, and a horizontal ButtonGroup: secondary Cancel + primary (or buy/sell) confirm on the right."
+    },
+    {
+      "id": "filter-chips",
+      "need": "Filter chips / segmented control / quick filters",
+      "keywords": "chips filter segmented control toggle group quick filter pill",
+      "use": [
+        "Tabs"
+      ],
+      "how": "Tabs appearance=\"pill\" for filters, \"pill-group\" for a segmented control (2–4 options). Not Tags — tags are never tappable."
+    },
+    {
+      "id": "search",
+      "need": "Search screen with results",
+      "keywords": "search find results query lookup",
+      "use": [
+        "Actionbar",
+        "ListCell",
+        "EmptyState",
+        "Skeleton"
+      ],
+      "how": "Actionbar search mode at the top, results as ListCell rows, SkeletonListRow while loading, EmptyState for no results (with a Clear action)."
+    },
+    {
+      "id": "toast",
+      "need": "Success / result message after an action",
+      "keywords": "toast snackbar success message notification order placed",
+      "use": [
+        "Aerobar"
+      ],
+      "how": "Aerobar floating, type=success (or danger). One line; action optional (\"View\")."
+    },
+    {
+      "id": "banner",
+      "need": "Inline info / warning / error banner on a page",
+      "keywords": "banner alert info warning error notice inline message",
+      "use": [
+        "Aerobar"
+      ],
+      "how": "Inline Aerobar (not floating) with type discover / warning / danger, placed at the top of the content it is about."
+    },
+    {
+      "id": "order-pad",
+      "need": "Order pad / trade ticket / buy sell form",
+      "keywords": "order pad trade ticket buy sell quantity price place order quantity lots qty stepper",
+      "use": [
+        "Actionbar",
+        "Tabs",
+        "Select",
+        "Stepper",
+        "TextField",
+        "Card",
+        "ButtonGroup",
+        "Button",
+        "PriceChange"
+      ],
+      "how": "Actionbar (asset + Select switcher + PriceChange), Tabs (Delivery / Intraday) in the actionbar's bottom slot, order-type pill Tabs, rows of Label + Select (Quantity ↕) + Stepper, TextField for price, a Card filled with margin/charges, and a ButtonGroup with one Buy or Sell button (lg). One primary action."
+    },
+    {
+      "id": "watchlist-row",
+      "need": "Watchlist / holdings row with price and change",
+      "keywords": "watchlist row stock row holding price change sparkline ticker",
+      "use": [
+        "ListCell",
+        "PriceChange",
+        "Sparkline"
+      ],
+      "how": "ListCell: label = symbol, description = exchange or qty; trailing = Sparkline + a right-aligned column with the price (Label/14) and PriceChange (sm)."
+    },
+    {
+      "id": "portfolio-summary",
+      "need": "Portfolio / P&L summary header",
+      "keywords": "portfolio summary total pnl p&l invested current value returns header",
+      "use": [
+        "Card",
+        "PriceChange",
+        "Select",
+        "Chart"
+      ],
+      "how": "Card static (or filled on white): Select (Total P&L ↕ Day P&L) as the label, the value in Heading/24, PriceChange lg with arrow, then invested / current in a two-column Label/Description grid. Optional Chart area below."
+    },
+    {
+      "id": "loading-list",
+      "need": "Loading state for a list or feed",
+      "keywords": "loading list skeleton shimmer placeholder fetching",
+      "use": [
+        "Skeleton"
+      ],
+      "how": "SkeletonListRow × the number of rows that fit (usually 6–8) inside a container with aria-busy=\"true\" and a name. Never a spinner for content."
+    },
+    {
+      "id": "empty",
+      "need": "Empty state / no data / first-time",
+      "keywords": "empty no data nothing yet no results first time zero state",
+      "use": [
+        "EmptyState",
+        "Button"
+      ],
+      "how": "EmptyState with a short heading, one sentence and at most one action (tertiary or primary if it is the screen's main job)."
+    },
+    {
+      "id": "date-range",
+      "need": "Date range filter / report period",
+      "keywords": "date range period filter report statement from to calendar",
+      "use": [
+        "Select",
+        "BottomSheet",
+        "Tabs",
+        "DatePicker",
+        "ButtonGroup"
+      ],
+      "how": "Select (chevron, md subtle) shows the period; tapping opens a BottomSheet with preset pill Tabs (1W 1M 3M 1Y Custom), DatePicker mode=\"range\" for Custom, and a ButtonGroup Clear / Apply."
+    },
+    {
+      "id": "settings-toggle",
+      "need": "Settings row with a toggle",
+      "keywords": "settings preference toggle switch row on off notifications",
+      "use": [
+        "ListCell",
+        "Switch"
+      ],
+      "how": "ListCell as=\"label\" with a Switch trailing; the whole row toggles. Never as=\"button\" (a button can't contain a control)."
+    },
+    {
+      "id": "steps-progress",
+      "need": "Multi-step progress (KYC, onboarding)",
+      "keywords": "steps progress kyc onboarding stepper wizard completion",
+      "use": [
+        "ProgressBar",
+        "ListCell"
+      ],
+      "how": "ProgressBar (status success when done) with \"Step 2 of 4\" as text above; the steps as ListCell rows with a check icon for done ones."
+    },
+    {
+      "id": "key-stats",
+      "need": "Key stats / details grid (open, high, low, lot size)",
+      "keywords": "key stats details grid open high low lot size contract info market depth grey panel inset filled contract details",
+      "use": [
+        "Card"
+      ],
+      "how": "Card variant=\"filled\" with a two-column grid: label (Description/12, content-secondary) above value (Label/14, content-primary). Gaps spacing/12 × spacing/16."
+    },
+    {
+      "id": "asset-header",
+      "need": "Asset / stock page header with price",
+      "keywords": "asset page stock header price ltp chart instrument",
+      "use": [
+        "Actionbar",
+        "Select",
+        "PriceChange",
+        "Chart",
+        "Tabs"
+      ],
+      "how": "Actionbar with back; Select lg as the asset switcher; LTP in Heading/24; PriceChange md with arrow and (percent); Chart candle or area; pill-group Tabs for 1D 1W 1M 1Y 5Y."
+    },
+    {
+      "id": "count-badge",
+      "need": "Count badge (Filters ②, unread count)",
+      "keywords": "badge count number notification dot unread",
+      "use": [
+        "Tag",
+        "ListCell"
+      ],
+      "how": "No component yet (gap). Use a Tag neutral sm with the number, or ListCell's dot for 'has new'. Propose a Badge only if it appears in 3+ places (PLAYBOOK §2)."
+    }
+  ]
+}

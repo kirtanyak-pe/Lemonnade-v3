@@ -48,6 +48,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 |---|---|
 | ↔ On = True · False | `checked` / `defaultChecked` |
 | isSmall = True | `size="sm"` (default `md`) |
+| isSelected = True | `selected` — plain: surface/secondary · card: border/dark |
 | (no Figma variant) | `disabled` |
 
 ### L3: Radio button & check box → `<Checkbox>` / `<Radio>` (`components/Checkbox`)
@@ -57,6 +58,30 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | 👆 State = selected | `checked` |
 | 👆 State = Intermediate | `indeterminate` (Checkbox only) |
 | Disabled = True | `disabled` |
+
+### L3: Stepper → `<Stepper>` (`components/Stepper`)
+| Figma | React |
+|---|---|
+| Size = Small · Large | `size="sm" \| "lg"` |
+| ✏️ Value | `value` (+ `format`) |
+| ✏️ Sublabel / 👁️ Sublabel | `sublabel` (Large only) |
+| .L3: Stepper button State = Disabled | automatic at `min` / `max` (or `disabled`) |
+
+### L3: Select → `<Select>` (`components/Select`)
+| Figma | React |
+|---|---|
+| ✏️ Label | children |
+| Size = Small · Medium · Large | `size="sm" \| "md" \| "lg"` |
+| isSubtle | `subtle` |
+| ↪ Icon (↕ · expand_more) | `icon="swap" \| "chevron"` |
+
+### L3: Date picker → `<DatePicker>` (`components/DatePicker`)
+| Figma | React |
+|---|---|
+| Mode = Single · Range | `mode="single" \| "range"` |
+| ✏️ Month | from `initialMonth` / the selection (navigates itself) |
+| .L3: Date cell State = Disabled | days outside `min` / `max` |
+| State = Today · Selected · Range start/middle/end · Empty | automatic |
 
 ## Navigation
 
@@ -128,9 +153,21 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Type = Clickable | `onClick` or `href` (the whole card is the tap target) |
 | Type = Static | neither `onClick` nor `href` |
 | Type = Flat | `variant="flat"` (+ `onClick`/`href` if it's clickable) |
-| isPadded = True · False | `padding="default" \| "none"` |
+| Type = Filled | `variant="filled"` (grey inset panel) |
+| isPadded = True · False (False: Flat only) | `padding="default" \| "none"` (`none` needs `variant="flat"`) |
+| isSelected = True (Clickable · Flat) | `selected` — Clickable: border/dark · Flat: surface/secondary |
 | content (slot) | children |
 | (manual background) | `surface` |
+
+### L3: Section header → `<SectionHeader>` (`components/SectionHeader`)
+| Figma | React |
+|---|---|
+| ✏️ Heading | `title` (required) |
+| ✏️ Description (👁️ Description) | `description` — one line ideally, max two |
+| 👁️ Tag | `tag` (`<Tag size="sm">`) |
+| 👁️ Info | `onInfo` (+ `infoLabel`) |
+| CTA = None · View all · Switcher | no `action` · `action={{ type: 'view-all', onClick }}` · `action={{ type: 'switcher', label, onClick }}` |
+| touch area (48) | built in (≥ 48 × 48) |
 
 ## Feedback & status
 
@@ -152,6 +189,21 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | ✏️ Description | `description` |
 | Illustration (slot) | `illustration` (default artwork if omitted) |
 | (button under it) | `action` |
+
+### L3: Skeleton → `<Skeleton>` (`components/Skeleton`)
+| Figma | React |
+|---|---|
+| Shape = Line · Circle · Box | `shape="line" \| "circle" \| "box"` (+ `width`, `height`) |
+| isOnGrey | `onGrey` |
+| L3: Skeleton pattern Type = List row · Card | `<SkeletonListRow />` · `<SkeletonCard />` |
+
+### L3: Progress bar → `<ProgressBar>` (`components/ProgressBar`)
+| Figma | React |
+|---|---|
+| Type = Progress · Range | `type="progress" \| "range"` |
+| Size = Small · Medium | `size="sm" \| "md"` |
+| Status = Default · Success · Warning · Error | `status` |
+| Value (nested fill / marker, steps of 10) | `value` (any 0–100) |
 
 ## Data display
 
@@ -177,6 +229,28 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | 👁️ Label off | `hideLabel` (+ one icon; label text still required) |
 | ↪ Icon-L / ↪ Icon-R | `iconLeft` / `iconRight` |
 
+### L3: Price change → `<PriceChange>` (`components/PriceChange`)
+| Figma | React |
+|---|---|
+| Direction = Up · Down · Flat | the sign of `value` |
+| ✏️ Value (number without sign) | `value` (+ `unit`, `percent`, `decimals`) |
+| Size = Small · Medium · Large | `size="sm" \| "md" \| "lg"` |
+| 👁️ Arrow | `arrow` |
+
+### L3: Chart → `<Chart>` (`components/Chart`)
+| Figma | React |
+|---|---|
+| Type = Candle · Line · Area | `type="candle" \| "line" \| "area"` |
+| Trend = Up · Down | `trend` (defaults to first vs last close) |
+| 👁️ Volume · Grid · Axes · Last price | `showVolume` · `showGrid` · `showAxes` · `showLastPrice` |
+| ✏️ Last price | the last `close` (via `format`) |
+| (sample data) | `data` |
+
+### L3: Sparkline → `<Sparkline>` (`components/Chart`)
+| Figma | React |
+|---|---|
+| Trend = Up · Down | `trend` (defaults to first vs last value) |
+
 ## Brand & device
 
 ### L3 → Brand logo → `<BrandLogo>` (`components/BrandLogo`)
@@ -189,6 +263,12 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | isDark = True | `inverted` |
+
+### L3: Overlay → `<Overlay>` (`components/Overlay`)
+| Figma | React |
+|---|---|
+| container slot | render the modal panel after `<Overlay>` in the same positioned container |
+| (shown) | `open` · tap = `onClick` |
 
 ## Not in code
 

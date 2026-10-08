@@ -9,14 +9,18 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
 - [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
 - [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.
+- [Design language (fintech)](agent-docs/design-language.md): How L3 screens look and read: principles, numbers, colour meaning, archetypes, the quality bar every generated screen is scored on.
+- [Learnings](agent-docs/learnings.md): Dated lessons from real runs (what was slow or wrong, the number, the fix). Read before repeating a task.
+- [Playbook: migrate, audit, extend, generate](agent-docs/playbook.md): Algorithms + tools: find a component, audit code/Figma, migrate old designs, swap components without moving layout, create components, generate screens.
 
 ## Foundations
 
 - [Colors](agent-docs/colors.md): How Lemonnade color works: semantic tokens by role, the 13 accent families, component tokens and the base palette — for all 10 themes (5 brands × modes, plus ♿ Accessible).
 - [Typography](agent-docs/typography.md): Manrope in three roles — Heading (750), Label (650) and Description (500) — 20 text styles, each a single font token.
 - [Spacing & radius](agent-docs/spacing.md): Spacing, radius, size and icon-size tokens from the Figma "🌌 Number" and "Icon size" collections.
+- [Layout](agent-docs/layout.md): How a screen is spaced: 16 page padding, sections 24 apart (32 for a bigger break), 16 from a section heading to its card, and 12 inside every card.
 - [Icons](agent-docs/icons.md): The full Material Symbols set — Rounded, weight 400, grade 0, optical size 24dp, fill off (with the filled variant). Search, copy as SVG or download any icon.
-- [Brand logo](agent-docs/brand-logo.md): The Lemonn and Zing logos: full (mark + wordmark) or just the mark, at 24–48px high.
+- [Brand logo](agent-docs/brand-logo.md): The Lemonn, Zing and Coinswitch logos: full (mark + wordmark) or just the mark, at 24–48px high.
 - [Color tokens](agent-docs/color-tokens.md): All semantic color tokens with values per theme.
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
 - [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
@@ -31,6 +35,9 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Checkbox & radio](agent-docs/checkbox.md): Checkboxes pick any number of options; radios pick exactly one from a group.
 - [Input field & text box](agent-docs/text-field.md): Fields let people enter text — a single line (input field) or several lines with a character counter (text box).
 - [Toggle switch](agent-docs/switch.md): Switches turn a single setting on or off, and take effect immediately.
+- [Stepper](agent-docs/stepper.md): A number with − and + buttons, for quantity and lots in the order pad.
+- [Select](agent-docs/select.md): An inline trigger — a label and an icon — that opens a sheet of options.
+- [Date picker](agent-docs/date-picker.md): A month calendar for picking one day or a date range.
 
 ## Components · Navigation
 
@@ -42,14 +49,20 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 
 - [Card](agent-docs/card.md): A surface that groups related content. Clickable cards are one tap target; static cards just show information.
 - [Bottom sheet](agent-docs/bottom-sheet.md): A panel that slides over the screen to show a focused task — confirm an order, pick an option, see a result — without leaving the page.
+- [Overlay](agent-docs/overlay.md): The dimmed backdrop behind a bottom sheet or any other modal.
 
 ## Components · Feedback & status
 
 - [Aerobar & toast](agent-docs/aerobar.md): A short status message with an optional action — inline as a full-width bar, or floating as a toast after something happens.
 - [Empty state](agent-docs/empty-state.md): What to show when a search or list has nothing in it: an illustration, a short heading and hint, and a way forward.
+- [Skeleton](agent-docs/skeleton.md): A grey placeholder that mirrors the layout while content loads.
+- [Progress bar](agent-docs/progress-bar.md): Shows how much of something is used or done, or where a value sits in a range.
 
 ## Components · Data display
 
 - [List cell](agent-docs/list-cell.md): A row in a list: an icon, a label with an optional description, and something on the right — a chevron, a switch, a tag or a value.
 - [Tag](agent-docs/tag.md): Tags label, categorise or show the status of something in a compact form.
+- [Section header](agent-docs/section-header.md): The heading row of a section: a title, with an optional tag, info icon, short description and one action — View all or a switcher.
+- [Price change](agent-docs/price-change.md): A signed change — price, P&L or returns — in green when up and red when down.
+- [Chart](agent-docs/chart.md): Price charts — candles, line or area — and a small sparkline for lists.
 

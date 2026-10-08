@@ -66,6 +66,7 @@ Actionbar — The top bar of a screen
 | `actions` | `ReactNode` |  | Figma → content right — usually <ActionbarAction icon label onClick />. |
 | `bottom` | `ReactNode` |  | Figma ↓ Content bottom — Tabs, filters… |
 | `search` | `{ value, onChange, placeholder?, label?, autoFocus? }` |  | Figma base content Type=Search / Searched: the middle becomes a search input. |
+| `elevated` | `boolean` |  | Show the scrolled state (elevation-low) yourself, when a sibling scroll area moves under the bar. Overrides sticky's automatic behaviour. |
 | `sticky` | `boolean` | `false` | Stick to the top while the page scrolls. |
 | `ActionbarAction` | `{ icon, label, onClick, pressed? }` |  | Round 32px icon button; pressed shows a toggle state (e.g. watchlist). |
 

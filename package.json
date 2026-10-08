@@ -14,7 +14,11 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "icons": "node scripts/sync-icons.ts",
-    "deploy:docs": "bash scripts/deploy-docs.sh"
+    "deploy:docs": "bash scripts/deploy-docs.sh",
+    "find": "node scripts/find-component.ts",
+    "audit:ui": "node scripts/audit-ui.ts",
+    "figma": "node scripts/figma/bundle.ts",
+    "screen": "node scripts/screen.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

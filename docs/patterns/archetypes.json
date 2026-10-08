@@ -1,0 +1,115 @@
+{
+  "$description": "Starter screen specs, one per archetype in docs/DESIGN_LANGUAGE.md §8. `npm run screen -- new <archetype> --name <Name> --out spec.json` copies one; edit content, then `npm run screen -- gen spec.json --out <dir>` (React) or bundle scripts/figma/build-screen.js (Figma). Block types are listed in docs/PLAYBOOK.md §7. Generic patterns only — product screens are built in product repos, not here.",
+  "archetypes": {
+    "home": {
+      "name": "Home", "archetype": "home",
+      "header": { "title": "Good morning", "description": "Markets are open", "actions": [{ "icon": "search", "label": "Search" }, { "icon": "notifications", "label": "Notifications" }] },
+      "blocks": [
+        { "type": "summary", "label": "Total P&L", "select": true, "value": 18240.5, "change": 2.41 },
+        { "type": "tabs", "appearance": "pill", "items": ["Stocks", "F&O", "Mutual funds", "Gold"] },
+        { "type": "list", "title": "Indices", "data": "data:indices:3" },
+        { "type": "list", "title": "Top movers", "data": "data:watchlist:4", "spark": true }
+      ],
+      "nav": "main", "states": ["loading"]
+    },
+    "list": {
+      "name": "Watchlist", "archetype": "list",
+      "header": { "title": "Watchlist", "actions": [{ "icon": "search", "label": "Search" }], "tabs": ["Stocks", "F&O", "Commodities"] },
+      "blocks": [
+        { "type": "list", "data": "data:watchlist:8", "spark": true, "empty": { "title": "No stocks yet", "description": "Add stocks to track their price here.", "action": "Add stocks" } }
+      ],
+      "nav": "main", "states": ["loading", "empty"]
+    },
+    "detail": {
+      "name": "AssetDetail", "archetype": "detail",
+      "header": { "back": true, "select": "RELIANCE", "actions": [{ "icon": "bookmark", "label": "Add to watchlist" }] },
+      "blocks": [
+        { "type": "price", "value": 2938.55, "change": 1.24, "changeAbs": 35.95, "note": "NSE · Market open" },
+        { "type": "chart", "kind": "candle", "trend": "up", "ranges": ["1D", "1W", "1M", "1Y", "5Y"] },
+        { "type": "progress", "kind": "range", "label": "Today's range", "low": 2898.1, "high": 2951.4, "value": 76 },
+        { "type": "stats", "title": "Key stats", "items": [["Open", "₹2,902.60"], ["Prev. close", "₹2,902.60"], ["Volume", "48.2L"], ["Market cap", "₹19.9L Cr"], ["P/E", "27.4"], ["52W high", "₹3,217.90"]] }
+      ],
+      "dock": { "direction": "horizontal", "buttons": [{ "label": "Sell", "variant": "sell" }, { "label": "Buy", "variant": "buy" }] },
+      "states": ["loading"]
+    },
+    "order": {
+      "name": "OrderPad", "archetype": "order",
+      "header": { "back": true, "select": "GOLD MINI", "change": 0.68, "tabs": ["Delivery", "Intraday"] },
+      "blocks": [
+        { "type": "tabs", "appearance": "pill", "items": ["Market", "Limit", "SL"] },
+        { "type": "quantity", "label": "Quantity", "value": 100, "step": 100, "min": 100, "hint": "100 = 1 lot" },
+        { "type": "field", "label": "Price", "value": "₹1,57,500.00", "helper": "Market price", "disabled": true },
+        { "type": "stats", "items": [["Margin needed", "₹15,750.00"], ["Available", "₹11,05,002.00"], ["Charges", "₹21.40"], ["Total", "₹15,771.40"]] },
+        { "type": "banner", "kind": "discover", "heading": "Review on the next step", "text": "You'll see the final amount before placing the order." }
+      ],
+      "dock": { "buttons": [{ "label": "Review buy order", "variant": "buy" }] },
+      "review": true
+    },
+    "review": {
+      "name": "ReviewOrder", "archetype": "review",
+      "header": { "title": "Buy 1 lot of GOLD MINI?", "sheet": true },
+      "blocks": [
+        { "type": "rows", "items": [{ "label": "Quantity", "value": "100 (1 lot)" }, { "label": "Price", "value": "Market" }, { "label": "Margin", "value": "₹15,750.00" }, { "label": "Charges", "value": "₹21.40" }] },
+        { "type": "banner", "kind": "warning", "heading": "Commodity futures carry high risk", "text": "Prices can move sharply; you may lose more than your margin." }
+      ],
+      "dock": { "direction": "horizontal", "buttons": [{ "label": "Cancel", "variant": "secondary" }, { "label": "Place order", "variant": "buy" }] }
+    },
+    "result": {
+      "name": "OrderPlaced", "archetype": "result",
+      "header": { "back": true, "title": "Order" },
+      "blocks": [
+        { "type": "empty", "title": "Order placed", "description": "Buy 100 GOLD MINI at market. We'll notify you when it's executed.", "illustration": "check" }
+      ],
+      "dock": { "buttons": [{ "label": "View order", "variant": "primary" }] }
+    },
+    "portfolio": {
+      "name": "Positions", "archetype": "portfolio",
+      "header": { "title": "Positions", "tabs": ["Open", "Closed"] },
+      "blocks": [
+        { "type": "summary", "label": "Total P&L", "select": true, "value": -4820.75, "change": -1.84 },
+        { "type": "progress", "label": "Margin used", "value": 84, "status": "warning", "valueText": "₹4,20,000 of ₹5,00,000" },
+        { "type": "list", "title": "Open positions", "data": "data:holdings:4", "pnl": true, "card": true }
+      ],
+      "nav": "fno", "states": ["loading", "empty"]
+    },
+    "history": {
+      "name": "OrderHistory", "archetype": "history",
+      "header": { "back": true, "title": "Orders" },
+      "blocks": [
+        { "type": "filters", "items": [{ "label": "Last 30 days", "icon": "chevron" }, { "label": "All status", "icon": "chevron" }] },
+        { "type": "list", "title": "Today", "data": "data:watchlist:3", "status": true },
+        { "type": "list", "title": "Yesterday", "data": "data:holdings:3", "status": true }
+      ],
+      "states": ["loading", "empty"]
+    },
+    "form": {
+      "name": "AddMoney", "archetype": "form",
+      "header": { "back": true, "title": "Add money" },
+      "blocks": [
+        { "type": "progress", "label": "Step 1 of 2", "value": 50, "status": "default" },
+        { "type": "field", "label": "Amount", "placeholder": "₹0", "helper": "Minimum ₹100" },
+        { "type": "tabs", "appearance": "pill", "items": ["+₹1,000", "+₹5,000", "+₹10,000"] },
+        { "type": "field", "label": "UPI ID", "placeholder": "name@bank", "status": "error", "helper": "Enter a valid UPI ID, like name@okbank" }
+      ],
+      "dock": { "buttons": [{ "label": "Add money", "variant": "primary", "disabled": true, "reason": "Enter an amount of ₹100 or more" }] }
+    },
+    "settings": {
+      "name": "Profile", "archetype": "settings",
+      "header": { "title": "Profile" },
+      "blocks": [
+        { "type": "rows", "title": "Preferences", "items": [{ "label": "Order notifications", "toggle": true }, { "label": "Price alerts", "toggle": false }, { "label": "Language", "value": "English", "chevron": true }] },
+        { "type": "rows", "title": "Account", "items": [{ "label": "Bank accounts", "chevron": true }, { "label": "Statements", "chevron": true }, { "label": "Log out", "chevron": true }] }
+      ],
+      "nav": "main"
+    },
+    "search": {
+      "name": "Search", "archetype": "search",
+      "header": { "search": "Search stocks, F&O, funds" },
+      "blocks": [
+        { "type": "list", "title": "Recent", "data": "data:watchlist:3" },
+        { "type": "list", "title": "Popular", "data": "data:indices:3", "empty": { "title": "No results", "description": "Try a symbol like RELIANCE or a company name.", "action": "Clear search" } }
+      ],
+      "states": ["loading", "empty"]
+    }
+  }
+}

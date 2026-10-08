@@ -5,7 +5,7 @@
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.2.0
+- Version: 1.3.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -20,7 +20,13 @@ import { ListCell } from './components/ListCell' // path relative to src/
 
 ### Plain or card
 
-Plain rows sit edge to edge in a list; cards (Figma isPlain=False) have a border and rounded corners and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
+Plain rows have no fill — they take the colour of whatever they sit on, the screen or a card — and always run edge to edge in their container. Card rows (Figma isPlain=False) have a border and rounded corners, always sit inside a margin (16 from the screen edge) and stack with a gap — like the bank accounts above. Both come in default (48) and small (32).
+
+### Selected rows
+
+When rows are a list of choices, the chosen one is selected. A plain row gets a surface-secondary background; a card row swaps border-light for the darker border-dark and nothing else changes. Only tappable rows can be selected.
+
+`selected` on a tappable row (`onClick`, `href` or `as="label"`). Announced as pressed (button) or current (link); in a label row the Radio or Checkbox carries the state.
 
 ### Tappable rows
 
@@ -56,7 +62,8 @@ List cell — Rows of settings, accounts, items
 |---|---|---|---|
 | `label / description` | `ReactNode` |  | Figma "Label goes here" / "Type description". |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: 48 / 32 min height, 24 / 16 icons. |
-| `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row, or bordered rounded card. |
+| `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). |
+| `selected` | `boolean` | `false` | Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only. |
 | `iconLeft / iconRight` | `ReactNode` |  | Figma Icon-L / Icon-R slots, sized for you. |
 | `trailing` | `ReactNode` |  | Anything else on the right: Switch, Checkbox, Tag, value text. |
 | `dotLeft / dotRight` | `boolean` | `false` | Figma Dot-L / Dot-R: unread dot on the icon. |
@@ -65,8 +72,10 @@ List cell — Rows of settings, accounts, items
 
 ## Tokens used
 
-- `surface/primary`
+- `surface/primary (card)`
+- `surface/secondary (plain selected)`
 - `border/light`
+- `border/dark (card selected)`
 - `content/primary · secondary`
 - `content/accent/discover (dot)`
 - `Label/14 · 16`
@@ -77,6 +86,6 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
+- **1.3.0** (2026-10-09) Selected rows, no fill on plain rows: Selected state for tappable rows: plain rows get a surface-secondary background, card rows swap border-light for border-dark. Plain rows have no fill — they take the colour of whatever they sit on — and run edge to edge. Card rows always sit inside a margin. L3: list cell gets isSelected = True for every isSmall × isPlain; plain rows lose their surface-primary fill. selected prop (aria-pressed / aria-current; warns on a row that isn't tappable).
 - **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.1.0** (2026-09-26) Accessibility pass: Dots have screen-reader text (dotLabel, default “New”). Development warning when a button row contains another control.

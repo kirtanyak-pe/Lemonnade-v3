@@ -1,0 +1,499 @@
+{
+  "$description": "Registry of the ✅ Lemonnade V3 Figma library (file lxQ6QIXGOv5mmx0khh5sJn). Generated with scripts/figma/registry.js on 2026-10-09; keys verified with `node scripts/figma/bundle.ts verify-registry`. Re-run both after adding or renaming a library component. status: CURRENT = published and importable · PRIVATE = '.'-prefixed building block, used inside its parent, never imported on its own · UNPUBLISHED = not in the library yet. Last verified 2026-10-09 after the full publish: 37/37 importable keys OK.",
+  "fileKey": "lxQ6QIXGOv5mmx0khh5sJn",
+  "iconsLibrary": "👁️ Lemonnade V3 → Icons (components named 'D2 → <material name>'; current — use them)",
+  "collections": {
+    "base": {
+      "name": "📱 L3 Base values",
+      "key": "8a71254e66ba750563f11bec835503f5119db45e"
+    },
+    "theme": {
+      "name": "🎨 L3 → Theme",
+      "key": "74a00b0383b9dcf4ccf633e940e443afce63f150",
+      "modes": [
+        "🍋 LM → Light",
+        "🍋 LM → Dark",
+        "CS PRO → Dark",
+        "🐲 Kuber → Light",
+        "🐲 Kuber → Dark",
+        "♿ Accessible LM → Light",
+        "♿ Accessible LM → Dark",
+        "♿ Accessible CS PRO → Dark",
+        "♿ Accessible Kuber → Light",
+        "♿ Accessible Kuber → Dark"
+      ]
+    },
+    "iconSize": {
+      "name": "ℹ️  L3 → Icon size",
+      "key": "764915cce18f317ab00c01149dfba8cef847514f"
+    },
+    "typography": {
+      "name": "🅰️ Typography",
+      "key": "1d5ecfaa88a67ed924f9cd5e9bd01ba558a37ecd"
+    },
+    "number": {
+      "name": "🌌 Number",
+      "key": "153c75385bdea4519b7bd77b251f882e703f0a67"
+    }
+  },
+  "textStyles": {
+    "Heading/10": "8e2b0479d5702e77fda457a0fe5846b52457e4eb",
+    "Heading/12": "e50cc92c287f626e98202ac365ee74f9b676066d",
+    "Heading/14": "d94decf9cddcd1f18814a7a6891e1b31f095359a",
+    "Heading/16": "7bf0e29fdd8261e0ad919cf314ffd44b62e39b6e",
+    "Heading/18": "920ff58f2bb9d7db7534fdd62794d4a3a7cba022",
+    "Heading/20": "d3c084cd8be5043e2eeb0c2aa7f3ef39964e4bdd",
+    "Heading/24": "350ee6e5d6d0293063d3c1d1194e86f8a6f73a4e",
+    "Heading/28": "8a76f39ad42b8b93d513309a91b5bb5381e497bd",
+    "Heading/32": "d5688c40049759cf859e4c4350337a0e7620ef94",
+    "Heading/36": "621fde7ba2a68a188266385c1dbe4f98ad7140c6",
+    "Label/10": "c72e1d813064646a33dd4984d193e884f962d841",
+    "Label/12": "be4de0d0749a1b04fac1f7003c3d7d30871e9b86",
+    "Label/14": "fca6319f73cd0c719e555ff6211d8eac572391cd",
+    "Label/16": "aa326fa70be1b19b8f2f5e2a76c97ca882415d1c",
+    "Label/18": "27164b82be42cf5572ea26f9390b0beb84f91b74",
+    "Description/10": "41e537ef196e3f6c7a41160bc351a1e828cac6ec",
+    "Description/12": "b5ef18cf01de261caf8a098999ef8ca6a856b187",
+    "Description/14": "07e9642b31f572c4f7ba260081520cb84ed76639",
+    "Description/16": "51c4e42999d8b214be4053f42f7a2a7e14fcbf9a",
+    "Description/18": "92febe1c89e02fe70aaa030de67ed58f49eddbad"
+  },
+  "effectStyles": {
+    "L3/elevation/low": "be1fc6ef51de0bf9bebe66a09984b1a87e4c1c38",
+    "L3/elevation/medium": "cc9eb977ddb08accfd2cc705e5b84335ac2eed12",
+    "L3/elevation/high": "0b0235fa14d846ec2ee70b0ea3cc0c2284d8b57a"
+  },
+  "components": [
+    {
+      "name": "L3 → Brand logo",
+      "id": "4735:1466",
+      "key": "0db75e0b211348bc5c679ff0c3b3259d9982515c",
+      "page": "Logo",
+      "status": "CURRENT",
+      "code": "BrandLogo",
+      "props": "Brand=[🍋 Lemonn|⭐ Zing|Coinswitch]; isFull=[True|False]"
+    },
+    {
+      "name": "L3: Button",
+      "id": "4471:29225",
+      "key": "c44415a6eb72e2e084ad0f1df9728a28aed41849",
+      "page": "Button",
+      "status": "CURRENT",
+      "code": "Button",
+      "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; 👁️ Icon-R:BOOLEAN; 👁️ Icon-L:BOOLEAN; ↪ Icon-R:INSTANCE_SWAP; ↪ Icon-L:INSTANCE_SWAP; Type=[◻️ Primary|🔲 Secondary|⬜︎ Tertiary|Ghost|🟨 Brand|🟩 Buy|🟥 Sell]; State=[Default|♻︎ Loading|🚫 Disabled]; Size=[Large|Medium|Small]"
+    },
+    {
+      "name": "L3: Button Dock",
+      "id": "4471:29456",
+      "key": "d8fa0bfdf59e1d38ad7a14b90638efcad5022d68",
+      "page": "Button",
+      "status": "CURRENT",
+      "code": "ButtonGroup",
+      "props": "wrapper:SLOT; Scroll indicator:BOOLEAN; Direction=[↓ Vertical|→ Horizontal]"
+    },
+    {
+      "name": "L3 → base navoption",
+      "id": "4543:77042",
+      "key": "7d6354ad41feece7a25590b33ab4ec78a1e8fb5c",
+      "page": "Navbar",
+      "status": "CURRENT",
+      "code": "BottomNavbar (item)",
+      "props": "✏️ Label:TEXT; isActive=[False|True]"
+    },
+    {
+      "name": ".L3: base navicons",
+      "id": "4543:61823",
+      "key": "395b84136f0a019c249c4748b3f4a118f8b9f628",
+      "page": "Navbar",
+      "status": "PRIVATE",
+      "code": "NavIcon",
+      "props": "isSelected=[True|False]; Icon=[Stocks|Market|Portfolio|Mutual Fund|F&O|MF - SIPs|MF - Funds|MF - Dashboard|F&O - Scalper|F&O - Positions|Back Home|F&O - Option Chain]"
+    },
+    {
+      "name": "L3: Bottom Navbar",
+      "id": "4543:61961",
+      "key": "21e11d01df0e4ccbb9012ca439b599e4cbb465bb",
+      "page": "Navbar",
+      "status": "CURRENT",
+      "code": "BottomNavbar",
+      "props": "Tab=[Stocks|Market|Portfolio|MF|MF - Funds|MF - Dashboard|MF - SIPs|F&O|F&O - Option Chain|F&O - Positions|F&O - Scalper]"
+    },
+    {
+      "name": "L3: Bottom sheet header",
+      "id": "4543:63897",
+      "key": "8e2b80a375110269453965881d2ae138271e274a",
+      "page": "Bottom sheet",
+      "status": "CURRENT",
+      "code": "BottomSheetHeader",
+      "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; H-Icon:SLOT; 👁️ H-Icon:BOOLEAN; Content bottom:SLOT; 👁️ Content bottom:BOOLEAN; 👁️ info:BOOLEAN; 👁️ Back button:BOOLEAN; right slot:SLOT; 👁️ Action - rigth:BOOLEAN; 👁️ header tag:BOOLEAN; isSmall=[False|True]; Version=[❌ Discontinued|Latest]"
+    },
+    {
+      "name": "L3: Bottom sheet",
+      "id": "4543:63932",
+      "key": "04cfe84c71af2c991ad50242099b8b17d587fa9f",
+      "page": "Bottom sheet",
+      "status": "CURRENT",
+      "code": "BottomSheet",
+      "props": "content slot:SLOT; 👁️ Content Slot:BOOLEAN; Utility slot:SLOT; 👁️ Utility slot:BOOLEAN; 👁️ Header:BOOLEAN; isBottom=[True|False]; Version=[❌ Discontinued|Latest]"
+    },
+    {
+      "name": "L3→ Toggle switch",
+      "id": "4543:65343",
+      "key": "b91ef149dad1e39d1d888c89e7222f322325bb89",
+      "page": "List",
+      "status": "CURRENT",
+      "code": "Switch",
+      "props": "↔ On=[False|True]; 👆 State=[Enabled]; isSmall=[False|True]"
+    },
+    {
+      "name": "L3: Radio button & check box",
+      "id": "4543:65366",
+      "key": "18b6dd65fd87edcab01174d364d1a4733a1c1584",
+      "page": "List",
+      "status": "CURRENT",
+      "code": "Checkbox / Radio",
+      "props": "👆 State=[default|Intermediate|selected]; Disabled=[False|True]; isRadio=[False|True]"
+    },
+    {
+      "name": "L3: list cell",
+      "id": "4543:65400",
+      "key": "03f756534075245c50dcf64c9b5282fdabcbd354",
+      "page": "List",
+      "status": "CURRENT",
+      "code": "ListCell",
+      "props": "✏️ Label:TEXT; 👁️ Label:BOOLEAN; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Icon - L:BOOLEAN; 👁️ Icon - R:BOOLEAN; Icon-l:SLOT; icon-r:SLOT; 👁️ Dot-L:BOOLEAN; 👁️ Dot-R:BOOLEAN; isSelected=[False|True]; isSmall=[False|True]; isPlain=[True|False]"
+    },
+    {
+      "name": "L3: Card",
+      "id": "5364:38",
+      "key": "fdfed332e76a60b415acb1b34b7f4102ff3553d8",
+      "page": "Card",
+      "status": "CURRENT",
+      "code": "Card",
+      "props": "content:SLOT; Type=[Clickable|Static|Flat|Filled]; isPadded=[True|False] (False: Flat only); isSelected=[False|True] (Clickable, Flat only)"
+    },
+    {
+      "name": "L3: Base actionbar content",
+      "id": "4543:65466",
+      "key": "3e1ce0c4e6dc258d6fb21f114eda6576013050da",
+      "page": "Actionbar",
+      "status": "CURRENT",
+      "code": "Actionbar (title / search)",
+      "props": "👁️ Description:BOOLEAN; ✏️ Description:SLOT; ✏️ Heading:SLOT; 👁️ Heading:BOOLEAN; Type=[Content|Search|Searched]"
+    },
+    {
+      "name": "L3: Actionbar",
+      "id": "4543:65480",
+      "key": "ceb2eeecb95686a67f5f39d9a0f704b3fc5636e5",
+      "page": "Actionbar",
+      "status": "CURRENT",
+      "code": "Actionbar",
+      "props": "→ content right:SLOT; 👁️ → content right:BOOLEAN; ↓ Content bottom:SLOT; 👁️ ↓ content bottom:BOOLEAN; 👁️ Action - left:BOOLEAN; Version=[Latest]"
+    },
+    {
+      "name": "L3: aerobar - toast",
+      "id": "4543:65562",
+      "key": "b0951bc9bbcf64be3438b58828bb30cea3ef764b",
+      "page": "Aerobar",
+      "status": "CURRENT",
+      "code": "Aerobar",
+      "props": "icon-L:SLOT; 👁️ Icon-L:BOOLEAN; 👁️ Action-r:BOOLEAN; 👁️ Heading:BOOLEAN; Headline text:TEXT; 👁️ Paragraph:BOOLEAN; Paragraph text:TEXT; isPrimary=[False|True]; Type=[Primary|Discover|Danger|Success|Warning]; isFloating=[False|True]"
+    },
+    {
+      "name": "L3: base tab",
+      "id": "4543:65889",
+      "key": "529198c30549372a9a9a8cbdd1cebdc29c6e1c6e",
+      "page": "Tabs",
+      "status": "CURRENT",
+      "code": "Tab (Tabs item)",
+      "props": "↪ icon - l :INSTANCE_SWAP; ↪ Icon - r:INSTANCE_SWAP; 👁️ Icon - r:BOOLEAN; 👁️ Icon - l:BOOLEAN; ✏️ label:TEXT; 👁️ Label:BOOLEAN; 👁️ Sub label:BOOLEAN; ✏️ Sub label:TEXT; Type=[Primary|Secondary|Tertiary]; isSelected=[False|True]; isPill=[False|True]; isSmall=[False|True]"
+    },
+    {
+      "name": "L3: Tabs group",
+      "id": "4543:65938",
+      "key": "041c84fc11e21e6415b7bc47f738c721b8ad2a98",
+      "page": "Tabs",
+      "status": "CURRENT",
+      "code": "Tabs",
+      "props": "wrapper:SLOT; Type=[Flat tabs|Pill tabs|Pill group]"
+    },
+    {
+      "name": "L3: Tags",
+      "id": "4464:27218",
+      "key": "96c5688e3a72f0c82bfa49bc7ee52ec24f2a2f7e",
+      "page": "Tags",
+      "status": "CURRENT",
+      "code": "Tag",
+      "props": "✏️ Label:TEXT; 👁️ Icon-L:BOOLEAN; 👁️ Icon-R:BOOLEAN; ↪ Icon-L:INSTANCE_SWAP; 👁️ Label:BOOLEAN; ↪ Icon-R:INSTANCE_SWAP; Type=[Primary|Secondary|Tertiory|Disabled]; Color=[Neutral|🟩 Profit|🟥  Loss|✅ Success|🚨 Error|⚠️ Warning|🔷 Discover|🟠 Processing|indigo|teal|purple|⚡ Zing]; Size=[Small → 16|Medium → 20|Large → 24]"
+    },
+    {
+      "name": "L3: Overlay",
+      "id": "4603:91773",
+      "key": "bbbf9bca16bc23c9f77a70c5a2acd9575cbc40b9",
+      "page": "Overlay",
+      "status": "CURRENT",
+      "code": "Overlay",
+      "props": "container slot:SLOT; Version=[❌ Discontinued|Latest]"
+    },
+    {
+      "name": "L3: input field & text Box",
+      "id": "4543:66091",
+      "key": "c496b7648c201e5f8154d794a965b1aeaad492ef",
+      "page": "Input field",
+      "status": "CURRENT",
+      "code": "TextField",
+      "props": "Icon - R:BOOLEAN; Description:BOOLEAN; Description-Icon:BOOLEAN; ✏️ Helper text:TEXT; ✏️ Input text:TEXT; ✏️ Placeholder text:TEXT; Icon - L:BOOLEAN; ↪ Icon-R:INSTANCE_SWAP; ↪ Icon-L:INSTANCE_SWAP; ✏️ Label:TEXT; 👁️ Label:BOOLEAN; 👁️ Required:BOOLEAN; State=[Default|Typing|Error|Typed|Disabled|Success]; isInputBox=[False|True]"
+    },
+    {
+      "name": ".L3: Stepper button",
+      "id": "5374:52",
+      "key": "2de77a478d084179ee89b280bac9b9823ed19494",
+      "page": "Stepper",
+      "status": "PRIVATE",
+      "code": "Stepper (button)",
+      "props": "Type=[Decrease|Increase]; State=[Enabled|Disabled]; Size=[Small|Large]"
+    },
+    {
+      "name": "L3: Stepper",
+      "id": "5374:18184",
+      "key": "7585271b6b6c3a77fc3c2121751296a479a4b270",
+      "page": "Stepper",
+      "status": "CURRENT",
+      "code": "Stepper",
+      "props": "✏️ Value:TEXT; ✏️ Sublabel:TEXT; 👁️ Sublabel:BOOLEAN; Size=[Small|Large]"
+    },
+    {
+      "name": "L3: Select",
+      "id": "5377:49",
+      "key": "e8907833f22f015d360c424e572d34a8ad8f7587",
+      "page": "Select",
+      "status": "CURRENT",
+      "code": "Select",
+      "props": "✏️ Label:TEXT; ↪ Icon:INSTANCE_SWAP; Size=[Small|Medium|Large]; isSubtle=[False|True]"
+    },
+    {
+      "name": "L3: Skeleton",
+      "id": "5380:30",
+      "key": "f51d87720fcfe99c5b640efdcd38c97acf973f99",
+      "page": "Skeleton",
+      "status": "CURRENT",
+      "code": "Skeleton",
+      "props": "Shape=[Line|Circle|Box]; isOnGrey=[False|True]"
+    },
+    {
+      "name": "L3: Skeleton pattern",
+      "id": "5380:54",
+      "key": "5d8a33d20dd2e8c53777b9b5c6b11f7c2d89e07a",
+      "page": "Skeleton",
+      "status": "CURRENT",
+      "code": "SkeletonListRow / SkeletonCard",
+      "props": "Type=[List row|Card]"
+    },
+    {
+      "name": ".L3: Progress fill",
+      "id": "5384:159",
+      "key": "4f7bfab4297f21705a8af445d917a34e204860e7",
+      "page": "Progress bar",
+      "status": "PRIVATE",
+      "code": "ProgressBar (value)",
+      "props": "Value=[0|10|20|30|40|50|60|70|80|90|100]; Size=[Small|Medium]"
+    },
+    {
+      "name": ".L3: Range marker",
+      "id": "5384:248",
+      "key": "d18f3a39e5fe3e641b08c043e6ea6d8b12aec807",
+      "page": "Progress bar",
+      "status": "PRIVATE",
+      "code": "ProgressBar (value)",
+      "props": "Value=[0|10|20|30|40|50|60|70|80|90|100]; Size=[Small|Medium]"
+    },
+    {
+      "name": "L3: Progress bar",
+      "id": "5384:321",
+      "key": "c8a5a668063bc524fd7ded2399fdddfe9f0c3b4c",
+      "page": "Progress bar",
+      "status": "CURRENT",
+      "code": "ProgressBar",
+      "props": "Type=[Progress|Range]; Size=[Small|Medium]; Status=[Default|Success|Warning|Error]"
+    },
+    {
+      "name": "L3: Chart",
+      "id": "5386:678",
+      "key": "1e0e82df24bddcecd450aa71374a1b8bac94a66e",
+      "page": "Chart",
+      "status": "CURRENT",
+      "code": "Chart",
+      "props": "✏️ Last price:TEXT; 👁️ Last price:BOOLEAN; 👁️ Volume:BOOLEAN; 👁️ Grid:BOOLEAN; 👁️ Axes:BOOLEAN; Type=[Candle|Line|Area]; Trend=[Up|Down]"
+    },
+    {
+      "name": "L3: Sparkline",
+      "id": "5386:19087",
+      "key": "046d8499895287bf8a377d19775068c9a02042f7",
+      "page": "Chart",
+      "status": "CURRENT",
+      "code": "Sparkline",
+      "props": "Trend=[Up|Down]"
+    },
+    {
+      "name": "L3: Price change",
+      "id": "5391:79",
+      "key": "18456e72042f3597314fd0daa2a7cd7c67a24877",
+      "page": "Price change",
+      "status": "CURRENT",
+      "code": "PriceChange",
+      "props": "✏️ Value:TEXT; 👁️ Arrow:BOOLEAN; Direction=[Up|Down|Flat]; Size=[Small|Medium|Large]"
+    },
+    {
+      "name": ".L3: Date cell",
+      "id": "5387:47",
+      "key": "739365163affb9c2940ed7aba5c99451bb855802",
+      "page": "Date picker",
+      "status": "PRIVATE",
+      "code": "DatePicker (day)",
+      "props": "✏️ Day:TEXT; State=[Default|Today|Selected|Range start|Range middle|Range end|Disabled|Empty]"
+    },
+    {
+      "name": "L3: Date picker",
+      "id": "5387:279",
+      "key": "c62298cf7bed0b40aa0a8a3133a7ae33bdfd0116",
+      "page": "Date picker",
+      "status": "CURRENT",
+      "code": "DatePicker",
+      "props": "✏️ Month:TEXT; Mode=[Single|Range]"
+    },
+    {
+      "name": "L3 → Empty state",
+      "id": "4543:66488",
+      "key": "f0cd90a656660d4e54468c7e8dd0af12d0226378",
+      "page": "Empty State",
+      "status": "CURRENT",
+      "code": "EmptyState",
+      "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; Illustration:SLOT"
+    },
+    {
+      "name": "L3: Title",
+      "id": "4543:84634",
+      "key": "146072cf4c610ddd7644cd55f091598da56e3b69",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "✏️ Title:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; Size=[Large|Medium|Small|Mini]"
+    },
+    {
+      "name": "L3: System statusbar",
+      "id": "4543:84649",
+      "key": "3c667a499232497280e02f15a96af2e2e5b7b876",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": "SystemStatusbar",
+      "props": "isDark=[False|True]"
+    },
+    {
+      "name": "L3: System navbar",
+      "id": "4543:84670",
+      "key": "b723f3d883f51f1edbd0964d9fa3e973194edff1",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "isDark=[False|True]"
+    },
+    {
+      "name": "L3: System keyboard",
+      "id": "4543:84447",
+      "key": "d985751dc23f05d5db2478e05e81ec0e82b8bd11",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "isNumeric=[False|True]"
+    },
+    {
+      "name": "L3: Space block",
+      "id": "4543:84365",
+      "key": "4d864f156d559394cb7c5f19a7104970ddb00e8e",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "isWidth=[True|False]; Size=[4px|8px|12px|16px|20px|24px|28px|32px|36px|40px|44px|48px|52px|56px]"
+    },
+    {
+      "name": "L3 → State layer",
+      "id": "4471:29572",
+      "key": "decbb4a7e4aa328c09d54d99c40e6992cfdf7449",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "State=[Default|Hover|Pressed]; isLight=[True|False]"
+    },
+    {
+      "name": "L3: dev-note",
+      "id": "4543:84404",
+      "key": "8306a66515f73b9c06160331eb714f8b1df6e73c",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "Note:TEXT; Position=[↖ Top-Left|↗ Top-right|↘ Bottom-right|↙ Bottom-Left|← Left|→ Right|↑ Top|↓ Bottom|None]"
+    },
+    {
+      "name": "L3: component slot",
+      "id": "5172:24907",
+      "key": "291fe4de9fd7c74ed16dcc70f36c4f34878df627",
+      "page": "Utility",
+      "status": "CURRENT",
+      "code": null,
+      "figmaOnly": true,
+      "props": "slot:SLOT"
+    },
+    {
+      "name": "L3: Utility / Component container",
+      "id": "4543:84355",
+      "key": "7c82f239bf60ddb52cc8566e0d7f59455ca12f96",
+      "page": "Utility",
+      "status": "UNPUBLISHED",
+      "code": null,
+      "figmaOnly": true,
+      "props": "Content:SLOT; ✏️ Heading:TEXT; Content2:SLOT"
+    },
+    {
+      "name": "L3: Section header",
+      "id": "5407:124",
+      "key": "9cc0bfe8b84405da715c3baa64177530907278c1",
+      "page": "Section header",
+      "status": "UNPUBLISHED",
+      "code": "SectionHeader",
+      "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; CTA=[None|View all|Switcher]"
+    }
+  ],
+  "specimens": [
+    {
+      "name": "Stock card",
+      "id": "5325:2692",
+      "key": "2c0775d2dc7e0754031e2fae48c53446cefaade8",
+      "page": "Typography [WIP]",
+      "note": "WIP specimen, not a library component"
+    },
+    {
+      "name": "__L3: Anotation",
+      "id": "5115:16194",
+      "key": "4e674640b5bb7c0e0f675e37b17e24a3934a174c",
+      "page": "Typography [WIP]",
+      "note": "WIP annotation helper"
+    }
+  ],
+  "icons": {
+    "$note": "Icon components used by the scripts (👁️ Lemonnade V3 → Icons). keyboard_arrow_down from older libraries is NOT importable — use expandMore.",
+    "expandMore": "6ca772533cb29818ec45dda50e3274abbcef7d87",
+    "arrowDropUpSet": "321b659159f7bc31d6109d08bda322871df4554b",
+    "arrowDropDownSet": "3258f8cb5dc6fcb944bbb60e4a366164f173b9ab",
+    "switchArrowToggleSet": "a82e14dd80caa1c57ec6f2b347d8ab80ff4dafdf",
+    "chevronLeft": "235fb4aac054e1c66c71b81c30185fe75e6d7911",
+    "chevronRight": "c7cbc4edbedf96cea6d6f83211aed76a87684223",
+    "add": "12448b1cb7e4f5bab706d4b9bd1ef8893817850f",
+    "remove": "a6576786160ddfbf157b39242b0677ac4e1eb576"
+  }
+}

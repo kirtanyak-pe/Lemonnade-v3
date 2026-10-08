@@ -1,0 +1,76 @@
+# Learnings — append after every task
+
+One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
+repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
+
+## 2026-10-09 — building and dogfooding the playbook tools
+
+- **Chart labels: the last-price tag is also a number at the right edge.** First chart run read it as a 7th y label →
+  axis shifted by one and the component's sample last price (157500) stayed on 896.75 / 640.75 charts. Fix: the last
+  price is the number inside a filled frame; y labels are the rest, max 6; no last price found → hide the tag, never
+  show the sample. Also: a stricter detector (price labels + marks ≥ 60% of the height) found 9 real charts, not the 5
+  the old audit counted — the 4 scalper charts were missed before. Report the match count before running.
+
+- **Main edits must restore colour overrides, not just text.** The CMD component kept D2 colours in its main and got
+  L3 colours per instance; replacing its panels made new layers, so instances fell back to the main's light-mode D2
+  colours (dark text on dark). Fix: `restoreTexts` now snapshots and restores each text's fills (per range) too; and the
+  4 cards' D2 colours were rebound to L3 in the main (43 paints + 6 text ranges). Better still: migrate a local
+  component's main to L3 before swapping inside it.
+- **A page-level theme mode is fragile.** The GUI page's CS PRO → Dark was cleared/changed outside the scripts (twice
+  in one session) and every screen flipped to LM Light. Fix: pin the theme on the section that holds the product's
+  screens (`Commodities & Equity F&O` → CS PRO → Dark); report the mode a screen resolves before blaming a swap.
+
+- **Cloning a variant drops more than slots.** The 4 new list-cell isSelected variants lost every
+  componentPropertyReferences link (Label / Description text and visibility, dots) — instances swapped to them showed
+  "Label goes here". Fix: after cloning a variant, copy componentPropertyReferences from the source by layer path, then
+  prove it with a temporary instance + setProperties. Caught by the text check on the first real swap (2 of 11 refused).
+- **Compare node ids, not node objects.** `s !== n` was true for the same layer reached two ways (parent.children vs
+  getNodeByIdAsync), so a "siblings" pass flipped the selected card back. Fix: compare `.id`.
+- **getStyleByIdAsync costs ~44 s on its first call** in a big file. A style id is 'S:<key>,<node>': read the key and
+  compare with the registry (`l3StyleOfId` in core.js) — also stops old 'L3/extrabold - Heading/20' styles passing as L3.
+- **Sandbox copies lose inherited theme modes.** An instance's CS PRO → Dark rendered light on the dark canvas and
+  looked like faint text. Fix: `keepModes` pins the original's resolved modes on the copy.
+- **The outer box can't see inner shifts.** slot-wrap kept card bounds while content moved 4 px (padding 16 vs 12).
+  Fix: nest a chrome-less copy with compensating padding and check every text's position (swapOne `res.texts`).
+- **Group main edits per component** (one getInstancesAsync + snapshot + verify) and revert just that component on a
+  failure; 13 selects in 5 local components took 12 s instead of ~60 s per call.
+
+- **Compute lazily.** A signature rule resolved all 2,151 instances' mains (52 s) to use 13 candidates. Fix: resolve
+  mains only for instance rules; for signature rules check just the candidates' owners, after the cheap structural test.
+- **A shortcut must not change meaning.** The fast lookup trusted every 'D2 → …' instance as an icon, but local
+  components share the prefix (D2 → F&O portfolio) — nested swaps would have been skipped silently. Fix: trust the
+  icon name only for icon-sized instances (≤ 48 px). Caught by reading the bundle before running it.
+
+- **Main-component lookups dominate Figma scans.** KYC page (21,425 nodes, 1,241 instances): `getMainComponentAsync`
+  took 37 s of a 48 s audit (~0.7 s per newly seen library component). Grouping by instance name only cut 1,241 → 125
+  lookups because designers rename instances. Fix: trust registry / icon names, group the rest by component-property
+  ids, resolve exactly only before changing (`mainInfosFast` in `scripts/figma/lib/core.js`).
+- **Structural checks with JS callbacks are the second hot spot.** Chart detection ran `findAll(fn)` on every frame →
+  54 s audit. Fix: size-gate first, `findAllWithCriteria` (native) — classification dropped to 2.3 s.
+- **Sequential imports make builds slow.** First `build-screen` took 66 s. Fix: preload all components / styles /
+  variables in one `Promise.all` (4.7 s). Whole build still ~60 s → next target: per-block timing (now reported).
+- **The sandbox earns its keep.** A rule mapped the local "D2 → F&O Tabs" (one 85 px tab) to "L3: Tabs group"
+  (328 px); the sandbox refused all 6 swaps on bounds. Fix: the audit maps a single tab to `L3: base tab`.
+- **Old colour names come with and without the library prefix** (`color/text/secondary` vs
+  `D2/color/text/secondary`) and as "❌ [Discontinued] button/…". Fix: normalised lookup + role-aware entries +
+  patterns in `docs/migration/d2-to-l3.json`; KYC dry run went to 99.4% mapped (10,263 colours).
+- **Raw colours outside screens are annotations.** #4147D5 (368 uses) were red-line notes. Fix: audits count raw colours
+  and text only inside phone screens.
+- **Nearest-colour bug:** compared a rounded distance with an unrounded one, so ties picked the wrong token (candle
+  green → success instead of indicator). Fix: compare raw distances; ties keep the earlier (indicator) token.
+- **`arrow_forward` matched "row".** Name hints now use whole words; generic names (Frame, Icon, Group) don't get hints.
+- **No `Intl` in the Figma plugin runtime** ("Intl is not defined"). Fix: `groupIN` (Indian grouping by hand), checked
+  against `Intl` on 12 cases.
+- **Pill-group tabs aren't named "Tab N".** "Label Label Label" in the first detail build. Fix: tabs are found as the
+  slot's instance children; extra tabs are cloned.
+- **Scorer rules must match product reality.** Buy + Sell side by side is one trade decision, quick-add chips
+  ("+₹1,000") aren't price changes, history/search screens don't need a dock, market lists are never empty. Fixed
+  in `scripts/screen.ts`; all 11 archetypes now score 100 and a deliberately bad spec still fails with 4 blocking issues.
+- **Code audit false positives come from class prefixes.** `tag-grid`, `sheet-placeholder`, a char `counter` were
+  flagged. Fix: whole class tokens or `-keyword` suffixes only; role="tablist" around L3 `<Tab>` is composition.
+- **Product repos vendor L3.** The kill-switch prototype copies `src/l3/components/*` → 18 noisy line findings. Fix:
+  one `duplicate` finding per component folder (warning if it's a vendored token-based copy).
+- **Find-component: generic words over-match** ("grey box grouping" → Checkbox). Fix: generic words weigh 0.4;
+  synonyms for grey / details / ticket.
+- **Publishing is the gate for every Figma swap and build.** Keep `figma-library.json` statuses current and run
+  `verify-registry` after each publish (2026-10-09: 37/37 importable keys OK; `.` helpers are private by design).

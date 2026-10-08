@@ -42,7 +42,7 @@ Spacing tokens are used for **padding, gaps and margins only**. Never use arbitr
 no off-scale steps. For sizes (width, height, icon boxes), use `--l3-size-*` / `--l3-icon-size-*`, not spacing tokens.
 
 > The token set also contains 02, 06, 10, 14, 20, 28, 36, 56, 72, 80 and 96. These are **not part of the
-> scale**. Some components still use them (see 2.3).
+> scale**. Some components still use them (see 2.4).
 
 ---
 
@@ -72,7 +72,25 @@ ButtonGroup, Checkbox, EmptyState, ListCell, Switch, Tabs, Tag, TextField).
 Actionbar row (0 16), inline Aerobar (0 16), ListCell (8 16), ButtonGroup (16), BottomSheet header (16).
 This is the de facto **16px screen gutter**.
 
-### 2.3 Inconsistencies found
+### 2.3 Screen layout (rule)
+
+| What | Value | Token |
+|---|---|---|
+| Page padding, left and right | 16 | `spacing/16` |
+| Between two sections (default) | 24 | `spacing/24` |
+| Between two sections (large spacing: a new topic, or after a hero block) | 32 | `spacing/32` |
+| Section heading → its card or list | 16 | `spacing/16` |
+| Card padding, every side | 12 | `spacing/12` |
+
+- A **section** is a `SectionHeader` plus its content (card, list, chart). Never hand-build a section title row. Sections stack with 24; use 32 only for a deliberate
+  bigger break.
+- Gaps belong to the container (the body / section frame's auto-layout gap, bound to the spacing variable) — never
+  spacer layers, never margins on components.
+- Rounded cards sit inside the 16 page padding; edge-to-edge parts (Actionbar, Tabs, ButtonGroup, plain ListCell, flat
+  Card) touch the screen edges.
+- Docs: the **Layout** page under Foundations. Seen in the F&O dev-handoff Delivery / Intraday screens.
+
+### 2.4 Inconsistencies found
 
 1. **Title + description gap differs.** It's 2 in Actionbar content and Aerobar content, but 4 in EmptyState and the
    BottomSheet header. 2 is off-scale.
@@ -212,15 +230,26 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 | `BottomNavbar` + `NavIcon` | `components/BottomNavbar` | `items`, `value` | App-level section nav (3–5), including MF / F&O sub-navs with `home` |
 | `BottomSheet` + `BottomSheetHeader` | `components/BottomSheet` | `open`, `onClose`, a name (`aria-labelledby` or `aria-label`); header `heading` | A modal panel over the screen. Tabs or search at the top of a sheet go in the header's `bottom` slot |
 | `Aerobar` | `components/Aerobar` | — (`heading` in practice) | A status bar (inline) or toast (`floating`) |
-| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1) |
-| `ListCell` | `components/ListCell` | `label` | Rows: plain or card, with icons, trailing content, dots |
+| `Card` | `components/Card` | children | A surface grouping related content: clickable (`onClick` / `href`) or static (see 7.1); `variant="filled"` for a grey inset panel of details; `selected` for the chosen card in a list of choices |
+| `SectionHeader` | `components/SectionHeader` | `title` | A section's heading row: optional tag, info, description (≤ 2 lines) and one action (View all or a switcher); 48 × 48 touch areas |
+| `ListCell` | `components/ListCell` | `label` | Rows: plain (no fill, edge to edge) or card (inside a margin), with icons, trailing content, dots; `selected` for the chosen row |
 | `EmptyState` | `components/EmptyState` | `title` | Nothing to show, or no results |
 | `Icon` | `components/Icon` | `icon` | Any Material Symbol |
-| `BrandLogo` | `components/BrandLogo` | `brand` | Lemonn / Zing logo, full or mark only |
+| `BrandLogo` | `components/BrandLogo` | `brand` | Lemonn / Zing / Coinswitch logo, full or mark only |
+| `Stepper` | `components/Stepper` | `value`, `onChange`, `label` | Quantity / lots with − / + (`size` sm inline in order pads, lg standalone with `sublabel`); set `min`, `max`, `step` |
+| `Select` | `components/Select` | children, `onClick` | An inline label + ↕ / chevron that opens a BottomSheet of Radio rows. There is no boxed dropdown |
+| `DatePicker` | `components/DatePicker` | `value`, `onChange`, `label` | A day or a range (`mode="range"`), inside a BottomSheet with a ButtonGroup; disable with `min` / `max` |
+| `Skeleton` (+ `SkeletonListRow`, `SkeletonCard`) | `components/Skeleton` | — | Loading placeholders in the real layout; `onGrey` on grey surfaces; region gets `aria-busy` |
+| `ProgressBar` | `components/ProgressBar` | `value`, `label` | Used / done (`type="progress"`) or a position in a range (`type="range"`, e.g. 24H low–high); `status` for limits; show the value as text too |
+| `PriceChange` | `components/PriceChange` | `value` | Any signed change (price, P&L, returns): sign, colour and arrow come from the value. Never colour a change by hand |
+| `Chart` / `Sparkline` | `components/Chart` | `data`, `label` (Chart) | Price charts (`candle`, `line`, `area`); Sparkline for list rows next to price + % change |
+| `Overlay` | `components/Overlay` | `open` | The scrim behind a custom modal (BottomSheet already includes it) |
 
 **Use this, not that** (from the component APIs and docs):
 - **Tags are not buttons.** Anything tappable is a `Button`, a `ListCell as="button"`, or a Tab.
 - **There is no Chip component.** For a segmented or filter choice, use `Tabs appearance="pill"`.
+- **There is no boxed dropdown.** Use `Select` (inline trigger) + a `BottomSheet` with `Radio` rows.
+- **Up / down colour comes from the data:** `Chart` / `Sparkline` `trend` and price changes use the indicator tokens (green up, red down); never colour a negative change green.
 - **Cards:** use `Card` (rules in 7.1). For a simple one-line row, `ListCell variant="card"` also exists.
 - **Status:**
   - A message that belongs to the page is an inline `Aerobar`.
@@ -259,6 +288,19 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links.
+- **Padding & placement:** rounded cards (clickable, static, filled) are **always padded** and **always sit inside a
+  margin** — never touching their container's edges (16 from the screen edge, 16 between cards). Only a **flat** card
+  may drop its padding (`padding="none"`, Figma isPadded = False), and a flat card **always runs edge to edge** in its
+  container. The margin comes from the parent (padding / gap) — cards have no outer margin of their own.
+- **List cell follows the same rules:** a plain row has no fill and runs edge to edge; a card row is rounded with
+  `border-light` and sits inside a margin. Selected: plain → `surface-secondary`, card → `border-dark`.
+- **Selected cards** (the chosen option in a list of choices — a contract, a plan, an account): only clickable cards
+  can be selected (`selected`, Figma `isSelected = True`).
+  - **Bordered** (rounded + border) card: swap `border-light` for **`border-dark`**. Nothing else changes — same
+    surface, shadow, radius and padding.
+  - **Flat** card: it has no border, so selection is a **`surface-secondary`** background. Unselected, a flat card has
+    **no fill** and takes the colour of whatever it sits on (another card or the screen).
+  - Static and filled cards are never selected. Don't show selection with a coloured border, a tint or a tick alone.
 
 ### 7.2 Containers & grey fills
 
@@ -293,12 +335,13 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 | State | Use |
 |---|---|
 | Empty / no results | `EmptyState` (illustration + title + description + action) |
+| Loading content | `Skeleton` / `SkeletonListRow` / `SkeletonCard` in the same layout (region `aria-busy`) |
 | Loading an action | `Button loading` (keeps its width, shows the loader) |
 | Field error / success | `TextField status="error" \| "success"` + `helperText` (announced while typing) |
 | Page or result message | `Aerobar` (`danger`, `success`, `warning`, `discover`) |
 | Disabled | The component's own `disabled` prop, which uses the `*-disabled` tokens |
 
-There is **no skeleton or spinner component** yet.
+There is **no spinner** — use `Skeleton` for loading content and `Button loading` for actions.
 
 <!-- PENDING: which states every screen must cover -->
 

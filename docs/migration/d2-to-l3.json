@@ -1,0 +1,361 @@
+{
+  "$description": "How old Figma designs (D2 / Dash / D3 libraries, local components, hand-drawn layers) map to Lemonnade V3 (L3). Single source for scripts/figma/* (bundled in by scripts/figma/bundle.ts) and for docs/PLAYBOOK.md. Proven on the F&O file (2026-10-08/09): ~7.5k colours, ~1.1k numbers, ~1.6k texts, 300+ component swaps, 0 screens resized. Add a mapping here when you meet a new old name — never inside a one-off script.",
+  "oldCollections": [
+    "Dash → UI Colors",
+    "Tokens",
+    "Semantic tokens",
+    "🎨 L3 Theme",
+    "Base hex",
+    "PrimitiveSize",
+    "Spacing",
+    "Border radius"
+  ],
+  "l3ColorPrefix": "🔷 L3/color/",
+  "colors": {
+    "$note": "old variable name → L3 theme token (without the '🔷 L3/color/' prefix). '#name' = decided by context (see contexts). Decisions: every D2 grey text/icon level collapses to content/secondary; text/brand keeps the exact lime (surface/accent/brand-default, not content/brand which renders olive). Names are matched after dropping the library prefix (D2/, D3/, Dash/) and '❌ [Discontinued] ', so 'color/text/secondary' and 'D2/color/text/secondary' are the same entry. A value can be an object {content, surface, border} when the right token depends on how the colour is used.",
+    "D2/color/text/primary": "content/primary",
+    "D2/color/text/secondary": "content/secondary",
+    "D2/color/text/tertiary": "content/secondary",
+    "D2/color/text/quarternary": "content/secondary",
+    "D2/color/text/default": "content/primary",
+    "D2/color/text/disabled": "content/disabled",
+    "D2/color/text/only-white": "static/white",
+    "D2/color/text/light": "content/inverted",
+    "D2/color/text/brand": "surface/accent/brand-default",
+    "D2/color/text/indicator-up": "content/accent/indicator/up-default",
+    "D2/color/text/indicator-down": "content/accent/indicator/down-default",
+    "D2/color/text/discover": "content/accent/discover-default",
+    "D2/color/text/error": "content/accent/error-default",
+    "D2/color/text/success": "content/accent/success-default",
+    "D2/color/text/warning": "content/accent/warning-default",
+    "D2/color/text/accent/honey": "content/accent/warning-default",
+    "D2/color/text/processing": "content/accent/orange-default",
+    "D2/color/icon/primary": "content/primary",
+    "D2/color/icon/default": "content/primary",
+    "D2/color/icon/only-black": "content/primary",
+    "D2/color/icon/secondary": "content/secondary",
+    "D2/color/icon/tertiary": "content/secondary",
+    "D2/color/icon/quarternary": "content/secondary",
+    "D2/color/icon/disabled": "content/disabled",
+    "D2/color/icon/light": "content/inverted",
+    "D2/color/icon/brand": "surface/accent/brand-default",
+    "D2/color/icon/enable": "content/accent/success-default",
+    "D2/color/icon/sucess": "content/accent/success-default",
+    "D2/color/icon/discover": "content/accent/discover-default",
+    "D2/color/icon/error": "content/accent/error-default",
+    "D2/color/icon/indicator-up": "content/accent/indicator/up-default",
+    "D2/color/icon/indicator-down": "content/accent/indicator/down-default",
+    "D2/color/icon/accent/teal": "border/accent/teal-light",
+    "D2/color/Surface/primary": "surface/primary",
+    "D2/color/Surface/default": "surface/default",
+    "D2/color/background/primary": "surface/default",
+    "D2/color/Surface/secondary": "surface/secondary",
+    "D2/color/background/tertiary": "surface/secondary",
+    "D2/color/background/Secondary": "surface/secondary",
+    "D2/color/Surface/tertiary": "surface/tertiary",
+    "D2/color/Surface/quarternary": "surface/quaternary",
+    "D2/color/Surface/dark": "surface/inverted",
+    "D2/color/Surface/disabled": "surface/disabled",
+    "D2/color/Surface/success": "surface/accent/success-default",
+    "D2/color/Surface/error": "surface/accent/error-default",
+    "D2/color/Surface/discover": "surface/accent/discover-default",
+    "D2/color/Surface/warning": "surface/accent/warning-default",
+    "D2/color/Surface/accent/blue": "surface/accent/discover-light",
+    "D2/color/Surface/accent/honey": "surface/accent/zing-light",
+    "D2/color/Surface/accent/brand": "surface/accent/brand-light",
+    "D2/color/Surface/accent/green": "#tintGreen",
+    "D2/color/Surface/accent/red": "#tintRed",
+    "D2/color/tag/secondary/green": "#tintGreen",
+    "D2/color/tag/secondary/red": "#tintRed",
+    "D2/color/tag/secondary/tangerine": "surface/accent/orange-light",
+    "D2/color/border/subtle": "border/light",
+    "D2/color/border/moderate": "border/intense",
+    "D2/color/border/intense": "border/intense",
+    "D2/color/border/dark": "border/dark",
+    "🍋 D3/color/border/default": "border/light",
+    "D2/color/border/accent/white": "static/white",
+    "D2/color/border/accent/green": "#borderGreen",
+    "D2/color/border/accent/red": "#borderRed",
+    "D2/color/border/accent/blue": "border/accent/discover-light",
+    "D2/color/border/accent/honey": "border/accent/zing-light",
+    "D2/color/border/accent/honey-intense": "border/accent/warning-default",
+    "D2/color/border/accent/brand": "border/accent/brand-default",
+    "D2/color/border/accent/purple-intense": "border/accent/purple-default",
+    "D2/local/state-layer/dark/default": "component/state-layer/dark/default",
+    "color/icon/only-black": "content/primary",
+    "color/text/light": "content/inverted",
+    "🔷 L3/color/content/primary": "content/primary",
+    "color/hue/honey/300": "extra/gold/300",
+    "color/hue/honey/400": "extra/gold/400",
+    "color/extra/white": "static/white",
+    "D2/color/icon/only-white": "static/white",
+    "color/hue/honey/200": "extra/gold/200",
+    "D2/color/tag/secondary/blue": "surface/accent/discover-light",
+    "D2/color/border/accent/teal": "border/accent/teal-light",
+    "color/hue/green/500": {
+      "content": "content/accent/indicator/up-default",
+      "surface": "surface/accent/indicator/up-default",
+      "border": "border/accent/indicator/up-default"
+    },
+    "color/hue/red/500": {
+      "content": "content/accent/indicator/down-default",
+      "surface": "surface/accent/indicator/down-default",
+      "border": "border/accent/indicator/down-default"
+    },
+    "D2/color/Surface/accent/blue-intense": "surface/accent/discover-default",
+    "D2/color/tag/primary/blue": "surface/accent/discover-default",
+    "D2/color/text/only-black": "static/black",
+    "color/base/black": "static/black",
+    "color/Lime/50": "surface/accent/brand-light",
+    "color/hue/Lime/100": "surface/accent/brand-light",
+    "color/Lime/900": {
+      "content": "content/accent/brand-default",
+      "surface": "surface/accent/brand-default",
+      "border": "border/accent/brand-default"
+    },
+    "color/hue/green/400": {
+      "content": "content/accent/indicator/up-default",
+      "surface": "surface/accent/indicator/up-default",
+      "border": "border/accent/indicator/up-default"
+    },
+    "color/hue/red/600": {
+      "content": "content/accent/indicator/down-default",
+      "surface": "surface/accent/indicator/down-default",
+      "border": "border/accent/indicator/down-default"
+    }
+  },
+  "contexts": {
+    "$note": "[indicator choice (prices, P&L, buy/sell), status choice (outcomes)]. A layer counts as 'status' when the text near it (4 ancestors up) has a status word and no indicator pattern.",
+    "tintGreen": [
+      "surface/accent/indicator/up-light",
+      "surface/accent/success-light"
+    ],
+    "tintRed": [
+      "surface/accent/indicator/down-light",
+      "surface/accent/error-light"
+    ],
+    "borderGreen": [
+      "border/accent/indicator/up-light",
+      "border/accent/success-light"
+    ],
+    "borderRed": [
+      "border/accent/indicator/down-light",
+      "border/accent/error-light"
+    ],
+    "statusWords": "\\b(placed|success|successful|executed|completed|failed|rejected|error|cancel+ed|verified|active|done)\\b",
+    "indicatorPattern": "[+\\-−]\\s?₹?\\d|%|P&L|\\bprofit\\b|\\bloss\\b|\\bLTP\\b|\\bMTM\\b|\\breturns?\\b|\\bbuy\\b|\\bsell\\b"
+  },
+  "numbers": {
+    "$note": "An old number variable bound to these properties maps by its VALUE to the L3 token with the same number (e.g. 12 → spacing/12). Values with no L3 token stay and are reported.",
+    "radius": "radius/{NN} (999+ → radius/full)",
+    "padding|itemSpacing|counterAxisSpacing": "spacing/{NN}",
+    "width|height|minWidth|minHeight|maxWidth|maxHeight": "size/{NN}"
+  },
+  "scales": {
+    "spacing": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      48,
+      56,
+      64,
+      72,
+      80,
+      96
+    ],
+    "radius": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      12,
+      16,
+      20,
+      24,
+      32
+    ],
+    "size": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      40,
+      48,
+      56,
+      64,
+      80,
+      96,
+      128
+    ],
+    "text": {
+      "Heading": [
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        24,
+        28,
+        32,
+        36
+      ],
+      "Label": [
+        10,
+        12,
+        14,
+        16,
+        18
+      ],
+      "Description": [
+        10,
+        12,
+        14,
+        16,
+        18
+      ]
+    }
+  },
+  "text": {
+    "$note": "Role from the old style name ('extrabold - Heading/N' → Heading, 'semibold - Label/N' → Label) or from weight: ≥700 Heading, ≥600 Label, numbers/prices Label, otherwise Description. Size snaps to the nearest step of that role. Guards: only inside phone screens (340–430 wide, ≥500 tall), ≤40px (section labels and display text untouched), hidden texts (width ≤ 2) ignored; if a text would wrap: hug if fixed-width, else the lighter role at the same size, else restore exactly.",
+    "oldStylePattern": "(extrabold - Heading|semibold - Label)\\/(\\d+)$",
+    "numberLike": "only digits, ₹ $ . , % + − - : / ( ) x × and Cr / L / K / lakh"
+  },
+  "components": [
+    {
+      "match": "Version = ❌ Discontinued (any L3 set)",
+      "to": "same set, Version = Latest",
+      "strategy": "latest",
+      "proven": "Overlay, Bottom sheet, Bottom sheet header"
+    },
+    {
+      "match": "D2 Actionbar (same structure)",
+      "to": "L3: Actionbar",
+      "strategy": "variant-swap",
+      "proven": "30 instances"
+    },
+    {
+      "match": "D2 Tabs (pill row)",
+      "to": "L3: Tabs group, Type = Pill tabs",
+      "strategy": "variant-swap + padding compensation",
+      "proven": "15 instances (tabs grew 64 → 88; kept via instance padding)"
+    },
+    {
+      "match": "old Pills / chips",
+      "to": "L3: base tab, isPill = True",
+      "strategy": "variant-swap + padding compensation",
+      "proven": "7 instances"
+    },
+    {
+      "match": "icons from any other library",
+      "to": "👁️ Lemonnade V3 → Icons 'D2 → <same material name>'",
+      "strategy": "variant-swap (keep size and colour)",
+      "proven": "114 instances; keyboard_arrow_down is NOT importable → use expand_more"
+    },
+    {
+      "match": "bordered asset/list card (radius 12, border, padding 12)",
+      "to": "L3: Card, Type = Static, isPadded = True",
+      "strategy": "slot-wrap",
+      "proven": "27 ❌ Asset list card (isPlain=False)"
+    },
+    {
+      "match": "flat list row (icon + name/price column + trailing)",
+      "to": "L3: list cell (isSmall/isPlain from the old row)",
+      "strategy": "rebuild:list-cell",
+      "proven": "18 ❌ Asset list card (isPlain=True) — rows are list cells, NOT Card Flat"
+    },
+    {
+      "match": "order-pad bottom bar (funds info + main button)",
+      "to": "L3: Button Dock, Direction = ↓ Vertical",
+      "strategy": "slot-wrap",
+      "proven": "15 CTAs"
+    },
+    {
+      "match": "grey inset panel (surface/secondary, radius 12, no border)",
+      "to": "L3: Card, Type = Filled",
+      "strategy": "slot-wrap",
+      "proven": "added 2026-10-09 for CMD Asset page details"
+    },
+    {
+      "match": "quantity control (− value +)",
+      "to": "L3: Stepper (Small inline / Large standalone)",
+      "strategy": "rebuild:stepper",
+      "proven": "20 (17 Small, 3 Large)"
+    },
+    {
+      "match": "text + ↕ / ⌄ trigger",
+      "to": "L3: Select (size from text style, isSubtle from colour, chevron icon for ⌄)",
+      "strategy": "rebuild:select",
+      "proven": "52"
+    },
+    {
+      "match": "signed number text (+0.68%, −252.89 (0.05%))",
+      "to": "L3: Price change (Direction from the sign)",
+      "strategy": "rebuild:price-change",
+      "proven": "new 2026-10-09; fixes sign/colour mismatches"
+    },
+    {
+      "match": "nested local cards inside a LOCAL main (instance sublayers)",
+      "to": "edit the main once; restore per-instance text overrides by order",
+      "strategy": "main-edit",
+      "proven": "Quick access indices (16 instances)"
+    },
+    {
+      "match": "hand-drawn candle / line chart",
+      "to": "L3: Chart (Type, Trend) + controls laid on top",
+      "strategy": "manual (slot-wrap not possible)",
+      "proven": "pending publish"
+    },
+    {
+      "match": "thin track + fill bars",
+      "to": "L3: Progress bar",
+      "strategy": "rebuild (Value in steps of 10)",
+      "proven": "—"
+    }
+  ],
+  "keepAsIs": [
+    "Section label cards and display text > 40px (presentation, not product UI)",
+    "INFO ICON two-tone and empty 'Icon Size=M' placeholders — designer decision",
+    "Option-chain 2px OI bars (chart data; no 2px size token)",
+    "Logos (use L3 → Brand logo when replacing)"
+  ],
+  "colorPatterns": [
+    {
+      "re": "^color/❌? ?\\[?Discontinued\\]? ?button/(primary|secondary|tertiary|ghost|brand|buy|sell)/(background|bg|surface)$",
+      "to": "component/button/$1/surface"
+    },
+    {
+      "re": "^color/button/(primary|secondary|tertiary|ghost|brand|buy|sell)/(background|bg|surface)$",
+      "to": "component/button/$1/surface"
+    },
+    {
+      "re": "^color/button/(primary|secondary|tertiary|ghost|brand|buy|sell)/(label|icon|text|content)$",
+      "to": "component/button/$1/content"
+    },
+    {
+      "re": "^color/button/(primary|secondary|tertiary|ghost|brand|buy|sell)/(border|stroke)$",
+      "to": "component/button/$1/border"
+    },
+    {
+      "re": "^color/hue/honey/(\\d00)$",
+      "to": "extra/gold/$1"
+    }
+  ]
+}
