@@ -29,6 +29,7 @@ import { ColorsPage } from './colors/ColorsPage'
 import { TypographyPage } from './typography/TypographyPage'
 import { LayoutPage } from './layout/LayoutPage'
 import { LayeringPage } from './layering/LayeringPage'
+import { SelectionPage } from './patterns/SelectionPage'
 import { NumbersPreview } from '../preview/NumbersPreview'
 import { AccountDemo, AppNavDemo, EmptySearchDemo, OrdersDemo, FiltersDemo, StockDetailDemo, OrderFormDemo, OrderReviewDemo, SheetsDemo, ToastDemo, PortfolioDemo, SettingsDemo, TradeTicketDemo, WatchlistDemo } from './demos'
 import { PhoneFrame } from './PhoneFrame'
@@ -185,6 +186,16 @@ import { msWallet, msWalletFill } from './icons/material'
   },
 
   // ---- Action ---------------------------------------------------------------
+  // ---- Patterns -------------------------------------------------------------
+  {
+    id: 'selection',
+    progress: 'done',
+    title: 'Selection',
+    group: 'Patterns',
+    description: 'How every component shows a choice: the shared cues, strong vs subtle, single and multi-select, which component for which job, and accessibility.',
+    content: <SelectionPage />,
+  },
+
   {
     id: 'button',
     title: 'Button',

@@ -335,6 +335,17 @@ and size, labels, placement, states). Read the component's USAGE.md before using
     **no fill** and takes the colour of whatever it sits on (another card or the screen).
   - Static and filled cards are never selected. Don't show selection with a coloured border, a tint or a tick alone.
 
+### 7.1b Selection (docs: Patterns → Selection)
+
+- **Cues:** border (`border-dark` replaces `border-light` — clickable card, card row, secondary pill) · fill
+  (`surface-secondary` for flat card / plain row; `surface-inverted` for a primary pill) · mark (radio dot, checkbox
+  tick) · indicator (underline tab bar). One surface cue per component, plus the control's mark — never stack them,
+  and never change font weight on selection.
+- **Strong vs subtle:** strong (primary pill, inverted fill) for a choice that changes what the screen shows (filters,
+  segments); subtle (`border-dark`) for picking an option among others (contracts, plans). One strength per row.
+- **Single select** → radio (or tabs / select sheet); **multi-select** → checkbox rows. A switch is a setting, not a
+  selection. Always announced (checked / selected / pressed / current) and never colour alone.
+
 ### 7.2 Containers & grey fills
 
 - **Large containers** (a hero, a section panel, a showcase, a preview stage) use **`surface-default` + a 1px

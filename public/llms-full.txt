@@ -26,6 +26,10 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
 - [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
 
+## Components · Patterns
+
+- [Selection](agent-docs/selection.md): How every component shows a choice: the shared cues, strong vs subtle, single and multi-select, which component for which job, and accessibility.
+
 ## Components · Action
 
 - [Button](agent-docs/button.md): Buttons let people take an action, confirm a choice or move forward in a flow.
@@ -101,6 +105,8 @@ ask, or list it under "Open questions" in your answer.
   card 16; card padding 12 on every side. Gaps are the container's auto-layout gap, bound to spacing tokens. Section
   titles are always `SectionHeader` (title required; tag / info / description ≤ 2 lines / one action — View all or a
   switcher — optional). Pill tabs: first chip at the 16 page margin — never container 16 + the tabs' own 16 inset.
+- **Selection:** one surface cue (border-dark or fill) + the control's mark; strong (primary pill) for filters,
+  subtle (border-dark) for options; single → radio/tabs, multi → checkbox rows (DESIGN_SYSTEM 7.1b).
 - **Layering:** screen → inset (filled) → content (static) → raised (clickable, shadow low) → bars → toast → scrim →
   sheet → second sheet (max 2). Higher = heavier shadow; only tappable things are lifted (DESIGN_SYSTEM 6.1).
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
@@ -807,6 +813,17 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   - **Flat** card: it has no border, so selection is a **`surface-secondary`** background. Unselected, a flat card has
     **no fill** and takes the colour of whatever it sits on (another card or the screen).
   - Static and filled cards are never selected. Don't show selection with a coloured border, a tint or a tick alone.
+
+### 7.1b Selection (docs: Patterns → Selection)
+
+- **Cues:** border (`border-dark` replaces `border-light` — clickable card, card row, secondary pill) · fill
+  (`surface-secondary` for flat card / plain row; `surface-inverted` for a primary pill) · mark (radio dot, checkbox
+  tick) · indicator (underline tab bar). One surface cue per component, plus the control's mark — never stack them,
+  and never change font weight on selection.
+- **Strong vs subtle:** strong (primary pill, inverted fill) for a choice that changes what the screen shows (filters,
+  segments); subtle (`border-dark`) for picking an option among others (contracts, plans). One strength per row.
+- **Single select** → radio (or tabs / select sheet); **multi-select** → checkbox rows. A switch is a setting, not a
+  selection. Always announced (checked / selected / pressed / current) and never colour alone.
 
 ### 7.2 Containers & grey fills
 
@@ -1979,6 +1996,15 @@ Roles: **heading** (750) · **label** (650) · **description** (500, with paragr
 | `icon-size/24` | `--l3-icon-size-24` | 24px |
 | `size/tap-target` | `--l3-size-tap-target` | 32px |
 | `size/illustration` | `--l3-size-illustration` | 120px |
+
+---
+
+# Selection
+
+> How every component shows a choice: the shared cues, strong vs subtle, single and multi-select, which component for which job, and accessibility.
+
+- Group: Patterns
+- Lifecycle: done
 
 ---
 

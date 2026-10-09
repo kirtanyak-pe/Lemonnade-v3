@@ -60,7 +60,7 @@ export function DocsLayout() {
     document.title = isBuild ? 'Build · L3 Design System' : `${page.title} · L3 Design System`
   }, [page, isBuild])
 
-  const section = page.group === 'Foundations' ? 'foundations' : page.group === 'Start' ? 'home' : 'components'
+  const section = page.group === 'Foundations' ? 'foundations' : page.group === 'Patterns' ? 'patterns' : page.group === 'Start' ? 'home' : 'components'
 
   return (
     <div className={styles.layout}>
@@ -94,6 +94,7 @@ export function DocsLayout() {
 
         <nav className={styles.topNav} aria-label="Sections">
           <a href={href('colors')} aria-current={section === 'foundations' ? 'page' : undefined}>Foundations</a>
+          <a href={href('selection')} aria-current={section === 'patterns' ? 'page' : undefined}>Patterns</a>
           <a href={href('button')} aria-current={section === 'components' ? 'page' : undefined}>Components</a>
           <a href={href('build')} aria-current={isBuild ? 'page' : undefined}>Build</a>
         </nav>

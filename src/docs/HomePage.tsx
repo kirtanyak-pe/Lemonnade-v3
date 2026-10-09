@@ -13,7 +13,7 @@ import styles from './Docs.module.css'
 
 
 export function HomePage() {
-  const components = pages.filter((p) => p.group !== 'Foundations' && p.group !== 'Start')
+  const components = pages.filter((p) => p.group !== 'Foundations' && p.group !== 'Start' && p.group !== 'Patterns')
   const foundations = pages.filter((p) => p.group === 'Foundations')
   const themeCount = products.reduce((n, p) => n + productModes[p].length, 0)
   const latest = recentReleases(3)

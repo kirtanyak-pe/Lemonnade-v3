@@ -26,6 +26,10 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 - [Typography tokens](agent-docs/typography-tokens.md): Every text style: Heading (750), Label (650) and Description (500).
 - [Spacing, radius & size tokens](agent-docs/spacing-tokens.md): Spacing, radius, size and icon-size values.
 
+## Components · Patterns
+
+- [Selection](agent-docs/selection.md): How every component shows a choice: the shared cues, strong vs subtle, single and multi-select, which component for which job, and accessibility.
+
 ## Components · Action
 
 - [Button](agent-docs/button.md): Buttons let people take an action, confirm a choice or move forward in a flow.
