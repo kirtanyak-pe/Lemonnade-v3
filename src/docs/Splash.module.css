@@ -1,0 +1,168 @@
+/*
+ * Site intro (Splash.tsx). Timeline, all from motion tokens:
+ *   0       slices grow in from the left, bottom to top (one every ~60ms)
+ *   ~240ms  the two leaves spring up
+ *   ~700ms  the word opens beside the mark and the letters rise in (one every ~40ms)
+ *   2s      the screen lifts away (long, accelerate)
+ * Tapping or pressing a key starts the lift right away.
+ */
+.splash {
+  --step: calc(var(--l3-motion-duration-short) * 0.4);
+  --t-word: calc(var(--l3-motion-duration-long) * 1.75);
+  --t-exit: calc(var(--l3-motion-duration-long) * 5);
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: var(--l3-surface-default);
+  color: var(--l3-content-primary);
+  animation: lift var(--l3-motion-duration-long) var(--l3-motion-easing-accelerate) var(--t-exit) forwards;
+}
+
+.splash[data-state='leaving'] {
+  animation: lift-now var(--l3-motion-duration-long) var(--l3-motion-easing-accelerate) forwards;
+}
+
+.lockup {
+  display: flex;
+  align-items: center;
+  font: var(--l3-text-heading-28);
+}
+
+.mark {
+  flex: none;
+  width: var(--l3-size-48);
+  height: var(--l3-size-48);
+  overflow: visible;
+}
+
+@media (min-width: 641px) {
+  .lockup {
+    font: var(--l3-text-heading-36);
+  }
+
+  .mark {
+    width: var(--l3-size-64);
+    height: var(--l3-size-64);
+  }
+}
+
+/* The lemon: slices (paths 1–6) grow from the left, bottom to top; the leaves (7, 8) spring up from their stem. */
+.mark :global(path) {
+  transform-box: fill-box;
+  opacity: 0;
+  animation: var(--l3-motion-duration-long) var(--l3-motion-easing-decelerate) forwards;
+}
+
+.mark :global(path):nth-child(-n + 6) {
+  transform-origin: left center;
+  animation-name: slice;
+}
+
+.mark :global(path):nth-child(3),
+.mark :global(path):nth-child(4) {
+  animation-delay: 0ms;
+}
+
+.mark :global(path):nth-child(2),
+.mark :global(path):nth-child(5) {
+  animation-delay: var(--step);
+}
+
+.mark :global(path):nth-child(1),
+.mark :global(path):nth-child(6) {
+  animation-delay: calc(var(--step) * 2);
+}
+
+.mark :global(path):nth-child(7) {
+  transform-origin: center bottom;
+  animation-name: leaf;
+  animation-delay: calc(var(--step) * 4);
+}
+
+.mark :global(path):nth-child(8) {
+  transform-origin: left center;
+  animation-name: leaf;
+  animation-delay: calc(var(--step) * 5);
+}
+
+/* The word: its column opens beside the mark (so the lemon glides left), then each letter rises in. */
+.wordClip {
+  display: grid;
+  grid-template-columns: 0fr;
+  overflow: hidden;
+  animation: open var(--l3-motion-duration-long) var(--l3-motion-easing-standard) var(--t-word) forwards;
+}
+
+.word {
+  display: flex;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(60%);
+  animation: rise var(--l3-motion-duration-long) var(--l3-motion-easing-decelerate) forwards;
+  animation-delay: calc(var(--t-word) + var(--l3-motion-duration-short) * 0.27 * var(--i));
+}
+
+@keyframes slice {
+  from {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes leaf {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-30deg);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.15) rotate(6deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The gap opens with the word, so the lemon starts exactly centred. */
+@keyframes open {
+  to {
+    grid-template-columns: 1fr;
+    margin-left: var(--l3-spacing-12);
+  }
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lift {
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* Same as lift, under another name so a skip restarts it with no delay. */
+@keyframes lift-now {
+  to {
+    transform: translateY(-100%);
+  }
+}

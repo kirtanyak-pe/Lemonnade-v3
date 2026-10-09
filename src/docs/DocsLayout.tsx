@@ -10,6 +10,7 @@ import { Search } from './Search'
 import { ThemeControls } from './ThemeControls'
 import { ProductChooser } from './ProductChooser'
 import { href, useHashRoute } from './useHashRoute'
+import { Splash } from './Splash'
 import styles from './Docs.module.css'
 
 export function DocsLayout() {
@@ -64,6 +65,7 @@ export function DocsLayout() {
 
   return (
     <div className={styles.layout}>
+      <Splash />
       {!isBuild && (
         <a className={styles.skipLink} href="#docs-main" onClick={(e) => { e.preventDefault(); mainRef.current?.focus() }}>
           Skip to content
