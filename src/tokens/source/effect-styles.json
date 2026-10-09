@@ -5,7 +5,7 @@
       "$value": {
         "color": "rgb(0 0 0 / 0.08)",
         "offsetX": "0px",
-        "offsetY": "2px",
+        "offsetY": "1px",
         "blur": "4px",
         "spread": "0px"
       },
