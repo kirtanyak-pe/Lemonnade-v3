@@ -10,8 +10,8 @@ const subscribe = (onChange: () => void) => {
 export function useHashRoute() {
   const hash = useSyncExternalStore(subscribe, () => window.location.hash)
   const [path, search = ''] = hash.replace(/^#\/?/, '').split('?')
-  const [page = '', tab = ''] = path.split('/')
-  return { page, tab, query: new URLSearchParams(search) }
+  const [page = '', tab = '', section = ''] = path.split('/')
+  return { page, tab, section, query: new URLSearchParams(search) }
 }
 
 export const href = (page: string, tab?: string, query?: Record<string, string>) =>

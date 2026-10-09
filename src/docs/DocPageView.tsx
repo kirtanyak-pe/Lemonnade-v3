@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { OnThisPage } from './OnThisPage'
 import { Tag } from '../components/Tag'
 import { changelog, currentVersion } from './changelog'
 import { Guidelines } from './GuidelinesView'
@@ -19,43 +20,60 @@ import styles from './Docs.module.css'
 
 type Tab = { id: string; label: string; content: ReactNode }
 
+/** One long page per tab (Material-style); the right-hand index lists its sections. */
+function Section({ title, intro, children }: { title: string; intro?: ReactNode; children: ReactNode }) {
+  return (
+    <section className={styles.section}>
+      <h2>{title}</h2>
+      {intro && <p className={styles.tabIntro}>{intro}</p>}
+      {children}
+    </section>
+  )
+}
+
+// Old per-topic tabs now live as sections inside the three tabs; old links still land on the right section.
+export const LEGACY_TABS: Record<string, [tab: string, section: string]> = {
+  playground: ['overview', 'try-it'],
+  variants: ['specs', 'variants'],
+  tree: ['specs', 'anatomy'],
+  themes: ['specs', 'in-every-theme'],
+  resources: ['specs', 'figma-variables-and-styles'],
+}
+
 function tabsFor(page: DocPage): Tab[] {
   if (page.content) return []
   const tabs: Tab[] = []
   const playground = playgrounds[page.id]
   const rules = guidelines[page.id]
-  if (page.overview) tabs.push({ id: 'overview', label: 'Overview', content: <>{page.overview}{rules && <Guidelines items={rules} />}</> })
-  if (playground) tabs.push({ id: 'playground', label: 'Playground', content: <Playground key={page.id} def={playground} /> })
-  if (page.variants) tabs.push({ id: 'variants', label: 'Variants', content: page.variants })
   const tree = page.tree ?? componentTrees[page.id]
-  if (tree) {
-    tabs.push({
-      id: 'tree',
-      label: 'Tree',
-      content: (
-        <>
-          <p className={styles.tabIntro}>Every option of {page.title}, as a tree: pick a branch, then the option that fits. Hover a box to trace it.</p>
-          <ComponentTree spec={tree} />
-        </>
-      ),
-    })
-  }
+
+  // Overview: try it, then how to use it (the page's guideline sections), do & don't, other names.
+  tabs.push({
+    id: 'overview',
+    label: 'Overview',
+    content: (
+      <>
+        {playground && <Section title="Try it"><Playground key={page.id} def={playground} /></Section>}
+        {page.overview}
+        {rules && <Guidelines items={rules} />}
+        {page.altNames && <Section title="Common alternative names"><p>{page.altNames}</p></Section>}
+      </>
+    ),
+  })
+
+  // Specs: every variant, the anatomy as a tree, every theme, and the Figma pieces.
+  const specs: ReactNode[] = []
+  if (page.variants) specs.push(<Section key="v" title="Variants">{page.variants}</Section>)
+  if (tree) specs.push(<Section key="a" title="Anatomy" intro={<>Every option of {page.title}, as a tree: pick a branch, then the option that fits. Hover a box to trace it.</>}><ComponentTree spec={tree} /></Section>)
   if (playground) {
     const initial = Object.fromEntries(playground.controls.map((c) => [c.name, c.default]))
-    tabs.push({
-      id: 'themes',
-      label: 'Themes',
-      content: (
-        <>
-          <p className={styles.tabIntro}>The playground's default example in every product and mode, side by side.</p>
-          <ThemesGrid render={() => playground.render(initial)} />
-        </>
-      ),
-    })
+    specs.push(<Section key="t" title="In every theme" intro="The default example in every product and mode, side by side."><ThemesGrid render={() => playground.render(initial)} /></Section>)
   }
+  if (page.figmaNodeId || page.tokens) specs.push(<Section key="r" title="Figma, variables and styles"><Resources page={page} /></Section>)
   // Props (page.props), source and import paths are for code: they live in the AI-agent docs (llms.txt), not on the site.
+  if (specs.length) tabs.push({ id: 'specs', label: 'Specs', content: <>{specs}</> })
+
   if (changelog[page.id]) tabs.push({ id: 'whats-new', label: 'What’s new', content: <ReleaseTimeline releases={changelog[page.id]} /> })
-  tabs.push({ id: 'resources', label: 'Resources', content: <Resources page={page} /> })
   return tabs
 }
 
@@ -66,10 +84,13 @@ function neighbours(page: DocPage) {
   return { prev: i > 0 ? order[i - 1] : undefined, next: i >= 0 && i < order.length - 1 ? order[i + 1] : undefined }
 }
 
-export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; tabId: string; highlightToken?: string | null }) {
+export function DocPageView({ page, tabId, sectionId, highlightToken }: { page: DocPage; tabId: string; sectionId?: string; highlightToken?: string | null }) {
   const tabs = tabsFor(page)
-  const active = tabs.find((t) => t.id === tabId) ?? tabs[0]
+  const legacy = LEGACY_TABS[tabId]
+  const active = tabs.find((t) => t.id === (legacy ? legacy[0] : tabId)) ?? tabs[0]
+  const section = legacy ? legacy[1] : sectionId
   const tabsRef = useRef<HTMLElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
   useTokenHighlight(highlightToken ?? null, page.id)
 
   // Keep the current section tab visible in the (horizontally scrolling) tab row.
@@ -131,20 +152,19 @@ export function DocPageView({ page, tabId, highlightToken }: { page: DocPage; ta
         </nav>
       )}
 
-      <div className={styles.tabBody}>
-        {active ? active.content : page.content}
-        {!active && changelog[page.id] && (
-          <section className={styles.section}>
-            <h2>What’s new</h2>
-            <ReleaseTimeline releases={changelog[page.id]} />
-          </section>
-        )}
-        {active?.id === 'overview' && page.altNames && (
-          <section className={styles.section}>
-            <h2>Common alternative names</h2>
-            <p>{page.altNames}</p>
-          </section>
-        )}
+      <div className={styles.tabLayout}>
+        <div ref={bodyRef} className={styles.tabBody}>
+          {active ? active.content : page.content}
+          {!active && changelog[page.id] && (
+            <section className={styles.section}>
+              <h2>What’s new</h2>
+              <ReleaseTimeline releases={changelog[page.id]} />
+            </section>
+          )}
+        </div>
+        <aside className={styles.tocColumn}>
+          <OnThisPage container={bodyRef} deps={[page.id, active?.id]} route={active ? href(page.id, active.id) : href(page.id, 'page')} section={section} />
+        </aside>
       </div>
 
       {(prev || next) && (

@@ -13,7 +13,7 @@ import { href, useHashRoute } from './useHashRoute'
 import styles from './Docs.module.css'
 
 export function DocsLayout() {
-  const { page: pageId, tab, query } = useHashRoute()
+  const { page: pageId, tab, section: sectionParam, query } = useHashRoute()
   const page = pages.find((p) => p.id === pageId) ?? pages.find((p) => p.id === defaultPageId)!
   const isBuild = pageId === 'build'
   // The mobile drawer is open "for" the page it was opened on, so navigating closes it.
@@ -147,7 +147,7 @@ export function DocsLayout() {
         {railOpen && <div className={styles.scrim} onClick={() => setRailOpen(false)} aria-hidden="true" />}
 
         <main ref={mainRef} id="docs-main" tabIndex={-1} className={styles.main}>
-          <DocPageView page={page} tabId={tab} highlightToken={query.get('token')} />
+          <DocPageView page={page} tabId={tab} sectionId={sectionParam} highlightToken={query.get('token')} />
         </main>
       </div>
       )}
