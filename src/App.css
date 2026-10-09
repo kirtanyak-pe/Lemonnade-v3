@@ -423,3 +423,7 @@ section:first-child > h2 {
   font: var(--l3-text-description-14);
   color: var(--l3-content-secondary);
 }
+
+/* Card with padding="none": its sections bring the 12 (body + full-width grey footer strip). */
+.card-demo-section { box-sizing: border-box; width: 100%; display: flex; flex-direction: column; gap: var(--l3-spacing-08); padding: var(--l3-spacing-12); }
+.card-demo-footer { box-sizing: border-box; width: 100%; display: block; padding: var(--l3-spacing-12); background: var(--l3-surface-secondary); color: var(--l3-content-primary); font: var(--l3-text-label-12); }

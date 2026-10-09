@@ -264,7 +264,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'kind', label: 'Kind', type: 'select', options: ['clickable', 'link', 'static'], default: 'clickable' },
       { name: 'variant', label: 'Style', type: 'select', options: ['default', 'flat', 'filled'], optionLabels: { default: 'Rounded + border', flat: 'Flat', filled: 'Filled (grey inset)' }, default: 'default' },
       { name: 'surface', label: 'Background (manual)', type: 'select', options: ['none', 'primary', 'secondary', 'tertiary'], default: 'none' },
-      { name: 'padding', label: 'isPadded', type: 'select', options: ['default', 'none'], optionLabels: { default: 'True', none: 'False (flat only)' }, default: 'default', showIf: (v) => v.variant === 'flat' },
+      { name: 'padding', label: 'isPadded', type: 'select', options: ['default', 'none'], optionLabels: { default: 'True', none: 'False (content brings its own padding)' }, default: 'default', showIf: (v) => v.variant !== 'filled' },
       { name: 'selected', label: 'isSelected', type: 'boolean', default: false, showIf: (v) => v.kind !== 'static' && v.variant !== 'filled' },
       { name: 'title', label: 'Title', prop: false, type: 'text', default: 'NHPC' },
       { name: 'meta', label: 'Meta', prop: false, type: 'text', default: 'Delivery • Boost (5x)' },
@@ -279,7 +279,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       const kind = s(v, 'kind')
       const flat = s(v, 'variant') === 'flat'
       const common = {
-        ...(flat ? { variant: 'flat' as const, padding: s(v, 'padding') as 'default' | 'none' } : { variant: s(v, 'variant') as 'default' | 'filled' }),
+        ...(flat ? { variant: 'flat' as const, padding: s(v, 'padding') as 'default' | 'none' } : s(v, 'variant') === 'filled' ? { variant: 'filled' as const } : { variant: 'default' as const, padding: s(v, 'padding') as 'default' | 'none' }),
         surface: s(v, 'surface') === 'none' ? undefined : (s(v, 'surface') as 'primary' | 'secondary' | 'tertiary'),
         selected: kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected'),
       }
@@ -293,7 +293,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['href', kind === 'link' ? '/orders/nhpc' : undefined],
         ['variant', s(v, 'variant'), 'default'],
         ['surface', s(v, 'surface'), 'none'],
-        ['padding', s(v, 'variant') === 'flat' ? s(v, 'padding') : undefined, 'default'],
+        ['padding', s(v, 'variant') !== 'filled' ? s(v, 'padding') : undefined, 'default'],
         ['selected', kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected')],
       ], body)
     },

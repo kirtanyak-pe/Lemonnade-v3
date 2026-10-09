@@ -170,7 +170,7 @@
       "page": "Card",
       "status": "CURRENT",
       "code": "Card",
-      "props": "content:SLOT; Type=[Clickable|Static|Flat|Filled]; isPadded=[True|False] (False: Flat only); isSelected=[False|True] (Clickable, Flat only)"
+      "props": "content:SLOT; Type=[Clickable|Static|Flat|Filled]; isPadded=[True|False] (False: Clickable, Static, Flat — content brings its own padding); isSelected=[False|True] (Clickable, Flat only)"
     },
     {
       "name": "L3: Base actionbar content",

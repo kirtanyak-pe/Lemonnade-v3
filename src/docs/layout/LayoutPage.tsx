@@ -11,7 +11,7 @@ const rules = [
   { kind: 'gap', value: '24', token: 'spacing/24', title: 'Between sections', text: 'The default gap between two sections, and between the first card and the next section.' },
   { kind: 'gap', value: '32', token: 'spacing/32', title: 'Large section gap', text: 'The second version, for a bigger break: when the next section starts a new topic or follows a hero block.' },
   { kind: 'gap', value: '16', token: 'spacing/16', title: 'Section heading → card', text: 'A section title sits 16 above its card or list.' },
-  { kind: 'padding', value: '12', token: 'spacing/12', title: 'Card padding', text: 'A card is padded 12 on every side (rows inside it 8 apart). Only a flat card may drop its padding.' },
+  { kind: 'padding', value: '12', token: 'spacing/12', title: 'Card padding', text: 'A card is padded 12 on every side (rows inside it 8 apart). A card may drop its own padding when its sections bring their own — the content still sits 12 from the card edge.' },
 ]
 
 // One colour per kind of space, as in Figma's spacing overlays: margin (teal) · padding (blue) · gap (orange).

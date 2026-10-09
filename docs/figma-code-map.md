@@ -155,7 +155,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Type = Static | neither `onClick` nor `href` |
 | Type = Flat | `variant="flat"` (+ `onClick`/`href` if it's clickable) |
 | Type = Filled | `variant="filled"` (grey inset panel) |
-| isPadded = True · False (False: Flat only) | `padding="default" \| "none"` (`none` needs `variant="flat"`) |
+| isPadded = True · False (False: Clickable, Static, Flat — content brings its own 12) | `padding="default" \| "none"` (not with `variant="filled"`) |
 | isSelected = True (Clickable · Flat) | `selected` — Clickable: border/dark · Flat: surface/secondary |
 | content (slot) | children |
 | (manual background) | `surface` |

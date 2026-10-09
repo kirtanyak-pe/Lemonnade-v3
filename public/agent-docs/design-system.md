@@ -313,10 +313,12 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links.
-- **Padding & placement:** rounded cards (clickable, static, filled) are **always padded** and **always sit inside a
-  margin** — never touching their container's edges (16 from the screen edge, 16 between cards). Only a **flat** card
-  may drop its padding (`padding="none"`, Figma isPadded = False), and a flat card **always runs edge to edge** in its
-  container. The margin comes from the parent (padding / gap) — cards have no outer margin of their own.
+- **Padding & placement:** cards **always sit inside a margin** — never touching their container's edges (16 from the
+  screen edge, 16 between cards); the margin comes from the parent (padding / gap). Padding is 12 by default.
+  A clickable or static card may drop its own padding (`padding="none"`, Figma isPadded = False) **only when its
+  content brings its own** — sections stacked inside it, e.g. a 12-padded body and a full-width `surface-secondary`
+  footer strip. Either way **the content always sits 12 from the card edge**. Filled cards are always padded; a flat
+  card runs edge to edge in its container.
 - **List cell follows the Card rules** (it is a card with specific content — dropdown options, settings, lists):
   - plain row = Flat card: no fill, runs edge to edge;
   - card row, **not tappable** = Static card: **no fill** (takes the colour it sits on) + `border-light`, no shadow;

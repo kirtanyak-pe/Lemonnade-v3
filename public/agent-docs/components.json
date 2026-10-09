@@ -431,7 +431,7 @@
     "nodeId": "5364:38",
     "key": "fdfed332e76a60b415acb1b34b7f4102ff3553d8",
     "status": "CURRENT",
-    "props": "content:SLOT; Type=[Clickable|Static|Flat|Filled]; isPadded=[True|False] (False: Flat only); isSelected=[False|True] (Clickable, Flat only)"
+    "props": "content:SLOT; Type=[Clickable|Static|Flat|Filled]; isPadded=[True|False] (False: Clickable, Static, Flat — content brings its own padding); isSelected=[False|True] (Clickable, Flat only)"
    },
    "props": [
     "children",

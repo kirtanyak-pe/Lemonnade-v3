@@ -578,8 +578,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Padding and placement</h2>
-          <p>Rounded cards — clickable, static and filled — are always padded (12) and always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). Only a flat card can drop its padding, for edge-to-edge media or lists, and a flat card always runs edge to edge in its container.</p>
-          <DevOnly><p><code>padding="none"</code> is only allowed with <code>variant="flat"</code> (TypeScript enforces it). The margin around rounded cards comes from the parent's padding or gap — cards have no outer margin of their own.</p></DevOnly>
+          <p>Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and a full-width grey footer strip — but the rule doesn't change: <strong>the content always sits 12 from the card edge</strong>. Filled cards are always padded, and a flat card runs edge to edge in its container.</p>
+          <DevOnly><p><code>padding="none"</code> on a default (clickable / static) or flat card; the sections inside carry the 12 padding. Filled cards are always padded (TypeScript enforces it). The margin around cards comes from the parent's padding or gap — cards have no outer margin of their own.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Selected cards</h2>
@@ -600,7 +600,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'as', type: "'div' | 'article' | 'section' | 'li'", default: "'div'", description: 'Element for a static card.' },
       { name: 'variant', type: "'default' | 'flat' | 'filled'", default: "'default'", description: 'flat: not rounded, no border, no shadow, transparent background. filled: grey inset panel (surface-secondary, no border, no shadow). Both can still be clickable.' },
       { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
-      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px. none (edge-to-edge content) only on flat cards — rounded cards are always padded.' },
+      { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px. none when the content’s sections bring their own padding (content still 12 from the edge); not on filled cards.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],

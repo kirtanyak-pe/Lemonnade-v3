@@ -5,7 +5,7 @@
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5364-38
 - Source: `src/components/Card`
 - Also called: Tile, panel, container, list item card
@@ -42,9 +42,9 @@ A filled card is a grey inset panel: rounded, surface-secondary, no border and n
 
 ### Padding and placement
 
-Rounded cards — clickable, static and filled — are always padded (12) and always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). Only a flat card can drop its padding, for edge-to-edge media or lists, and a flat card always runs edge to edge in its container.
+Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and a full-width grey footer strip — but the rule doesn't change: **the content always sits 12 from the card edge**. Filled cards are always padded, and a flat card runs edge to edge in its container.
 
-`padding="none"` is only allowed with `variant="flat"` (TypeScript enforces it). The margin around rounded cards comes from the parent's padding or gap — cards have no outer margin of their own.
+`padding="none"` on a default (clickable / static) or flat card; the sections inside carry the 12 padding. Filled cards are always padded (TypeScript enforces it). The margin around cards comes from the parent's padding or gap — cards have no outer margin of their own.
 
 ### Selected cards
 
@@ -87,7 +87,7 @@ Card — Groups related content
 | `as` | `'div' \| 'article' \| 'section' \| 'li'` | `'div'` | Element for a static card. |
 | `variant` | `'default' \| 'flat' \| 'filled'` | `'default'` | flat: not rounded, no border, no shadow, transparent background. filled: grey inset panel (surface-secondary, no border, no shadow). Both can still be clickable. |
 | `surface` | `'default' \| 'primary' \| 'secondary' \| 'tertiary' \| 'inverted'` |  | Set the background yourself (surface token). Flat cards are transparent without it. |
-| `padding` | `'default' \| 'none'` | `'default'` | 12px. none (edge-to-edge content) only on flat cards — rounded cards are always padded. |
+| `padding` | `'default' \| 'none'` | `'default'` | 12px. none when the content’s sections bring their own padding (content still 12 from the edge); not on filled cards. |
 | `selected` | `boolean` | `false` | The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background. |
 | `aria-label` | `string` |  | Name for a clickable card when its text alone isn’t a good one. |
 
@@ -106,6 +106,6 @@ Card — Groups related content
 
 ## Recent changes
 
+- **1.6.0** (2026-10-09) No padding is back for rounded cards: Clickable and static cards can drop their own padding again, for content built from sections that bring their own (a 12-padded body plus a full-width footer strip). The content still sits 12 from the card edge. Filled cards stay padded. L3: Card gets isPadded = False back for Clickable (and Clickable selected) and Static. padding="none" is allowed on default and flat cards (not filled).
 - **1.5.0** (2026-10-09) Selected cards: Selected state for clickable cards — the chosen option in a list of choices. A bordered card swaps border-light for border-dark; a flat card gets a surface-secondary background (unselected flat cards stay transparent). L3: Card gets isSelected = True · False (Clickable and Flat, padded and not padded). selected prop (aria-pressed on buttons, aria-current on links; warns when the card isn't clickable). No padding is for flat cards only: rounded cards (clickable, static, filled) are always padded and always sit inside a margin; flat cards run edge to edge. L3: Card drops isPadded = False for Clickable, Static and Filled (kept for Flat). padding="none" now only type-checks with variant="flat".
 - **1.4.0** (2026-10-09) Filled cards: Filled card: a grey inset panel (surface-secondary, rounded, no border or shadow) for grouping details like contract info or market depth. L3: Card gets Type = Filled (padded and not padded), same content slot. variant="filled".
-- **1.3.0** (2026-10-08) In Figma: New Figma component L3: Card: Type = Clickable · Static · Flat, isPadded = True · False, and one content slot. Same tokens as code: surface-primary or surface-default, border-light, elevation-low on clickable cards, radius-12, padding-12, rows 8 apart.

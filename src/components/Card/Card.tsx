@@ -18,12 +18,14 @@ import styles from './Card.module.css'
 export type CardSurface = 'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'
 
 /**
- * Padding & placement: rounded cards (default, filled) are always padded and always sit inside a margin — never
- * touching their container's edges (the parent provides it: 16 from the screen edge, 16 between cards). Only a flat
- * card can drop its padding, and a flat card always runs edge to edge in its container.
+ * Padding & placement: cards sit inside a margin — never touching their container's edges (the parent provides it: 16
+ * from the screen edge, 16 between cards). Padding is 12 by default. `padding="none"` is for a card whose content
+ * brings its own padding — sections stacked inside it, like a 12-padded body and a full-width footer strip — and the
+ * content must still sit 12 from the card edge. Filled cards are always padded; flat cards run edge to edge.
  */
 type CardLayout =
-  | { /** Rounded cards are always padded. */ variant?: 'default' | 'filled'; padding?: 'default' }
+  | { /** Rounded card (clickable / static). `none`: the content's sections bring their own 12 padding. */ variant?: 'default'; padding?: 'default' | 'none' }
+  | { /** Filled cards are always padded. */ variant: 'filled'; padding?: 'default' }
   | { /** `flat`: not rounded, no border, no shadow, transparent background (unless `surface` is set); edge to edge. */ variant: 'flat'; /** `none` for edge-to-edge content (images, lists) — flat cards only. */ padding?: 'default' | 'none' }
 
 export type CardProps = CardLayout & {

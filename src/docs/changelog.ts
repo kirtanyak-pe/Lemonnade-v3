@@ -197,6 +197,15 @@ export const changelog: Record<string, Release[]> = {
   ],
   card: [
     {
+      version: '1.6.0', date: '2026-10-09',
+      summary: 'No padding is back for rounded cards',
+      changes: [
+        { kind: 'changed', text: 'Clickable and static cards can drop their own padding again, for content built from sections that bring their own (a 12-padded body plus a full-width footer strip). The content still sits 12 from the card edge. Filled cards stay padded.' },
+        { kind: 'figma', text: 'L3: Card gets isPadded = False back for Clickable (and Clickable selected) and Static.' },
+        { kind: 'changed', text: 'padding="none" is allowed on default and flat cards (not filled).', dev: true },
+      ],
+    },
+    {
       version: '1.5.0', date: '2026-10-09',
       summary: 'Selected cards',
       changes: [
