@@ -23,6 +23,9 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
   (their width had already shrunk). Strip row padding while the copy is still full width, then fit → 8/8 exact.
   Second pass: 8 section cards → Card Static, 90 filter chips → base tab pills (width kept, label centre ±1.5),
   Position card + Position info mains: 34 D2 colours → L3 with all 93 instances unmoved.
+  Third pass: 9 hand-drawn steppers (Limit / Trigger rows, value "20.3%" isn't digits-only so the classifier had missed
+  them) → L3 Stepper Small; 4 primary cards (r16) → Card Clickable; 4 Heading/16 titles → Section header at the old
+  22 height (title centred ±1, nothing below moves; "See all" → View all).
 
 - **A token's display name is not a colour.** The Colors page set swatches to `surface-default` (the copyable name)
   instead of `var(--l3-surface-default)` — twice (accent band, then the whole semantic tree). The browser drops an
