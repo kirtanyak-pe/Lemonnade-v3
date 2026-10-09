@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from 'react'
-import { NavIcon } from './NavIcon.tsx'
+import { NavIcon } from './NavIcon'
 import styles from './BottomNavbar.module.css'
 
 export type BottomNavbarItem = {

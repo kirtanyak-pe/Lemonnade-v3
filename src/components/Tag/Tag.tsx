@@ -1,5 +1,6 @@
 import { useEffect, type HTMLAttributes, type ReactNode } from 'react'
 import { ChevronDownIcon, PlaceholderIcon } from '../icons'
+import { isDev } from '../env'
 import styles from './Tag.module.css'
 
 /** Figma "L3: Tags" (node 4464:27218). Figma's Type=Tertiory is `tertiary` here. */
@@ -53,7 +54,7 @@ export function Tag({
   const showRight = Boolean(iconRight) && !(iconOnly && iconLeft)
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     if (hideLabel && !iconLeft && !iconRight) console.warn('[L3] <Tag hideLabel> needs an icon; showing the label instead.')
     if (hideLabel && iconLeft && iconRight) console.warn('[L3] <Tag hideLabel> shows one icon only; iconRight is ignored.')
     if (hideLabel && (children == null || children === '')) console.warn('[L3] <Tag hideLabel> still needs children: they are the screen-reader text.')

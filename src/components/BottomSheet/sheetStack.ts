@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import { isDev } from '../env'
 
 /**
  * Open-sheet stack. Rule: at most 2 sheets — the first over the screen, and one on top of it.
@@ -23,7 +24,7 @@ export const sheetStack = {
   push(id: string) {
     if (stack.includes(id)) return
     stack = [...stack, id]
-    if (import.meta.env.DEV && stack.length > MAX_SHEETS) {
+    if (isDev && stack.length > MAX_SHEETS) {
       console.warn(`[L3] ${stack.length} bottom sheets are open. At most ${MAX_SHEETS}: the first over the screen and one on top of it. Replace the second sheet instead of stacking a third.`)
     }
     notify()

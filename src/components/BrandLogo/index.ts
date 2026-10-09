@@ -1,1 +1,1 @@
-export { BrandLogo, type Brand, type BrandLogoProps } from './BrandLogo.tsx'
+export { BrandLogo, type Brand, type BrandLogoProps } from './BrandLogo'

@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "tokens": "node scripts/build-tokens.ts",
-    "predev": "npm run tokens",
+    "glyphs": "node scripts/build-glyphs.ts",
+    "predev": "npm run tokens && npm run glyphs",
     "dev": "vite",
-    "prebuild": "npm run tokens && npm run agent-docs",
+    "prebuild": "npm run tokens && npm run glyphs && npm run agent-docs",
     "agent-docs": "node --no-warnings scripts/build-agent-docs.ts",
     "build": "tsc -b && vite build",
     "typecheck:server": "tsc -p tsconfig.server.json",
@@ -17,6 +18,7 @@
     "deploy:docs": "bash scripts/deploy-docs.sh",
     "find": "node scripts/find-component.ts",
     "audit:ui": "node scripts/audit-ui.ts",
+    "check:portable": "node --no-warnings scripts/check-portable.ts",
     "figma": "node scripts/figma/bundle.ts",
     "screen": "node scripts/screen.ts"
   },

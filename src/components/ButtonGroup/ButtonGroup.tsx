@@ -1,4 +1,5 @@
 import { Children, isValidElement, useEffect, type HTMLAttributes, type ReactNode } from 'react'
+import { isDev } from '../env'
 import styles from './ButtonGroup.module.css'
 
 /** Figma "L3: Button Dock" (node 4471:29456; was "L3: Button Group"). */
@@ -26,7 +27,7 @@ export function ButtonGroup({
   const ariaLabel = (rest as { 'aria-label'?: string })['aria-label']
   const labelledBy = (rest as { 'aria-labelledby'?: string })['aria-labelledby']
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     const variants: string[] = []
     Children.forEach(children, (child) => {
       if (!isValidElement<{ size?: string; variant?: string }>(child)) return

@@ -1,5 +1,5 @@
 import { useEffect, useRef, type KeyboardEvent, type ReactNode } from 'react'
-import { Tab, type TabEmphasis, type TabSize } from './Tab.tsx'
+import { Tab, type TabEmphasis, type TabSize } from './Tab'
 import styles from './Tabs.module.css'
 
 export type TabItem<V extends string = string> = {

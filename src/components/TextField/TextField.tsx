@@ -1,4 +1,4 @@
-import { useId, useState, type ChangeEvent, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react'
+import { forwardRef, useId, useState, type ChangeEvent, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react'
 import { CheckCircleIcon, InfoIcon, TextGripIcon, WarningIcon } from '../icons'
 import styles from './TextField.module.css'
 
@@ -38,7 +38,7 @@ type BoxProps = Common &
 
 export type TextFieldProps = FieldProps | BoxProps
 
-export function TextField(props: TextFieldProps) {
+export const TextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, TextFieldProps>(function TextField(props, ref) {
   const { label, required, helperText, helperIcon = true, status, className, ...rest } = props
   const autoId = useId()
   const id = rest.id ?? autoId
@@ -74,6 +74,7 @@ export function TextField(props: TextFieldProps) {
           rows={3}
           {...textarea}
           {...shared}
+          ref={ref as Ref<HTMLTextAreaElement>}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
             setTypedLength(e.target.value.length)
             onChange?.(e)
@@ -90,6 +91,7 @@ export function TextField(props: TextFieldProps) {
         <input
           {...input}
           {...shared}
+          ref={ref as Ref<HTMLInputElement>}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setTypedLength(e.target.value.length)
             onChange?.(e)
@@ -130,4 +132,4 @@ export function TextField(props: TextFieldProps) {
       )}
     </div>
   )
-}
+})

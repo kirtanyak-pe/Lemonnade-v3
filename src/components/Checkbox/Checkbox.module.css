@@ -71,10 +71,12 @@
   position: absolute;
   inset: 0;
   background-color: var(--ctl-mark);
+  -webkit-mask: url('./assets/check.svg') center / auto no-repeat; /* Chrome / Android WebView before 120 */
   mask: url('./assets/check.svg') center / auto no-repeat;
 }
 
 .control[data-kind='checkbox'] .input:indeterminate + .box::after {
+  -webkit-mask-image: url('./assets/dash.svg');
   mask-image: url('./assets/dash.svg');
 }
 

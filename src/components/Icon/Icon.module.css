@@ -6,5 +6,6 @@
   height: var(--icon-size);
   vertical-align: middle;
   background-color: currentColor;
+  -webkit-mask: var(--icon-src) center / 100% 100% no-repeat; /* Chrome / Android WebView before 120 */
   mask: var(--icon-src) center / 100% 100% no-repeat;
 }

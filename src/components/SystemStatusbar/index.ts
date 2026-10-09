@@ -1,1 +1,1 @@
-export { SystemStatusbar, type SystemStatusbarProps } from './SystemStatusbar.tsx'
+export { SystemStatusbar, type SystemStatusbarProps } from './SystemStatusbar'

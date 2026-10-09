@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { NoResultsIllustration } from './NoResultsIllustration.tsx'
+import { NoResultsIllustration } from './NoResultsIllustration'
 import styles from './EmptyState.module.css'
 
 /** Figma "L3 → Empty state" (node 4543:66488). */

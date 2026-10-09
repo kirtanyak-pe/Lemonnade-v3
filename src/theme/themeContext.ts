@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { Contrast, Mode, Product } from '../tokens/themes.ts'
+import type { Contrast, Mode, Product } from '../tokens/themes'
 
 export type ModePreference = Mode | 'system'
 

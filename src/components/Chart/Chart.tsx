@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import styles from './Chart.module.css'
-import { trendOf, type Trend } from './trend.ts'
+import { trendOf, type Trend } from './trend'
 
 export type ChartCandle = { open: number; high: number; low: number; close: number; volume?: number }
 export type ChartType = 'candle' | 'line' | 'area'

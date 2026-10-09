@@ -3,6 +3,22 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — making the components portable (developers copy them into production)
+
+- **Vite-only code crashed components elsewhere.** 9 files used `import.meta.env.DEV` for dev warnings — undefined in
+  Next.js / webpack, so the effect threw. Fix: `isDev` from `src/components/env.ts` (`process.env.NODE_ENV`, replaced
+  by every bundler, including Vite in dev).
+- **`.svg` imports mean something different per bundler** (URL in Vite, `{ src }` in Next.js, a component with SVGR):
+  every icon would have vanished in Next.js. Fix: `scripts/build-glyphs.ts` turns the SVGs the components use into
+  `data:` URI strings (`glyphs.ts`); `<Icon>` also accepts `{ src }`. Components use 15 Material icons; the full set is
+  6,512 files / 27 MB — developers pick theirs with `npm run -s glyphs -- --pick …`.
+- **Audit false positive:** "no default theme" — grepping `^[^ ].*{` missed `:root,` on its own line; the default
+  Lemonn-light block was there all along. Read the generated file's head before calling a gap.
+- **Locked in:** `npm run check:portable` (source rules + strict TS with a plain app tsconfig + server rendering of every
+  playground, a closed/open BottomSheet and ThemeProvider). Other fixes in the same pass: 49 `.tsx` import extensions
+  removed, refs passed through Button/Checkbox/Radio/Switch/TextField (react-hook-form), BottomSheet + ThemeProvider
+  safe on the server, `-webkit-mask` for Chrome < 120, `rgb(from …)` → `color-mix()`.
+
 ## 2026-10-09 — building and dogfooding the playbook tools
 
 - **Gradients hide old colours.** Token migration skipped gradient stops: F&O had 250 gradients, 117 still on D2 or raw

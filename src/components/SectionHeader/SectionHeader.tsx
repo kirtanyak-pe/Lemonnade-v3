@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { Select } from '../Select'
-import { msChevronRight, msInfo } from '../../icons/material'
+import { msChevronRight, msInfo } from '../icons/glyphs'
 import styles from './SectionHeader.module.css'
 
 /**

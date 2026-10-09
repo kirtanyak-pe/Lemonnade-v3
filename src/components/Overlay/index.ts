@@ -1,1 +1,1 @@
-export { Overlay, type OverlayProps } from './Overlay.tsx'
+export { Overlay, type OverlayProps } from './Overlay'

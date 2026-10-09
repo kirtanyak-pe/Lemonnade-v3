@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-66091
 - Source: `src/components/TextField`
 - Also called: Text input, text field, textarea, form field
@@ -87,6 +87,6 @@ Input field — Single line or text box
 
 ## Recent changes
 
+- **1.6.0** (2026-10-10) Refs for forms: ref reaches the <input> (or <textarea> when multiline) on React 18 and 19 — react-hook-form's register works.
 - **1.5.0** (2026-10-05) Typography role rules: Typography role rules: field label, typed text and the character counter use Label (a number never uses Description); helper text stays Description. Matches Figma.
 - **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
-- **1.3.0** (2026-10-04) Typography from Figma: Label, input and text box text use Description (12 / 14 / 12) as in Figma; required mark Label / primary 12.

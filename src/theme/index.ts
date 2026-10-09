@@ -1,3 +1,3 @@
-export { ThemeProvider } from './ThemeProvider.tsx'
-export { useTheme } from './useTheme.ts'
-export type { ModePreference, ThemeContextValue } from './themeContext.ts'
+export { ThemeProvider } from './ThemeProvider'
+export { useTheme } from './useTheme'
+export type { ModePreference, ThemeContextValue } from './themeContext'

@@ -1,2 +1,2 @@
-export { BottomSheet, BottomSheetSurface, type BottomSheetPlacement, type BottomSheetProps } from './BottomSheet.tsx'
-export { BottomSheetHeader, type BottomSheetHeaderProps } from './BottomSheetHeader.tsx'
+export { BottomSheet, BottomSheetSurface, type BottomSheetPlacement, type BottomSheetProps } from './BottomSheet'
+export { BottomSheetHeader, type BottomSheetHeaderProps } from './BottomSheetHeader'

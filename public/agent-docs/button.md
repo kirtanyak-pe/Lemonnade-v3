@@ -5,7 +5,7 @@
 - Group: Action
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29225
 - Source: `src/components/Button`
 - Also called: Action, call to action, CTA
@@ -257,6 +257,6 @@ Button — 7 variants · 3 sizes · 3 states
 
 ## Recent changes
 
+- **1.6.0** (2026-10-10) Works in any React app: ref reaches the <button> (React 18 and 19): focus it, measure it. Development warnings no longer depend on Vite, so the button runs in Next.js, webpack and other bundlers. The loader artwork is built in (no .svg import).
 - **1.5.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.4.1** (2026-10-01) CS PRO primary is gold: CS PRO: Primary button uses the brand gold (surface-accent-brand-default) with white text. ♿ Accessible CS PRO keeps the inverted primary, and Buy uses success green.

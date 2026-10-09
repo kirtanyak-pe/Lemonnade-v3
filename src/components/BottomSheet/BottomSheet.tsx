@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './BottomSheet.module.css'
-import { SheetDepthContext, sheetStack } from './sheetStack.ts'
+import { SheetDepthContext, sheetStack } from './sheetStack'
 import { Overlay } from '../Overlay'
 
 /** Figma "L3: Bottom sheet" (node 4543:63932). Figma isBottom=False → `placement="top"`. */
@@ -95,7 +95,8 @@ export function BottomSheet({
   const drag = useRef<{ id: number; startY: number; startT: number; content: HTMLElement | null; active: boolean } | null>(null)
   // Stack level: 1 = first sheet over the screen (no back button), 2 = stacked on it (back button). Max 2.
   const id = useId()
-  const depth = useSyncExternalStore(sheetStack.subscribe, () => sheetStack.depthOf(id))
+  // On the server no sheet is open yet, so it's the first level.
+  const depth = useSyncExternalStore(sheetStack.subscribe, () => sheetStack.depthOf(id), () => 1)
   const onCloseRef = useRef(onClose)
   useEffect(() => { onCloseRef.current = onClose })
 
@@ -211,7 +212,8 @@ export function BottomSheet({
     }
   }, [open, mounted, placement])
 
-  if (!mounted) return null
+  // Server rendering: there's no document to portal into; the sheet appears once the page is running in the browser.
+  if (!mounted || typeof document === 'undefined') return null
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {

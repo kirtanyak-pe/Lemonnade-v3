@@ -1,1 +1,1 @@
-export { Select, type SelectProps, type SelectSize } from './Select.tsx'
+export { Select, type SelectProps, type SelectSize } from './Select'

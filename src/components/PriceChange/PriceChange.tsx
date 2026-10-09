@@ -1,5 +1,5 @@
 import { Icon } from '../Icon'
-import { msArrowDropDown, msArrowDropUp } from '../../icons/material'
+import { msArrowDropDown, msArrowDropUp } from '../icons/glyphs'
 import styles from './PriceChange.module.css'
 
 export type PriceChangeSize = 'sm' | 'md' | 'lg'

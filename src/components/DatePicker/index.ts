@@ -1,1 +1,1 @@
-export { DatePicker, type DatePickerProps, type DateRange } from './DatePicker.tsx'
+export { DatePicker, type DatePickerProps, type DateRange } from './DatePicker'

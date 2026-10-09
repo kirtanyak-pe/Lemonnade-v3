@@ -1,4 +1,5 @@
 import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { isDev } from '../env'
 import styles from './Tabs.module.css'
 
 /** Figma "L3: base tab" (node 4543:65889). Figma isPill → `appearance="pill"`, Type → `emphasis`, isSmall → `size="sm"`. */
@@ -50,7 +51,7 @@ export function Tab({
   const showSub = Boolean(subLabel) && appearance === 'pill' && !iconOnly
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     if (hideLabel && !iconLeft && !iconRight) console.warn(`[L3] <Tab hideLabel> "${children}" needs an icon; showing the label instead.`)
     if (hideLabel && iconLeft && iconRight) console.warn(`[L3] <Tab hideLabel> "${children}" shows one icon only; iconRight is ignored.`)
     if (subLabel && appearance !== 'pill') console.warn(`[L3] <Tab subLabel> is for chip (pill) tabs only; ignored on underline tabs.`)

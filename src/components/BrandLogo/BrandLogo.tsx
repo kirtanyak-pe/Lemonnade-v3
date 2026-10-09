@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { CoinswitchMark, CoinswitchWordmark, LemonnMark, LemonnWordmark, ZingArt, lemonnMarkOffset } from './BrandArt.tsx'
+import { CoinswitchMark, CoinswitchWordmark, LemonnMark, LemonnWordmark, ZingArt, lemonnMarkOffset } from './BrandArt'
 import styles from './BrandLogo.module.css'
 
 export type Brand = 'lemonn' | 'zing' | 'coinswitch'

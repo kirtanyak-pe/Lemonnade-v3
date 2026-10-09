@@ -1,9 +1,10 @@
 import { useEffect, type RefObject } from 'react'
+import { isDev } from './env'
 
 /** Development-only warning when a form control would be announced without a name. */
 export function useAccessibleNameWarning(ref: RefObject<HTMLInputElement | null>, component: string) {
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     const el = ref.current
     if (!el) return
     const named =

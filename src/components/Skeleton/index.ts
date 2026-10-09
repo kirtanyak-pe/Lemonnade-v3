@@ -1,1 +1,1 @@
-export { Skeleton, SkeletonListRow, SkeletonCard, type SkeletonProps, type SkeletonShape } from './Skeleton.tsx'
+export { Skeleton, SkeletonListRow, SkeletonCard, type SkeletonProps, type SkeletonShape } from './Skeleton'

@@ -1,1 +1,1 @@
-export { Stepper, type StepperProps, type StepperSize } from './Stepper.tsx'
+export { Stepper, type StepperProps, type StepperSize } from './Stepper'

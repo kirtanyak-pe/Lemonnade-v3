@@ -9,7 +9,7 @@
   --sw-track: var(--l3-content-tertiary);
   --sw-knob-color: var(--l3-content-inverted);
   /* Figma's off-knob shadow is a raw effect (not a style or variable): 0 1 2, black 25%. */
-  --sw-knob-shadow: 0 1px 2px rgb(from var(--l3-static-black) r g b / var(--l3-opacity-25));
+  --sw-knob-shadow: 0 1px 2px color-mix(in srgb, var(--l3-static-black) calc(var(--l3-opacity-25) * 100%), transparent);
 
   position: relative;
   display: inline-flex;

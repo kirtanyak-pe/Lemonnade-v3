@@ -1,1 +1,1 @@
-export { Actionbar, ActionbarAction, type ActionbarProps } from './Actionbar.tsx'
+export { Actionbar, ActionbarAction, type ActionbarProps } from './Actionbar'

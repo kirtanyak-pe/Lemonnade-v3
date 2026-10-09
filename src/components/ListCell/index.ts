@@ -1,1 +1,1 @@
-export { ListCell, type ListCellProps } from './ListCell.tsx'
+export { ListCell, type ListCellProps } from './ListCell'

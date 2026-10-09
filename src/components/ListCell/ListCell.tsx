@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { isDev } from '../env'
 import styles from './ListCell.module.css'
 
 /** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isMultiline → `multiline`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
@@ -71,7 +72,7 @@ export function ListCell({
 
   // A button/link row can't contain another control (invalid nesting; screen readers get confused).
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     if (selected && !interactive) console.warn('[L3] <ListCell selected> needs a tappable row (onClick, href or as="label").')
     if (Element !== 'button' && Element !== 'a') return
     if (trailingRef.current?.querySelector('input, button, a, select, textarea')) {

@@ -5,7 +5,7 @@
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.3.1
+- Version: 2.3.2
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -232,6 +232,6 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.3.2** (2026-10-10) Server rendering: Renders on the server (Next.js): the stack level has a server value and the portal waits for the browser. A closed sheet used to throw during server rendering. Development warnings no longer depend on Vite.
 - **2.3.1** (2026-10-09) Overlay is its own component: The dimmed backdrop is now the shared Overlay component, so other modals can use it. No visual change. Slot names match Figma: footer is the Figma Utility slot (the button dock); utility is a code-only area under it.
 - **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
-- **2.2.0** (2026-10-04) Typography from Figma: Header text matches Figma: small → Heading / primary 16 + Description 12; large → Heading / secondary 20 + Label / secondary 14.

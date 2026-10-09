@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { Icon } from '../Icon'
-import { msChevronLeft, msChevronRight } from '../../icons/material'
+import { msChevronLeft, msChevronRight } from '../icons/glyphs'
 import styles from './DatePicker.module.css'
 
 export type DateRange = { start: Date | null; end: Date | null }

@@ -1,1 +1,1 @@
-export { Card, type CardProps } from './Card.tsx'
+export { Card, type CardProps } from './Card'

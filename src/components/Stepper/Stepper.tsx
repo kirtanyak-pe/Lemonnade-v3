@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from 'react'
 import { Icon } from '../Icon'
-import { msAdd, msRemove } from '../../icons/material'
+import { msAdd, msRemove } from '../icons/glyphs'
 import styles from './Stepper.module.css'
 
 export type StepperSize = 'sm' | 'lg'

@@ -5,7 +5,7 @@
 - Group: Feedback & status
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.4.0
+- Version: 1.4.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65562
 - Source: `src/components/Aerobar`
 - Also called: Toast, snackbar, banner, alert bar, notification
@@ -84,6 +84,6 @@ Aerobar & toast — Status on the page, or a result
 
 ## Recent changes
 
+- **1.4.1** (2026-10-10) Wider browser support: The 60% / 80% paragraph colours use color-mix() instead of relative rgb(from …): identical colours, and they work back to Chrome 111 / Safari 16.2.
 - **1.4.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.3.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
-- **1.3.0** (2026-09-28) Figma color update: Soft bars: paragraph is content-secondary at 60%. Solid Danger and Success use static white text (stays white in dark mode). The action keeps Figma’s dark state layer on every bar.

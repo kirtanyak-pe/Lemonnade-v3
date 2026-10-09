@@ -114,5 +114,10 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 ## 6. Repo conventions
 
 - Every component change gets a release in `src/docs/changelog.ts` (semver per component).
+- **Components must work in any React app** (developers copy them — DEVELOPERS.md). Inside `src/components`,
+  `src/tokens` and `src/theme`: no `import.meta` (use `isDev` from `src/components/env.ts`), no `.ts`/`.tsx` extensions
+  in imports, no `.svg` imports from TS (add the SVG to `scripts/build-glyphs.ts`, run `npm run glyphs`, import the
+  string from `glyphs.ts`), nothing touching `window`/`document` during render, and form controls pass `ref` through.
+  `npm run check:portable` must pass.
 - Don't commit, push or publish unless asked. The public docs site (`npm run deploy:docs`) is only updated on
   explicit request.

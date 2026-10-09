@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../Icon'
-import { msKeyboardArrowDown } from '../../icons/material'
-import { lmSwitchArrowVertical } from '../../icons/lemonnade'
+import { lmSwitchArrowVertical, msKeyboardArrowDown } from '../icons/glyphs'
 import styles from './Select.module.css'
 
 export type SelectSize = 'sm' | 'md' | 'lg'

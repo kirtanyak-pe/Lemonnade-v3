@@ -1,1 +1,1 @@
-export { MaskIcon } from './MaskIcon.tsx'
+export { MaskIcon } from './MaskIcon'

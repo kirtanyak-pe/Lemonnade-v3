@@ -1,1 +1,1 @@
-export { Icon, type IconProps, type IconSize } from './Icon.tsx'
+export { Icon, type IconProps, type IconSize, type IconSource } from './Icon'

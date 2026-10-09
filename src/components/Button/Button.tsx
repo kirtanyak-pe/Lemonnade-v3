@@ -1,7 +1,7 @@
-import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { MaskIcon } from '../MaskIcon'
-import loaderTrack from './assets/loader-track.svg'
-import loaderArc from './assets/loader-arc.svg'
+import { loaderArc, loaderTrack } from './glyphs'
+import { isDev } from '../env'
 import styles from './Button.module.css'
 
 /** Figma "L3: Button" (node 4471:29225). */
@@ -36,20 +36,23 @@ export type ButtonProps = ButtonBaseProps & ButtonContent
 
 const isVisible = (node: ReactNode) => node != null && node !== false && node !== ''
 
-export function Button({
-  variant = 'primary',
-  size = 'lg',
-  loading = false,
-  disabled = false,
-  iconLeft,
-  iconRight,
-  fullWidth = false,
-  type = 'button',
-  className,
-  onClick,
-  children,
-  ...rest
-}: ButtonProps) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    variant = 'primary',
+    size = 'lg',
+    loading = false,
+    disabled = false,
+    iconLeft,
+    iconRight,
+    fullWidth = false,
+    type = 'button',
+    className,
+    onClick,
+    children,
+    ...rest
+  },
+  ref,
+) {
   const state = disabled ? 'disabled' : loading ? 'loading' : 'default'
   const hasLabel = isVisible(children)
   // Icon-only buttons show exactly one icon (the left one wins if both are passed).
@@ -58,7 +61,7 @@ export function Button({
   const ariaLabel = (rest as { 'aria-label'?: string })['aria-label']
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!isDev) return
     if (!hasLabel && !isVisible(iconLeft) && !isVisible(iconRight)) {
       console.warn('[L3] <Button> has no label and no icon. Show at least one of label, iconLeft, iconRight.')
     } else if (!hasLabel && isVisible(iconLeft) && isVisible(iconRight)) {
@@ -70,6 +73,7 @@ export function Button({
   return (
     <button
       {...rest}
+      ref={ref}
       type={type}
       className={[styles.button, fullWidth && styles.fullWidth, className].filter(Boolean).join(' ')}
       data-variant={variant}
@@ -95,4 +99,4 @@ export function Button({
       )}
     </button>
   )
-}
+})

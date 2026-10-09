@@ -1,7 +1,8 @@
 import { useContext, useEffect, type ReactNode } from 'react'
 import { BackIcon, InfoIcon } from '../icons'
+import { isDev } from '../env'
 import styles from './BottomSheet.module.css'
-import { SheetDepthContext } from './sheetStack.ts'
+import { SheetDepthContext } from './sheetStack'
 
 /** Figma "L3: Bottom sheet header" (node 4543:63897). Figma isSmall → `size="sm"`. */
 export type BottomSheetHeaderProps = {
@@ -54,7 +55,7 @@ export function BottomSheetHeader({
   const showBack = Boolean(onBack) && depth !== 1
 
   useEffect(() => {
-    if (import.meta.env.DEV && onBack && depth === 1) {
+    if (isDev && onBack && depth === 1) {
       console.warn(`[L3] <BottomSheetHeader onBack> "${heading}": the first bottom sheet over a screen has no back button — only a sheet stacked on another sheet does. Hidden.`)
     }
   }, [onBack, depth, heading])

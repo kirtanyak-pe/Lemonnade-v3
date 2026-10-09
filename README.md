@@ -1,32 +1,34 @@
-# React + TypeScript + Vite
+# Lemonnade V3 (L3) design system
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React components, design tokens and docs for the ✅ Lemonnade V3 Figma library.
 
-Currently, two official plugins are available:
+- **Docs:** https://kirtanyak-pe.github.io/lemonnade-v3-docs/ — every component with its variants, rules and a
+  playground.
+- **Taking components into an app?** Start with [DEVELOPERS.md](DEVELOPERS.md): what to copy, setup (tokens, font,
+  theme), icons, refs and forms, server rendering, updating.
+- **Design rules:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) (spacing, layering, cards, selection…) and the `USAGE.md`
+  files next to the components.
+- **AI agents** building UI with these components: [AGENTS.md](AGENTS.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Layout
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+src/components/   the components (entry point: src/components/index.ts)
+src/tokens/       design tokens — source JSON from Figma, generated CSS custom properties
+src/theme/        ThemeProvider (product, dark mode, ♿ contrast)
+src/icons/        Material Symbols (docs icon browser) and Lemonnade's own icons
+src/docs/         the docs site
+scripts/          token, icon and docs builds; Figma migration tools; audits
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts
+
+| | |
+|---|---|
+| `npm run dev` | Docs site on http://localhost:5173 |
+| `npm run build` | Type-check and build the docs site |
+| `npm run tokens` | Rebuild the token CSS from `src/tokens/source` |
+| `npm run glyphs` | Rebuild the icon strings the components use from their SVGs |
+| `npm run check:portable` | Check the components work outside this repo: no Vite-only code, strict TypeScript, server rendering |
+| `npm run audit:ui -- <src>` | Check UI code against the L3 rules (tokens only, components first…) |
+| `npm run find -- "<need>"` | Find the component for a job |

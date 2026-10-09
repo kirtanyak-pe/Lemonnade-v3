@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { defaultProduct, isContrast, isProduct, productModes, resolveMode, type Contrast, type Mode, type Product } from '../tokens/themes.ts'
-import { STORAGE_KEY, ThemeContext, type ModePreference, type ThemeContextValue } from './themeContext.ts'
+import { defaultProduct, isContrast, isProduct, productModes, resolveMode, type Contrast, type Mode, type Product } from '../tokens/themes'
+import { STORAGE_KEY, ThemeContext, type ModePreference, type ThemeContextValue } from './themeContext'
 
 /** `contrast: null` = never chosen: follow the OS "Increase contrast" setting. */
 type Stored = { product: Product; mode: ModePreference; contrast: Contrast | null }
@@ -24,10 +24,12 @@ function readStored(): Stored {
 
 /** Live result of a media query (system dark mode, "Increase contrast"). */
 function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(() => matchMedia(query).matches)
+  // false while server rendering (no window); the effect below picks up the real value in the browser.
+  const [matches, setMatches] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches)
   useEffect(() => {
     const list = matchMedia(query)
     const onChange = () => setMatches(list.matches)
+    onChange()
     list.addEventListener('change', onChange)
     return () => list.removeEventListener('change', onChange)
   }, [query])

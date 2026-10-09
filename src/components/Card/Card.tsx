@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
+import { isDev } from '../env'
 import styles from './Card.module.css'
 
 /**
@@ -69,7 +70,7 @@ export function Card({ children, onClick, href, as = 'div', padding = 'default',
   // Dev-only checks for the card rules.
   useEffect(() => {
     // Skip illustrations (e.g. docs Don't examples), which are rendered inert on purpose.
-    if (!import.meta.env.DEV || !ref.current || ref.current.closest('[inert]')) return
+    if (!isDev || !ref.current || ref.current.closest('[inert]')) return
     // With an action footer, the card's own action is the body (ref) — controls belong in the footer, not the body.
     const controls = ref.current.querySelectorAll('button, a[href], input, select, textarea')
     // "One action" means one button or link — a card holding just a switch or a field is a settings card.

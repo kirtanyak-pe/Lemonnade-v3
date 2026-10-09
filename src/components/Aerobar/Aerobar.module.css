@@ -8,7 +8,7 @@
   --ab-surface: var(--l3-surface-tertiary);
   --ab-content: var(--l3-content-primary);
   /* Figma: content/secondary with its fill at 60% (Figma fill opacity → opacity token). */
-  --ab-paragraph: rgb(from var(--l3-content-secondary) r g b / calc(alpha * var(--l3-opacity-60)));
+  --ab-paragraph: color-mix(in srgb, var(--l3-content-secondary) calc(var(--l3-opacity-60) * 100%), transparent);
   --ab-shadow: var(--l3-shadow-elevation-medium);
 
   display: flex;
@@ -35,7 +35,7 @@
   --ab-surface: var(--ab-solid, var(--l3-surface-inverted));
   --ab-on-solid: var(--l3-content-inverted);
   --ab-content: var(--ab-on-solid);
-  --ab-paragraph: rgb(from var(--ab-on-solid) r g b / calc(alpha * var(--l3-opacity-60)));
+  --ab-paragraph: color-mix(in srgb, var(--ab-on-solid) calc(var(--l3-opacity-60) * 100%), transparent);
   --ab-action: var(--ab-on-solid);
 }
 
@@ -47,11 +47,11 @@
 /* Solid warning: static black on yellow. Paragraph 80% inline, 60% floating (Figma). */
 .aerobar[data-type='warning'][data-emphasis='primary'] {
   --ab-on-solid: var(--l3-static-black);
-  --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-80));
+  --ab-paragraph: color-mix(in srgb, var(--l3-static-black) calc(var(--l3-opacity-80) * 100%), transparent);
 }
 
 .aerobar[data-type='warning'][data-emphasis='primary'][data-floating] {
-  --ab-paragraph: rgb(from var(--l3-static-black) r g b / var(--l3-opacity-60));
+  --ab-paragraph: color-mix(in srgb, var(--l3-static-black) calc(var(--l3-opacity-60) * 100%), transparent);
 }
 
 /* Figma: the soft neutral toast floats on elevation/low; every other floating one on medium. */
