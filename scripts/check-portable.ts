@@ -48,7 +48,18 @@ try {
 const require = createRequire(repo + 'package.json')
 const { createServer } = await import(require.resolve('vite'))
 const react = (await import(require.resolve('@vitejs/plugin-react'))).default
-const server = await createServer({ root: repo, configFile: false, logLevel: 'silent', plugins: [react()], server: { middlewareMode: true, hmr: false }, appType: 'custom' })
+// Its own cache folder and no dependency pre-bundling, so it never rewrites the dev server's node_modules/.vite
+// (a running `npm run dev` would otherwise serve a mix of old and new React files).
+const server = await createServer({
+  root: repo,
+  configFile: false,
+  cacheDir: repo + 'node_modules/.vite-check-portable',
+  optimizeDeps: { noDiscovery: true, include: [] },
+  logLevel: 'silent',
+  plugins: [react()],
+  server: { middlewareMode: true, hmr: false },
+  appType: 'custom',
+})
 const { renderToString } = require('react-dom/server') as typeof import('react-dom/server')
 const { createElement: h } = require('react') as typeof import('react')
 let rendered = 0
