@@ -13,6 +13,11 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 - **Curate before swapping.** A structural guess found 88 "clickable cards" — including 360×536 screen blocks and
   input rows. Grouping by name + size + tokens gave exact matches (90), and the content check still refused 4.
   F&O run 2026-10-09: 14 section headers, 62 price changes, 86 cards (66 Clickable, 18 Filled, 2 Static).
+- **Hand the padding to the component, then measure.** Section cards had 0 side padding and rows padded 12; first try
+  refused all 8 ("text would move") because the content was fitted to the card BEFORE the full-width rows were found
+  (their width had already shrunk). Strip row padding while the copy is still full width, then fit → 8/8 exact.
+  Second pass: 8 section cards → Card Static, 90 filter chips → base tab pills (width kept, label centre ±1.5),
+  Position card + Position info mains: 34 D2 colours → L3 with all 93 instances unmoved.
 
 - **A token's display name is not a colour.** The Colors page set swatches to `surface-default` (the copyable name)
   instead of `var(--l3-surface-default)` — twice (accent band, then the whole semantic tree). The browser drops an

@@ -1,4 +1,4 @@
-// L3 registry — bundled 2026-10-08 by scripts/figma/bundle.ts (source: scripts/figma/registry.js)
+// L3 registry — bundled 2026-10-09 by scripts/figma/bundle.ts (source: scripts/figma/registry.js)
 const CONFIG = {"nodeIds":["PUT-NODE-IDS-HERE"]}
 const DATA = {"l3ColorPrefix":"🔷 L3/color/","library":{}}
 const lines = []
