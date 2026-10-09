@@ -43,20 +43,28 @@ export type CardProps = CardLayout & {
    * Announced as pressed (button) or current (link).
    */
   selected?: boolean
+  /**
+   * Action footer (Figma: a full-width surface/secondary strip at the bottom, 12 padding): buttons that act on the
+   * card's subject — e.g. ☆ · Learn more · Apply. On a clickable card the body stays the tap target and the footer
+   * sits beside it, so its buttons are never nested in the card's button. Keep it to ≤ 3 actions, one primary at most.
+   */
+  footer?: ReactNode
   /** Accessible name for a clickable card when its text alone isn't a good one. */
   'aria-label'?: string
   className?: string
 }
 
-export function Card({ children, onClick, href, as = 'div', padding = 'default', variant = 'default', surface, selected = false, 'aria-label': ariaLabel, className }: CardProps) {
+export function Card({ children, onClick, href, as = 'div', padding = 'default', variant = 'default', surface, selected = false, footer, 'aria-label': ariaLabel, className }: CardProps) {
   const ref = useRef<HTMLElement>(null)
   const clickable = Boolean(onClick || href)
   const Element = href ? 'a' : onClick ? 'button' : as
+  const hasFooter = footer != null && footer !== false
 
   // Dev-only checks for the card rules.
   useEffect(() => {
     // Skip illustrations (e.g. docs Don't examples), which are rendered inert on purpose.
     if (!import.meta.env.DEV || !ref.current || ref.current.closest('[inert]')) return
+    // With an action footer, the card's own action is the body (ref) — controls belong in the footer, not the body.
     const controls = ref.current.querySelectorAll('button, a[href], input, select, textarea')
     // "One action" means one button or link — a card holding just a switch or a field is a settings card.
     const actions = ref.current.querySelectorAll('button, a[href]')
@@ -70,19 +78,33 @@ export function Card({ children, onClick, href, as = 'div', padding = 'default',
     }
   })
 
+  const actionProps = {
+    ...(Element === 'button' ? { type: 'button' as const, onClick, 'aria-pressed': selected } : {}),
+    ...(Element === 'a' ? { href, onClick, 'aria-current': selected ? ('true' as const) : undefined } : {}),
+  }
+  const cardAttrs = {
+    'data-interactive': clickable || undefined,
+    'data-padding': padding,
+    'data-variant': variant,
+    'data-selected': (clickable && selected) || undefined,
+    style: surface ? ({ '--card-surface': `var(--l3-surface-${surface})` } as CSSProperties) : undefined,
+  }
+
+  // With an action footer the card is a container: the body is the tap target, the footer strip holds the buttons.
+  if (hasFooter) {
+    const Body = clickable ? Element : 'div'
+    return (
+      <div className={[styles.card, className].filter(Boolean).join(' ')} data-footer="" {...cardAttrs}>
+        <Body ref={ref as never} className={styles.body} {...actionProps} aria-label={ariaLabel}>
+          {children}
+        </Body>
+        <div className={styles.footer}>{footer}</div>
+      </div>
+    )
+  }
+
   return (
-    <Element
-      ref={ref as never}
-      className={[styles.card, className].filter(Boolean).join(' ')}
-      data-interactive={clickable || undefined}
-      data-padding={padding}
-      data-variant={variant}
-      data-selected={(clickable && selected) || undefined}
-      style={surface ? ({ '--card-surface': `var(--l3-surface-${surface})` } as CSSProperties) : undefined}
-      {...(Element === 'button' ? { type: 'button' as const, onClick, 'aria-pressed': selected } : {})}
-      {...(Element === 'a' ? { href, onClick, 'aria-current': selected ? ('true' as const) : undefined } : {})}
-      aria-label={ariaLabel}
-    >
+    <Element ref={ref as never} className={[styles.card, className].filter(Boolean).join(' ')} {...cardAttrs} {...actionProps} aria-label={ariaLabel}>
       {children}
     </Element>
   )

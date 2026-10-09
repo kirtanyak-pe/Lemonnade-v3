@@ -312,7 +312,10 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   is set manually (`surface`) — transparent, no border, no shadow. It can still be clickable.
   <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
-  So a clickable card never contains other buttons or links.
+  So a clickable card never contains other buttons or links **in its content**.
+- **Action footer** (the one exception): quick actions on the card's subject (☆ save · Learn more · Apply) go in a
+  full-width `surface-secondary` strip at the bottom of the card (12 padding, ≤ 3 actions, ≤ 1 primary). The rest of
+  the card stays the tap target; a footer press never presses the card (`<Card onClick footer={…}>`).
 - **Padding & placement:** cards **always sit inside a margin** — never touching their container's edges (16 from the
   screen edge, 16 between cards); the margin comes from the parent (padding / gap). Padding is 12 by default.
   A clickable or static card may drop its own padding (`padding="none"`, Figma isPadded = False) **only when its

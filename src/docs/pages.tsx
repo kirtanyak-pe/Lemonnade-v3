@@ -582,6 +582,11 @@ import { msWallet, msWalletFill } from './icons/material'
           <DevOnly><p><code>padding="none"</code> on a default (clickable / static) or flat card; the sections inside carry the 12 padding. Filled cards are always padded (TypeScript enforces it). The margin around cards comes from the parent's padding or gap — cards have no outer margin of their own.</p></DevOnly>
         </section>
         <section className={styles.section}>
+          <h2>Action footer</h2>
+          <p>A clickable card is one tap target, so it never has buttons inside its content. When the card needs quick actions on its subject — save, learn more, apply — put them in an <strong>action footer</strong>: a full-width grey strip (surface-secondary, 12 padding) at the bottom of the card. The rest of the card stays the tap target; pressing a footer button doesn't press the card. Keep it to three actions at most, with one primary at most.</p>
+          <DevOnly><p><code>footer</code> takes the buttons. On a clickable card the body becomes the button / link and the footer sits beside it (never nested); a development warning still flags controls inside the body.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
           <h2>Selected cards</h2>
           <p>When cards are a list of choices — pick a contract, a plan, an account — the chosen one is selected. A card with a border keeps everything and only swaps border-light for the darker border-dark. A flat card has no border, so it shows its selection with a surface-secondary background; unselected, a flat card has no fill at all and takes the colour of whatever it sits on — another card or the screen. Only clickable cards can be selected; static and filled cards never are.</p>
           <DevOnly><p><code>selected</code> on a clickable card (<code>onClick</code> / <code>href</code>). It's announced as pressed (button) or current (link); a development warning flags <code>selected</code> on a card that isn't clickable.</p></DevOnly>
@@ -602,6 +607,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
       { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px. none when the content’s sections bring their own padding (content still 12 from the edge); not on filled cards.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background.' },
+      { name: 'footer', type: 'ReactNode', description: 'Action footer: a full-width surface-secondary strip with up to 3 buttons. On a clickable card the body stays the tap target.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
   },

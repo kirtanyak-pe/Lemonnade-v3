@@ -197,6 +197,14 @@ export const changelog: Record<string, Release[]> = {
   ],
   card: [
     {
+      version: '1.7.0', date: '2026-10-09',
+      summary: 'Action footer',
+      changes: [
+        { kind: 'added', text: 'Action footer: a full-width grey strip at the bottom of a card for up to three quick actions (save, learn more, apply). On a clickable card the rest of the card stays the tap target, and pressing a footer button doesn\'t press the card.' },
+        { kind: 'added', text: 'footer prop; the clickable body becomes the button/link and the footer sits beside it (never nested).', dev: true },
+      ],
+    },
+    {
       version: '1.6.0', date: '2026-10-09',
       summary: 'No padding is back for rounded cards',
       changes: [

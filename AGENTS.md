@@ -62,7 +62,7 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
   `surface-secondary` (grey). Never fill a whole section grey.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
-  is a clickable card; static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
+  is a clickable card (no buttons in its content — quick actions go in an action footer strip, `footer`); static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
   (`surface-secondary`, no border/shadow) for grouped details. Selected (chosen option in a list of choices, clickable
   only, `selected`): bordered → `border-dark` instead of `border-light`; flat → `surface-secondary` (flat is otherwise
   unfilled). Cards sit inside a margin; padding 12 — a clickable/static card may use padding="none" only when its

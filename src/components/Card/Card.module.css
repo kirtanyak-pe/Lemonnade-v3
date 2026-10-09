@@ -97,12 +97,83 @@
   outline-offset: var(--l3-spacing-02);
 }
 
+/* ---- Action footer ------------------------------------------------------------------
+ * The card becomes a container: the body is the tap target (press, hover, focus), the footer is a full-width
+ * surface-secondary strip with 12 padding for its buttons. Pressing a footer button doesn't press the card.
+ */
+.card[data-footer] {
+  overflow: hidden;
+  gap: 0;
+  padding: 0;
+}
+
+.body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--l3-spacing-08);
+  width: 100%;
+  margin: 0;
+  padding: var(--l3-spacing-12);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-decoration: none;
+}
+
+.card[data-footer][data-padding='none'] .body {
+  padding: 0;
+}
+
+.card[data-footer][data-interactive] .body {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.footer {
+  display: flex;
+  gap: var(--l3-spacing-08);
+  align-items: center;
+  padding: var(--l3-spacing-12);
+  background: var(--l3-surface-secondary);
+}
+
+.card[data-footer][data-interactive]:active {
+  transform: none;
+}
+
+.card[data-footer][data-interactive]:has(> .body:active) {
+  transform: scale(var(--l3-motion-scale-press-default));
+}
+
+@media (hover: hover) {
+  .card[data-footer][data-interactive]:hover {
+    background-image: none;
+  }
+
+  .card[data-footer][data-interactive] > .body:hover {
+    background-image: linear-gradient(var(--l3-state-layer-dark-hover), var(--l3-state-layer-dark-hover));
+  }
+}
+
+.card[data-footer] .body:focus-visible {
+  outline: var(--l3-spacing-02) solid var(--l3-border-dark);
+  outline-offset: calc(-1 * var(--l3-spacing-02));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card[data-interactive] {
     transition: none;
   }
 
   .card[data-interactive]:active {
+    transform: none;
+  }
+
+  .card[data-footer][data-interactive]:has(> .body:active) {
     transform: none;
   }
 }

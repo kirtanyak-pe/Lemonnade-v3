@@ -442,6 +442,7 @@
     "surface",
     "padding",
     "selected",
+    "footer",
     "aria-label"
    ],
    "tokens": [
