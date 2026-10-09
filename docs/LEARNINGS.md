@@ -5,6 +5,12 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 
 ## 2026-10-09 — building and dogfooding the playbook tools
 
+- **Gradients hide old colours.** Token migration skipped gradient stops: F&O had 250 gradients, 117 still on D2 or raw
+  stops that resolve in LIGHT mode on CS PRO Dark screens (option-chain range bars fading to #def4ea, light-grey edge
+  fades, white→lime icon tiles). Fix: rebind each stop to an L3 token, keep positions, and use the matching
+  `gradient-stop-0/<token>` for a transparent end (never a raw transparent colour). Result: 161 fully L3; the other 89
+  are icon artwork / coin art. Next: teach migrate-tokens to walk `gradientStops`.
+
 - **Inside a hidden layer, a new instance has no sub-layers.** 6 product tiles on the hidden "Introduction sheet"
   failed at "slot is null" (`children` came back empty). Fix: show the hidden ancestor for the swap and hide it again
   in a `finally`. Errors were caught per item and nothing was left half-done (tiles untouched until the retry).
