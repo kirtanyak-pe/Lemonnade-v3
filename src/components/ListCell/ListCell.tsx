@@ -1,12 +1,17 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import styles from './ListCell.module.css'
 
-/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
+/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isMultiline → `multiline`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
 export type ListCellProps = {
   /** Figma "Label goes here". */
   label: ReactNode
   /** Figma "Type description" (👁️ description). */
   description?: ReactNode
+  /**
+   * Figma isMultiline: the description wraps onto as many lines as it needs (e.g. a setting explained in a sentence).
+   * Off (default), it stays on one line and ends in "…". The label always stays on one line.
+   */
+  multiline?: boolean
   size?: 'md' | 'sm'
   /**
    * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
@@ -45,6 +50,7 @@ export type ListCellProps = {
 export function ListCell({
   label,
   description,
+  multiline = false,
   size = 'md',
   variant = 'plain',
   iconLeft,
@@ -83,6 +89,7 @@ export function ListCell({
     <Element
       className={[styles.cell, className].filter(Boolean).join(' ')}
       data-size={size}
+      data-multiline={multiline || undefined}
       data-variant={variant}
       data-interactive={interactive || undefined}
       data-selected={(interactive && selected) || undefined}

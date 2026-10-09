@@ -136,6 +136,13 @@
   color: var(--l3-content-secondary);
 }
 
+/* Figma isMultiline: the description wraps instead of truncating. */
+.cell[data-multiline] .description {
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 /* Figma Dot-L / Dot-R: 8px discover dot with a 2px surface ring, on the icon's top-right. */
 .dot {
   position: absolute;

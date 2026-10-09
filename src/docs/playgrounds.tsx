@@ -722,6 +722,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'size', label: 'isSmall', type: 'select', options: ['md', 'sm'], optionLabels: isSmallLabels, default: 'md' },
       { name: 'label', label: '✏️ Label', type: 'text', default: 'RELIANCE' },
       { name: 'description', label: '✏️ Description', type: 'text', default: '12 shares · ₹35,365' },
+      { name: 'multiline', label: 'isMultiline', type: 'boolean', default: false, showIf: (v) => Boolean(v.description) },
       { name: 'as', label: 'Tappable', type: 'select', options: ['div', 'button'], optionLabels: { div: 'No', button: 'Yes' }, default: 'button', showIf: (v) => v.trailing !== 'switch' },
       { name: 'iconLeft', label: '👁️ Icon - L', type: 'boolean', default: false },
       { name: 'trailing', label: 'Right side (👁️ Icon - R / trailing)', type: 'select', options: ['none', 'chevron', 'tag', 'switch'], default: 'chevron' },
@@ -736,6 +737,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
           size={s(v, 'size') as 'md' | 'sm'}
           label={s(v, 'label')}
           description={s(v, 'description') || undefined}
+          multiline={b(v, 'multiline')}
           as={trailing === 'switch' ? 'label' : (s(v, 'as') as 'div' | 'button')}
           onClick={s(v, 'as') === 'button' && trailing !== 'switch' ? noop : undefined}
           iconLeft={b(v, 'iconLeft') ? <Icon icon={msBlurOn} /> : undefined}
@@ -754,6 +756,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['size', s(v, 'size'), 'md'],
         ['label', s(v, 'label')],
         ['description', s(v, 'description')],
+        ['multiline', b(v, 'multiline')],
         ['as', trailing === 'switch' ? 'label' : s(v, 'as'), 'div'],
         ['onClick', s(v, 'as') === 'button' && trailing !== 'switch' ? '{openHolding}' : undefined],
         ['iconLeft', b(v, 'iconLeft') ? '{<Icon icon={msBlurOn} />}' : undefined],

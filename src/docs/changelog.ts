@@ -801,6 +801,15 @@ export const changelog: Record<string, Release[]> = {
 
   'list-cell': [
     {
+      version: '1.5.0', date: '2026-10-09',
+      summary: 'Multi-line description',
+      changes: [
+        { kind: 'added', text: 'isMultiline: the description can wrap onto several lines instead of ending in "…" on one line. The label stays on one line.' },
+        { kind: 'figma', text: 'L3: list cell gets isMultiline = False · True (pending — added in the library next).' },
+        { kind: 'added', text: 'multiline prop.', dev: true },
+      ],
+    },
+    {
       version: '1.4.0', date: '2026-10-09',
       summary: 'Follows the Card rules',
       changes: [

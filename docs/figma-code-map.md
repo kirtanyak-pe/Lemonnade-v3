@@ -215,6 +215,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | isPlain = True · False | `variant="plain" \| "card"` |
 | isSmall = True | `size="sm"` (default `md`) |
 | ✏️ Label · ✏️ Description | `label` · `description` |
+| isMultiline = True | `multiline` (description wraps; default one line + "…") |
 | Icon-l (👁️ Icon - L) | `iconLeft` |
 | icon-r (👁️ Icon - R) | `iconRight` (chevron) or `trailing` (switch, tag, value) |
 | 👁️ Dot-L · 👁️ Dot-R | `dotLeft` · `dotRight` (+ `dotLabel`) |
