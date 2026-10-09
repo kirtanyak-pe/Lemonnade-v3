@@ -1,4 +1,6 @@
 import { Button } from '../components/Button'
+import { Icon } from '../components/Icon'
+import { lmSwitchArrowHorizontal, lmSwitchArrowVertical } from '../icons/lemonnade'
 import { Aerobar } from '../components/Aerobar'
 import { Tag } from '../components/Tag'
 import { ButtonPreview } from '../preview/ButtonPreview'
@@ -124,6 +126,15 @@ export const pages: DocPage[] = [
             <li><strong>Fill off</strong> is the default; the filled version marks a selected or active state.</li>
             <li>Missing an icon in Figma? Find it below, <strong>Copy SVG</strong> and paste it into Figma, or download it.</li>
           </ul>
+        </section>
+        <section className={styles.section}>
+          <h2>Lemonnade icons</h2>
+          <p>A few icons are drawn for Lemonnade and aren't in Material Symbols. They live in the same <strong>👁️ Lemonnade V3 → Icons</strong> library and follow the same size and color rules.</p>
+          <ul>
+            <li><Icon icon={lmSwitchArrowVertical} size={20} label="Switch arrow, vertical" /> <strong>Switch arrow toggle · ↕</strong> — the toggle in the Select switcher: switches between a few modes (Quantity ⇄ Amount).</li>
+            <li><Icon icon={lmSwitchArrowHorizontal} size={20} label="Switch arrow, horizontal" /> <strong>Switch arrow toggle · ↔</strong> — the same toggle, sideways.</li>
+          </ul>
+          <DevOnly><p><code>import {'{'} lmSwitchArrowVertical, lmSwitchArrowHorizontal {'}'} from './icons/lemonnade'</code>, then <code>&lt;Icon icon={'{'}lmSwitchArrowVertical{'}'} /&gt;</code>. Prefix <code>lm</code>; add one only when it's a Lemonnade drawing in the Figma icons library.</p></DevOnly>
         </section>
         <DevOnly>
           <section>

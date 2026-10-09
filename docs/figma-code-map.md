@@ -74,7 +74,9 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | ✏️ Label | children |
 | Size = Small · Medium · Large | `size="sm" \| "md" \| "lg"` |
 | isSubtle | `subtle` |
-| ↪ Icon (↕ · expand_more) | `icon="swap" \| "chevron"` |
+| ↪ Icon (D2 → Switch arrow toggle ↕ · expand_more) | `icon="swap" \| "chevron"` (↕ = `lmSwitchArrowVertical` from `icons/lemonnade`) |
+
+**Lemonnade icons** (not Material): Figma `D2 → Switch arrow toggle` Direction=↕ / ↔ → `lmSwitchArrowVertical` / `lmSwitchArrowHorizontal` from `src/icons/lemonnade`.
 
 ### L3: Date picker → `<DatePicker>` (`components/DatePicker`)
 | Figma | React |

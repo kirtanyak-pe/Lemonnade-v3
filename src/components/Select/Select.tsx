@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../Icon'
-import { msKeyboardArrowDown, msUnfoldMore } from '../../icons/material'
+import { msKeyboardArrowDown } from '../../icons/material'
+import { lmSwitchArrowVertical } from '../../icons/lemonnade'
 import styles from './Select.module.css'
 
 export type SelectSize = 'sm' | 'md' | 'lg'
@@ -42,7 +43,7 @@ export function Select({ children, onClick, size = 'sm', subtle = false, icon = 
       onClick={onClick}
     >
       <span className={styles.label}>{children}</span>
-      <Icon icon={icon === 'chevron' ? msKeyboardArrowDown : msUnfoldMore} size={iconSize[size]} />
+      <Icon icon={icon === 'chevron' ? msKeyboardArrowDown : lmSwitchArrowVertical} size={iconSize[size]} />
     </button>
   )
 }

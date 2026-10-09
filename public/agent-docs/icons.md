@@ -17,6 +17,15 @@ In Figma, place icons from the **👁️ Lemonnade V3 → Icons** library and sw
 - **Fill off** is the default; the filled version marks a selected or active state.
 - Missing an icon in Figma? Find it below, **Copy SVG** and paste it into Figma, or download it.
 
+### Lemonnade icons
+
+A few icons are drawn for Lemonnade and aren't in Material Symbols. They live in the same **👁️ Lemonnade V3 → Icons** library and follow the same size and color rules.
+
+- **Switch arrow toggle · ↕** — the toggle in the Select switcher: switches between a few modes (Quantity ⇄ Amount).
+- **Switch arrow toggle · ↔** — the same toggle, sideways.
+
+`import { lmSwitchArrowVertical, lmSwitchArrowHorizontal } from './icons/lemonnade'`, then `<Icon icon={lmSwitchArrowVertical} />`. Prefix `lm`; add one only when it's a Lemonnade drawing in the Figma icons library.
+
 ### Using an icon in code
 
 ```

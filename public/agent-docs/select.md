@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5377-49
 - Source: `src/components/Select`
 - Also called: Dropdown, picker, switcher, toggle, mode selector, filter
@@ -50,4 +50,5 @@ A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. It
 
 ## Recent changes
 
+- **1.0.1** (2026-10-09) Lemonnade switch arrow: The ↕ toggle is now the Lemonnade "Switch arrow toggle" icon from the Figma icons library (solid up and down arrowheads), instead of Material's unfold_more.
 - **1.0.0** (2026-10-09) New component: Select: an inline label + icon that opens a sheet of options — Small, Medium, Large, a subtle version, and ↕ or chevron icons. New Figma component L3: Select (Size × isSubtle, ✏️ Label, ↪ Icon). A button with aria-haspopup="dialog" and aria-expanded; 32px tap area.

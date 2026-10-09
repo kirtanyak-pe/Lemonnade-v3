@@ -132,6 +132,13 @@ export const changelog: Record<string, Release[]> = {
   ],
   select: [
     {
+      version: '1.0.1', date: '2026-10-09',
+      summary: 'Lemonnade switch arrow',
+      changes: [
+        { kind: 'fixed', text: 'The ↕ toggle is now the Lemonnade "Switch arrow toggle" icon from the Figma icons library (solid up and down arrowheads), instead of Material\'s unfold_more.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-10-09',
       summary: 'New component',
       changes: [
