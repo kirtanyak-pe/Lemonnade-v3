@@ -5,6 +5,15 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 
 ## 2026-10-09 — building and dogfooding the playbook tools
 
+- **Inside a hidden layer, a new instance has no sub-layers.** 6 product tiles on the hidden "Introduction sheet"
+  failed at "slot is null" (`children` came back empty). Fix: show the hidden ancestor for the swap and hide it again
+  in a `finally`. Errors were caught per item and nothing was left half-done (tiles untouched until the retry).
+- **Strokes counted in layout shift content by the stroke width.** Strategy cards (`strokesIncludedInLayout`) refused
+  with "text Δ−1,−1"; add the stroke weight to the content copy's padding (and keep the old content width when rows
+  spread items to the edges). Fourth pass: 12 product tiles, 4 Strategy cards → Card Clickable; 10 Buy/Sell-at-mkt /
+  Invest now → L3 Button Small; 12 chips (8 with trending icons) → base tab pills; 4 "Add watchlist" headers →
+  Section header with a ghost action (a third CTA kind — not in the rule yet).
+
 - **Pill rows doubled the page margin.** L3 Pill tabs carry a 16 inset (wrapper) for edge-to-edge use; 5 F&O
   instances also got 16 from their container or an instance override → first chip at 32. Fix: measure the first pill
   from the screen edge and remove the extra (instance override first, then the wrapper when the parent gives 16);
