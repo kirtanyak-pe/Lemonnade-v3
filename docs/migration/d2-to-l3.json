@@ -122,7 +122,11 @@
       "content": "content/accent/indicator/down-default",
       "surface": "surface/accent/indicator/down-default",
       "border": "border/accent/indicator/down-default"
-    }
+    },
+    "D2/color/Surface/accent/red-intense": "#solidRed",
+    "D2/color/border/accent/green-intense": "#borderGreenIntense",
+    "D2/color/tag/secondary/honey": "surface/accent/zing-light",
+    "color/base/alpha/black": "surface/overlay"
   },
   "contexts": {
     "$note": "[indicator choice (prices, P&L, buy/sell), status choice (outcomes)]. A layer counts as 'status' when the text near it (4 ancestors up) has a status word and no indicator pattern.",
@@ -141,6 +145,14 @@
     "borderRed": [
       "border/accent/indicator/down-light",
       "border/accent/error-light"
+    ],
+    "solidRed": [
+      "surface/accent/indicator/down-default",
+      "surface/accent/error-default"
+    ],
+    "borderGreenIntense": [
+      "border/accent/indicator/up-default",
+      "border/accent/success-default"
     ],
     "statusWords": "\\b(placed|success|successful|executed|completed|failed|rejected|error|cancel+ed|verified|active|done)\\b",
     "indicatorPattern": "[+\\-−]\\s?₹?\\d|%|P&L|\\bprofit\\b|\\bloss\\b|\\bLTP\\b|\\bMTM\\b|\\breturns?\\b|\\bbuy\\b|\\bsell\\b"
