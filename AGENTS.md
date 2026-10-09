@@ -61,10 +61,11 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   names `green` / `red` / `yellow` / `orange` (deprecated). Tags are never tappable.
 - **Icon-only Tag / Tab:** `hideLabel` + exactly one icon; the label text is still required (it's the accessible name).
   `subLabel` is for chip (pill) tabs only.
-- **Containers:** large blocks are `surface-default` + `border-light`; only small informative cards inside use
-  `surface-secondary` (grey). Never fill a whole section grey.
+- **Containers:** large blocks are `surface-default` + `border-light`. Grey (`surface-secondary` / `tertiary`) is for
+  small elements inside a card — tags, chips, small highlight boxes. A large grey area (section, full-width strip, big
+  panel) only when it's intentional and high-emphasis — never as a default background.
 - **Card:** clickable → `surface-primary` + `border-light` + `elevation-low` + press scale; a card with one action
-  is a clickable card (no buttons in its content — quick actions go in an action footer strip, `footer`); static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
+  is a clickable card (no buttons in its content — quick actions go in an action footer, `footer` — no fill by default, a lone button is Tertiary; `footerFilled` grey strip only for intentional emphasis); static (rounded + border) → `surface-default`; flat → transparent, no border/shadow; filled → grey inset panel
   (`surface-secondary`, no border/shadow) for grouped details. Selected (chosen option in a list of choices, clickable
   only, `selected`): bordered → `border-dark` instead of `border-light`; flat → `surface-secondary` (flat is otherwise
   unfilled). Cards sit inside a margin; padding 12 — a clickable/static card may use padding="none" only when its

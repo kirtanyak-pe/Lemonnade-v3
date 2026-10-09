@@ -98,8 +98,9 @@
 }
 
 /* ---- Action footer ------------------------------------------------------------------
- * The card becomes a container: the body is the tap target (press, hover, focus), the footer is a full-width
- * surface-secondary strip with 12 padding for its buttons. Pressing a footer button doesn't press the card.
+ * The card becomes a container: the body is the tap target (press, hover, focus), the footer holds the buttons —
+ * no fill, 12 from the card edge, right under the content. footerFilled makes it a full-width surface-secondary strip
+ * (intentional emphasis only). Pressing a footer button doesn't press the card.
  */
 .card[data-footer] {
   overflow: hidden;
@@ -137,6 +138,10 @@
   display: flex;
   gap: var(--l3-spacing-08);
   align-items: center;
+  padding: 0 var(--l3-spacing-12) var(--l3-spacing-12);
+}
+
+.card[data-footer-filled] .footer {
   padding: var(--l3-spacing-12);
   background: var(--l3-surface-secondary);
 }

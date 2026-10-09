@@ -197,6 +197,14 @@ export const changelog: Record<string, Release[]> = {
   ],
   card: [
     {
+      version: '1.8.0', date: '2026-10-09',
+      summary: 'Action footer without the grey strip',
+      changes: [
+        { kind: 'changed', text: 'The action footer has no fill by default: its buttons sit 12 from the card edge, right under the content. Grey is for small highlights, so the full-width grey strip is now an opt-in for footers that are meant to stand out.' },
+        { kind: 'added', text: 'footerFilled: the grey footer strip (surface-secondary, 12 padding).', dev: true },
+      ],
+    },
+    {
       version: '1.7.0', date: '2026-10-09',
       summary: 'Action footer',
       changes: [

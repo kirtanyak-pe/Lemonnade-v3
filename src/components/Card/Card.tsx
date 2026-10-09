@@ -44,17 +44,23 @@ export type CardProps = CardLayout & {
    */
   selected?: boolean
   /**
-   * Action footer (Figma: a full-width surface/secondary strip at the bottom, 12 padding): buttons that act on the
-   * card's subject — e.g. ☆ · Learn more · Apply. On a clickable card the body stays the tap target and the footer
-   * sits beside it, so its buttons are never nested in the card's button. Keep it to ≤ 3 actions, one primary at most.
+   * Action footer: buttons at the bottom of the card that act on its subject — e.g. ☆ · Learn more · Apply. No fill by
+   * default (the buttons sit 12 from the card edge, under the content). On a clickable card the body stays the tap
+   * target and the footer sits beside it, so its buttons are never nested in the card's button. Keep it to ≤ 3
+   * actions, one primary at most; a lone button is Tertiary.
    */
   footer?: ReactNode
+  /**
+   * Grey footer strip (surface/secondary, 12 padding). Only when the footer is meant to stand out — grey is for small
+   * highlights, so a large grey area has to be intentional and high-emphasis.
+   */
+  footerFilled?: boolean
   /** Accessible name for a clickable card when its text alone isn't a good one. */
   'aria-label'?: string
   className?: string
 }
 
-export function Card({ children, onClick, href, as = 'div', padding = 'default', variant = 'default', surface, selected = false, footer, 'aria-label': ariaLabel, className }: CardProps) {
+export function Card({ children, onClick, href, as = 'div', padding = 'default', variant = 'default', surface, selected = false, footer, footerFilled = false, 'aria-label': ariaLabel, className }: CardProps) {
   const ref = useRef<HTMLElement>(null)
   const clickable = Boolean(onClick || href)
   const Element = href ? 'a' : onClick ? 'button' : as
@@ -94,7 +100,7 @@ export function Card({ children, onClick, href, as = 'div', padding = 'default',
   if (hasFooter) {
     const Body = clickable ? Element : 'div'
     return (
-      <div className={[styles.card, className].filter(Boolean).join(' ')} data-footer="" {...cardAttrs}>
+      <div className={[styles.card, className].filter(Boolean).join(' ')} data-footer="" data-footer-filled={footerFilled || undefined} {...cardAttrs}>
         <Body ref={ref as never} className={styles.body} {...actionProps} aria-label={ariaLabel}>
           {children}
         </Body>

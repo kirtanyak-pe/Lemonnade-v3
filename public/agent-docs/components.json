@@ -443,6 +443,7 @@
     "padding",
     "selected",
     "footer",
+    "footerFilled",
     "aria-label"
    ],
    "tokens": [

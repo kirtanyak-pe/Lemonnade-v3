@@ -589,13 +589,14 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Padding and placement</h2>
-          <p>Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and a full-width grey footer strip — but the rule doesn't change: <strong>the content always sits 12 from the card edge</strong>. Filled cards are always padded, and a flat card runs edge to edge in its container.</p>
+          <p>Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and an action footer — but the rule doesn't change: <strong>the content always sits 12 from the card edge</strong>. Filled cards are always padded, and a flat card runs edge to edge in its container.</p>
           <DevOnly><p><code>padding="none"</code> on a default (clickable / static) or flat card; the sections inside carry the 12 padding. Filled cards are always padded (TypeScript enforces it). The margin around cards comes from the parent's padding or gap — cards have no outer margin of their own.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Action footer</h2>
-          <p>A clickable card is one tap target, so it never has buttons inside its content. When the card needs quick actions on its subject — save, learn more, apply — put them in an <strong>action footer</strong>: a full-width grey strip (surface-secondary, 12 padding) at the bottom of the card. The rest of the card stays the tap target; pressing a footer button doesn't press the card. Keep it to three actions at most, with one primary at most.</p>
-          <DevOnly><p><code>footer</code> takes the buttons. On a clickable card the body becomes the button / link and the footer sits beside it (never nested); a development warning still flags controls inside the body.</p></DevOnly>
+          <p>A clickable card is one tap target, so it never has buttons inside its content. When the card needs quick actions on its subject — save, learn more, apply — put them in an <strong>action footer</strong> at the bottom of the card: no fill, the buttons 12 from the card edge right under the content. The rest of the card stays the tap target; pressing a footer button doesn't press the card. Keep it to three actions at most, with one primary at most; a single button is Tertiary.</p>
+          <p>The footer can be a full-width grey strip (surface-secondary, 12 padding) — but only when it's meant to stand out. Grey is for small highlights inside a card (tags, chips, a small detail box); a large grey area has to be intentional and high-emphasis.</p>
+          <DevOnly><p><code>footer</code> takes the buttons; <code>footerFilled</code> makes it the grey strip. On a clickable card the body becomes the button / link and the footer sits beside it (never nested); a development warning still flags controls inside the body.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Selected cards</h2>
@@ -618,7 +619,8 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'surface', type: "'default' | 'primary' | 'secondary' | 'tertiary' | 'inverted'", description: 'Set the background yourself (surface token). Flat cards are transparent without it.' },
       { name: 'padding', type: "'default' | 'none'", default: "'default'", description: '12px. none when the content’s sections bring their own padding (content still 12 from the edge); not on filled cards.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background.' },
-      { name: 'footer', type: 'ReactNode', description: 'Action footer: a full-width surface-secondary strip with up to 3 buttons. On a clickable card the body stays the tap target.' },
+      { name: 'footer', type: 'ReactNode', description: 'Action footer: up to 3 buttons at the bottom of the card, no fill, 12 from the edge. On a clickable card the body stays the tap target.' },
+      { name: 'footerFilled', type: 'boolean', default: 'false', description: 'Grey footer strip (surface-secondary, 12 padding) — intentional, high-emphasis footers only.' },
       { name: 'aria-label', type: 'string', description: 'Name for a clickable card when its text alone isn’t a good one.' },
     ],
   },

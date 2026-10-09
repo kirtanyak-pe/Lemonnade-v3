@@ -5,7 +5,7 @@
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.7.0
+- Version: 1.8.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5364-38
 - Source: `src/components/Card`
 - Also called: Tile, panel, container, list item card
@@ -42,15 +42,17 @@ A filled card is a grey inset panel: rounded, surface-secondary, no border and n
 
 ### Padding and placement
 
-Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and a full-width grey footer strip — but the rule doesn't change: **the content always sits 12 from the card edge**. Filled cards are always padded, and a flat card runs edge to edge in its container.
+Cards always sit inside a margin: they never touch the edges of what contains them (16 from the screen edge, 16 between cards in a list). A card is padded 12 by default. A clickable or static card can drop its own padding when its content is built from sections that bring their own — for example a 12-padded body and an action footer — but the rule doesn't change: **the content always sits 12 from the card edge**. Filled cards are always padded, and a flat card runs edge to edge in its container.
 
 `padding="none"` on a default (clickable / static) or flat card; the sections inside carry the 12 padding. Filled cards are always padded (TypeScript enforces it). The margin around cards comes from the parent's padding or gap — cards have no outer margin of their own.
 
 ### Action footer
 
-A clickable card is one tap target, so it never has buttons inside its content. When the card needs quick actions on its subject — save, learn more, apply — put them in an **action footer**: a full-width grey strip (surface-secondary, 12 padding) at the bottom of the card. The rest of the card stays the tap target; pressing a footer button doesn't press the card. Keep it to three actions at most, with one primary at most.
+A clickable card is one tap target, so it never has buttons inside its content. When the card needs quick actions on its subject — save, learn more, apply — put them in an **action footer** at the bottom of the card: no fill, the buttons 12 from the card edge right under the content. The rest of the card stays the tap target; pressing a footer button doesn't press the card. Keep it to three actions at most, with one primary at most; a single button is Tertiary.
 
-`footer` takes the buttons. On a clickable card the body becomes the button / link and the footer sits beside it (never nested); a development warning still flags controls inside the body.
+The footer can be a full-width grey strip (surface-secondary, 12 padding) — but only when it's meant to stand out. Grey is for small highlights inside a card (tags, chips, a small detail box); a large grey area has to be intentional and high-emphasis.
+
+`footer` takes the buttons; `footerFilled` makes it the grey strip. On a clickable card the body becomes the button / link and the footer sits beside it (never nested); a development warning still flags controls inside the body.
 
 ### Selected cards
 
@@ -95,7 +97,8 @@ Card — Groups related content
 | `surface` | `'default' \| 'primary' \| 'secondary' \| 'tertiary' \| 'inverted'` |  | Set the background yourself (surface token). Flat cards are transparent without it. |
 | `padding` | `'default' \| 'none'` | `'default'` | 12px. none when the content’s sections bring their own padding (content still 12 from the edge); not on filled cards. |
 | `selected` | `boolean` | `false` | The chosen option in a list of choices (clickable cards only): bordered → border-dark, flat → surface-secondary background. |
-| `footer` | `ReactNode` |  | Action footer: a full-width surface-secondary strip with up to 3 buttons. On a clickable card the body stays the tap target. |
+| `footer` | `ReactNode` |  | Action footer: up to 3 buttons at the bottom of the card, no fill, 12 from the edge. On a clickable card the body stays the tap target. |
+| `footerFilled` | `boolean` | `false` | Grey footer strip (surface-secondary, 12 padding) — intentional, high-emphasis footers only. |
 | `aria-label` | `string` |  | Name for a clickable card when its text alone isn’t a good one. |
 
 ## Tokens used
@@ -113,6 +116,6 @@ Card — Groups related content
 
 ## Recent changes
 
+- **1.8.0** (2026-10-09) Action footer without the grey strip: The action footer has no fill by default: its buttons sit 12 from the card edge, right under the content. Grey is for small highlights, so the full-width grey strip is now an opt-in for footers that are meant to stand out. footerFilled: the grey footer strip (surface-secondary, 12 padding).
 - **1.7.0** (2026-10-09) Action footer: Action footer: a full-width grey strip at the bottom of a card for up to three quick actions (save, learn more, apply). On a clickable card the rest of the card stays the tap target, and pressing a footer button doesn't press the card. footer prop; the clickable body becomes the button/link and the footer sits beside it (never nested).
 - **1.6.0** (2026-10-09) No padding is back for rounded cards: Clickable and static cards can drop their own padding again, for content built from sections that bring their own (a 12-padded body plus a full-width footer strip). The content still sits 12 from the card edge. Filled cards stay padded. L3: Card gets isPadded = False back for Clickable (and Clickable selected) and Static. padding="none" is allowed on default and flat cards (not filled).
-- **1.5.0** (2026-10-09) Selected cards: Selected state for clickable cards — the chosen option in a list of choices. A bordered card swaps border-light for border-dark; a flat card gets a surface-secondary background (unselected flat cards stay transparent). L3: Card gets isSelected = True · False (Clickable and Flat, padded and not padded). selected prop (aria-pressed on buttons, aria-current on links; warns when the card isn't clickable). No padding is for flat cards only: rounded cards (clickable, static, filled) are always padded and always sit inside a margin; flat cards run edge to edge. L3: Card drops isPadded = False for Clickable, Static and Filled (kept for Flat). padding="none" now only type-checks with variant="flat".

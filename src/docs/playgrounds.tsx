@@ -266,6 +266,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'surface', label: 'Background (manual)', type: 'select', options: ['none', 'primary', 'secondary', 'tertiary'], default: 'none' },
       { name: 'padding', label: 'isPadded', type: 'select', options: ['default', 'none'], optionLabels: { default: 'True', none: 'False (content brings its own padding)' }, default: 'default', showIf: (v) => v.variant !== 'filled' },
       { name: 'selected', label: 'isSelected', type: 'boolean', default: false, showIf: (v) => v.kind !== 'static' && v.variant !== 'filled' },
+      { name: 'footer', label: 'Action footer', type: 'select', options: ['none', 'plain', 'filled'], optionLabels: { none: 'None', plain: 'Yes', filled: 'Yes, grey strip (emphasis)' }, default: 'none', showIf: (v) => v.variant === 'default' },
       { name: 'title', label: 'Title', prop: false, type: 'text', default: 'NHPC' },
       { name: 'meta', label: 'Meta', prop: false, type: 'text', default: 'Delivery • Boost (5x)' },
     ],
@@ -282,6 +283,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ...(flat ? { variant: 'flat' as const, padding: s(v, 'padding') as 'default' | 'none' } : s(v, 'variant') === 'filled' ? { variant: 'filled' as const } : { variant: 'default' as const, padding: s(v, 'padding') as 'default' | 'none' }),
         surface: s(v, 'surface') === 'none' ? undefined : (s(v, 'surface') as 'primary' | 'secondary' | 'tertiary'),
         selected: kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected'),
+        ...(s(v, 'variant') === 'default' && s(v, 'footer') !== 'none' ? { footer: <Button variant="tertiary" size="sm" onClick={noop}>Set alert</Button>, footerFilled: s(v, 'footer') === 'filled' } : {}),
       }
       return kind === 'static' ? <Card {...common}>{content}</Card> : kind === 'link' ? <Card href="#/card" {...common}>{content}</Card> : <Card onClick={noop} {...common}>{content}</Card>
     },
@@ -295,6 +297,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         ['surface', s(v, 'surface'), 'none'],
         ['padding', s(v, 'variant') !== 'filled' ? s(v, 'padding') : undefined, 'default'],
         ['selected', kind !== 'static' && s(v, 'variant') !== 'filled' && b(v, 'selected')],
+        ['footer', s(v, 'variant') === 'default' && s(v, 'footer') !== 'none' ? '{<Button variant="tertiary" size="sm" onClick={setAlert}>Set alert</Button>}' : undefined],
+        ['footerFilled', s(v, 'variant') === 'default' && s(v, 'footer') === 'filled'],
       ], body)
     },
   },

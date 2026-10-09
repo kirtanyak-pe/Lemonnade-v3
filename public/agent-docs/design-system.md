@@ -313,14 +313,19 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   <!-- PENDING: confirm whether flat cards carry a border-light (e.g. as a divider) — currently: no border -->
 - **A card with only one button is a clickable card:** the whole card is the tap target instead of the button.
   So a clickable card never contains other buttons or links **in its content**.
-- **Action footer** (the one exception): quick actions on the card's subject (☆ save · Learn more · Apply) go in a
-  full-width `surface-secondary` strip at the bottom of the card (12 padding, ≤ 3 actions, ≤ 1 primary). The rest of
-  the card stays the tap target; a footer press never presses the card (`<Card onClick footer={…}>`).
+- **Action footer** (the one exception): quick actions on the card's subject (☆ save · Learn more · Apply) go in an
+  action footer at the bottom of the card — **no fill** by default, buttons 12 from the card edge under the content
+  (≤ 3 actions, ≤ 1 primary; a single button is Tertiary). The rest of the card stays the tap target; a footer press
+  never presses the card (`<Card onClick footer={…}>`). A grey footer strip (`footerFilled`, `surface-secondary`, 12
+  padding) only when the footer is meant to stand out.
+- **Grey surfaces** (`surface-secondary` / `surface-tertiary`) are for **small** elements inside a card — tags, chips,
+  small highlight or detail boxes. A large grey area (a whole section, a full-width strip, a big panel) only when it's
+  intentional and high-emphasis; by default large areas are `surface-default` / no fill.
 - **Padding & placement:** cards **always sit inside a margin** — never touching their container's edges (16 from the
   screen edge, 16 between cards); the margin comes from the parent (padding / gap). Padding is 12 by default.
   A clickable or static card may drop its own padding (`padding="none"`, Figma isPadded = False) **only when its
-  content brings its own** — sections stacked inside it, e.g. a 12-padded body and a full-width `surface-secondary`
-  footer strip. Either way **the content always sits 12 from the card edge**. Filled cards are always padded; a flat
+  content brings its own** — sections stacked inside it, e.g. a 12-padded body and an action
+  footer. Either way **the content always sits 12 from the card edge**. Filled cards are always padded; a flat
   card runs edge to edge in its container.
 - **List cell follows the Card rules** (it is a card with specific content — dropdown options, settings, lists):
   - plain row = Flat card: no fill, runs edge to edge;
