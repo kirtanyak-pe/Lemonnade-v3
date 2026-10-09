@@ -150,6 +150,9 @@ const BUILD = {
     const type = b.appearance === 'pill-group' ? 'Pill group' : b.appearance === 'underline' ? 'Flat tabs' : 'Pill tabs'
     const tg = await inst('L3: Tabs group', { Type: type }); s.appendChild(tg); await loadAll(tg)
     if (type === 'Pill group') fill(tg)
+    // Pill tabs carry a 16 side inset in their wrapper for edge-to-edge use. Inside a section that already has the 16
+    // page padding, drop it — otherwise the first pill sits at 32 (dogfood: F&O "Your Positions").
+    if (type === 'Pill tabs' && (s.paddingLeft || 0) >= 16) { const w = tg.findOne((x) => x.type === 'SLOT'); if (w) { w.paddingLeft = 0; w.paddingRight = 0 } }
     await fillTabs(tg, b.items)
   },
   async chart(b, s) {

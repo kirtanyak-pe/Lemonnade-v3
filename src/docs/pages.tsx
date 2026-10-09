@@ -424,7 +424,7 @@ import { msWallet, msWalletFill } from './icons/material'
           <h2>Three appearances</h2>
           <ul>
             <li><strong>underline</strong> (Figma Flat tabs) — sections of a screen; at the top they go in the Actionbar's bottom slot.</li>
-            <li><strong>pill</strong> (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.</li>
+            <li><strong>pill</strong> (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row. The first chip lines up with the 16 page margin: in Figma, Pill tabs bring their own 16 side inset for edge-to-edge rows — if the container already has 16 padding, set the tabs' inset to 0 so it isn't doubled.</li>
             <li><strong>pill-group</strong> (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.</li>
           </ul>
         </section>

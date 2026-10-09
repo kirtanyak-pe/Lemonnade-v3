@@ -86,6 +86,9 @@ This is the de facto **16px screen gutter**.
   bigger break.
 - Gaps belong to the container (the body / section frame's auto-layout gap, bound to the spacing variable) — never
   spacer layers, never margins on components.
+- **Pill tabs never double the margin.** The first chip lines up with the 16 page margin (same x as the section title).
+  A full-width pill row brings its own 16 inset (Figma Pill tabs wrapper) — if its container already has 16 padding,
+  set that inset to 0. In code the pill row adds no side padding; its container gives it.
 - Rounded cards sit inside the 16 page padding; edge-to-edge parts (Actionbar, Tabs, ButtonGroup, plain ListCell, flat
   Card) touch the screen edges.
 - Docs: the **Layout** page under Foundations. Seen in the F&O dev-handoff Delivery / Intraday screens.

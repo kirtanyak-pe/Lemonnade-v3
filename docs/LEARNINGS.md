@@ -5,6 +5,11 @@ repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so 
 
 ## 2026-10-09 — building and dogfooding the playbook tools
 
+- **Pill rows doubled the page margin.** L3 Pill tabs carry a 16 inset (wrapper) for edge-to-edge use; 5 F&O
+  instances also got 16 from their container or an instance override → first chip at 32. Fix: measure the first pill
+  from the screen edge and remove the extra (instance override first, then the wrapper when the parent gives 16);
+  build-screen now zeroes the wrapper inside padded sections. Rule in DESIGN_SYSTEM 2.3 + Tabs docs.
+
 - **Slot content inside nested instances behaves differently.** Swapping 57 price texts that live in a sheet's slot
   inside nested instances worked, but `remove()` then threw "node does not exist" (ids change once a node is placed
   in slot content), and the per-item undo never ran. Nothing was lost (62 Price changes, 0 hidden, 0 duplicates), but

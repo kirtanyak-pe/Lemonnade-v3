@@ -100,7 +100,7 @@ ask, or list it under "Open questions" in your answer.
 - **Screen layout:** page padding 16 left/right; sections 24 apart (32 for a bigger break); section heading → its
   card 16; card padding 12 on every side. Gaps are the container's auto-layout gap, bound to spacing tokens. Section
   titles are always `SectionHeader` (title required; tag / info / description ≤ 2 lines / one action — View all or a
-  switcher — optional).
+  switcher — optional). Pill tabs: first chip at the 16 page margin — never container 16 + the tabs' own 16 inset.
 - **Layering:** screen → inset (filled) → content (static) → raised (clickable, shadow low) → bars → toast → scrim →
   sheet → second sheet (max 2). Higher = heavier shadow; only tappable things are lifted (DESIGN_SYSTEM 6.1).
 - **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
@@ -558,6 +558,9 @@ This is the de facto **16px screen gutter**.
   bigger break.
 - Gaps belong to the container (the body / section frame's auto-layout gap, bound to the spacing variable) — never
   spacer layers, never margins on components.
+- **Pill tabs never double the margin.** The first chip lines up with the 16 page margin (same x as the section title).
+  A full-width pill row brings its own 16 inset (Figma Pill tabs wrapper) — if its container already has 16 padding,
+  set that inset to 0. In code the pill row adds no side padding; its container gives it.
 - Rounded cards sit inside the 16 page padding; edge-to-edge parts (Actionbar, Tabs, ButtonGroup, plain ListCell, flat
   Card) touch the screen edges.
 - Docs: the **Layout** page under Foundations. Seen in the F&O dev-handoff Delivery / Intraday screens.
@@ -1100,6 +1103,11 @@ One entry per lesson: **what happened · the number · the fix (and where it liv
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
 ## 2026-10-09 — building and dogfooding the playbook tools
+
+- **Pill rows doubled the page margin.** L3 Pill tabs carry a 16 inset (wrapper) for edge-to-edge use; 5 F&O
+  instances also got 16 from their container or an instance override → first chip at 32. Fix: measure the first pill
+  from the screen edge and remove the extra (instance override first, then the wrapper when the parent gives 16);
+  build-screen now zeroes the wrapper inside padded sections. Rule in DESIGN_SYSTEM 2.3 + Tabs docs.
 
 - **Slot content inside nested instances behaves differently.** Swapping 57 price texts that live in a sheet's slot
   inside nested instances worked, but `remove()` then threw "node does not exist" (ids change once a node is placed
@@ -2859,7 +2867,7 @@ import { Tabs, Tab } from './components/Tabs' // path relative to src/
 ### Three appearances
 
 - **underline** (Figma Flat tabs) — sections of a screen; at the top they go in the Actionbar's bottom slot.
-- **pill** (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row.
+- **pill** (Figma Pill tabs) — a row of filter chips in one style: primary, secondary or tertiary. Never mix styles in a row. The first chip lines up with the 16 page margin: in Figma, Pill tabs bring their own 16 side inset for edge-to-edge rows — if the container already has 16 padding, set the tabs' inset to 0 so it isn't doubled.
 - **pill-group** (Figma Pill group) — 2–4 options in a shared track to switch how the same content is shown (Tree / List). Its pills are always tertiary: the selected one is a black fill, the rest blend into the track.
 
 ### Same label, selected or not
