@@ -81,7 +81,7 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 |---|---|---|
 | isPlain = True · False | `variant` `'plain' \| 'card'` | |
 | isSmall | `size` `'md' \| 'sm'` | |
-| (density — Figma property to come) | `density` `'compact' \| 'breathable'` | default-size rows; asset lists are breathable |
+| 📐 L3 → Density mode: Compact · Breathable | `density` `'compact' \| 'breathable'` | set the mode on the list frame (or one row); default-size rows; asset lists are breathable |
 | isTappable | `onClick` · `href` · `as="label"` | `as="button"` / `"a"` / `"label"` / `"div"` can be set directly |
 | isSelected | `selected` | tappable rows only |
 | isMultiline | `multiline` | the variant is being added to the Figma library |

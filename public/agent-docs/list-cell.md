@@ -99,7 +99,7 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 |---|---|---|
 | isPlain = True · False | `variant` `'plain' \| 'card'` | |
 | isSmall | `size` `'md' \| 'sm'` | |
-| (density — Figma property to come) | `density` `'compact' \| 'breathable'` | default-size rows; asset lists are breathable |
+| 📐 L3 → Density mode: Compact · Breathable | `density` `'compact' \| 'breathable'` | set the mode on the list frame (or one row); default-size rows; asset lists are breathable |
 | isTappable | `onClick` · `href` · `as="label"` | `as="button"` / `"a"` / `"label"` / `"div"` can be set directly |
 | isSelected | `selected` | tappable rows only |
 | isMultiline | `multiline` | the variant is being added to the Figma library |
@@ -169,7 +169,7 @@ Both come in default (48) and small (32).
 
 ### Compact or breathable
 
-Default-size rows come in two densities. **Compact** (8 above and below, 58px with a description) is the default — settings, menus, options. **Breathable** (16 above and below, 74px) is for **asset lists**: a logo, the name and company, the price and its change. Small rows are always compact.
+Default-size rows come in two densities. **Compact** (8 above and below, 58px with a description) is the default — settings, menus, options. **Breathable** (16 above and below, 74px) is for **asset lists**: a logo, the name and company, the price and its change. Small rows are always compact. In Figma, set the **📐 L3 → Density** mode to Breathable on the list frame — every row inside follows.
 
 ### Selected rows
 
@@ -239,6 +239,6 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
-- **1.6.0** (2026-10-10) Compact or breathable: Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change. The matching property for L3: list cell is still to come in the library. density="compact" | "breathable" (default compact; small rows are always compact).
+- **1.6.0** (2026-10-10) Compact or breathable: Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change. L3: list cell reads its top and bottom padding from the new 📐 L3 → Density collection: set Compact (default) or Breathable on the list frame — no extra variants. density="compact" | "breathable" (default compact; small rows are always compact).
 - **1.5.0** (2026-10-09) Multi-line description: isMultiline: the description can wrap onto several lines instead of ending in "…" on one line. The label stays on one line. L3: list cell gets isMultiline = False · True (pending — added in the library next). multiline prop.
 - **1.4.0** (2026-10-09) Follows the Card rules: A list cell is a card with specific content, so it follows Card: a card row that isn't tappable has no fill (it takes the colour it sits on) and border-light; a tappable card row is surface-primary + border-light + elevation-low and scales to 0.98 when pressed. L3: list cell gets isTappable = True · False (selected only when tappable). Tappable = onClick, href or as="label" — no new prop.

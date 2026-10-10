@@ -816,7 +816,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Compact or breathable</h2>
-          <p>Default-size rows come in two densities. <strong>Compact</strong> (8 above and below, 58px with a description) is the default — settings, menus, options. <strong>Breathable</strong> (16 above and below, 74px) is for <strong>asset lists</strong>: a logo, the name and company, the price and its change. Small rows are always compact.</p>
+          <p>Default-size rows come in two densities. <strong>Compact</strong> (8 above and below, 58px with a description) is the default — settings, menus, options. <strong>Breathable</strong> (16 above and below, 74px) is for <strong>asset lists</strong>: a logo, the name and company, the price and its change. Small rows are always compact. In Figma, set the <strong>📐 L3 → Density</strong> mode to Breathable on the list frame — every row inside follows.</p>
         </section>
         <section className={styles.section}>
           <h2>Selected rows</h2>

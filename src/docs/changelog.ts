@@ -951,7 +951,7 @@ export const changelog: Record<string, Release[]> = {
       summary: 'Compact or breathable',
       changes: [
         { kind: 'added', text: 'Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change.' },
-        { kind: 'figma', text: 'The matching property for L3: list cell is still to come in the library.' },
+        { kind: 'figma', text: 'L3: list cell reads its top and bottom padding from the new 📐 L3 → Density collection: set Compact (default) or Breathable on the list frame — no extra variants.' },
         { dev: true, kind: 'added', text: 'density="compact" | "breathable" (default compact; small rows are always compact).' },
       ],
     },
