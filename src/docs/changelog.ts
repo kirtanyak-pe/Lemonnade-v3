@@ -950,9 +950,9 @@ export const changelog: Record<string, Release[]> = {
       version: '1.6.0', date: '2026-10-10',
       summary: 'Compact or breathable',
       changes: [
-        { kind: 'added', text: 'Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change.' },
-        { kind: 'figma', text: 'L3: list cell reads its top and bottom padding from the new 📐 L3 → Density collection: set Compact (default) or Breathable on the list frame — no extra variants.' },
-        { dev: true, kind: 'added', text: 'density="compact" | "breathable" (default compact; small rows are always compact).' },
+        { kind: 'added', text: 'Two densities for flat rows, in both sizes: compact (8 above and below — the default) and breathable (16 — 74px default rows, 70px small) for asset lists: logo, name and company, price and change. Card rows always keep their spacing.' },
+        { kind: 'figma', text: 'Flat L3: list cell rows read their top and bottom padding from the new 📐 L3 → Density collection: set Compact (default) or Breathable on the list frame — no extra variants. Card rows are fixed at spacing/12.' },
+        { dev: true, kind: 'added', text: 'density="compact" | "breathable" on flat rows (default compact); TypeScript rejects it on variant="card".' },
       ],
     },
     {

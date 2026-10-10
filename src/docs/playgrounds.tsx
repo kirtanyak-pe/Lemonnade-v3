@@ -726,7 +726,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'variant', label: 'isPlain', type: 'select', options: ['plain', 'card'], optionLabels: { plain: 'True', card: 'False (card)' }, default: 'plain' },
       { name: 'size', label: 'isSmall', type: 'select', options: ['md', 'sm'], optionLabels: isSmallLabels, default: 'md' },
-      { name: 'density', label: 'Density', type: 'select', options: ['compact', 'breathable'], optionLabels: { compact: 'Compact (default)', breathable: 'Breathable (asset lists)' }, default: 'compact', showIf: (v) => v.size === 'md' },
+      { name: 'density', label: 'Density (flat rows)', type: 'select', options: ['compact', 'breathable'], optionLabels: { compact: 'Compact (default)', breathable: 'Breathable (asset lists)' }, default: 'compact', showIf: (v) => v.variant === 'plain' },
       { name: 'label', label: '✏️ Label', type: 'text', default: 'RELIANCE' },
       { name: 'description', label: '✏️ Description', type: 'text', default: '12 shares · ₹35,365' },
       { name: 'multiline', label: 'isMultiline', type: 'boolean', default: false, showIf: (v) => Boolean(v.description) },
@@ -740,9 +740,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       const trailing = s(v, 'trailing')
       return (
         <ListCell
-          variant={s(v, 'variant') as 'plain' | 'card'}
+          {...(s(v, 'variant') === 'card' ? { variant: 'card' as const } : { variant: 'plain' as const, density: s(v, 'density') as 'compact' | 'breathable' })}
           size={s(v, 'size') as 'md' | 'sm'}
-          density={s(v, 'size') === 'md' ? (s(v, 'density') as 'compact' | 'breathable') : undefined}
           label={s(v, 'label')}
           description={s(v, 'description') || undefined}
           multiline={b(v, 'multiline')}
@@ -762,7 +761,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       return jsx('ListCell', [
         ['variant', s(v, 'variant'), 'plain'],
         ['size', s(v, 'size'), 'md'],
-        ['density', s(v, 'size') === 'md' ? s(v, 'density') : undefined, 'compact'],
+        ['density', s(v, 'variant') === 'plain' ? s(v, 'density') : undefined, 'compact'],
         ['label', s(v, 'label')],
         ['description', s(v, 'description')],
         ['multiline', b(v, 'multiline')],

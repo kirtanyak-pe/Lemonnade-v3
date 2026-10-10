@@ -816,7 +816,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Compact or breathable</h2>
-          <p>Default-size rows come in two densities. <strong>Compact</strong> (8 above and below, 58px with a description) is the default — settings, menus, options. <strong>Breathable</strong> (16 above and below, 74px) is for <strong>asset lists</strong>: a logo, the name and company, the price and its change. Small rows are always compact. In Figma, set the <strong>📐 L3 → Density</strong> mode to Breathable on the list frame — every row inside follows.</p>
+          <p>Flat rows come in two densities, in both sizes. <strong>Compact</strong> (8 above and below) is the default — settings, menus, options. <strong>Breathable</strong> (16 above and below: 74px default rows, 70px small rows) is for <strong>asset lists</strong>: a logo, the name and company, the price and its change. Card rows — rounded, with a border — always keep their spacing. In Figma, set the <strong>📐 L3 → Density</strong> mode to Breathable on the list frame — every flat row inside follows.</p>
         </section>
         <section className={styles.section}>
           <h2>Selected rows</h2>
@@ -835,7 +835,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
       { name: 'multiline', type: 'boolean', default: 'false', description: 'Figma isMultiline: the description wraps onto as many lines as it needs instead of ending in "…". The label stays on one line.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
-      { name: 'density', type: "'compact' | 'breathable'", default: "'compact'", description: 'Default-size rows: compact (8 above and below, 58px rows) or breathable (16, 74px rows) — breathable for asset lists.' },
+      { name: 'density', type: "'compact' | 'breathable'", default: "'compact'", description: 'Flat rows only (both sizes): compact (8 above and below) or breathable (16 — 74px default rows, 70px small) for asset lists. Card rows have no density.' },
       { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },

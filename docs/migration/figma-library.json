@@ -34,6 +34,11 @@
     "number": {
       "name": "🌌 Number",
       "key": "153c75385bdea4519b7bd77b251f882e703f0a67"
+    },
+    "density": {
+      "key": "57834be47c14055d172ed2ff53157d88d9cc8ded",
+      "name": "📐 L3 → Density",
+      "modes": "Compact (default) · Breathable — flat list cell top/bottom padding 8 / 16"
     }
   },
   "textStyles": {

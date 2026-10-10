@@ -3,7 +3,26 @@ import { isDev } from '../env'
 import styles from './ListCell.module.css'
 
 /** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isMultiline → `multiline`, compact / breathable → `density`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
-export type ListCellProps = {
+/**
+ * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
+ * margin, never touching its container's edges). A list cell follows the Card rules: a card row that isn't tappable is
+ * a Static card (no fill + border-light); a tappable one (onClick / href / as="label") is a Clickable card
+ * (surface-primary + border-light + elevation-low, press 0.98). Figma isTappable.
+ *
+ * Only flat rows have a density (Figma "📐 L3 → Density" mode); card rows always keep their spacing.
+ */
+type ListCellLayout =
+  | {
+      variant?: 'plain'
+      /**
+       * Row spacing (flat rows, both sizes). `compact` (default): 8 above and below. `breathable`: 16 — for asset lists
+       * (logo, name + company, price + change): 74px default rows, 70px small rows.
+       */
+      density?: 'compact' | 'breathable'
+    }
+  | { variant: 'card'; /** Card rows always keep their spacing — no density. */ density?: never }
+
+export type ListCellProps = ListCellLayout & {
   /** Figma "Label goes here". */
   label: ReactNode
   /** Figma "Type description" (👁️ description). */
@@ -14,18 +33,6 @@ export type ListCellProps = {
    */
   multiline?: boolean
   size?: 'md' | 'sm'
-  /**
-   * Row spacing for default-size rows. `compact` (default): 8 above and below a plain row. `breathable`: 16 — for
-   * asset lists (logo, name + company, price + change), giving 74px rows. Small rows are always compact.
-   */
-  density?: 'compact' | 'breathable'
-  /**
-   * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
-   * margin, never touching its container's edges). A list cell follows the Card rules: a card row that isn't tappable is
-   * a Static card (no fill + border-light); a tappable one (onClick / href / as="label") is a Clickable card
-   * (surface-primary + border-light + elevation-low, press 0.98). Figma isTappable.
-   */
-  variant?: 'plain' | 'card'
   /** Figma Icon-L slot (24 md / 16 sm). */
   iconLeft?: ReactNode
   /** Figma Icon-R slot (24 md / 16 sm), e.g. <ChevronDownIcon />. */
@@ -96,7 +103,7 @@ export function ListCell({
     <Element
       className={[styles.cell, className].filter(Boolean).join(' ')}
       data-size={size}
-      data-density={density === 'breathable' ? density : undefined}
+      data-density={variant === 'plain' && density === 'breathable' ? density : undefined}
       data-multiline={multiline || undefined}
       data-variant={variant}
       data-interactive={interactive || undefined}

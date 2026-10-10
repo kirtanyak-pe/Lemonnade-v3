@@ -61,7 +61,7 @@ function colorsLight(): Record<string, string> {
 
 const all: Record<string, unknown> = {
   components: lib.components.map((c: { name: string; key: string; status: string }) => ({ name: c.name, key: c.key, status: c.status })),
-  collections: { theme: { key: lib.collections.theme.key }, number: { key: lib.collections.number.key } },
+  collections: { theme: { key: lib.collections.theme.key }, number: { key: lib.collections.number.key }, ...(lib.collections.density ? { density: { key: lib.collections.density.key } } : {}) },
   textStyles: lib.textStyles,
   effectStyles: lib.effectStyles,
   icons: strip(lib.icons ?? {}),

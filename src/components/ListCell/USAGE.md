@@ -31,9 +31,10 @@ Don't use it for:
 - Card rows always sit inside a margin (16 from the screen edge, like any card). Plain rows run edge to edge in their
   container and keep their own 16 side padding.
 - Sizes: `md` (default — min 48, 24px icons) and `sm` (Figma isSmall — min 32, 16px icons).
-- **Density** (default-size rows): `compact` (default — 8 above and below a plain row, 58px with a description) or
-  `breathable` (16 above and below, 74px). **Asset lists** — logo, name + company, price + `PriceChange` — use
-  breathable; settings, menus and options stay compact. Small rows are always compact.
+- **Density** (flat rows only, both sizes): `compact` (default — 8 above and below; 58px default rows, 54px small) or
+  `breathable` (16 above and below; 74px default rows, 70px small). **Asset lists** — logo, name + company, price +
+  `PriceChange` — use breathable; settings, menus and options stay compact. **Card rows never change** — they have no
+  density (TypeScript won't take one). In Figma: the "📐 L3 → Density" mode on the list frame.
 
 ## 3. Tappable rows
 
@@ -81,7 +82,7 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 |---|---|---|
 | isPlain = True · False | `variant` `'plain' \| 'card'` | |
 | isSmall | `size` `'md' \| 'sm'` | |
-| 📐 L3 → Density mode: Compact · Breathable | `density` `'compact' \| 'breathable'` | set the mode on the list frame (or one row); default-size rows; asset lists are breathable |
+| 📐 L3 → Density mode: Compact · Breathable | `density` `'compact' \| 'breathable'` | flat rows only, both sizes — set the mode on the list frame (or one row); asset lists are breathable; card rows never change |
 | isTappable | `onClick` · `href` · `as="label"` | `as="button"` / `"a"` / `"label"` / `"div"` can be set directly |
 | isSelected | `selected` | tappable rows only |
 | isMultiline | `multiline` | the variant is being added to the Figma library |

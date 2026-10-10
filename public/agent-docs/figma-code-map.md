@@ -221,7 +221,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | isSmall = True | `size="sm"` (default `md`) |
 | ✏️ Label · ✏️ Description | `label` · `description` |
 | isMultiline = True | `multiline` (description wraps; default one line + "…") |
-| 📐 L3 → Density mode = Compact · Breathable (set on the list frame or a row) | `density="compact" \| "breathable"` — default-size rows; Breathable for asset lists |
+| 📐 L3 → Density mode = Compact · Breathable (set on the list frame or a row) | `density="compact" \| "breathable"` — flat rows only (both sizes); Breathable for asset lists; card rows never change |
 | Icon-l (👁️ Icon - L) | `iconLeft` |
 | icon-r (👁️ Icon - R) | `iconRight` (chevron) or `trailing` (switch, tag, value) |
 | 👁️ Dot-L · 👁️ Dot-R | `dotLeft` · `dotRight` (+ `dotLabel`) |

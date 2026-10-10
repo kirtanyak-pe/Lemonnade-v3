@@ -63,10 +63,10 @@
 }
 
 /*
- * Density (default-size rows): compact keeps the padding above; breathable gives the row 16 above and below — asset
- * lists (logo + name + price + change), where 58px rows feel cramped: plain rows become 74px.
+ * Density (flat rows only, both sizes — Figma "📐 L3 → Density"): compact keeps the 8 above and below; breathable gives
+ * 16 — asset lists (logo + name + price + change): 58 → 74px default rows, 54 → 70px small rows. Card rows never change.
  */
-.cell[data-size='md'][data-density='breathable'] {
+.cell[data-variant='plain'][data-density='breathable'] {
   padding-block: var(--l3-spacing-16);
 }
 

@@ -44,6 +44,20 @@ async function fillTabs(tg, items) {
   await loadAll(tg)
   tabs.forEach((t, k) => { if (k >= items.length) t.remove(); else { const lk = propKey(t, '✏️ label'); t.setProperties({ ...(lk ? { [lk]: items[k] } : {}), isSelected: k === 0 ? 'True' : 'False' }) } })
 }
+// Sets the library's 📐 L3 → Density mode on a frame; false when the published library doesn't have it.
+async function setDensity(frame, modeName) {
+  try {
+    const col = DATA.library.collections.density
+    if (!col) return false
+    const vars = await figma.teamLibrary.getVariablesInLibraryCollectionAsync(col.key)
+    const v = await figma.variables.importVariableByKeyAsync(vars[0].key)
+    const collection = await figma.variables.getVariableCollectionByIdAsync(v.variableCollectionId)
+    const mode = collection.modes.find((m) => m.name === modeName)
+    if (!mode) return false
+    frame.setExplicitVariableModeForCollection(collection, mode.modeId)
+    return true
+  } catch (e) { return false }
+}
 const setText = (root, name, value) => { const t = root.findOne((n) => n.type === 'TEXT' && n.name === name); if (t) { t.characters = String(value); return true } return false }
 async function loadAll(root) { await loadFonts(root.findAll((n) => n.type === 'TEXT')) }
 async function priceChange(value, size, opts) { // L3: Price change, or tokens + text if it isn't published yet
@@ -252,10 +266,12 @@ const BUILD = {
     const state = CONFIG.state || 'default'
     if (state === 'loading') { for (let k = 0; k < 6; k++) { const sk = await inst('L3: Skeleton pattern', { Type: 'List row' }); s.appendChild(sk); fill(sk) } return }
     if (state === 'empty' && b.empty) return BUILD.empty({ type: 'empty', ...b.empty }, s)
+    // Asset lists are breathable: 📐 L3 → Density = Breathable on the list frame (flat rows; card rows keep their spacing).
+    const breathing = !b.card && (await setDensity(s, 'Breathable'))
     for (const i of instruments(b.data)) {
       const c = await inst('L3: list cell', { isSelected: 'False', isSmall: 'False', isPlain: b.card ? 'False' : 'True' }); s.appendChild(c); fill(c); await loadAll(c)
-      // Asset rows are breathable: 16 above and below (74px rows) instead of the compact 8.
-      await setSpacing(c, 'paddingTop', 16); await setSpacing(c, 'paddingBottom', 16)
+      // No Density mode in this file yet: breathe each flat row by hand (16 above and below).
+      if (!b.card && !breathing) { await setSpacing(c, 'paddingTop', 16); await setSpacing(c, 'paddingBottom', 16) }
       c.setProperties({ [propKey(c, '✏️ Label')]: i.symbol, [propKey(c, '✏️ Description')]: b.pnl ? `${i.qty} qty · avg ${inr(i.avg)}` : i.name, [propKey(c, '👁️ Icon - L')]: false })
       const sr = c.findAll((n) => n.type === 'SLOT').find((x) => /icon-r/i.test(x.name))
       if (!sr) continue
