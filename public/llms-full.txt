@@ -1454,6 +1454,12 @@ dark mode, 412 px, and "would I trust this with my money?"
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-11 — first real flow with the L3 kit (Kill Switch, 25 frames, library page "GUI test")
+
+Brief → 1 JSX file (13.7 kB, 25 screens) → compile clean → 2 build calls (18.7 s for 22 screens + 12.2 s) → 1 look.
+Two kit bugs found and fixed in the same run: Tag `color` was being turned into a text token (tags lost their colour);
+sheet screens built on a long scrolling base kept its height (1052) so the sheet sat below the viewport — now clipped to 800.
+
 ## 2026-10-11 — token & time audit → the L3 kit (docs/agent/ALGORITHM.md)
 
 16 sessions, 8,348 calls measured with `scripts/token-audit.py`: **73% of the cost was re-reading context** (cost ≈

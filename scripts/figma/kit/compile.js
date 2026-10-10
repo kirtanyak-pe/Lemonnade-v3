@@ -186,9 +186,10 @@ export function createCompiler() {
   // ---- 4. Plan: the compact tree the runtime executes + what it needs (elements, components, icons, text styles) -------
   // plan node: [type, props, children]; element-valued props become { $: node }; colour aliases become tokens
   const CA = { primary: 'content/primary', secondary: 'content/secondary', tertiary: 'content/tertiary', disabled: 'content/disabled', inverted: 'content/inverted', up: 'content/accent/indicator/up-default', profit: 'content/accent/indicator/up-default', down: 'content/accent/indicator/down-default', loss: 'content/accent/indicator/down-default', success: 'content/accent/success-default', error: 'content/accent/error-default', warning: 'content/accent/warning-default', discover: 'content/accent/discover-default', brand: 'content/accent/brand-default', zing: 'content/accent/zing-default' }
-  const P = (n) => (typeof n === 'string' ? n : [n.t, compactProps(n.p), ...(n.c.length ? [n.c.map(P)] : [])])
-  const pv = (k, v) => (isEl(v) ? { $: P(v) } : Array.isArray(v) ? v.map((x) => (isEl(x) ? { $: P(x) } : x)) : (k === 'color' || k === 'iconColor') && CA[v] ? CA[v] : v)
-  function compactProps(p) { const o = {}; for (const [k, v] of Object.entries(p)) o[k] = pv(k, v); return Object.keys(o).length ? o : 0 }
+  const P = (n) => (typeof n === 'string' ? n : [n.t, compactProps(n.p, n.t), ...(n.c.length ? [n.c.map(P)] : [])])
+  // Tag colours are the Tag's own enum (profit, warning…), not text tokens
+  const pv = (k, v, t) => (isEl(v) ? { $: P(v) } : Array.isArray(v) ? v.map((x) => (isEl(x) ? { $: P(x) } : x)) : (k === 'iconColor' || (k === 'color' && t !== 'Tag')) && CA[v] ? CA[v] : v)
+  function compactProps(p, t) { const o = {}; for (const [k, v] of Object.entries(p)) o[k] = pv(k, v, t); return Object.keys(o).length ? o : 0 }
   // Consecutive ListCells become one List (rows touch, density decided once): asset rows (a PriceChange or Sparkline
   // trailing) are Breathable, settings / menus / options stay Compact (ListCell USAGE).
   function group(n) {

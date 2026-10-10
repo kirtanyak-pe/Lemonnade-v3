@@ -143,6 +143,8 @@ async function screen(el, flow) {
     if (!b) throw new Error(`base "${p.base}" not found — build it first (same call is fine)`)
     f = b.clone(); f.name = p.name
     for (const n of f.findAll((x) => x.name.startsWith('Sheet · ') || x.name === 'L3: Overlay')) n.remove()
+    // a sheet sits on the phone viewport: a long (scrolling) base is clipped to H
+    if (sheets.length && f.height > H) { f.primaryAxisSizingMode = 'FIXED'; f.resize(f.width, H); f.clipsContent = true }
   } else {
     f = await box(p.name, 'col', { bg: p.bg || 'surface/default' })
     f.resize(Wd, H); f.counterAxisSizingMode = 'FIXED'; f.primaryAxisSizingMode = 'AUTO'; f.clipsContent = true
