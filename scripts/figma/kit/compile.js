@@ -103,7 +103,7 @@ export function createCompiler() {
     Aerobar: { b: 1, c: ['L3: aerobar - toast'], e: { type: Object.keys(AERO), emphasis: ['primary', 'secondary'] } },
     EmptyState: { b: 1, c: ['L3 → Empty state'] },
     ProgressBar: { b: 1, c: ['L3: Progress bar'], e: { type: ['progress', 'range'], size: ['sm', 'md'], status: ['default', 'success', 'warning', 'error'] } },
-    Skeleton: { c: ['L3: Skeleton'], e: { shape: ['line', 'circle', 'box'] } }, SkeletonListRow: { b: 1, c: ['L3: Skeleton pattern'] }, SkeletonCard: { b: 1, c: ['L3: Skeleton pattern'] },
+    Skeleton: { b: 1, c: ['L3: Skeleton'], e: { shape: ['line', 'circle', 'box'] } }, SkeletonListRow: { b: 1, c: ['L3: Skeleton pattern'] }, SkeletonCard: { b: 1, c: ['L3: Skeleton pattern'] },
     Chart: { b: 1, c: ['L3: Chart', 'L3: Tabs group'], e: { type: ['candle', 'line', 'area'], trend: ['up', 'down'] } }, Sparkline: { c: ['L3: Sparkline'], e: { trend: ['up', 'down'] } },
     BottomNavbar: { b: 1, c: ['L3: Bottom Navbar'], e: { value: Object.keys(NAV) } },
     BottomSheet: { c: ['L3: Overlay', 'L3: Bottom sheet', 'L3: Button'], e: { size: ['sm', 'lg'] } }, BottomSheetHeader: {},
@@ -127,6 +127,7 @@ export function createCompiler() {
       if (n.t === 'Button' && !btnText(n) && !n.p.icon && !n.p.iconLeft) E('<Button> needs a label (children) or an icon')
       if (n.t === 'Button' && !btnText(n) && !n.p.label) W(`icon-only <Button icon="${n.p.icon || n.p.iconLeft}"> needs label="…" (its accessible name)`)
       if (n.t === 'ListCell') { const l = String(n.p.label || ''); const max = n.p.size === 'sm' ? 40 : 32; if (!l) E('<ListCell> needs label'); else if (l.length > max) W(`ListCell label "${l.slice(0, 24)}…" is ${l.length} chars — labels are one line (~${max}); move the rest to description`) }
+      if (n.t === 'Chart' && n.p.lastPrice === undefined && n.p.showLastPrice !== false) W('<Chart> without lastPrice shows the component\'s sample price (157500) — pass lastPrice="…"; its axes are sample values too, so add showAxes={false} unless they match')
       if (n.t === 'SectionHeader' && !n.p.title) E('<SectionHeader> needs title')
       if (n.t === 'TextField' && !n.p.label) E('<TextField> needs label')
       if (n.t === 'Card' && (n.p.clickable || n.p.variant === 'clickable')) { let inner = 0; for (const k of n.c) walk(k, (x) => { if (x.t === 'Button') inner++ }); if (inner) W('a clickable Card has buttons in its content — the whole card is the tap target; put quick actions in footer={…}') }

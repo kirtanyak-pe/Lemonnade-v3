@@ -377,8 +377,17 @@ RENDER.SectionHeader = async (p) => {
   const h = await make('L3: Section header', {})
   const act = p.action === true || p.action === 'view-all' ? { label: 'View all' } : typeof p.action === 'string' ? { label: p.action } : p.action
   setp(h, { '✏️ Heading': p.title, '👁️ Description': Boolean(p.description), '✏️ Description': p.description, '👁️ Tag': Boolean(p.tag), '👁️ Info': Boolean(p.info), '👁️ CTA': Boolean(act) })
-  if (p.tag) { const t = sub(h, /Tag/); if (t) { await fontsIn(t); setp(t, { '✏️ Label': isEl(p.tag) ? p.tag.p.children || textOf(p.tag.c) : String(p.tag) }) } }
-  if (act) { const cta = sub(h, /section header cta/i); if (cta) { setp(cta, { Type: act.type === 'switcher' ? 'Time Switcher' : 'Button' }); await fontsIn(cta); setp(sub(cta, /L3: (Button|Select)/) || cta, { '✏️ Label': act.label || 'View all' }) } }
+  if (p.tag) { const t = sub(h, /^tag$/i) || sub(h, /tag/i); if (t) { await fontsIn(t); setp(t, { '✏️ Label': isEl(p.tag) ? p.tag.p.children || textOf(p.tag.c) : String(p.tag) }) } }
+  if (act) {
+    // The nested parts are all named "CTA" in the library: find the switch by its Type variant, the label holder by its ✏️ Label property
+    const hasProp = (x, test) => { try { return Object.entries(x.componentProperties || {}).some(test) } catch { return false } }
+    const cta = h.findOne((x) => x.type === 'INSTANCE' && hasProp(x, ([k, v]) => k.split('#')[0] === 'Type' && /^(Button|Time Switcher)$/.test(String(v.value))))
+    if (cta) {
+      setp(cta, { Type: act.type === 'switcher' ? 'Time Switcher' : 'Button' }); await fontsIn(cta)
+      const lab = cta.findOne((x) => x.type === 'INSTANCE' && hasProp(x, ([k]) => k.startsWith('✏️ Label')))
+      if (lab) setp(lab, { '✏️ Label': act.label || 'View all' }); else W.push('section header: no label in CTA')
+    } else W.push('section header: CTA not found')
+  }
   h.name = 'Section header · ' + p.title
   return h
 }

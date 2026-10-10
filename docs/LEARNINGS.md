@@ -3,6 +3,26 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-11 — L3 kit run: Asset page redesign (Tata Motors, 4 screens)
+
+Outline (1 call) → 1 JSX file (4 screens, 6.7 kB) → compile clean → build. First build: A1 in 1.9 s, **A2 in 90.5 s**
+(time budget hit, A3/A3b not built — A2 is the only screen with a `density="breathable"` list; suspect
+`RENDER.density` on the library collection, not confirmed). Rebuild with `--only` for the sheet + loading: 7.3 s.
+
+Kit bugs found (fixed unless noted):
+- `npm run kit -- icons <q>` always returned 0: the query went through `here()` (made into a path). Uses the raw word now.
+- **SectionHeader `tag` and `action` were never applied** — the nested layers are `tag` (lower case) and `CTA` (both the
+  switch and the button inside it), so the name regexes missed. Now found by property (a `Type` of Button / Time
+  Switcher; a `✏️ Label`). A "switcher" action showed "View all" and tags showed "TAG" before.
+- **Chart shows the component's sample price (157500) and sample axes** unless `lastPrice` is passed → compiler warning.
+- **Skeleton shapes didn't fill** (not a block) → Skeleton is a block now; `width` still fixes it.
+- Open: a standalone `<Button>` in a `<Section>` ended up `FILL` (360 / 328 wide) although the build snapshot showed it
+  hugging; and toggling a Chart property after the build widened the whole screen to 392 (FILL chain from the chart) —
+  pin the screen width (`counterAxisSizingMode = FIXED`, resize 360) after any post-build edit.
+- Open: `build --out <file>` is ignored — it always writes `flow.figma.js` (a second `--only` build overwrote the first).
+- Re-pasting full builds for small fixes costs ~10k tokens each; for 1–3 property fixes on a built screen a targeted
+  `use_figma` edit was cheaper — then keep `flow.jsx` in sync so it stays the source of truth.
+
 ## 2026-10-11 — first real flow with the L3 kit (Kill Switch, 25 frames, library page "GUI test")
 
 Brief → 1 JSX file (13.7 kB, 25 screens) → compile clean → 2 build calls (18.7 s for 22 screens + 12.2 s) → 1 look.
