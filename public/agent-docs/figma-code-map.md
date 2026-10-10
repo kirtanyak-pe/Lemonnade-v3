@@ -111,9 +111,9 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | 👁️ Action - left (back) | `onBack` |
-| Base actionbar content: Heading / Description | `title` / `description` |
+| Base actionbar content: Heading / Description | `title` / `description` — title Heading/18 without a back button (L1; Figma: an "L1 page heading" text in the slot), Heading/14 with one (L2) |
 | Base actionbar content: Type = Search · Searched | `search={{ value, onChange, placeholder }}` |
-| → content right (slot) | `actions` — 1–2 `<ActionbarAction icon label onClick>` (Tertiary/Ghost style) |
+| → content right (slot) | `actions` — 1–2 `<ActionbarAction icon label onClick>`: Tertiary Small (boxed) by default; `variant="ghost"` when the design removes the box |
 | ↓ Content bottom (slot) | `bottom` — e.g. `<Tabs>` |
 | Scrolled / elevated look | `sticky` or `elevated` |
 

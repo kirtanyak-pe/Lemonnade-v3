@@ -491,14 +491,19 @@ import { msWallet, msWalletFill } from './icons/material'
           <StockDetailDemo />
         </PhoneFrame>
         <section className={styles.section}>
+          <h2>Screen title: L1 or L2</h2>
+          <p>The heading is the screen's title, and its size follows the screen's level. An <strong>L1</strong> screen — top level, reached from the bottom navbar, with no back or ✕ button — uses <strong>Heading/18</strong> (in Figma, an “L1 page heading” text in the heading slot). An <strong>L2</strong> screen — with a back or ✕ button — uses <strong>Heading/14</strong>. Toggle the back button above to see both.</p>
+          <DevOnly><p>Automatic: no <code>onBack</code> → L1, Heading/18; with <code>onBack</code> → L2, Heading/14.</p></DevOnly>
+        </section>
+        <section className={styles.section}>
           <h2>Title or search</h2>
           <p>The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.</p>
           <DevOnly><p>Figma's base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). Pass <code>search</code> and the middle becomes a real search input — tap the search action above.</p></DevOnly>
         </section>
         <section className={styles.section}>
           <h2>Actions and bottom content</h2>
-          <p>The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.</p>
-          <DevOnly><p><code>ActionbarAction</code> is Figma's round 32px icon button; give it a label so it's announced. <code>bottom</code> is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).</p></DevOnly>
+          <p>The actions in → content right are icon buttons — at most two. First choice: <strong>Tertiary Small</strong>, boxed (32 × 32 with the tertiary border). Use <strong>Ghost</strong> (no box) only when the design asks for it. ↓ Content bottom holds tabs or filters that belong to the bar.</p>
+          <DevOnly><p><code>ActionbarAction</code> is a Tertiary Small icon button (<code>variant="ghost"</code> drops the box); give it a label so it's announced. <code>bottom</code> is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).</p></DevOnly>
         </section>
       </>
     ),
@@ -810,6 +815,10 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>Both come in default (48) and small (32).</p>
         </section>
         <section className={styles.section}>
+          <h2>Compact or breathable</h2>
+          <p>Default-size rows come in two densities. <strong>Compact</strong> (8 above and below, 58px with a description) is the default — settings, menus, options. <strong>Breathable</strong> (16 above and below, 74px) is for <strong>asset lists</strong>: a logo, the name and company, the price and its change. Small rows are always compact.</p>
+        </section>
+        <section className={styles.section}>
           <h2>Selected rows</h2>
           <p>When rows are a list of choices, the chosen one is selected. A plain row gets a surface-secondary background; a card row swaps border-light for the darker border-dark and nothing else changes. Only tappable rows can be selected.</p>
           <DevOnly><p><code>selected</code> on a tappable row (<code>onClick</code>, <code>href</code> or <code>as="label"</code>). Announced as pressed (button) or current (link); in a label row the Radio or Checkbox carries the state.</p></DevOnly>
@@ -826,6 +835,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
       { name: 'multiline', type: 'boolean', default: 'false', description: 'Figma isMultiline: the description wraps onto as many lines as it needs instead of ending in "…". The label stays on one line.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
+      { name: 'density', type: "'compact' | 'breathable'", default: "'compact'", description: 'Default-size rows: compact (8 above and below, 58px rows) or breathable (16, 74px rows) — breathable for asset lists.' },
       { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only.' },
       { name: 'iconLeft / iconRight', type: 'ReactNode', description: 'Figma Icon-L / Icon-R slots, sized for you.' },

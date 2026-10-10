@@ -19,7 +19,7 @@ const ARCH = JSON.parse(readFileSync(join(root, 'docs/patterns/archetypes.json')
 
 // ---- Spec --------------------------------------------------------------------------------------------------
 type Action = { icon: string; label: string }
-type Header = { title?: string; description?: string; back?: boolean; actions?: Action[]; tabs?: string[]; search?: string; select?: string; change?: number; sheet?: boolean }
+type Header = { title?: string; description?: string; back?: boolean; actions?: Action[]; /** Icon actions are Tertiary (boxed) unless the design asks for ghost. */ actionStyle?: 'tertiary' | 'ghost'; tabs?: string[]; search?: string; select?: string; change?: number; sheet?: boolean }
 type Row = { label: string; description?: string; value?: string; toggle?: boolean; chevron?: boolean }
 type Block =
   | { type: 'summary'; label: string; select?: boolean; value: number; change?: number }
@@ -135,7 +135,7 @@ export function generate(spec: Spec, importBase: string) {
       props.push('onBack={onBack}')
       consts.push('const onBack = () => history.back()')
     }
-    if (h.actions?.length) props.push(`actions={<>${h.actions.map((a) => `<${C('ActionbarAction')} icon={${I(a.icon)}} label=${q(a.label)} onClick={() => {}} />`).join('')}</>}`)
+    if (h.actions?.length) props.push(`actions={<>${h.actions.map((a) => `<${C('ActionbarAction')} icon={${I(a.icon)}} label=${q(a.label)} onClick={() => {}}${h.actionStyle === 'ghost' ? ' variant="ghost"' : ''} />`).join('')}</>}`)
     if (h.tabs) props.push(`bottom={${tabsJsx(h.tabs, 'underline', h.title ?? 'Sections')}}`)
     if (h.search !== undefined) { state.push("const [query, setQuery] = useState('')"); props.push(`search={{ value: query, onChange: setQuery, placeholder: ${q(h.search)} }}`) }
     out.push(`      <${C('Actionbar')} sticky ${props.join(' ')} />`)
@@ -168,7 +168,7 @@ export function generate(spec: Spec, importBase: string) {
       case 'list': {
         const items = b.rows ? null : source(b.data ?? 'data:watchlist:5')
         const rows = items
-          ? items.map((i) => `            <${C('ListCell')} key=${q(i.symbol)}${b.card ? ' variant="card"' : ''} label=${q(i.symbol)} description=${q(b.pnl ? `${i.qty} qty · avg ${inr(i.avg ?? i.price)}` : i.name)} trailing={<span className={styles.trailing}>${b.spark ? `<${C('Sparkline')} data={spark(${q(i.spark)})} />` : ''}${b.status ? `<${C('Tag')} size="sm" variant="secondary" color=${q(i.change >= 0 ? 'success' : 'processing')}>${i.change >= 0 ? 'Executed' : 'Open'}</Tag>` : ''}${priceCol(i, Boolean(b.pnl))}</span>} />`).join('\n')
+          ? items.map((i) => `            <${C('ListCell')} key=${q(i.symbol)}${b.card ? ' variant="card"' : ''} density="breathable" label=${q(i.symbol)} description=${q(b.pnl ? `${i.qty} qty · avg ${inr(i.avg ?? i.price)}` : i.name)} trailing={<span className={styles.trailing}>${b.spark ? `<${C('Sparkline')} data={spark(${q(i.spark)})} />` : ''}${b.status ? `<${C('Tag')} size="sm" variant="secondary" color=${q(i.change >= 0 ? 'success' : 'processing')}>${i.change >= 0 ? 'Executed' : 'Open'}</Tag>` : ''}${priceCol(i, Boolean(b.pnl))}</span>} />`).join('\n')
           : (b.rows ?? []).map((r) => `            <${C('ListCell')} label=${q(r.label)}${r.description ? ` description=${q(r.description)}` : ''} />`).join('\n')
         if (b.spark && !consts.some((c) => c.startsWith('const spark'))) consts.push(SPARK_DATA)
         const empty = b.empty ? `<${C('EmptyState')} title=${q(b.empty.title)}${b.empty.description ? ` description=${q(b.empty.description)}` : ''}${b.empty.action ? ` action={<${C('Button')} variant="tertiary">${b.empty.action}</Button>}` : ''} />` : `<${C('EmptyState')} title="Nothing here yet" />`

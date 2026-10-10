@@ -31,7 +31,7 @@ A row: icon, label with optional description, and something on the right (chevro
 Code: `<ListCell label description variant size selected>` · Docs: #/list-cell
 
 ### L3: Actionbar (4543:65480)
-The top bar of a screen: back, title with optional description, at most 2 actions (Tertiary / Ghost only), or search. Flat tabs at the top go in its ↓ Content bottom slot — never a separate layer below. Actions go in → content right. Gets elevation-low when content scrolls under it.
+The top bar of a screen: back, title with optional description, at most 2 actions, or search. Title: Heading/18 on an L1 screen (no back / ✕ — put an "L1 page heading" text in the slot), Heading/14 on an L2 screen. Actions: Tertiary Small icon buttons (boxed) first; Ghost only when the design asks. Flat tabs at the top go in its ↓ Content bottom slot — never a separate layer below. Actions go in → content right. Gets elevation-low when content scrolls under it.
 Code: `<Actionbar title description onBack actions bottom>` · Docs: #/actionbar
 
 ### L3: Bottom Navbar (4543:61961)

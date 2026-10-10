@@ -123,7 +123,9 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   content in every size (no padding, no fixed height) and relies on its 48 × 48 touch area.
 - **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
   button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
-- **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
+- **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions — Tertiary Small boxed by default
+  (`ActionbarAction`), Ghost only when the design asks. Title: Heading/18 on an L1 screen (no back / ✕), Heading/14 on
+  an L2 screen (back or ✕) — automatic from `onBack`. The screen's content container always fills the screen.
 - **BottomSheet:** no drag handle and no ✕ — it closes by tapping the backdrop or dragging the sheet down (the
   component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
   `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. **Confirmations are bottom sheets — there is no
@@ -313,9 +315,9 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | 👁️ Action - left (back) | `onBack` |
-| Base actionbar content: Heading / Description | `title` / `description` |
+| Base actionbar content: Heading / Description | `title` / `description` — title Heading/18 without a back button (L1; Figma: an "L1 page heading" text in the slot), Heading/14 with one (L2) |
 | Base actionbar content: Type = Search · Searched | `search={{ value, onChange, placeholder }}` |
-| → content right (slot) | `actions` — 1–2 `<ActionbarAction icon label onClick>` (Tertiary/Ghost style) |
+| → content right (slot) | `actions` — 1–2 `<ActionbarAction icon label onClick>`: Tertiary Small (boxed) by default; `variant="ghost"` when the design removes the box |
 | ↓ Content bottom (slot) | `bottom` — e.g. `<Tabs>` |
 | Scrolled / elevated look | `sticky` or `elevated` |
 
@@ -692,7 +694,7 @@ Still waiting for the exact text from your notes on:
 
 | Component | Text tokens |
 |---|---|
-| Actionbar | title `heading-14`; description `description-12`; typed search text `label-14` |
+| Actionbar | title `heading-18` on an L1 screen (no back / ✕), `heading-14` on an L2 screen (back or ✕); description `description-12`; typed search text `label-14` |
 | Aerobar | `label-14` · `description-12` |
 | BottomNavbar | `label-10` |
 | BottomSheet | `heading-16` · `heading-20` · `description-12` · `description-14` |
@@ -756,6 +758,13 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   `shadow-elevation-low` (automatic with `sticky`, or set `elevated`).
 - **If flat tabs are used at the top, they go inside the Actionbar's content-bottom slot** (`bottom` prop), never as
   a separate layer below the Actionbar.
+- **Screen title by level:** an **L1** screen (top level — reached from the bottom navbar, no back or ✕ button) shows
+  its title in `Heading/18` (Figma: an "L1 page heading" text in the Actionbar's heading slot); an **L2** screen (a
+  back or ✕ button) uses `Heading/14`. The code Actionbar picks it from `onBack`.
+- **Actionbar icon actions:** first choice **Tertiary Small, boxed** (32 × 32 with the tertiary border; at most two,
+  8 apart). Ghost (no box) only when the design asks for it — a preference, not a hard rule. Never Secondary or Primary.
+- **The screen's content container fills the screen** (between the top bar and the bottom navbar or dock) — it never
+  hugs its content.
 - **Don't use `MaskIcon` directly** in screens. Use `Icon` (it's the internal helper for icons and assets).
 
 ---
@@ -1036,7 +1045,7 @@ concrete enough to check, and the ones marked **[scored]** are checked automatic
 | Gap between sections (large — a new topic, or after a hero block) | 32 | `spacing/32` |
 | Section heading → its card / list | 16 | `spacing/16` |
 | Card padding / radius | 12 / 12 | `spacing/12` · `radius/12` |
-| List row height (ListCell md) | 58 | — (component) |
+| List row height (ListCell md) | 58 compact · 74 breathable (asset lists) | `density` |
 | Top | Statusbar 32 + Actionbar | `SystemStatusbar` (mockups) · `Actionbar` |
 | Bottom | ButtonGroup dock **or** BottomNavbar — never both on one screen **[scored]** | |
 
@@ -1122,7 +1131,7 @@ spec you edit. Top to bottom:
 | Archetype | Anatomy |
 |---|---|
 | **home** (dashboard) | Actionbar (brand, 1–2 actions) · summary card (Select + hero value + PriceChange) · quick actions (pill Tabs or cards) · 1–2 short lists ("Top movers") · BottomNavbar |
-| **list** (watchlist, holdings) | Actionbar (title, search) + Tabs in its bottom slot · ListCell rows (symbol · Sparkline · price + PriceChange) · loading: SkeletonListRow × 8 · empty: EmptyState · BottomNavbar |
+| **list** (watchlist, holdings) | Actionbar (L1 title Heading/18, Tertiary search action) + Tabs in its bottom slot · breathable ListCell rows (logo · symbol · Sparkline · price + PriceChange) · loading: SkeletonListRow × 8 · empty: EmptyState · BottomNavbar |
 | **detail** (asset page) | Actionbar (back, Select asset switcher) · LTP Heading/24 + PriceChange md arrow · Chart + range Tabs · key stats Card filled · ProgressBar range (24H) · ButtonGroup (Buy / Sell) |
 | **order** (order pad) | Actionbar (asset + PriceChange) + Delivery/Intraday Tabs · order-type pill Tabs · Quantity row (Select ↕ + Stepper) · Price TextField · margin/charges Card filled · ButtonGroup (one Buy or Sell, lg) |
 | **review** (confirm sheet) | BottomSheet: header (question) · ListCell rows of facts · charges total · warning Aerobar if risky · ButtonGroup horizontal (secondary Cancel + strong confirm) |
@@ -3096,7 +3105,7 @@ Tabs — Switch sections, filter or switch views
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.4.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
 - Source: `src/components/Actionbar`
 - Also called: App bar, top bar, navigation bar, header, toolbar
@@ -3109,6 +3118,12 @@ import { Actionbar, ActionbarAction } from './components/Actionbar' // path rela
 
 ## Overview
 
+### Screen title: L1 or L2
+
+The heading is the screen's title, and its size follows the screen's level. An **L1** screen — top level, reached from the bottom navbar, with no back or ✕ button — uses **Heading/18** (in Figma, an “L1 page heading” text in the heading slot). An **L2** screen — with a back or ✕ button — uses **Heading/14**. Toggle the back button above to see both.
+
+Automatic: no `onBack` → L1, Heading/18; with `onBack` → L2, Heading/14.
+
 ### Title or search
 
 The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.
@@ -3117,9 +3132,9 @@ Figma's base content has three types: Content (heading + description), Search (p
 
 ### Actions and bottom content
 
-The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.
+The actions in → content right are icon buttons — at most two. First choice: **Tertiary Small**, boxed (32 × 32 with the tertiary border). Use **Ghost** (no box) only when the design asks for it. ↓ Content bottom holds tabs or filters that belong to the bar.
 
-`ActionbarAction` is Figma's round 32px icon button; give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
+`ActionbarAction` is a Tertiary Small icon button (`variant="ghost"` drops the box); give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
 
 ## Do / Don't
 
@@ -3175,9 +3190,9 @@ Actionbar — The top bar of a screen
 
 ## Recent changes
 
+- **1.4.0** (2026-10-10) Title by screen level · Tertiary actions: The title follows the screen's level: Heading/18 on an L1 screen (top level, no back or ✕ button), Heading/14 on an L2 screen (with one). Icon actions are Tertiary Small, boxed (32 × 32 with the tertiary border) — the first choice. Ghost (no box) when the design asks for it. ActionbarAction rendered a restyled Secondary button; it's a plain Tertiary Small now, with variant="ghost" as the option. The title size comes from onBack.
 - **1.3.0** (2026-10-05) Typography role rules: Typography role rules: typed search text and its placeholder use Label (input text). Matches Figma.
 - **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Search text uses Description.
-- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 
 ---
 
@@ -4160,7 +4175,7 @@ Progress is `role="progressbar"`, Range is `role="meter"`. Pass `valueText` for 
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -4204,6 +4219,9 @@ Don't use it for:
 - Card rows always sit inside a margin (16 from the screen edge, like any card). Plain rows run edge to edge in their
   container and keep their own 16 side padding.
 - Sizes: `md` (default — min 48, 24px icons) and `sm` (Figma isSmall — min 32, 16px icons).
+- **Density** (default-size rows): `compact` (default — 8 above and below a plain row, 58px with a description) or
+  `breathable` (16 above and below, 74px). **Asset lists** — logo, name + company, price + `PriceChange` — use
+  breathable; settings, menus and options stay compact. Small rows are always compact.
 
 ### 3. Tappable rows
 
@@ -4251,6 +4269,7 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 |---|---|---|
 | isPlain = True · False | `variant` `'plain' \| 'card'` | |
 | isSmall | `size` `'md' \| 'sm'` | |
+| (density — Figma property to come) | `density` `'compact' \| 'breathable'` | default-size rows; asset lists are breathable |
 | isTappable | `onClick` · `href` · `as="label"` | `as="button"` / `"a"` / `"label"` / `"div"` can be set directly |
 | isSelected | `selected` | tappable rows only |
 | isMultiline | `multiline` | the variant is being added to the Figma library |
@@ -4286,6 +4305,11 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 <ListCell variant="card" label="HDFC Bank ••4821" description="Primary" iconLeft={bankLogo}
   onClick={() => setAccount('hdfc')} selected={account === 'hdfc'} iconRight={<Icon icon={msChevronRight} />} />
 
+// Asset list: breathable rows (16 above and below) — logo, name + company, price + change
+<ListCell density="breathable" label="Tata Motors" description="Tata Motors Ltd" iconLeft={tataLogo}
+  trailing={<span className={styles.price}>₹418.20 <PriceChange value={0.22} unit="percent" size="sm" /></span>}
+  onClick={openTataMotors} />
+
 // Facts in a review sheet: static rows, the value on the right
 <ListCell label="Quantity" trailing="10" />
 
@@ -4312,6 +4336,10 @@ A list cell is a card with more specific content — dropdown options, settings,
 - **Tappable** (a clickable card, Figma isTappable): surface-primary, border-light and elevation-low, and it scales to 0.98 while pressed.
 
 Both come in default (48) and small (32).
+
+### Compact or breathable
+
+Default-size rows come in two densities. **Compact** (8 above and below, 58px with a description) is the default — settings, menus, options. **Breathable** (16 above and below, 74px) is for **asset lists**: a logo, the name and company, the price and its change. Small rows are always compact.
 
 ### Selected rows
 
@@ -4354,6 +4382,7 @@ List cell — Rows of settings, accounts, items
 | `label / description` | `ReactNode` |  | Figma "Label goes here" / "Type description". |
 | `multiline` | `boolean` | `false` | Figma isMultiline: the description wraps onto as many lines as it needs instead of ending in "…". The label stays on one line. |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: 48 / 32 min height, 24 / 16 icons. |
+| `density` | `'compact' \| 'breathable'` | `'compact'` | Default-size rows: compact (8 above and below, 58px rows) or breathable (16, 74px rows) — breathable for asset lists. |
 | `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low. |
 | `selected` | `boolean` | `false` | Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only. |
 | `iconLeft / iconRight` | `ReactNode` |  | Figma Icon-L / Icon-R slots, sized for you. |
@@ -4380,9 +4409,9 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
+- **1.6.0** (2026-10-10) Compact or breathable: Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change. The matching property for L3: list cell is still to come in the library. density="compact" | "breathable" (default compact; small rows are always compact).
 - **1.5.0** (2026-10-09) Multi-line description: isMultiline: the description can wrap onto several lines instead of ending in "…" on one line. The label stays on one line. L3: list cell gets isMultiline = False · True (pending — added in the library next). multiline prop.
 - **1.4.0** (2026-10-09) Follows the Card rules: A list cell is a card with specific content, so it follows Card: a card row that isn't tappable has no fill (it takes the colour it sits on) and border-light; a tappable card row is surface-primary + border-light + elevation-low and scales to 0.98 when pressed. L3: list cell gets isTappable = True · False (selected only when tappable). Tappable = onClick, href or as="label" — no new prop.
-- **1.3.0** (2026-10-09) Selected rows, no fill on plain rows: Selected state for tappable rows: plain rows get a surface-secondary background, card rows swap border-light for border-dark. Plain rows have no fill — they take the colour of whatever they sit on — and run edge to edge. Card rows always sit inside a margin. L3: list cell gets isSelected = True for every isSmall × isPlain; plain rows lose their surface-primary fill. selected prop (aria-pressed / aria-current; warns on a row that isn't tappable).
 
 ---
 

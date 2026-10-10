@@ -49,7 +49,9 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
   content in every size (no padding, no fixed height) and relies on its 48 × 48 touch area.
 - **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
   button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
-- **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
+- **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions — Tertiary Small boxed by default
+  (`ActionbarAction`), Ghost only when the design asks. Title: Heading/18 on an L1 screen (no back / ✕), Heading/14 on
+  an L2 screen (back or ✕) — automatic from `onBack`. The screen's content container always fills the screen.
 - **BottomSheet:** no drag handle and no ✕ — it closes by tapping the backdrop or dragging the sheet down (the
   component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
   `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. **Confirmations are bottom sheets — there is no

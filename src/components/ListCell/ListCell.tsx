@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { isDev } from '../env'
 import styles from './ListCell.module.css'
 
-/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isMultiline → `multiline`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
+/** Figma "L3: list cell" (node 4543:65400). isSmall → `size="sm"`, isMultiline → `multiline`, compact / breathable → `density`, isPlain=False → `variant="card"`, isTappable → onClick / href / as="label", isSelected → `selected`. */
 export type ListCellProps = {
   /** Figma "Label goes here". */
   label: ReactNode
@@ -14,6 +14,11 @@ export type ListCellProps = {
    */
   multiline?: boolean
   size?: 'md' | 'sm'
+  /**
+   * Row spacing for default-size rows. `compact` (default): 8 above and below a plain row. `breathable`: 16 — for
+   * asset lists (logo, name + company, price + change), giving 74px rows. Small rows are always compact.
+   */
+  density?: 'compact' | 'breathable'
   /**
    * Figma isPlain: flat row (plain — no fill, edge to edge in its container) or bordered, rounded card (always inside a
    * margin, never touching its container's edges). A list cell follows the Card rules: a card row that isn't tappable is
@@ -53,6 +58,7 @@ export function ListCell({
   description,
   multiline = false,
   size = 'md',
+  density = 'compact',
   variant = 'plain',
   iconLeft,
   iconRight,
@@ -90,6 +96,7 @@ export function ListCell({
     <Element
       className={[styles.cell, className].filter(Boolean).join(' ')}
       data-size={size}
+      data-density={density === 'breathable' ? density : undefined}
       data-multiline={multiline || undefined}
       data-variant={variant}
       data-interactive={interactive || undefined}

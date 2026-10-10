@@ -122,8 +122,13 @@
 }
 
 .title {
-  font: var(--l3-text-heading-14); /* L3/Heading/14 */
+  font: var(--l3-text-heading-14); /* L3/Heading/14 — L2 screens (with a back button) */
   color: var(--l3-content-primary);
+}
+
+/* L1 screens (top level, no back button): the page title is Heading/18 (Figma: "L1 page heading"). */
+.actionbar[data-level='1'] .title {
+  font: var(--l3-text-heading-18); /* L3/Heading/18 */
 }
 
 .description {
@@ -170,12 +175,8 @@
 }
 
 /* Figma: small Secondary Button, pill, border/light instead of border/dark, icon only. */
-.actions .action[data-variant] {
-  --btn-radius: var(--l3-radius-full);
-  --btn-border: var(--l3-border-light);
-}
-
-.actions .action[data-variant][aria-pressed='true'] {
+/* A toggled action (pressed) swaps the tertiary border for border-dark, like any selected bordered control. */
+.actions .action[data-variant='tertiary'][aria-pressed='true'] {
   --btn-border: var(--l3-border-dark);
 }
 

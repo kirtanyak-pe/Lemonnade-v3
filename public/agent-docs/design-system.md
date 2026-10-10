@@ -199,7 +199,7 @@ Still waiting for the exact text from your notes on:
 
 | Component | Text tokens |
 |---|---|
-| Actionbar | title `heading-14`; description `description-12`; typed search text `label-14` |
+| Actionbar | title `heading-18` on an L1 screen (no back / ✕), `heading-14` on an L2 screen (back or ✕); description `description-12`; typed search text `label-14` |
 | Aerobar | `label-14` · `description-12` |
 | BottomNavbar | `label-10` |
 | BottomSheet | `heading-16` · `heading-20` · `description-12` · `description-14` |
@@ -263,6 +263,13 @@ and size, labels, placement, states). Read the component's USAGE.md before using
   `shadow-elevation-low` (automatic with `sticky`, or set `elevated`).
 - **If flat tabs are used at the top, they go inside the Actionbar's content-bottom slot** (`bottom` prop), never as
   a separate layer below the Actionbar.
+- **Screen title by level:** an **L1** screen (top level — reached from the bottom navbar, no back or ✕ button) shows
+  its title in `Heading/18` (Figma: an "L1 page heading" text in the Actionbar's heading slot); an **L2** screen (a
+  back or ✕ button) uses `Heading/14`. The code Actionbar picks it from `onBack`.
+- **Actionbar icon actions:** first choice **Tertiary Small, boxed** (32 × 32 with the tertiary border; at most two,
+  8 apart). Ghost (no box) only when the design asks for it — a preference, not a hard rule. Never Secondary or Primary.
+- **The screen's content container fills the screen** (between the top bar and the bottom navbar or dock) — it never
+  hugs its content.
 - **Don't use `MaskIcon` directly** in screens. Use `Icon` (it's the internal helper for icons and assets).
 
 ---

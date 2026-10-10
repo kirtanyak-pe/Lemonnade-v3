@@ -635,6 +635,7 @@
     "label / description",
     "multiline",
     "size",
+    "density",
     "variant",
     "selected",
     "iconLeft / iconRight",

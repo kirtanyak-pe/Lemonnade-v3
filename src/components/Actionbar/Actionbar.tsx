@@ -6,12 +6,16 @@ import styles from './Actionbar.module.css'
 
 /** Figma "L3: Actionbar" (node 4543:65480) + "L3: Base actionbar content" (node 4543:65466). */
 export type ActionbarProps = {
-  /** Figma ✏️ Heading. Rendered as the screen's heading (h1 by default). */
+  /**
+   * Figma ✏️ Heading. Rendered as the screen's heading (h1 by default). Its size follows the screen's level: an L1
+   * screen (top level — no back button) uses Heading/18 (Figma: an "L1 page heading" text in the slot); an L2 screen
+   * (with a back button) uses Heading/14.
+   */
   title?: ReactNode
   /** Figma ✏️ Description. */
   description?: ReactNode
   headingLevel?: 1 | 2
-  /** Figma 👁️ Action - left: shows the back button. */
+  /** Figma 👁️ Action - left: shows the back button — and makes this an L2 screen (title Heading/14). */
   onBack?: () => void
   backLabel?: string
   /** Figma → content right: usually one or two <ActionbarAction>s. */
@@ -62,6 +66,7 @@ export function Actionbar({
     {sticky && elevated === undefined && <span ref={sentinelRef} className={styles.sentinel} aria-hidden="true" />}
     <header
       className={[styles.actionbar, className].filter(Boolean).join(' ')}
+      data-level={onBack ? 2 : 1}
       data-sticky={sticky || undefined}
       data-elevated={showElevation || undefined}
     >
@@ -115,12 +120,15 @@ function useScrolledPast(enabled: boolean) {
   return [past, ref] as const
 }
 
-/** Figma's → content right button: a round 32px icon button (small Secondary Button, border/light). */
-export function ActionbarAction({ icon, label, onClick, pressed }: { icon: string; label: string; onClick: () => void; pressed?: boolean }) {
+/**
+ * Figma's → content right button: an icon-only Tertiary Small button — 32 × 32, boxed with the tertiary border. That's
+ * the first choice; `variant="ghost"` drops the box (icon only, 48 × 48 touch area) when the design asks for it.
+ */
+export function ActionbarAction({ icon, label, onClick, pressed, variant = 'tertiary' }: { icon: string; label: string; onClick: () => void; pressed?: boolean; variant?: 'tertiary' | 'ghost' }) {
   return (
     <Button
       size="sm"
-      variant="secondary"
+      variant={variant}
       className={styles.action}
       iconLeft={<Icon icon={icon} size={16} />}
       onClick={onClick}

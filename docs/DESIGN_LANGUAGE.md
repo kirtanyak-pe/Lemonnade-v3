@@ -32,7 +32,7 @@ concrete enough to check, and the ones marked **[scored]** are checked automatic
 | Gap between sections (large — a new topic, or after a hero block) | 32 | `spacing/32` |
 | Section heading → its card / list | 16 | `spacing/16` |
 | Card padding / radius | 12 / 12 | `spacing/12` · `radius/12` |
-| List row height (ListCell md) | 58 | — (component) |
+| List row height (ListCell md) | 58 compact · 74 breathable (asset lists) | `density` |
 | Top | Statusbar 32 + Actionbar | `SystemStatusbar` (mockups) · `Actionbar` |
 | Bottom | ButtonGroup dock **or** BottomNavbar — never both on one screen **[scored]** | |
 
@@ -118,7 +118,7 @@ spec you edit. Top to bottom:
 | Archetype | Anatomy |
 |---|---|
 | **home** (dashboard) | Actionbar (brand, 1–2 actions) · summary card (Select + hero value + PriceChange) · quick actions (pill Tabs or cards) · 1–2 short lists ("Top movers") · BottomNavbar |
-| **list** (watchlist, holdings) | Actionbar (title, search) + Tabs in its bottom slot · ListCell rows (symbol · Sparkline · price + PriceChange) · loading: SkeletonListRow × 8 · empty: EmptyState · BottomNavbar |
+| **list** (watchlist, holdings) | Actionbar (L1 title Heading/18, Tertiary search action) + Tabs in its bottom slot · breathable ListCell rows (logo · symbol · Sparkline · price + PriceChange) · loading: SkeletonListRow × 8 · empty: EmptyState · BottomNavbar |
 | **detail** (asset page) | Actionbar (back, Select asset switcher) · LTP Heading/24 + PriceChange md arrow · Chart + range Tabs · key stats Card filled · ProgressBar range (24H) · ButtonGroup (Buy / Sell) |
 | **order** (order pad) | Actionbar (asset + PriceChange) + Delivery/Intraday Tabs · order-type pill Tabs · Quantity row (Select ↕ + Stepper) · Price TextField · margin/charges Card filled · ButtonGroup (one Buy or Sell, lg) |
 | **review** (confirm sheet) | BottomSheet: header (question) · ListCell rows of facts · charges total · warning Aerobar if risky · ButtonGroup horizontal (secondary Cancel + strong confirm) |

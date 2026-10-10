@@ -682,6 +682,15 @@ export const changelog: Record<string, Release[]> = {
 
   actionbar: [
     {
+      version: '1.4.0', date: '2026-10-10',
+      summary: 'Title by screen level · Tertiary actions',
+      changes: [
+        { kind: 'changed', text: 'The title follows the screen\'s level: Heading/18 on an L1 screen (top level, no back or ✕ button), Heading/14 on an L2 screen (with one).' },
+        { kind: 'changed', text: 'Icon actions are Tertiary Small, boxed (32 × 32 with the tertiary border) — the first choice. Ghost (no box) when the design asks for it.' },
+        { dev: true, kind: 'fixed', text: 'ActionbarAction rendered a restyled Secondary button; it\'s a plain Tertiary Small now, with variant="ghost" as the option. The title size comes from onBack.' },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-10-05',
       summary: 'Typography role rules',
       changes: [
@@ -937,6 +946,15 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'list-cell': [
+    {
+      version: '1.6.0', date: '2026-10-10',
+      summary: 'Compact or breathable',
+      changes: [
+        { kind: 'added', text: 'Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change.' },
+        { kind: 'figma', text: 'The matching property for L3: list cell is still to come in the library.' },
+        { dev: true, kind: 'added', text: 'density="compact" | "breathable" (default compact; small rows are always compact).' },
+      ],
+    },
     {
       version: '1.5.0', date: '2026-10-09',
       summary: 'Multi-line description',

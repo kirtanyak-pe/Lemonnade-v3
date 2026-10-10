@@ -126,7 +126,7 @@ const NEEDS = { header: ['L3: Actionbar', 'L3: Tabs group', 'L3: Select switcher
 const wantComps = new Set([...NEEDS.header, ...spec.blocks.flatMap((b) => NEEDS[b.type] || []), ...(spec.dock ? NEEDS.dock : []), ...(spec.nav ? NEEDS.nav : [])])
 await Promise.all([
 ...[...wantComps].map((n) => l3Import(n).catch(() => null)),
-...['Heading/16', 'Heading/24', 'Label/12', 'Label/14', 'Label/16', 'Description/12'].map(l3TextStyle),
+...['Heading/16', 'Heading/18', 'Heading/24', 'Label/12', 'Label/14', 'Label/16', 'Description/12'].map(l3TextStyle),
 ...['surface/default', 'surface/secondary', 'content/primary', 'content/secondary', 'content/accent/indicator/up-default', 'content/accent/indicator/down-default', 'content/accent/error-default'].map(color),
 ...[0, 2, 4, 12, 16, 24].map(spacingVar),
 ])
@@ -148,6 +148,9 @@ hd.setProperties({ [propKey(hd, '✏️ Heading')]: h.title || spec.name, [propK
 const ab = await inst('L3: Actionbar', { Version: 'Latest' })
 screen.appendChild(ab); fill(ab); await loadAll(ab)
 ab.setProperties({ [propKey(ab, '👁️ Action - left')]: Boolean(h.back), [propKey(ab, '👁️ → content right')]: Boolean(h.actions && h.actions.length) })
+for (const btn of ab.findAll((n) => n.type === 'INSTANCE' && n.variantProperties && ['Type', 'State', 'Size'].every((k) => k in n.variantProperties))) {
+btn.setProperties({ Type: h.actionStyle === 'ghost' ? 'Ghost' : '⬜︎ Tertiary' })
+}
 const content = ab.findOne((n) => n.type === 'INSTANCE' && n.name === 'Content')
 if (content) {
 await loadAll(content)
@@ -155,7 +158,11 @@ if (h.select) { // asset switcher as the title
 const slot = content.findOne((n) => n.type === 'SLOT' && /Heading/.test(n.name))
 const sel = await tryInst('L3: Select switcher', { Size: 'Large', isSubtle: 'False' })
 if (slot && sel) { for (const c of [...slot.children]) c.remove(); slot.appendChild(sel); await loadAll(sel); sel.setProperties({ [propKey(sel, '✏️ Label')]: h.select }) }
-} else setText(content, 'Heading', h.title || spec.name)
+} else {
+setText(content, 'Heading', h.title || spec.name)
+const t = !h.back && content.findOne((n) => n.type === 'TEXT' && n.name === 'Heading')
+if (t) { await t.setTextStyleIdAsync((await l3TextStyle('Heading/18')).id); t.name = 'L1 page heading' }
+}
 const descSlot = content.findOne((n) => n.type === 'SLOT' && /Description/.test(n.name))
 if (h.change !== undefined && descSlot) { content.setProperties({ [propKey(content, '👁️ Description')]: true }); for (const c of [...descSlot.children]) c.remove(); descSlot.appendChild(await priceChange(h.change, 'Small')) }
 else if (h.description) { content.setProperties({ [propKey(content, '👁️ Description')]: true }); setText(content, 'Description', h.description) }
@@ -294,6 +301,7 @@ if (state === 'loading') { for (let k = 0; k < 6; k++) { const sk = await inst('
 if (state === 'empty' && b.empty) return BUILD.empty({ type: 'empty', ...b.empty }, s)
 for (const i of instruments(b.data)) {
 const c = await inst('L3: list cell', { isSelected: 'False', isSmall: 'False', isPlain: b.card ? 'False' : 'True' }); s.appendChild(c); fill(c); await loadAll(c)
+await setSpacing(c, 'paddingTop', 16); await setSpacing(c, 'paddingBottom', 16)
 c.setProperties({ [propKey(c, '✏️ Label')]: i.symbol, [propKey(c, '✏️ Description')]: b.pnl ? `${i.qty} qty · avg ${inr(i.avg)}` : i.name, [propKey(c, '👁️ Icon - L')]: false })
 const sr = c.findAll((n) => n.type === 'SLOT').find((x) => /icon-r/i.test(x.name))
 if (!sr) continue

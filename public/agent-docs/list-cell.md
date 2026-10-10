@@ -5,7 +5,7 @@
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.5.0
+- Version: 1.6.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65400
 - Source: `src/components/ListCell`
 - Also called: List item, row, cell, settings row, menu item
@@ -49,6 +49,9 @@ Don't use it for:
 - Card rows always sit inside a margin (16 from the screen edge, like any card). Plain rows run edge to edge in their
   container and keep their own 16 side padding.
 - Sizes: `md` (default — min 48, 24px icons) and `sm` (Figma isSmall — min 32, 16px icons).
+- **Density** (default-size rows): `compact` (default — 8 above and below a plain row, 58px with a description) or
+  `breathable` (16 above and below, 74px). **Asset lists** — logo, name + company, price + `PriceChange` — use
+  breathable; settings, menus and options stay compact. Small rows are always compact.
 
 ### 3. Tappable rows
 
@@ -96,6 +99,7 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 |---|---|---|
 | isPlain = True · False | `variant` `'plain' \| 'card'` | |
 | isSmall | `size` `'md' \| 'sm'` | |
+| (density — Figma property to come) | `density` `'compact' \| 'breathable'` | default-size rows; asset lists are breathable |
 | isTappable | `onClick` · `href` · `as="label"` | `as="button"` / `"a"` / `"label"` / `"div"` can be set directly |
 | isSelected | `selected` | tappable rows only |
 | isMultiline | `multiline` | the variant is being added to the Figma library |
@@ -131,6 +135,11 @@ When rows are a list of choices, the chosen one is `selected` (Figma isSelected 
 <ListCell variant="card" label="HDFC Bank ••4821" description="Primary" iconLeft={bankLogo}
   onClick={() => setAccount('hdfc')} selected={account === 'hdfc'} iconRight={<Icon icon={msChevronRight} />} />
 
+// Asset list: breathable rows (16 above and below) — logo, name + company, price + change
+<ListCell density="breathable" label="Tata Motors" description="Tata Motors Ltd" iconLeft={tataLogo}
+  trailing={<span className={styles.price}>₹418.20 <PriceChange value={0.22} unit="percent" size="sm" /></span>}
+  onClick={openTataMotors} />
+
 // Facts in a review sheet: static rows, the value on the right
 <ListCell label="Quantity" trailing="10" />
 
@@ -157,6 +166,10 @@ A list cell is a card with more specific content — dropdown options, settings,
 - **Tappable** (a clickable card, Figma isTappable): surface-primary, border-light and elevation-low, and it scales to 0.98 while pressed.
 
 Both come in default (48) and small (32).
+
+### Compact or breathable
+
+Default-size rows come in two densities. **Compact** (8 above and below, 58px with a description) is the default — settings, menus, options. **Breathable** (16 above and below, 74px) is for **asset lists**: a logo, the name and company, the price and its change. Small rows are always compact.
 
 ### Selected rows
 
@@ -199,6 +212,7 @@ List cell — Rows of settings, accounts, items
 | `label / description` | `ReactNode` |  | Figma "Label goes here" / "Type description". |
 | `multiline` | `boolean` | `false` | Figma isMultiline: the description wraps onto as many lines as it needs instead of ending in "…". The label stays on one line. |
 | `size` | `'md' \| 'sm'` | `'md'` | Figma isSmall: 48 / 32 min height, 24 / 16 icons. |
+| `density` | `'compact' \| 'breathable'` | `'compact'` | Default-size rows: compact (8 above and below, 58px rows) or breathable (16, 74px rows) — breathable for asset lists. |
 | `variant` | `'plain' \| 'card'` | `'plain'` | Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low. |
 | `selected` | `boolean` | `false` | Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only. |
 | `iconLeft / iconRight` | `ReactNode` |  | Figma Icon-L / Icon-R slots, sized for you. |
@@ -225,6 +239,6 @@ List cell — Rows of settings, accounts, items
 
 ## Recent changes
 
+- **1.6.0** (2026-10-10) Compact or breathable: Two densities for default-size rows: compact (8 above and below — the default, 58px rows) and breathable (16 — 74px rows) for asset lists: logo, name and company, price and change. The matching property for L3: list cell is still to come in the library. density="compact" | "breathable" (default compact; small rows are always compact).
 - **1.5.0** (2026-10-09) Multi-line description: isMultiline: the description can wrap onto several lines instead of ending in "…" on one line. The label stays on one line. L3: list cell gets isMultiline = False · True (pending — added in the library next). multiline prop.
 - **1.4.0** (2026-10-09) Follows the Card rules: A list cell is a card with specific content, so it follows Card: a card row that isn't tappable has no fill (it takes the colour it sits on) and border-light; a tappable card row is surface-primary + border-light + elevation-low and scales to 0.98 when pressed. L3: list cell gets isTappable = True · False (selected only when tappable). Tappable = onClick, href or as="label" — no new prop.
-- **1.3.0** (2026-10-09) Selected rows, no fill on plain rows: Selected state for tappable rows: plain rows get a surface-secondary background, card rows swap border-light for border-dark. Plain rows have no fill — they take the colour of whatever they sit on — and run edge to edge. Card rows always sit inside a margin. L3: list cell gets isSelected = True for every isSmall × isPlain; plain rows lose their surface-primary fill. selected prop (aria-pressed / aria-current; warns on a row that isn't tappable).

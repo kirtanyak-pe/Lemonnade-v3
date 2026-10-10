@@ -526,6 +526,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       { name: 'description', label: '✏️ Description', type: 'text', default: 'NSE · Equity', showIf: (v) => v.search !== true },
       { name: 'back', label: '👁️ Action - left (back)', type: 'boolean', default: true },
       { name: 'actions', label: 'Actions in → content right', type: 'select', options: ['0', '1', '2'], default: '2', showIf: (v) => v.search !== true },
+      { name: 'actionStyle', label: 'Action style', type: 'select', options: ['tertiary', 'ghost'], optionLabels: { tertiary: 'Tertiary (first choice)', ghost: 'Ghost (when the design asks)' }, default: 'tertiary', showIf: (v) => v.search !== true && v.actions !== '0' },
       { name: 'search', label: 'Type = Search', type: 'boolean', default: false },
       { name: 'bottom', label: 'Tabs in ↓ Content bottom', type: 'boolean', default: false, showIf: (v) => v.search !== true },
     ],
@@ -541,8 +542,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
           actions={
             s(v, 'actions') === '0' ? undefined : (
               <>
-                <ActionbarAction icon={msSearch} label="Search" onClick={noop} />
-                {s(v, 'actions') === '2' && <ActionbarAction icon={msStar} label="Add to watchlist" onClick={noop} />}
+                <ActionbarAction icon={msSearch} label="Search" onClick={noop} variant={s(v, 'actionStyle') as 'tertiary' | 'ghost'} />
+                {s(v, 'actions') === '2' && <ActionbarAction icon={msStar} label="Add to watchlist" onClick={noop} variant={s(v, 'actionStyle') as 'tertiary' | 'ghost'} />}
               </>
             )
           }
@@ -552,7 +553,8 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     code: (v) => {
       if (b(v, 'search')) return jsx('Actionbar', [['onBack', b(v, 'back') ? '{goBack}' : undefined], ['search', "{{ value: query, onChange: setQuery, placeholder: 'Search for a company' }}"]])
       const n = s(v, 'actions')
-      const actions = n === '0' ? undefined : `{<>\n    <ActionbarAction icon={msSearch} label="Search" onClick={openSearch} />${n === '2' ? '\n    <ActionbarAction icon={msStar} label="Add to watchlist" onClick={toggleWatchlist} />' : ''}\n  </>}`
+      const ghost = s(v, 'actionStyle') === 'ghost' ? ' variant="ghost"' : ''
+      const actions = n === '0' ? undefined : `{<>\n    <ActionbarAction icon={msSearch} label="Search" onClick={openSearch}${ghost} />${n === '2' ? '\n    <ActionbarAction icon={msStar} label="Add to watchlist" onClick={toggleWatchlist}${ghost} />' : ''}\n  </>}`
       const a = attrs([
         ['title', s(v, 'title')],
         ['description', s(v, 'description')],
@@ -724,6 +726,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
     controls: [
       { name: 'variant', label: 'isPlain', type: 'select', options: ['plain', 'card'], optionLabels: { plain: 'True', card: 'False (card)' }, default: 'plain' },
       { name: 'size', label: 'isSmall', type: 'select', options: ['md', 'sm'], optionLabels: isSmallLabels, default: 'md' },
+      { name: 'density', label: 'Density', type: 'select', options: ['compact', 'breathable'], optionLabels: { compact: 'Compact (default)', breathable: 'Breathable (asset lists)' }, default: 'compact', showIf: (v) => v.size === 'md' },
       { name: 'label', label: '✏️ Label', type: 'text', default: 'RELIANCE' },
       { name: 'description', label: '✏️ Description', type: 'text', default: '12 shares · ₹35,365' },
       { name: 'multiline', label: 'isMultiline', type: 'boolean', default: false, showIf: (v) => Boolean(v.description) },
@@ -739,6 +742,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
         <ListCell
           variant={s(v, 'variant') as 'plain' | 'card'}
           size={s(v, 'size') as 'md' | 'sm'}
+          density={s(v, 'size') === 'md' ? (s(v, 'density') as 'compact' | 'breathable') : undefined}
           label={s(v, 'label')}
           description={s(v, 'description') || undefined}
           multiline={b(v, 'multiline')}
@@ -758,6 +762,7 @@ export const playgrounds: Record<string, PlaygroundDef> = {
       return jsx('ListCell', [
         ['variant', s(v, 'variant'), 'plain'],
         ['size', s(v, 'size'), 'md'],
+        ['density', s(v, 'size') === 'md' ? s(v, 'density') : undefined, 'compact'],
         ['label', s(v, 'label')],
         ['description', s(v, 'description')],
         ['multiline', b(v, 'multiline')],

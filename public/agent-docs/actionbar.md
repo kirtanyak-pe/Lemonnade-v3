@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.4.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65480
 - Source: `src/components/Actionbar`
 - Also called: App bar, top bar, navigation bar, header, toolbar
@@ -18,6 +18,12 @@ import { Actionbar, ActionbarAction } from './components/Actionbar' // path rela
 
 ## Overview
 
+### Screen title: L1 or L2
+
+The heading is the screen's title, and its size follows the screen's level. An **L1** screen — top level, reached from the bottom navbar, with no back or ✕ button — uses **Heading/18** (in Figma, an “L1 page heading” text in the heading slot). An **L2** screen — with a back or ✕ button — uses **Heading/14**. Toggle the back button above to see both.
+
+Automatic: no `onBack` → L1, Heading/18; with `onBack` → L2, Heading/14.
+
 ### Title or search
 
 The base content has three types: Content (heading + description), Search (placeholder) and Searched (typed). In Search, the middle of the bar becomes the search field — tap the search action above.
@@ -26,9 +32,9 @@ Figma's base content has three types: Content (heading + description), Search (p
 
 ### Actions and bottom content
 
-The actions in → content right are round 32px Tertiary or Ghost icon buttons — at most two. ↓ Content bottom holds tabs or filters that belong to the bar. The heading is the screen's title.
+The actions in → content right are icon buttons — at most two. First choice: **Tertiary Small**, boxed (32 × 32 with the tertiary border). Use **Ghost** (no box) only when the design asks for it. ↓ Content bottom holds tabs or filters that belong to the bar.
 
-`ActionbarAction` is Figma's round 32px icon button; give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
+`ActionbarAction` is a Tertiary Small icon button (`variant="ghost"` drops the box); give it a label so it's announced. `bottom` is Figma's content-bottom slot — tabs or filters that belong to the bar. The title is the screen's heading (h1).
 
 ## Do / Don't
 
@@ -84,6 +90,6 @@ Actionbar — The top bar of a screen
 
 ## Recent changes
 
+- **1.4.0** (2026-10-10) Title by screen level · Tertiary actions: The title follows the screen's level: Heading/18 on an L1 screen (top level, no back or ✕ button), Heading/14 on an L2 screen (with one). Icon actions are Tertiary Small, boxed (32 × 32 with the tertiary border) — the first choice. Ghost (no box) when the design asks for it. ActionbarAction rendered a restyled Secondary button; it's a plain Tertiary Small now, with variant="ghost" as the option. The title size comes from onBack.
 - **1.3.0** (2026-10-05) Typography role rules: Typography role rules: typed search text and its placeholder use Label (input text). Matches Figma.
 - **1.2.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Search text uses Description.
-- **1.1.1** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.

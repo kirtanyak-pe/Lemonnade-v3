@@ -62,6 +62,14 @@
   padding: var(--l3-spacing-12);
 }
 
+/*
+ * Density (default-size rows): compact keeps the padding above; breathable gives the row 16 above and below — asset
+ * lists (logo + name + price + change), where 58px rows feel cramped: plain rows become 74px.
+ */
+.cell[data-size='md'][data-density='breathable'] {
+  padding-block: var(--l3-spacing-16);
+}
+
 /* ---- Selected (Figma isSelected = True; tappable rows only) ------------------------ */
 
 .cell[data-variant='plain'][data-selected] {
