@@ -1111,7 +1111,7 @@ import { msWallet, msWalletFill } from './icons/material'
       { name: 'description', type: 'ReactNode', description: 'Figma ✏️ Description — one line ideally, two at most (cut with an ellipsis).' },
       { name: 'tag', type: 'ReactNode', description: 'Figma 👁️ Tag: a small Tag after the title.' },
       { name: 'onInfo / infoLabel', type: '() => void · string', description: 'Figma 👁️ Info: an ⓘ button after the title (name defaults to “About <title>”).' },
-      { name: 'action', type: "{ type: 'view-all', onClick, label? } | { type: 'switcher', label, onClick, expanded? }", description: 'Figma CTA = View all · Switcher. Touch area ≥ 48 × 48.' },
+      { name: 'action', type: "{ type: 'view-all', onClick, label? } | { type: 'switcher', label, onClick, expanded? }", description: 'Figma 👁️ CTA, nested Type = Button (View all) · Time Switcher. Touch area ≥ 48 × 48; the row stays as tall as its text.' },
       { name: 'headingLevel', type: '2 | 3 | 4', default: '2', description: 'Heading level of the title.' },
     ],
   },

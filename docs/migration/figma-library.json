@@ -263,7 +263,7 @@
       "props": "✏️ Value:TEXT; ✏️ Sublabel:TEXT; 👁️ Sublabel:BOOLEAN; Size=[Small|Large]"
     },
     {
-      "name": "L3: Select",
+      "name": "L3: Select switcher",
       "id": "5377:49",
       "key": "e8907833f22f015d360c424e572d34a8ad8f7587",
       "page": "Select",
@@ -466,7 +466,16 @@
       "page": "Section header",
       "status": "CURRENT",
       "code": "SectionHeader",
-      "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; CTA=[None|View all|Switcher]"
+      "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; 👁️ CTA:BOOLEAN; Property 1=[Default] — the CTA is a nested L3 base: section header cta"
+    },
+    {
+      "name": "L3 base: section header cta",
+      "id": "5415:18030",
+      "key": "b86d814b7a06de4087c66a265f05c117ce7a795d",
+      "page": "Section header",
+      "status": "CURRENT",
+      "code": "SectionHeader (action)",
+      "props": "Type=[Button|Time Switcher] — Button: L3: Button Ghost Small hugging its label (16) · Time Switcher: L3: Select switcher Small; each with a 48 touch area"
     }
   ],
   "specimens": [

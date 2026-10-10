@@ -99,6 +99,15 @@ export const changelog: Record<string, Release[]> = {
   ],
   'section-header': [
     {
+      version: '1.1.0', date: '2026-10-10',
+      summary: 'Simpler CTA',
+      changes: [
+        { kind: 'figma', text: 'L3: Section header is one component now: 👁️ CTA shows the action, and the nested "L3 base: section header cta" picks its Type — Button (View all) or Time Switcher. The three CTA variants are gone.' },
+        { kind: 'changed', text: 'View all hugs its label like in Figma: 16 tall instead of 32, so a header with only a title and View all is 20 tall. Its touch area stays 48 × 48.' },
+        { kind: 'changed', text: 'No API change: action={{ type: \'view-all\' }} is Type=Button, type: \'switcher\' is Type=Time Switcher.', dev: true },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-10-09',
       summary: 'New component',
       changes: [

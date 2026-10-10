@@ -231,7 +231,7 @@ const STRATEGIES = {
     const label = text.characters
     const nu = (await target(rule, { Size: size, isSubtle: subtle })).createInstance()
     placeLike(nu, old)
-    nu.name = 'L3: Select'
+    nu.name = 'L3: Select switcher'
     const props = { [propKey(nu, '✏️ Label')]: label }
     if (!/Switch arrow toggle|unfold/i.test(icon.name)) { const chev = await figma.importComponentByKeyAsync(DATA.icons.expandMore); props[propKey(nu, '↪ Icon')] = chev.id }
     nu.setProperties(props)

@@ -77,6 +77,15 @@
   position: relative; /* the control stays above its touch area */
 }
 
+/*
+ * Figma "L3 base: section header cta", Type=Button: the Ghost Small button hugs its label — 16 tall, no padding (the
+ * Ghost Small main is 32). The 48 touch area above does the tapping, so the row is only as tall as its text.
+ */
+.action > .viewAll[data-size] {
+  --btn-height: auto;
+  --btn-padding-block: var(--l3-spacing-00);
+}
+
 .info {
   padding: 0;
   border: 0;

@@ -63,7 +63,7 @@ const instruments = (ref) => { // same deterministic data as scripts/screen/data
 }
 
 // ---- preload everything this spec needs, in parallel (dogfood: sequential imports made one build take 66 s) -----------------
-const NEEDS = { header: ['L3: Actionbar', 'L3: Tabs group', 'L3: Select', 'L3: Price change', 'L3: Bottom sheet header'], summary: ['L3: Select', 'L3: Price change'], price: ['L3: Price change'], tabs: ['L3: Tabs group'], chart: ['L3: Chart', 'L3: Tabs group'], progress: ['L3: Progress bar'], banner: ['L3: aerobar - toast'], quantity: ['L3: Select', 'L3: Stepper'], field: ['L3: input field & text Box'], stats: ['L3: Card'], filters: ['L3: Select'], empty: ['L3 → Empty state'], rows: ['L3: list cell', 'L3→ Toggle switch'], list: ['L3: list cell', 'L3: Sparkline', 'L3: Tags', 'L3: Price change', 'L3: Skeleton pattern', 'L3 → Empty state'], dock: ['L3: Button Dock', 'L3: Button'], nav: ['L3: Bottom Navbar'] }
+const NEEDS = { header: ['L3: Actionbar', 'L3: Tabs group', 'L3: Select switcher', 'L3: Price change', 'L3: Bottom sheet header'], summary: ['L3: Select switcher', 'L3: Price change'], price: ['L3: Price change'], tabs: ['L3: Tabs group'], chart: ['L3: Chart', 'L3: Tabs group'], progress: ['L3: Progress bar'], banner: ['L3: aerobar - toast'], quantity: ['L3: Select switcher', 'L3: Stepper'], field: ['L3: input field & text Box'], stats: ['L3: Card'], filters: ['L3: Select switcher'], empty: ['L3 → Empty state'], rows: ['L3: list cell', 'L3→ Toggle switch'], list: ['L3: list cell', 'L3: Sparkline', 'L3: Tags', 'L3: Price change', 'L3: Skeleton pattern', 'L3 → Empty state'], dock: ['L3: Button Dock', 'L3: Button'], nav: ['L3: Bottom Navbar'] }
 const wantComps = new Set([...NEEDS.header, ...spec.blocks.flatMap((b) => NEEDS[b.type] || []), ...(spec.dock ? NEEDS.dock : []), ...(spec.nav ? NEEDS.nav : [])])
 await Promise.all([
   ...[...wantComps].map((n) => l3Import(n).catch(() => null)),
@@ -98,7 +98,7 @@ try {
       await loadAll(content)
       if (h.select) { // asset switcher as the title
         const slot = content.findOne((n) => n.type === 'SLOT' && /Heading/.test(n.name))
-        const sel = await tryInst('L3: Select', { Size: 'Large', isSubtle: 'False' })
+        const sel = await tryInst('L3: Select switcher', { Size: 'Large', isSubtle: 'False' })
         if (slot && sel) { for (const c of [...slot.children]) c.remove(); slot.appendChild(sel); await loadAll(sel); sel.setProperties({ [propKey(sel, '✏️ Label')]: h.select }) }
       } else setText(content, 'Heading', h.title || spec.name)
       const descSlot = content.findOne((n) => n.type === 'SLOT' && /Description/.test(n.name))
@@ -135,7 +135,7 @@ const BUILD = {
   async summary(b, s) {
     const hero = frame('hero', 'VERTICAL', 4)
     s.appendChild(hero)
-    if (b.select) { const sel = await tryInst('L3: Select', { Size: 'Small', isSubtle: 'True' }); if (sel) { hero.appendChild(sel); await loadAll(sel); sel.setProperties({ [propKey(sel, '✏️ Label')]: b.label }) } }
+    if (b.select) { const sel = await tryInst('L3: Select switcher', { Size: 'Small', isSubtle: 'True' }); if (sel) { hero.appendChild(sel); await loadAll(sel); sel.setProperties({ [propKey(sel, '✏️ Label')]: b.label }) } }
     else hero.appendChild(await txt(b.label, 'Description/12', 'content/secondary'))
     hero.appendChild(await txt(inr(b.value), 'Heading/24', 'content/primary', 'value'))
     if (b.change !== undefined) hero.appendChild(await priceChange(b.change, 'Large', { arrow: true }))
@@ -177,7 +177,7 @@ const BUILD = {
   async quantity(b, s) {
     const r = row(12); r.primaryAxisAlignItems = 'SPACE_BETWEEN'; s.appendChild(r); fill(r)
     const left = row(4); r.appendChild(left)
-    const sel = await tryInst('L3: Select', { Size: 'Small', isSubtle: 'False' })
+    const sel = await tryInst('L3: Select switcher', { Size: 'Small', isSubtle: 'False' })
     if (sel) { left.appendChild(sel); await loadAll(sel); sel.setProperties({ [propKey(sel, '✏️ Label')]: b.label }) } else left.appendChild(await txt(b.label, 'Label/12'))
     if (b.hint) left.appendChild(await txt(`(${b.hint})`, 'Description/12', 'content/secondary'))
     const st = await inst('L3: Stepper', { Size: 'Small' }); r.appendChild(st); await loadAll(st)
@@ -212,7 +212,7 @@ const BUILD = {
   async filters(b, s) {
     const r = row(16); s.appendChild(r)
     for (const f of b.items) {
-      const sel = await tryInst('L3: Select', { Size: 'Medium', isSubtle: 'True' })
+      const sel = await tryInst('L3: Select switcher', { Size: 'Medium', isSubtle: 'True' })
       if (!sel) { r.appendChild(await txt(f.label, 'Label/14', 'content/secondary')); continue }
       r.appendChild(sel); await loadAll(sel)
       const props = { [propKey(sel, '✏️ Label')]: f.label }

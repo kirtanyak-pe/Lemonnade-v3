@@ -806,7 +806,7 @@
    ],
    "source": "src/components/Select",
    "figma": {
-    "name": "L3: Select",
+    "name": "L3: Select switcher",
     "nodeId": "5377:49",
     "key": "e8907833f22f015d360c424e572d34a8ad8f7587",
     "status": "CURRENT",
@@ -979,7 +979,7 @@
     "nodeId": "5407:124",
     "key": "9cc0bfe8b84405da715c3baa64177530907278c1",
     "status": "CURRENT",
-    "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; CTA=[None|View all|Switcher]"
+    "props": "✏️ Heading:TEXT; ✏️ Description:TEXT; 👁️ Description:BOOLEAN; 👁️ Tag:BOOLEAN; 👁️ Info:BOOLEAN; 👁️ CTA:BOOLEAN; Property 1=[Default] — the CTA is a nested L3 base: section header cta"
    },
    "props": [
     "title",

@@ -23,7 +23,7 @@ Text entry. Always a visible label (never the placeholder as the label). Errors 
 Code: `<TextField label status helperText multiline>` · Docs: #/text-field
 
 ### L3: Section header (5407:124)
-The heading row of a section. Heading (Heading/14) is required; Tag, Info and Description (Description/12 — one line ideally, never more than two) are optional. CTA (optional): View all (Ghost button) or Switcher (L3: Select, e.g. Day P&L ↕ / a filter). The CTA's touch area is at least 48 × 48 whatever its size. Sits 16 above its card or list; sections 24 apart (32 for a bigger break).
+The heading row of a section. Heading (Heading/14) is required; Tag, Info and Description (Description/12 — one line ideally, never more than two) are optional. 👁️ CTA (optional) shows the nested "L3 base: section header cta": Type = Button (View all — a Ghost Small button hugging its 16px label) or Time Switcher (L3: Select switcher, e.g. Day P&L ↕). Its touch area is at least 48 × 48 whatever its size, without making the row taller. Sits 16 above its card or list; sections 24 apart (32 for a bigger break).
 Code: `<SectionHeader title description tag onInfo action>` · Docs: #/section-header
 
 ### L3: list cell (4543:65400)
@@ -113,7 +113,7 @@ A handoff annotation for developers, with a pointer in any direction. Not app UI
 A number with − / + buttons for quantity and lots. Small: inline in order-pad rows (104×28 grey pill, 20px buttons). Large: standalone with round outlined buttons and an optional sublabel ("91 Lots"). Set a button to State = Disabled at the minimum or maximum.
 Code: `<Stepper value onChange min max step size sublabel label>` · Docs: #/stepper
 
-### L3: Select (5377:49)
+### L3: Select switcher (5377:49)
 An inline trigger — label + ↕ or chevron — that opens a bottom sheet of options. Small (Label/12) in form rows, Medium (Label/14) for filters, Large (Heading/14) for titles; isSubtle = secondary colour. Make the whole row the tap target.
 Code: `<Select onClick size subtle icon>` · Docs: #/select
 

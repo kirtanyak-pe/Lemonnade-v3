@@ -5,7 +5,7 @@
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.1.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5407-124
 - Source: `src/components/SectionHeader`
 - Also called: Section title, section heading, list header, group header, view all
@@ -38,7 +38,7 @@ The section header sits 16 above its card or list, and sections are 24 apart (32
 | `description` | `ReactNode` |  | Figma ✏️ Description — one line ideally, two at most (cut with an ellipsis). |
 | `tag` | `ReactNode` |  | Figma 👁️ Tag: a small Tag after the title. |
 | `onInfo / infoLabel` | `() => void · string` |  | Figma 👁️ Info: an ⓘ button after the title (name defaults to “About <title>”). |
-| `action` | `{ type: 'view-all', onClick, label? } \| { type: 'switcher', label, onClick, expanded? }` |  | Figma CTA = View all · Switcher. Touch area ≥ 48 × 48. |
+| `action` | `{ type: 'view-all', onClick, label? } \| { type: 'switcher', label, onClick, expanded? }` |  | Figma 👁️ CTA, nested Type = Button (View all) · Time Switcher. Touch area ≥ 48 × 48; the row stays as tall as its text. |
 | `headingLevel` | `2 \| 3 \| 4` | `2` | Heading level of the title. |
 
 ## Tokens used
@@ -52,4 +52,5 @@ The section header sits 16 above its card or list, and sections are 24 apart (32
 
 ## Recent changes
 
+- **1.1.0** (2026-10-10) Simpler CTA: L3: Section header is one component now: 👁️ CTA shows the action, and the nested "L3 base: section header cta" picks its Type — Button (View all) or Time Switcher. The three CTA variants are gone. View all hugs its label like in Figma: 16 tall instead of 32, so a header with only a title and View all is 20 tall. Its touch area stays 48 × 48. No API change: action={{ type: 'view-all' }} is Type=Button, type: 'switcher' is Type=Time Switcher.
 - **1.0.0** (2026-10-09) New component: Section header: a required heading with an optional tag, info icon, description (one line ideally, two at most) and one action — View all or a switcher. The action and info icon have a 48 × 48 touch area. New Figma component L3: Section header (CTA = None · View all · Switcher; ✏️ Heading, ✏️ Description, 👁️ Description · Tag · Info). <SectionHeader title description tag onInfo action headingLevel />; action is typed to view-all | switcher.

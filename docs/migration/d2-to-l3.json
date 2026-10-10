@@ -313,7 +313,7 @@
     },
     {
       "match": "text + ↕ / ⌄ trigger",
-      "to": "L3: Select (size from text style, isSubtle from colour, chevron icon for ⌄)",
+      "to": "L3: Select switcher (size from text style, isSubtle from colour, chevron icon for ⌄)",
       "strategy": "rebuild:select",
       "proven": "52"
     },

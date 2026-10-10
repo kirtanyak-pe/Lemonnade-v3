@@ -74,7 +74,7 @@ const NAME_HINTS = [
   [/\b(bottom ?sheet|sheet|modal|dialog)\b/i, 'L3: Bottom sheet'], [/\b(tags?|badges?)\b/i, 'L3: Tags'], [/\b(input|text ?field|search)\b/i, 'L3: input field & text Box'],
   [/\b(toggle|switch)\b/i, 'L3→ Toggle switch'], [/\b(check ?box|radio)\b/i, 'L3: Radio button & check box'], [/\b(list|row|cell)\b/i, 'L3: list cell'],
   [/\b(card|tile|panel)\b/i, 'L3: Card'], [/\bempty\b/i, 'L3 → Empty state'], [/\blogos?\b/i, 'L3 → Brand logo'], [/\b(stepper|quantity|qty)\b/i, 'L3: Stepper'],
-  [/\b(select|dropdown|picker)\b/i, 'L3: Select'], [/\b(skeleton|shimmer|loader|loading)\b/i, 'L3: Skeleton'], [/\b(progress|meter)\b/i, 'L3: Progress bar'],
+  [/\b(select|dropdown|picker)\b/i, 'L3: Select switcher'], [/\b(skeleton|shimmer|loader|loading)\b/i, 'L3: Skeleton'], [/\b(progress|meter)\b/i, 'L3: Progress bar'],
   [/\b(chart|graph|candles?|sparkline)\b/i, 'L3: Chart'], [/\b(date|calendar)\b/i, 'L3: Date picker'], [/\b(overlay|scrim|backdrop)\b/i, 'L3: Overlay'],
   [/\b(price ?change|delta|returns?)\b/i, 'L3: Price change'], [/\bstatus ?bar\b/i, 'L3: System statusbar'],
 ]

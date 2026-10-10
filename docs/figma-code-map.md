@@ -68,7 +68,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | ✏️ Sublabel / 👁️ Sublabel | `sublabel` (Large only) |
 | .L3: Stepper button State = Disabled | automatic at `min` / `max` (or `disabled`) |
 
-### L3: Select → `<Select>` (`components/Select`)
+### L3: Select switcher → `<Select>` (`components/Select`)
 | Figma | React |
 |---|---|
 | ✏️ Label | children |
@@ -171,7 +171,8 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | ✏️ Description (👁️ Description) | `description` — one line ideally, max two |
 | 👁️ Tag | `tag` (`<Tag size="sm">`) |
 | 👁️ Info | `onInfo` (+ `infoLabel`) |
-| CTA = None · View all · Switcher | no `action` · `action={{ type: 'view-all', onClick }}` · `action={{ type: 'switcher', label, onClick }}` |
+| 👁️ CTA off | no `action` |
+| 👁️ CTA on — nested "L3 base: section header cta" Type = Button · Time Switcher | `action={{ type: 'view-all', onClick }}` (Ghost button hugging its label, 16 tall) · `action={{ type: 'switcher', label, onClick }}` (L3: Select switcher, Small) |
 | touch area (48) | built in (≥ 48 × 48) |
 
 ## Feedback & status

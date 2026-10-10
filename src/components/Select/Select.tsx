@@ -26,7 +26,7 @@ export type SelectProps = {
 const iconSize = { sm: 12, md: 16, lg: 16 } as const
 
 /**
- * L3 Select (Figma L3: Select): an inline trigger — a label plus ↕ or ⌄ — that opens a sheet of options.
+ * L3 Select (Figma "L3: Select switcher"): an inline trigger — a label plus ↕ or ⌄ — that opens a sheet of options.
  * No box: it sits in a row or a header. The tap area grows to size/tap-target (32px).
  */
 export function Select({ children, onClick, size = 'sm', subtle = false, icon = 'swap', expanded, 'aria-label': ariaLabel, className }: SelectProps) {
