@@ -71,7 +71,7 @@ const pkgVersion = new Date().toISOString().slice(0, 10).replace(/-/g, '.')
 mkdirSync(join(plugin, '.claude-plugin'), { recursive: true })
 writeFileSync(join(plugin, '.claude-plugin/plugin.json'), JSON.stringify({ name: 'lemonnade', version: pkgVersion, description: 'Design production-ready Lemonnade V3 screens and flows in Figma — the L3 kit as a skill.', author: { name: 'Lemonnade design system' }, homepage: 'https://github.com/kirtanyak-pe/Lemonnade-v3' }, null, 2) + '\n')
 mkdirSync(join(root, '.claude-plugin'), { recursive: true })
-writeFileSync(join(root, '.claude-plugin/marketplace.json'), JSON.stringify({ name: 'lemonnade', owner: { name: 'kirtanyak-pe' }, plugins: [{ name: 'lemonnade', source: './plugin', description: 'Design production-ready Lemonnade V3 screens and flows in Figma.' }] }, null, 2) + '\n')
+writeFileSync(join(root, '.claude-plugin/marketplace.json'), JSON.stringify({ name: 'lemonnade', description: 'Lemonnade V3 (L3) design system tools for Claude — design production-ready screens and flows in Figma.', owner: { name: 'kirtanyak-pe' }, plugins: [{ name: 'lemonnade', source: './plugin', description: 'Design production-ready Lemonnade V3 screens and flows in Figma.' }] }, null, 2) + '\n')
 
 // prove it works on its own: the skill's own selftest (examples compile, every element documented + rendered)
 const r = execFileSync(process.execPath, [join(out, 'scripts/kit.mjs'), 'selftest'], { encoding: 'utf8' })
