@@ -633,6 +633,7 @@
    },
    "props": [
     "label / description",
+    "multiline",
     "size",
     "variant",
     "selected",

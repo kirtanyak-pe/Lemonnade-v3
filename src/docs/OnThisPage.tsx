@@ -19,8 +19,10 @@ export function OnThisPage({ container, deps, route, section }: { container: Ref
     const seen = new Set<string>()
     const found: Item[] = []
     root.querySelectorAll<HTMLElement>('h2').forEach((h) => {
-      // Only the page's own sections — a heading nested inside another section (e.g. a variant group) is a sub-topic.
-      if (h.closest('[data-toc-skip]') || h.parentElement?.closest('section')?.parentElement?.closest('section')) return
+      // Only the page's own sections: the first heading of a top-level <section>. Headings inside live demos (a sheet's
+      // title) and in a section nested in another (a variant group) aren't sections of the page.
+      const section = h.closest('section')
+      if (h.closest('[data-toc-skip]') || !section || section.parentElement?.closest('section') || section.querySelector('h2') !== h) return
       let id = h.id || slug(h.textContent || '')
       while (seen.has(id)) id += '-2'
       seen.add(id)

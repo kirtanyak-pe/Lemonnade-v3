@@ -664,6 +664,10 @@ import { msWallet, msWalletFill } from './icons/material'
           <p>The first sheet over a screen has <strong>no back button</strong>. A second sheet can open on top of it (e.g. an explainer from the ⓘ) — that one has a back button that returns to the first. Never stack a third: replace the second sheet instead. Try the ⓘ on the Buy sheet above.</p>
         </section>
         <section className={styles.section}>
+          <h2>Confirmations live in a sheet</h2>
+          <p>Every confirmation is a bottom sheet — there is no dialog. Before an action, the sheet asks the question (“Place this order?”), lists the facts as rows, adds a warning when it's risky, and ends with Cancel next to the strong confirm button. After it, a large-header result sheet (“Order placed”) with one button. A confirmation opened from a sheet is the second sheet, with a back button.</p>
+        </section>
+        <section className={styles.section}>
           <h2>Bottom or top</h2>
           <p>Figma's isBottom=False drops the sheet from the top with rounded bottom corners — handy for sort or filter menus tied to the top of the screen.</p>
         </section>
@@ -820,6 +824,7 @@ import { msWallet, msWalletFill } from './icons/material'
     variants: <ListCellVariants />,
     props: [
       { name: 'label / description', type: 'ReactNode', description: 'Figma "Label goes here" / "Type description".' },
+      { name: 'multiline', type: 'boolean', default: 'false', description: 'Figma isMultiline: the description wraps onto as many lines as it needs instead of ending in "…". The label stays on one line.' },
       { name: 'size', type: "'md' | 'sm'", default: "'md'", description: 'Figma isSmall: 48 / 32 min height, 24 / 16 icons.' },
       { name: 'variant', type: "'plain' | 'card'", default: "'plain'", description: 'Figma isPlain: flat row (no fill, edge to edge), or bordered rounded card (inside a margin). Card rows follow Card: static = no fill + border-light; tappable = surface-primary + elevation-low.' },
       { name: 'selected', type: 'boolean', default: 'false', description: 'Figma isSelected: the chosen row in a list of choices — plain → surface-secondary, card → border-dark. Tappable rows only.' },

@@ -90,7 +90,7 @@ import { Button, Card, Tag, TextField } from './components'
   (`src/components/<Name>/<Name>.tsx`, documented inline). Plain-text versions for search or AI assistants:
   `llms.txt` / `llms-full.txt` on the docs site.
 - **Design rules** (which variant when, spacing, layering, selection): `DESIGN_SYSTEM.md`, plus `USAGE.md` in Button,
-  ButtonGroup and BottomSheet.
+  ButtonGroup, BottomSheet, Card and ListCell.
 - **Figma → code:** `docs/figma-code-map.md` maps every Figma component property to a prop.
 - **Development warnings:** in development, components warn in the console when they're misused (a clickable card with
   a button inside, an icon-only button without a name, a third stacked bottom sheet…). They switch off in production

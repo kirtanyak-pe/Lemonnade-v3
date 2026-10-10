@@ -148,7 +148,8 @@ shows only the left one (with a development warning).
 
 ### Open questions
 
-<!-- PENDING: destructive actions that aren't trades (Delete list, Remove card) — no danger variant exists. Use tertiary + a confirmation sheet? -->
+<!-- Decided 2026-10-10: destructive actions that aren't trades (Delete list, Remove card) are confirmed in a bottom sheet (BottomSheet/USAGE.md §7). -->
+<!-- PENDING: which button style the destructive confirm uses — no danger variant exists -->
 <!-- PENDING: is "Cancel order" a trade action (sell style) or a destructive action? -->
 <!-- PENDING: difference in intent between tertiary and ghost beyond "container or not" -->
 <!-- PENDING: brand vs primary — which screens count as "brand moments"? -->

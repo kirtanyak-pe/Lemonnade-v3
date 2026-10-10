@@ -9,7 +9,7 @@ component, or a Figma design — follow this file.
 1. **`DESIGN_SYSTEM.md`** — spacing scale, layout primitives, token rules, card/actionbar rules, states, a11y,
    theming, icons, responsive rules, Do/Don't.
 2. **`src/components/<Name>/USAGE.md`** for every component you use — which variant/size to pick, labels, placement,
-   states. (Written so far: `Button`, `ButtonGroup`, `BottomSheet`. For others, use the component's docs page / playground in `src/docs`.)
+   states. (Written so far: `Button`, `ButtonGroup`, `BottomSheet`, `Card`, `ListCell`. For others, use the component's docs page / playground in `src/docs`.)
 3. The component's props (`src/components/<Name>/<Name>.tsx`). TypeScript enforces several rules — if a combination
    doesn't compile, it's not allowed; don't cast around it.
 
@@ -39,7 +39,7 @@ ask, or list it under "Open questions" in your answer.
   inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
-- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a dialog), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
+- **Don't invent patterns or components.** If something you need doesn't exist (e.g. a slider or a tooltip), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
   ProgressBar, Chart / Sparkline, PriceChange and Overlay exist now.
 
 Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
@@ -51,7 +51,8 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
 - **BottomSheet:** no drag handle and no ✕ — it closes by tapping the backdrop or dragging the sheet down (the
   component also handles Esc and a hidden screen-reader Close button). Tabs or search at the top go in
-  `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. At most 2 sheets stacked: the first sheet has
+  `BottomSheetHeader`'s `bottom` slot; the `footer` is a `ButtonGroup`. **Confirmations are bottom sheets — there is no
+  dialog** (review: question header, ListCell facts, secondary Cancel + strong confirm; result: `lg` header). At most 2 sheets stacked: the first sheet has
   no back button, only a second sheet on top of it has one. Never open a third.
 - **Accent groups** (DESIGN_SYSTEM.md 3.1): Brand · Market indicators (profit/loss) · Status (success, warning, error,
   discover, orange) · Sub-brands (us-stock, zing) · Miscellaneous (purple, indigo, teal — exceptional cases only).

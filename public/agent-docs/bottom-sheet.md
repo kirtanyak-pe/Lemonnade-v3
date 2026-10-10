@@ -97,6 +97,22 @@ Don't use it for:
 - Give the sheet a name: `aria-labelledby` pointing at `headingId`, or `aria-label` when there's no header.
 - Focus moves into the sheet, is trapped there, and returns when it closes; the page behind is inert (code).
 
+### 7. Confirmations
+
+**Every confirmation is a bottom sheet — L3 has no dialog** (decided 2026-10-10). That covers reviewing an order
+before it's placed, confirming an action that can't be undone, and the result afterwards.
+
+- **Before the action (review sheet):** `sm` header that asks the question (*Place this order?*, *Delete this
+  watchlist?*) · `ListCell` rows with the facts (quantity, price, charges) · the total · a `warning` `Aerobar` when it's
+  risky · a horizontal `ButtonGroup` with the strong confirm on the right (`buy` / `sell` for trades, `primary`
+  otherwise) and `secondary` *Cancel* on the left.
+- **After it (result sheet):** `lg` header — icon, optional tag, heading, description (*Order placed*) — and one button.
+- Confirming something from inside a sheet? The confirmation is the **second sheet** (it gets the back button). Never a
+  third.
+
+<!-- PENDING: the confirm button for a destructive action that isn't a trade (Delete watchlist, Remove card) — no danger variant exists; see Button/USAGE.md -->
+<!-- PENDING: is "Cancel order" a trade action (sell style) or a destructive action? -->
+
 ---
 
 ### Code
@@ -124,6 +140,20 @@ Don't use it for:
   }
 >
   …
+</BottomSheet>
+
+// Review sheet: the question, the facts as rows, Cancel + the strong confirm (see 7)
+<BottomSheet open={reviewing} onClose={closeReview} aria-labelledby="review-heading"
+  header={<BottomSheetHeader headingId="review-heading" heading="Place this order?" description="Buy RELIANCE · NSE" />}
+  footer={
+    <ButtonGroup aria-label="Confirm order">
+      <Button variant="secondary" onClick={closeReview}>Cancel</Button>
+      <Button variant="buy" onClick={place}>Buy 10 shares</Button>
+    </ButtonGroup>
+  }>
+  <ListCell label="Quantity" trailing="10" />
+  <ListCell label="Price" trailing="₹2,948.60" />
+  <ListCell label="Charges" trailing="₹23.10" />
 </BottomSheet>
 
 // Result sheet: large header, no content slot
@@ -164,6 +194,10 @@ There is no drag handle and no ✕. People close a sheet by **tapping the backdr
 ### At most two sheets
 
 The first sheet over a screen has **no back button**. A second sheet can open on top of it (e.g. an explainer from the ⓘ) — that one has a back button that returns to the first. Never stack a third: replace the second sheet instead. Try the ⓘ on the Buy sheet above.
+
+### Confirmations live in a sheet
+
+Every confirmation is a bottom sheet — there is no dialog. Before an action, the sheet asks the question (“Place this order?”), lists the facts as rows, adds a warning when it's risky, and ends with Cancel next to the strong confirm button. After it, a large-header result sheet (“Order placed”) with one button. A confirmation opened from a sheet is the second sheet, with a back button.
 
 ### Bottom or top
 

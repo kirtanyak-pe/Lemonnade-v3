@@ -361,13 +361,18 @@ and size, labels, placement, states). Read the component's USAGE.md before using
 
 ### 7.3 Other patterns
 
+- **Confirmations are bottom sheets — there is no dialog** (decided 2026-10-10). Review before an action: `sm` header
+  asking the question, `ListCell` rows of facts, the total, a `warning` Aerobar when risky, a horizontal ButtonGroup
+  (`secondary` Cancel + the strong confirm). The result after it: `lg` header + one button. From inside a sheet, the
+  confirmation is the second sheet. Recipe: `BottomSheet/USAGE.md` §7.
+
 <!-- PENDING: form, list and other patterns not yet defined, do not infer -->
 
 ---
 
 ## 8. Trading semantics
 
-<!-- PENDING: buy/sell usage, price up/down vs success/error, order-status colors, number and currency formatting -->
+<!-- PENDING: buy/sell usage, price up/down vs success/error, order-status colors, number and currency formatting, the confirm button for destructive non-trade actions, whether "Cancel order" is a trade (sell) or a destructive action -->
 
 ---
 
