@@ -13,6 +13,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | Type = ◻️ Primary · 🔲 Secondary · ⬜︎ Tertiary · Ghost · 🟨 Brand · 🟩 Buy · 🟥 Sell | `variant="primary" \| "secondary" \| "tertiary" \| "ghost" \| "brand" \| "buy" \| "sell"` |
+| Ghost instance set to Hug (width + height) | `variant="ghost"` — code always hugs. Figma's Ghost variants stay fixed size (existing designs rely on it), so hug each new instance where you place it, like the Section header CTA. |
 | Size = Large · Medium · Small | `size="lg" \| "md" \| "sm"` |
 | State = ♻︎ Loading | `loading` |
 | State = 🚫 Disabled | `disabled` |

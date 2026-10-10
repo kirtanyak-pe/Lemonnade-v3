@@ -215,6 +215,7 @@ passed (`<Icon icon={ms…} size={16} />`); `Version=❌ Discontinued` variants 
 | Figma | React |
 |---|---|
 | Type = ◻️ Primary · 🔲 Secondary · ⬜︎ Tertiary · Ghost · 🟨 Brand · 🟩 Buy · 🟥 Sell | `variant="primary" \| "secondary" \| "tertiary" \| "ghost" \| "brand" \| "buy" \| "sell"` |
+| Ghost instance set to Hug (width + height) | `variant="ghost"` — code always hugs. Figma's Ghost variants stay fixed size (existing designs rely on it), so hug each new instance where you place it, like the Section header CTA. |
 | Size = Large · Medium · Small | `size="lg" \| "md" \| "sm"` |
 | State = ♻︎ Loading | `loading` |
 | State = 🚫 Disabled | `disabled` |
@@ -2155,6 +2156,8 @@ Pairs to avoid: two `primary`, `primary` + `buy`, `brand` + `primary`, a `second
 - **`ghost` hugs its content in every size** — no padding, no fixed height — so it's exactly as tall and wide as its
   label and icon. Don't give it a height or padding to make it easier to tap: its touch area does that.
 - Every button has a **touch area of at least 48 × 48**. It's invisible and never adds space to the layout.
+- **Figma:** the library's Ghost variants keep their fixed size (32 / 40 / 48), because existing designs rely on it —
+  decided 2026-10-10. Set each new Ghost instance to **Hug** (width and height) where you place it; code always hugs.
 
 ### 3. Width & placement
 
