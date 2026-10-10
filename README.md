@@ -8,7 +8,9 @@ React components, design tokens and docs for the ✅ Lemonnade V3 Figma library.
   theme), icons, refs and forms, server rendering, updating.
 - **Design rules:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) (spacing, layering, cards, selection…) and the `USAGE.md`
   files next to the components.
-- **AI agents** building UI with these components: [AGENTS.md](AGENTS.md).
+- **AI agents designing screens, flows or redesigns in Figma:** read only
+  [docs/agent/GENERATE.md](docs/agent/GENERATE.md) and follow it (L3 JSX → `npm run kit -- build` → one `use_figma`
+  call per flow). For everything else: [AGENTS.md](AGENTS.md).
 
 ## Layout
 
@@ -32,3 +34,4 @@ scripts/          token, icon and docs builds; Figma migration tools; audits
 | `npm run check:portable` | Check the components work outside this repo: no Vite-only code, strict TypeScript, server rendering |
 | `npm run audit:ui -- <src>` | Check UI code against the L3 rules (tokens only, components first…) |
 | `npm run find -- "<need>"` | Find the component for a job |
+| `npm run kit -- build <flow.jsx> --parent <id>` | Compile L3 JSX screens into a `use_figma` script (rules checked, auto-fixes) — see docs/agent/GENERATE.md |
