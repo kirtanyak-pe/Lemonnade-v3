@@ -3,6 +3,18 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — Density mode, fill containers, a duplicate variant
+
+- **Density without variants:** list cell padding is bound to a "📐 L3 → Density" collection (Compact / Breathable)
+  instead of a variant property — designers set the mode once on the list frame. Self-tested with temporary instances
+  (58 → 74 plain, 66 → 74 card) before reporting.
+- **Count before bulk edits:** "revert 8 screens" found 15 hugging containers — 8 from the touch-up session (Market 1–4,
+  Portfolio 2/3/5/6) and 7 built that way (KYC/Personalise). The script refused to run on a different count; the user
+  then chose fill for all 15. On SPACE_BETWEEN screens fill changed nothing visible (content MIN-aligned, docks stayed).
+- **Duplicate variant names happen silently:** L3: list cell had two identical `isTappable=True` variants stacked at the
+  same x/y (an accidental duplicate, created the same day). Compared layer by layer, checked instance usage (21 vs 0),
+  then removed the copy. Check variant-name uniqueness after editing a set.
+
 ## 2026-10-10 — touch areas 48 × 48, ghost hugs its content
 
 - **Rule (user):** controls drawn smaller than 48 keep their drawn size — ghost buttons and Select hug their content,
