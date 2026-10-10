@@ -405,7 +405,7 @@ There is **no spinner** — use `Skeleton` for loading content and `Button loadi
 - **Press scale** (clickable cards, chip tabs): `transform: scale(var(--l3-motion-scale-press-*))` while pressed,
   with steps 0.01 apart: `xl` 1.00 · `l` 0.99 · `default` 0.98 · `m` 0.97 · `sm` 0.96 (local tokens).
   <!-- PENDING: which step each element / text size uses; everything uses `default` today -->
-- **Motion:** only `--l3-motion-duration-short` (150ms), `--l3-motion-duration-medium` (250ms) and `--l3-motion-easing-standard`. Always add a `prefers-reduced-motion: reduce` rule that removes it.
+- **Motion:** durations `--l3-motion-duration-short` (150ms, small state changes), `-medium` (250ms, sliding panels) and `-long` (400ms, big entrances and exits such as the site intro); easings `--l3-motion-easing-standard` (moving on screen), `-decelerate` (entering) and `-accelerate` (leaving). Always add a `prefers-reduced-motion: reduce` rule that removes it.
 - **Toasts** with an action don't auto-dismiss; they stay until acted on or replaced.
 - **Bottom sheets** have no drag handle and no visible close button: they close on a backdrop tap or by dragging the sheet down (anywhere on it; the content first scrolls to the top), plus Esc and a visually hidden Close button for screen readers. At most two sheets stack: the first has no back button, a second one on top of it has a back button, never a third. Focus is trapped inside while one is open, and the page behind is inert.
 - **Keyboard:** Tabs move with ← → Home End; the selected tab scrolls into view.
