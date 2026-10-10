@@ -220,6 +220,7 @@ Header: `title` · `description` · `back` · `actions` (≤ 2) · `tabs` · `se
 
 ## 8. Gotchas (Figma Plugin API + MCP) — each one cost real time
 
+- **Variables with modes on components:** after binding a multi-mode collection's variable in a component, check `explicitVariableModes` on every variant and clear the collection's pin — otherwise instances ignore the mode set on their parent frame. Test with the mode on a parent frame, not on the instance.
 - No `Intl` in the plugin runtime → format numbers by hand (`groupIN` in build-screen).
 - Nested layers inside an instance can't be resized or moved (resize is silently ignored; `x` / `minWidth` throw)
   → expose a variant on a nested helper instead.

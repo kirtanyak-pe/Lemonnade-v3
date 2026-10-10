@@ -1165,7 +1165,35 @@ dark mode, 412 px, and "would I trust this with my money?"
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — generating a 25-frame flow from scratch in Figma (Kill Switch, playground file)
+
+25 frames (screens, bottom sheets, OTP states) built only from L3 instances with a small helper library, 6 use_figma
+calls. Audit after: 0 unbound colours, 0 unstyled texts, 0 leftover placeholder copy.
+
+- **L3: Button stretches to the full width of its parent row** (pushed the Actionbar title out, and "Exit all" off a
+  two-button row). Fix: `primaryAxisSizingMode = 'AUTO'` on every button that isn't in a dock; dock buttons FILL.
+- **Sheet over a screen:** the Overlay's `container slot` accepts `primaryAxisAlignItems = 'MAX'` — the sheet sits at
+  the bottom with no spacer. Hide the sheet's `Buttons` dock (`visible = false`) for sheets with no action (loading,
+  menus).
+- **L3: list cell's default Icon-R is a down chevron** (11×7 vector). Navigation rows need `chevron_right` swapped into
+  `icon-r`. Candidate fix: make chevron-right the default in the library.
+- **List-cell labels are one line** — "Resume trading anytime from settings" truncated at 328. Write row labels for one
+  line; put the rest in the description.
+- **No OTP component.** Used `L3: input field & text Box` (Default · Typed · Error · Success map onto empty · filled ·
+  incorrect · verified; verifying = Typed + Button ♻︎ Loading). A boxed 6-digit OTP input is a gap — propose it only if
+  it shows up in 3+ flows (PLAYBOOK §2).
+- **Re-sending the helper library each call** costs ~15k characters of the 50k budget; build several frames per call.
+
 ## 2026-10-10 — Density mode, fill containers, a duplicate variant
+
+- **Binding a multi-mode collection pinned the components to its default mode.** After the Density binding, all 12
+  list cell variants carried `explicitVariableModes = { Density: Compact }`; instances inherit that pin, so a list
+  frame set to Breathable did nothing. My self-test set the mode *on the instance* (which beats the pin) and passed.
+  Fix: `clearExplicitVariableModeForCollection` on every variant; test the way designers use it — mode on a parent
+  frame, instance inside. In the consumer file the rows got a row-level Breathable meanwhile (they kept 72 / 74).
+- **Pulling a published component update drops instance overrides on properties the main now binds.** Importing the
+  new list cell reset the rows' typed 16 padding to the main's value (72 → 56). Measure before and after the first
+  import, and restore in the same pass.
 
 - **Density without variants:** list cell padding is bound to a "📐 L3 → Density" collection (Compact / Breathable)
   instead of a variant property — designers set the mode once on the list frame. Self-tested with temporary instances
@@ -1578,6 +1606,7 @@ Header: `title` · `description` · `back` · `actions` (≤ 2) · `tabs` · `se
 
 ## 8. Gotchas (Figma Plugin API + MCP) — each one cost real time
 
+- **Variables with modes on components:** after binding a multi-mode collection's variable in a component, check `explicitVariableModes` on every variant and clear the collection's pin — otherwise instances ignore the mode set on their parent frame. Test with the mode on a parent frame, not on the instance.
 - No `Intl` in the plugin runtime → format numbers by hand (`groupIN` in build-screen).
 - Nested layers inside an instance can't be resized or moved (resize is silently ignored; `x` / `minWidth` throw)
   → expose a variant on a nested helper instead.

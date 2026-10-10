@@ -24,6 +24,15 @@ calls. Audit after: 0 unbound colours, 0 unstyled texts, 0 leftover placeholder 
 
 ## 2026-10-10 — Density mode, fill containers, a duplicate variant
 
+- **Binding a multi-mode collection pinned the components to its default mode.** After the Density binding, all 12
+  list cell variants carried `explicitVariableModes = { Density: Compact }`; instances inherit that pin, so a list
+  frame set to Breathable did nothing. My self-test set the mode *on the instance* (which beats the pin) and passed.
+  Fix: `clearExplicitVariableModeForCollection` on every variant; test the way designers use it — mode on a parent
+  frame, instance inside. In the consumer file the rows got a row-level Breathable meanwhile (they kept 72 / 74).
+- **Pulling a published component update drops instance overrides on properties the main now binds.** Importing the
+  new list cell reset the rows' typed 16 padding to the main's value (72 → 56). Measure before and after the first
+  import, and restore in the same pass.
+
 - **Density without variants:** list cell padding is bound to a "📐 L3 → Density" collection (Compact / Breathable)
   instead of a variant property — designers set the mode once on the list frame. Self-tested with temporary instances
   (58 → 74 plain, 66 → 74 card) before reporting.
