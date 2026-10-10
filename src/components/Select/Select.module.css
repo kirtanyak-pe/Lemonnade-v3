@@ -1,7 +1,8 @@
 /*
  * L3 Select — every value is an --l3-* token (Figma "L3: Select switcher").
  * Small: Label/12 + 12px icon, gap spacing/02 · Medium: Label/14 + 16px icon, gap spacing/04 · Large: Heading/14 + 16px icon, gap spacing/02.
- * isSubtle switches text and icon to content/secondary. No box; an invisible ::before grows the tap area to size/tap-target.
+ * isSubtle switches text and icon to content/secondary. No box — it hugs its content; an invisible ::before grows the
+ * touch area to size/tap-target (48 × 48) without taking layout space.
  */
 
 .select {

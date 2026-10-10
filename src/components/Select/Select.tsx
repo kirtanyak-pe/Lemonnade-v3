@@ -27,7 +27,8 @@ const iconSize = { sm: 12, md: 16, lg: 16 } as const
 
 /**
  * L3 Select (Figma "L3: Select switcher"): an inline trigger — a label plus ↕ or ⌄ — that opens a sheet of options.
- * No box: it sits in a row or a header. The tap area grows to size/tap-target (32px).
+ * No box: it hugs its label and icon and sits in a row or a header. The touch area grows to size/tap-target (48 × 48)
+ * without taking layout space.
  */
 export function Select({ children, onClick, size = 'sm', subtle = false, icon = 'swap', expanded, 'aria-label': ariaLabel, className }: SelectProps) {
   return (

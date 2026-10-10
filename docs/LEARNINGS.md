@@ -3,14 +3,24 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — touch areas 48 × 48, ghost hugs its content
+
+- **Rule (user):** controls drawn smaller than 48 keep their drawn size — ghost buttons and Select hug their content,
+  no padding, no fixed height — and get an invisible 48 × 48 touch area that never takes layout space. Done by raising
+  the local `size/tap-target` token 32 → 48: every component's ::before/::after grew with it.
+- **`height: auto` isn't hugging in a flex row:** a ghost beside 40px buttons stretched to 40 (align-items: stretch).
+  `height: fit-content` hugs and still lets a vertical dock stretch its width.
+- **The docs site used the token as a *visible* height** (toolbar items, tree rows) — those moved to `size/32` before
+  the token changed, so the docs UI didn't grow. Check what reads a token before changing its value.
+- Docks: a ghost in a vertical dock is now 22 tall (was 48); its touch area overlaps the button above by 1px (gap 12).
+
 ## 2026-10-10 — redesigning old Lemonn screens (Navigation, KYC, Market, Portfolio) from scratch in Figma
 
 28 screens rebuilt in a new section next to the old one ("🟨 Lm→ General: Playground", page Account setup), 198 L3
 instances, audit after: 0 unbound colours, 0 unstyled texts, 0 raw spacing.
 
-- **Registry drift: "L3: Select" now imports as "L3: Select switcher".** verify-registry flagged it (30/31 OK). Not
-  fixed in `figma-library.json` yet — build-screen / swap look it up by the old name. Rename in the data + scripts
-  together.
+- **Registry drift: "L3: Select" now imports as "L3: Select switcher".** verify-registry flagged it (30/31 OK). Fixed the
+  same day (34a13a5): `figma-library.json` and the audit / build-screen / swap / core scripts renamed together.
 - **Tabs group has minWidth 328.** In a row next to a button (pills + "Import", pills + "Filters") the button was
   pushed off-screen. Fix: `minWidth = null`, then FILL. Also zero the wrapper slot's 16 inset inside a padded body
   (DESIGN_SYSTEM 2.3), otherwise the first chip sits at 32.

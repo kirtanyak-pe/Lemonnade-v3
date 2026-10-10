@@ -18,7 +18,7 @@
 
 /*
  * The real input sits over the control, invisible, so taps and keyboard hit it.
- * It's grown to size/tap-target (32, local token) around the 24px control for mobile tap targets.
+ * It's grown to size/tap-target (48 × 48) around the 24px control, without changing the drawn size.
  */
 .input {
   position: absolute;

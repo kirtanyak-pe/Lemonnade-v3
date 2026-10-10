@@ -87,7 +87,7 @@
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   padding: 0 var(--l3-spacing-08) 0 var(--l3-spacing-10);
   border: 0;
   border-radius: var(--l3-radius-full);
@@ -1184,7 +1184,7 @@ legend.sectionLabel {
 }
 
 .viewportPicker button {
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   padding: 0 var(--l3-spacing-12);
   border: 0;
   border-radius: var(--l3-radius-full);
@@ -1228,7 +1228,7 @@ legend.sectionLabel {
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-06);
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   margin-left: auto;
   padding: 0 var(--l3-spacing-12);
   border-radius: var(--l3-radius-full);
@@ -1311,7 +1311,7 @@ legend.sectionLabel {
   display: flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   margin-left: auto;
   padding: 0 var(--l3-spacing-08) 0 var(--l3-spacing-12);
   border: 0;

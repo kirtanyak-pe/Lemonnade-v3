@@ -19,7 +19,7 @@ concrete enough to check, and the ones marked **[scored]** are checked automatic
 5. **Show less, reveal more.** Summary on the screen; detail one tap away (sheet, row, card). Never a wall of numbers.
 6. **Fast on a phone.** 360 px first, thumb zone for actions, skeletons instead of spinners, no layout jump when data
    arrives.
-7. **Accessible by default.** Names on every control, colour never alone, 32 px tap targets, reduced motion respected.
+7. **Accessible by default.** Names on every control, colour never alone, 48 × 48 touch areas, reduced motion respected.
 
 ---
 

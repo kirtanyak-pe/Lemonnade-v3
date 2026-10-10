@@ -3,8 +3,8 @@
   "size": {
     "tap-target": {
       "$type": "dimension",
-      "$value": "32px",
-      "$description": "Minimum tap area for interactive components. Figma's size/touch-min is 48px; the team chose 32px."
+      "$value": "48px",
+      "$description": "Minimum touch area for interactive components: 48 × 48, the same as Figma's size/touch-min (team decision 2026-10-10; it was 32). Invisible — a control smaller than this keeps its drawn size and grows a ::before / ::after; it never adds height or padding to the layout."
     },
     "illustration": {
       "$type": "dimension",

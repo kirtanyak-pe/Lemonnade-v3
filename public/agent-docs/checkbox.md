@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65366
 - Source: `src/components/Checkbox`
 - Also called: Selector, check box, radio button
@@ -66,6 +66,6 @@ Checkbox & radio — Pick many · pick one
 
 ## Recent changes
 
+- **1.3.1** (2026-10-10) 48 × 48 touch area: The touch area around the box or dot is at least 48 × 48 (was 32), without changing its drawn size.
 - **1.3.0** (2026-10-10) Refs for forms: Checkbox and Radio pass the ref you give them to the <input> — they used to replace it with their own, so form libraries like react-hook-form couldn't register them. The check and dash marks now draw on older Android phones too (Chrome / WebView before version 120).
 - **1.2.0** (2026-09-26) Accessibility pass: Development warning when a checkbox or radio has no accessible name.
-- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.

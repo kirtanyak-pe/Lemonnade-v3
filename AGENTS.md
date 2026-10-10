@@ -35,8 +35,8 @@ ask, or list it under "Open questions" in your answer.
   subtle (border-dark) for options; single → radio/tabs, multi → checkbox rows (DESIGN_SYSTEM 7.1b).
 - **Layering:** screen → inset (filled) → content (static) → raised (clickable, shadow low) → bars → toast → scrim →
   sheet → second sheet (max 2). Higher = heavier shadow; only tappable things are lifted (DESIGN_SYSTEM 6.1).
-- **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
-  inside `@media (hover: hover)`.
+- **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Touch areas ≥ 48 × 48 and invisible — never add
+  padding or height for them (ghost buttons and Select hug their content). Hover only inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
 - **Don't invent patterns or components.** If something you need doesn't exist (e.g. a slider or a tooltip), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
@@ -45,7 +45,8 @@ ask, or list it under "Open questions" in your answer.
 Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
   usually in a dock; standalone actions like "View all" are `tertiary`; buttons in a dock / `ButtonGroup` are always
-  `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`.
+  `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`; `ghost` hugs its
+  content in every size (no padding, no fixed height) and relies on its 48 × 48 touch area.
 - **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
   button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
 - **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.

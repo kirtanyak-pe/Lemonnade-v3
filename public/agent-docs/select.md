@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.1
+- Version: 1.0.2
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5377-49
 - Source: `src/components/Select`
 - Also called: Dropdown, picker, switcher, toggle, mode selector, filter
@@ -24,9 +24,9 @@ Select is just the current choice and an icon. It sits in a row or a header; tap
 
 ### Sizes
 
-**Small** (Label-12) in form rows, **Medium** (Label-14) for filters, **Large** (Heading-14) for titles. **Subtle** makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text.
+**Small** (Label-12) in form rows, **Medium** (Label-14) for filters, **Large** (Heading-14) for titles. **Subtle** makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text. Select hugs its content — no box, no padding — and its 48 × 48 touch area is invisible, so it never makes the row taller.
 
-A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. Its tap area grows to 32px.
+A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. Its touch area grows to 48 × 48 without taking layout space.
 
 ## Props
 
@@ -50,5 +50,6 @@ A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. It
 
 ## Recent changes
 
+- **1.0.2** (2026-10-10) 48 × 48 touch area: The touch area is at least 48 × 48 (was 32). Select still hugs its label and icon, so rows don't get taller.
 - **1.0.1** (2026-10-09) Lemonnade switch arrow: The ↕ toggle is now the Lemonnade "Switch arrow toggle" icon from the Figma icons library (solid up and down arrowheads), instead of Material's unfold_more.
 - **1.0.0** (2026-10-09) New component: Select: an inline label + icon that opens a sheet of options — Small, Medium, Large, a subtle version, and ↕ or chevron icons. New Figma component L3: Select (Size × isSubtle, ✏️ Label, ↪ Icon). A button with aria-haspopup="dialog" and aria-expanded; 32px tap area.

@@ -107,7 +107,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Mobile: tap area at least size/tap-target (32) — only the 24px small pill needs it. */
+/* Touch area at least size/tap-target (48) tall for pills shorter than that — vertical only, so neighbours don't overlap. */
 .tab::after {
   content: '';
   position: absolute;

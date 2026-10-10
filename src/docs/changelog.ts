@@ -99,6 +99,13 @@ export const changelog: Record<string, Release[]> = {
   ],
   'section-header': [
     {
+      version: '1.1.1', date: '2026-10-10',
+      summary: 'Uses the shared touch areas',
+      changes: [
+        { dev: true, kind: 'changed', text: 'View all and the switcher hug their content and bring their own 48 × 48 touch areas (now built into Ghost buttons and Select), so the header no longer adds its own.' },
+      ],
+    },
+    {
       version: '1.1.0', date: '2026-10-10',
       summary: 'Simpler CTA',
       changes: [
@@ -130,6 +137,13 @@ export const changelog: Record<string, Release[]> = {
   ],
   stepper: [
     {
+      version: '1.0.1', date: '2026-10-10',
+      summary: '48 × 48 touch area',
+      changes: [
+        { kind: 'changed', text: 'The − and + buttons have a touch area of at least 48 × 48 (was 32); the row stays compact.' },
+      ],
+    },
+    {
       version: '1.0.0', date: '2026-10-09',
       summary: 'New component',
       changes: [
@@ -140,6 +154,13 @@ export const changelog: Record<string, Release[]> = {
     },
   ],
   select: [
+    {
+      version: '1.0.2', date: '2026-10-10',
+      summary: '48 × 48 touch area',
+      changes: [
+        { kind: 'changed', text: 'The touch area is at least 48 × 48 (was 32). Select still hugs its label and icon, so rows don\'t get taller.' },
+      ],
+    },
     {
       version: '1.0.1', date: '2026-10-09',
       summary: 'Lemonnade switch arrow',
@@ -346,6 +367,14 @@ export const changelog: Record<string, Release[]> = {
 
   button: [
     {
+      version: '1.7.0', date: '2026-10-10',
+      summary: 'Ghost hugs its content',
+      changes: [
+        { kind: 'changed', text: 'Ghost hugs its content in every size — no padding, no fixed height — so it\'s exactly as big as its label and icon and never adds invisible space to a layout.' },
+        { kind: 'changed', text: 'Every button\'s touch area is at least 48 × 48 (was 32). It\'s invisible and doesn\'t change the layout.' },
+      ],
+    },
+    {
       version: '1.6.0', date: '2026-10-10',
       summary: 'Works in any React app',
       changes: [
@@ -445,6 +474,13 @@ export const changelog: Record<string, Release[]> = {
 
   checkbox: [
     {
+      version: '1.3.1', date: '2026-10-10',
+      summary: '48 × 48 touch area',
+      changes: [
+        { kind: 'changed', text: 'The touch area around the box or dot is at least 48 × 48 (was 32), without changing its drawn size.' },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-10-10',
       summary: 'Refs for forms',
       changes: [
@@ -528,6 +564,13 @@ export const changelog: Record<string, Release[]> = {
 
   switch: [
     {
+      version: '1.3.1', date: '2026-10-10',
+      summary: '48 × 48 touch area',
+      changes: [
+        { kind: 'changed', text: 'The touch area is at least 48 × 48 (was 32), without changing the switch\'s drawn size.' },
+      ],
+    },
+    {
       version: '1.3.0', date: '2026-10-10',
       summary: 'Refs for forms',
       changes: [
@@ -561,6 +604,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   tabs: [
+    {
+      version: '1.7.1', date: '2026-10-10',
+      summary: '48 tall touch area',
+      changes: [
+        { kind: 'changed', text: 'Pill tabs shorter than 48 get a 48-tall touch area (was 32) — vertical only, so pills side by side don\'t overlap.' },
+      ],
+    },
     {
       version: '1.7.0', date: '2026-10-05',
       summary: 'New type weights',
@@ -702,6 +752,13 @@ export const changelog: Record<string, Release[]> = {
   ],
 
   'bottom-sheet': [
+    {
+      version: '2.3.3', date: '2026-10-10',
+      summary: '48 × 48 touch area',
+      changes: [
+        { kind: 'changed', text: 'The header\'s icon buttons (back, ⓘ) have a touch area of at least 48 × 48 (was 32).' },
+      ],
+    },
     {
       version: '2.3.2', date: '2026-10-10',
       summary: 'Server rendering',

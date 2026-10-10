@@ -39,7 +39,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Mobile: grow the tap area to size/tap-target (32, local token) without changing the drawn size. */
+/* Touch area: at least 48 × 48 (size/tap-target) without changing the drawn size or taking layout space. */
 .button::after {
   content: '';
   position: absolute;
@@ -104,14 +104,16 @@
   --btn-loader-size: var(--l3-icon-size-16);
 }
 
-/* Ghost has no side padding; its Medium vertical padding is spacing/08 in Figma. */
+/*
+ * Ghost hugs its content in both directions — no padding, no fixed height — so its drawn size is its label and icon,
+ * in every size. The 48 × 48 touch area above does the tapping, so a ghost never adds invisible space to the layout.
+ * fit-content (not auto) so a row of taller buttons can't stretch it to their height.
+ */
 .button[data-variant='ghost'] {
+  --btn-height: fit-content;
+  --btn-padding-block: var(--l3-spacing-00);
   --btn-padding-inline: var(--l3-spacing-00);
   min-width: 0;
-}
-
-.button[data-variant='ghost'][data-size='md'] {
-  --btn-padding-block: var(--l3-spacing-08);
 }
 
 /* ---- Variants ------------------------------------------------------------ */

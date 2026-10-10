@@ -50,9 +50,15 @@
   line-clamp: 2;
 }
 
-/* Touch areas: at least 48 × 48 (size/48), centred on the control, without changing the row's height. */
-.info,
+/* The action (a Ghost button or a Select) hugs its content and brings its own 48 × 48 touch area. */
 .action {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+}
+
+/* The ⓘ: 16px icon, touch area at least 48 × 48 (size/tap-target), centred, without changing the row's height. */
+.info {
   position: relative;
   display: inline-flex;
   flex: none;
@@ -60,30 +66,16 @@
   justify-content: center;
 }
 
-.info::before,
-.action::before {
+.info::before {
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: var(--l3-size-48);
-  min-height: var(--l3-size-48);
+  min-width: var(--l3-size-tap-target);
+  min-height: var(--l3-size-tap-target);
   width: 100%;
   height: 100%;
   content: '';
   transform: translate(-50%, -50%);
-}
-
-.action > * {
-  position: relative; /* the control stays above its touch area */
-}
-
-/*
- * Figma "L3 base: section header cta", Type=Button: the Ghost Small button hugs its label — 16 tall, no padding (the
- * Ghost Small main is 32). The 48 touch area above does the tapping, so the row is only as tall as its text.
- */
-.action > .viewAll[data-size] {
-  --btn-height: auto;
-  --btn-padding-block: var(--l3-spacing-00);
 }
 
 .info {

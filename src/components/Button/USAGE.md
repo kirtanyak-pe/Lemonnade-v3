@@ -14,7 +14,7 @@ looks like one; text links inside content use a text action instead (see *Not a 
 | `primary` *(default)* | The main action of a screen, sheet or step: *Place order*, *Continue*, *Save*. | **One per screen** (one per sheet when a sheet is open). |
 | `secondary` | The alternative action **next to a stronger button** (`primary`, `buy`, `sell` or `brand`): *Cancel*, *Modify*, *Edit order*. Its darker border only makes sense beside that stronger button. Mostly used in a **button dock / `ButtonGroup`, typically inside a bottom sheet**. | **Only alongside a stronger button.** Never on its own on the page or inside a card. |
 | `tertiary` | Low-emphasis actions that sit **on the page or inside content**: *View all* at the end of a list, *Add another*, *Load more*, *Sort*. | Use this (not `secondary`) when the action stands alone. |
-| `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. | Not as a screen's main action. |
+| `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. **Hugs its content** (see 2). | Not as a screen's main action. |
 | `brand` | Brand moments: onboarding, promotions, first-run CTAs. Follows the product color (Lemonn lime, CS PRO gold, Kuber green). | Not for everyday actions, not next to `buy`/`sell`. |
 | `buy` / `sell` | **Only** to place or confirm a trade. Colors follow the product theme: `buy` uses the product's buy color (Lemonn lime, CS PRO market green, Kuber green), `sell` is red. | Never for unrelated actions (don't use `sell` as a "danger" button). |
 
@@ -27,14 +27,16 @@ Pairs to avoid: two `primary`, `primary` + `buy`, `brand` + `primary`, a `second
 
 ## 2. Choose the size
 
-| Size | Height (code) | Use in |
+| Size | Height (code; `ghost` hugs its content instead) | Use in |
 |---|---|---|
 | `lg` *(default)* | 48 (`size/control-lg`) | Bottom docks and `ButtonGroup` — **always `lg` there, never `md` or `sm`** (`ButtonGroup` warns in development). Also the main CTA of a screen or sheet. |
 | `md` | 40 (`size/control-md`) | Actions inside content: cards, sheet bodies, form sections. |
 | `sm` | 32 (`size/control-sm`) | Compact spots: empty-state action, inline row actions, toolbars, Actionbar actions (via `ActionbarAction`). |
 
 - Buttons that sit side by side use the **same size**.
-- Every size keeps a tap area of at least 32px (code).
+- **`ghost` hugs its content in every size** — no padding, no fixed height — so it's exactly as tall and wide as its
+  label and icon. Don't give it a height or padding to make it easier to tap: its touch area does that.
+- Every button has a **touch area of at least 48 × 48**. It's invisible and never adds space to the layout.
 
 ## 3. Width & placement
 

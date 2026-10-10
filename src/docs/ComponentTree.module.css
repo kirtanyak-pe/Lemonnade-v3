@@ -154,7 +154,7 @@
   align-items: center;
   gap: var(--l3-spacing-08);
   width: 100%;
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   border: 0;
   font: inherit;
   text-align: left;

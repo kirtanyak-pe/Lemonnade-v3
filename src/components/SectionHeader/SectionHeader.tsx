@@ -60,7 +60,7 @@ export function SectionHeader({ title, description, tag, onInfo, infoLabel, acti
       {action && (
         <span className={styles.action}>
           {action.type === 'view-all' ? (
-            <Button variant="ghost" size="sm" className={styles.viewAll} onClick={action.onClick} iconRight={<Icon icon={msChevronRight} />}>
+            <Button variant="ghost" size="sm" onClick={action.onClick} iconRight={<Icon icon={msChevronRight} />}>
               {action.label ?? 'View all'}
             </Button>
           ) : (

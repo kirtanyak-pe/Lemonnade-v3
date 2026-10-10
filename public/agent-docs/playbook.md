@@ -184,7 +184,7 @@ the sandbox refused 6 wrong "Tabs group" swaps (85 px tab → 328 px group) befo
 5. Run `registry` → update `figma-library.json` → owner publishes → `verify-registry`.
 
 **Code (this repo):** `src/components/<Name>/` (`<Name>.tsx`, `<Name>.module.css` tokens only, `index.ts`
-named exports) · data-attributes for variants · 32 px tap targets · hover inside `(hover: hover)` · reduced motion ·
+named exports) · data-attributes for variants · 48 × 48 touch areas (invisible) · hover inside `(hover: hover)` · reduced motion ·
 names / roles / dev warnings for misuse · then the docs set: `src/docs/pages.tsx` (designer overview + `DevOnly`
 dev notes + props), `src/preview/<Name>Variants.tsx`, playground, `changelog.ts`, `docs/figma-code-map.md`,
 `docs/figma-descriptions.md`, the table in `DESIGN_SYSTEM.md` §5, recipes if it replaces one. Verify:

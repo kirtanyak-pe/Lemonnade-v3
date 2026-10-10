@@ -234,7 +234,7 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Sizes</h2>
-          <p>Large (48), Medium (40) and Small (32). Every size has at least a 32px tap area.</p>
+          <p>Large (48), Medium (40) and Small (32) — except Ghost, which hugs its label and icon in every size, with no padding and no fixed height. Every button has a touch area of at least 48 × 48 that doesn't take up any space in the layout.</p>
           <div className={styles.demoRow}>
             <Button size="lg">Large</Button>
             <Button size="md">Medium</Button>
@@ -956,8 +956,8 @@ import { msWallet, msWalletFill } from './icons/material'
         </section>
         <section className={styles.section}>
           <h2>Sizes</h2>
-          <p><strong>Small</strong> (Label-12) in form rows, <strong>Medium</strong> (Label-14) for filters, <strong>Large</strong> (Heading-14) for titles. <strong>Subtle</strong> makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text.</p>
-          <DevOnly><p>A <code>&lt;button aria-haspopup="dialog"&gt;</code>; pass <code>expanded</code> while the sheet is open. Its tap area grows to 32px.</p></DevOnly>
+          <p><strong>Small</strong> (Label-12) in form rows, <strong>Medium</strong> (Label-14) for filters, <strong>Large</strong> (Heading-14) for titles. <strong>Subtle</strong> makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text. Select hugs its content — no box, no padding — and its 48 × 48 touch area is invisible, so it never makes the row taller.</p>
+          <DevOnly><p>A <code>&lt;button aria-haspopup="dialog"&gt;</code>; pass <code>expanded</code> while the sheet is open. Its touch area grows to 48 × 48 without taking layout space.</p></DevOnly>
         </section>
       </>
     ),

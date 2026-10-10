@@ -109,8 +109,8 @@ ask, or list it under "Open questions" in your answer.
   subtle (border-dark) for options; single → radio/tabs, multi → checkbox rows (DESIGN_SYSTEM 7.1b).
 - **Layering:** screen → inset (filled) → content (static) → raised (clickable, shadow low) → bars → toast → scrim →
   sheet → second sheet (max 2). Higher = heavier shadow; only tappable things are lifted (DESIGN_SYSTEM 6.1).
-- **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Tap targets ≥ 32px. Hover only
-  inside `@media (hover: hover)`.
+- **Mobile first.** Build at 360px wide (mockups 360×800), then check 392 and 412. Touch areas ≥ 48 × 48 and invisible — never add
+  padding or height for them (ghost buttons and Select hug their content). Hover only inside `@media (hover: hover)`.
 - **Both themes.** Check light and dark (and ♿ Accessible, `data-contrast="accessible"`); only semantic tokens (`surface`, `content`, `border`, `component`). Overlays/backdrops use `surface/overlay`.
 - **Accessible.** Every control has a name; headings in order; status via `Aerobar`.
 - **Don't invent patterns or components.** If something you need doesn't exist (e.g. a slider or a tooltip), say so and ask — don't build a one-off lookalike inside a screen. Select, Stepper, DatePicker, Skeleton,
@@ -119,7 +119,8 @@ ask, or list it under "Open questions" in your answer.
 Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Button:** one `primary` per screen; `secondary` only next to a stronger button (primary/buy/sell/brand),
   usually in a dock; standalone actions like "View all" are `tertiary`; buttons in a dock / `ButtonGroup` are always
-  `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`.
+  `lg`; `buy`/`sell` only for trades; an icon button has no label, exactly one icon and an `aria-label`; `ghost` hugs its
+  content in every size (no padding, no fixed height) and relies on its 48 × 48 touch area.
 - **ButtonGroup (Figma "L3: Button Dock"):** the main action(s) of a screen or sheet, one per screen, always `lg`; at least one strong
   button (primary/buy/sell/brand); horizontal → strong on the right, vertical → strong on top; needs `aria-label`.
 - **Actionbar:** flat tabs at the top go in its `bottom` slot; at most 2 actions.
@@ -894,7 +895,13 @@ There is **no spinner** — use `Skeleton` for loading content and `Button loadi
 
 ## 11. Interaction
 
-- **Tap targets are at least 32px** (`--l3-size-tap-target`). Components grow their tap area with an invisible `::after`, so the visual size doesn't change.
+- **Touch areas are at least 48 × 48** (`--l3-size-tap-target`, the same as Figma's `size/touch-min`). A control drawn
+  smaller keeps its drawn size and grows an invisible `::before` / `::after` — it never adds height, padding or space to
+  the layout.
+- **Ghost buttons and the Select switcher hug their content in both directions** — no padding, no fixed height — so
+  they're as big as their label and icon; the 48 × 48 touch area does the tapping. The same goes for every control
+  drawn smaller than 48 (checkbox, switch, small pill tabs, icon buttons, stepper buttons). Where controls sit closer
+  than 48 (pill tabs side by side), the touch area grows only in the free direction so neighbours don't overlap.
 - **Hover styles only inside `@media (hover: hover)`**, so taps don't leave elements stuck highlighted. Add `touch-action: manipulation`.
 - **Hover and press use state layers:** `--l3-state-layer-dark-*` on light fills and `--l3-state-layer-light-*` on dark ones, painted as a background image, not an overlay element.
 - **Focus:** `:focus-visible` outline `var(--l3-spacing-02) solid var(--l3-border-dark)`.
@@ -1015,7 +1022,7 @@ concrete enough to check, and the ones marked **[scored]** are checked automatic
 5. **Show less, reveal more.** Summary on the screen; detail one tap away (sheet, row, card). Never a wall of numbers.
 6. **Fast on a phone.** 360 px first, thumb zone for actions, skeletons instead of spinners, no layout jump when data
    arrives.
-7. **Accessible by default.** Names on every control, colour never alone, 32 px tap targets, reduced motion respected.
+7. **Accessible by default.** Names on every control, colour never alone, 48 × 48 touch areas, reduced motion respected.
 
 ---
 
@@ -1146,6 +1153,41 @@ dark mode, 412 px, and "would I trust this with my money?"
 
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
+
+## 2026-10-10 — touch areas 48 × 48, ghost hugs its content
+
+- **Rule (user):** controls drawn smaller than 48 keep their drawn size — ghost buttons and Select hug their content,
+  no padding, no fixed height — and get an invisible 48 × 48 touch area that never takes layout space. Done by raising
+  the local `size/tap-target` token 32 → 48: every component's ::before/::after grew with it.
+- **`height: auto` isn't hugging in a flex row:** a ghost beside 40px buttons stretched to 40 (align-items: stretch).
+  `height: fit-content` hugs and still lets a vertical dock stretch its width.
+- **The docs site used the token as a *visible* height** (toolbar items, tree rows) — those moved to `size/32` before
+  the token changed, so the docs UI didn't grow. Check what reads a token before changing its value.
+- Docks: a ghost in a vertical dock is now 22 tall (was 48); its touch area overlaps the button above by 1px (gap 12).
+
+## 2026-10-10 — redesigning old Lemonn screens (Navigation, KYC, Market, Portfolio) from scratch in Figma
+
+28 screens rebuilt in a new section next to the old one ("🟨 Lm→ General: Playground", page Account setup), 198 L3
+instances, audit after: 0 unbound colours, 0 unstyled texts, 0 raw spacing.
+
+- **Registry drift: "L3: Select" now imports as "L3: Select switcher".** verify-registry flagged it (30/31 OK). Fixed the
+  same day (34a13a5): `figma-library.json` and the audit / build-screen / swap / core scripts renamed together.
+- **Tabs group has minWidth 328.** In a row next to a button (pills + "Import", pills + "Filters") the button was
+  pushed off-screen. Fix: `minWidth = null`, then FILL. Also zero the wrapper slot's 16 inset inside a padded body
+  (DESIGN_SYSTEM 2.3), otherwise the first chip sits at 32.
+- **A FILL text next to a HUG Button in a row centres itself** (x 103, w 88 of 230) — even after re-creating the text.
+  Fix used: fixed width = row − control − button − gaps. Worth checking whether the L3: Button has a min-width.
+- **L3: Button defaults to full width (328) and shows both placeholder icons**; L3: Tags too. Every helper must set
+  `👁️ Icon-L/R` explicitly and HUG buttons that sit in slots or rows.
+- **Brand mascots ("Lemon emotions", 24 expressions) can't be imported by key** ("Component not found") — it's not in
+  a library this file can import from by key. Cloning an existing instance and `setProperties({emotions})` works.
+  Candidate for the L3 library (empty states, KYC, onboarding all use it).
+- **Old illustrations are loose layers, not one group** (coin front/back, gear face/shadow): cloning the "largest node
+  in the region" copied half of them. Mascots replaced them; empty-state art should become components.
+- **Sheets over a screen:** clone the base screen → absolute L3: Overlay (360×800) → L3: Bottom sheet in the
+  overlay's container slot. Plain ListCells inside a sheet's content slot double the 16 inset — set the cell's own
+  side padding to 0.
+- **The MCP connection dropped mid-call but the script had finished** — always re-read the canvas before retrying.
 
 ## 2026-10-10 — making the components portable (developers copy them into production)
 
@@ -1466,7 +1508,7 @@ the sandbox refused 6 wrong "Tabs group" swaps (85 px tab → 328 px group) befo
 5. Run `registry` → update `figma-library.json` → owner publishes → `verify-registry`.
 
 **Code (this repo):** `src/components/<Name>/` (`<Name>.tsx`, `<Name>.module.css` tokens only, `index.ts`
-named exports) · data-attributes for variants · 32 px tap targets · hover inside `(hover: hover)` · reduced motion ·
+named exports) · data-attributes for variants · 48 × 48 touch areas (invisible) · hover inside `(hover: hover)` · reduced motion ·
 names / roles / dev warnings for misuse · then the docs set: `src/docs/pages.tsx` (designer overview + `DevOnly`
 dev notes + props), `src/preview/<Name>Variants.tsx`, playground, `changelog.ts`, `docs/figma-code-map.md`,
 `docs/figma-descriptions.md`, the table in `DESIGN_SYSTEM.md` §5, recipes if it replaces one. Verify:
@@ -2042,7 +2084,7 @@ Roles: **heading** (750) · **label** (650) · **description** (500, with paragr
 | `icon-size/20` | `--l3-icon-size-20` | 20px |
 | `icon-size/22` | `--l3-icon-size-22` | 22px |
 | `icon-size/24` | `--l3-icon-size-24` | 24px |
-| `size/tap-target` | `--l3-size-tap-target` | 32px |
+| `size/tap-target` | `--l3-size-tap-target` | 48px |
 | `size/illustration` | `--l3-size-illustration` | 120px |
 
 ---
@@ -2063,7 +2105,7 @@ Roles: **heading** (750) · **label** (650) · **description** (500, with paragr
 - Group: Action
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.6.0
+- Version: 1.7.0
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4471-29225
 - Source: `src/components/Button`
 - Also called: Action, call to action, CTA
@@ -2090,7 +2132,7 @@ looks like one; text links inside content use a text action instead (see *Not a 
 | `primary` *(default)* | The main action of a screen, sheet or step: *Place order*, *Continue*, *Save*. | **One per screen** (one per sheet when a sheet is open). |
 | `secondary` | The alternative action **next to a stronger button** (`primary`, `buy`, `sell` or `brand`): *Cancel*, *Modify*, *Edit order*. Its darker border only makes sense beside that stronger button. Mostly used in a **button dock / `ButtonGroup`, typically inside a bottom sheet**. | **Only alongside a stronger button.** Never on its own on the page or inside a card. |
 | `tertiary` | Low-emphasis actions that sit **on the page or inside content**: *View all* at the end of a list, *Add another*, *Load more*, *Sort*. | Use this (not `secondary`) when the action stands alone. |
-| `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. | Not as a screen's main action. |
+| `ghost` | Text-style actions with no container, inside other components: the Aerobar action, *Clear* next to search, inline *Edit*. **Hugs its content** (see 2). | Not as a screen's main action. |
 | `brand` | Brand moments: onboarding, promotions, first-run CTAs. Follows the product color (Lemonn lime, CS PRO gold, Kuber green). | Not for everyday actions, not next to `buy`/`sell`. |
 | `buy` / `sell` | **Only** to place or confirm a trade. Colors follow the product theme: `buy` uses the product's buy color (Lemonn lime, CS PRO market green, Kuber green), `sell` is red. | Never for unrelated actions (don't use `sell` as a "danger" button). |
 
@@ -2103,14 +2145,16 @@ Pairs to avoid: two `primary`, `primary` + `buy`, `brand` + `primary`, a `second
 
 ### 2. Choose the size
 
-| Size | Height (code) | Use in |
+| Size | Height (code; `ghost` hugs its content instead) | Use in |
 |---|---|---|
 | `lg` *(default)* | 48 (`size/control-lg`) | Bottom docks and `ButtonGroup` — **always `lg` there, never `md` or `sm`** (`ButtonGroup` warns in development). Also the main CTA of a screen or sheet. |
 | `md` | 40 (`size/control-md`) | Actions inside content: cards, sheet bodies, form sections. |
 | `sm` | 32 (`size/control-sm`) | Compact spots: empty-state action, inline row actions, toolbars, Actionbar actions (via `ActionbarAction`). |
 
 - Buttons that sit side by side use the **same size**.
-- Every size keeps a tap area of at least 32px (code).
+- **`ghost` hugs its content in every size** — no padding, no fixed height — so it's exactly as tall and wide as its
+  label and icon. Don't give it a height or padding to make it easier to tap: its touch area does that.
+- Every button has a **touch area of at least 48 × 48**. It's invisible and never adds space to the layout.
 
 ### 3. Width & placement
 
@@ -2222,7 +2266,7 @@ PrimarySecondaryTertiaryGhostBrandBuySell
 
 ### Sizes
 
-Large (48), Medium (40) and Small (32). Every size has at least a 32px tap area.
+Large (48), Medium (40) and Small (32) — except Ghost, which hugs its label and icon in every size, with no padding and no fixed height. Every button has a touch area of at least 48 × 48 that doesn't take up any space in the layout.
 
 LargeMediumSmall
 
@@ -2316,9 +2360,9 @@ Button — 7 variants · 3 sizes · 3 states
 
 ## Recent changes
 
+- **1.7.0** (2026-10-10) Ghost hugs its content: Ghost hugs its content in every size — no padding, no fixed height — so it's exactly as big as its label and icon and never adds invisible space to a layout. Every button's touch area is at least 48 × 48 (was 32). It's invisible and doesn't change the layout.
 - **1.6.0** (2026-10-10) Works in any React app: ref reaches the <button> (React 18 and 19): focus it, measure it. Development warnings no longer depend on Vite, so the button runs in Next.js, webpack and other bundlers. The loader artwork is built in (no .svg import).
 - **1.5.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
-- **1.4.2** (2026-10-04) Typography tokens renamed: Text tokens renamed to the Figma roles (e.g. --l3-text-label-12). No visual change.
 
 ---
 
@@ -2525,7 +2569,7 @@ Button dock — The main action(s) of a screen or sheet
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65366
 - Source: `src/components/Checkbox`
 - Also called: Selector, check box, radio button
@@ -2586,9 +2630,9 @@ Checkbox & radio — Pick many · pick one
 
 ## Recent changes
 
+- **1.3.1** (2026-10-10) 48 × 48 touch area: The touch area around the box or dot is at least 48 × 48 (was 32), without changing its drawn size.
 - **1.3.0** (2026-10-10) Refs for forms: Checkbox and Radio pass the ref you give them to the <input> — they used to replace it with their own, so form libraries like react-hook-form couldn't register them. The check and dash marks now draw on older Android phones too (Chrome / WebView before version 120).
 - **1.2.0** (2026-09-26) Accessibility pass: Development warning when a checkbox or radio has no accessible name.
-- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.
 
 ---
 
@@ -2694,7 +2738,7 @@ Input field — Single line or text box
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65343
 - Source: `src/components/Switch`
 - Also called: Toggle, knob, toggle button
@@ -2753,9 +2797,9 @@ Toggle switch — A setting that applies immediately
 
 ## Recent changes
 
+- **1.3.1** (2026-10-10) 48 × 48 touch area: The touch area is at least 48 × 48 (was 32), without changing the switch's drawn size.
 - **1.3.0** (2026-10-10) Refs for forms: The ref you give it reaches the <input> (it used to be replaced by the switch's own), so react-hook-form and focus management work. Knob shadow uses color-mix() instead of relative rgb(from …) — same look, works in more browsers.
 - **1.2.0** (2026-09-26) Accessibility pass: Development warning when a switch has no accessible name.
-- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.
 
 ---
 
@@ -2766,7 +2810,7 @@ Toggle switch — A setting that applies immediately
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5374-18184
 - Source: `src/components/Stepper`
 - Also called: Quantity input, counter, number input, lot picker, spinner
@@ -2817,6 +2861,7 @@ Each tap adds or removes one step — usually the lot size. At the lowest value 
 
 ## Recent changes
 
+- **1.0.1** (2026-10-10) 48 × 48 touch area: The − and + buttons have a touch area of at least 48 × 48 (was 32); the row stays compact.
 - **1.0.0** (2026-10-09) New component: Stepper: a number with − / + buttons for quantity and lots. Small (inline in order-pad rows) and Large (with a sublabel such as “91 Lots”). Each button turns grey at its limit. New Figma components L3: Stepper (Size = Small · Large, ✏️ Value, ✏️ / 👁️ Sublabel) and .L3: Stepper button (Type × State × Size). Named group, labelled buttons, the value is announced on change, and the 20px Small buttons have a 32px tap area.
 
 ---
@@ -2828,7 +2873,7 @@ Each tap adds or removes one step — usually the lot size. At the lowest value 
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.1
+- Version: 1.0.2
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5377-49
 - Source: `src/components/Select`
 - Also called: Dropdown, picker, switcher, toggle, mode selector, filter
@@ -2847,9 +2892,9 @@ Select is just the current choice and an icon. It sits in a row or a header; tap
 
 ### Sizes
 
-**Small** (Label-12) in form rows, **Medium** (Label-14) for filters, **Large** (Heading-14) for titles. **Subtle** makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text.
+**Small** (Label-12) in form rows, **Medium** (Label-14) for filters, **Large** (Heading-14) for titles. **Subtle** makes it secondary grey when it shouldn't compete with the content. Make the whole row or header tappable, not only the text. Select hugs its content — no box, no padding — and its 48 × 48 touch area is invisible, so it never makes the row taller.
 
-A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. Its tap area grows to 32px.
+A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. Its touch area grows to 48 × 48 without taking layout space.
 
 ## Props
 
@@ -2873,6 +2918,7 @@ A `<button aria-haspopup="dialog">`; pass `expanded` while the sheet is open. It
 
 ## Recent changes
 
+- **1.0.2** (2026-10-10) 48 × 48 touch area: The touch area is at least 48 × 48 (was 32). Select still hugs its label and icon, so rows don't get taller.
 - **1.0.1** (2026-10-09) Lemonnade switch arrow: The ↕ toggle is now the Lemonnade "Switch arrow toggle" icon from the Figma icons library (solid up and down arrowheads), instead of Material's unfold_more.
 - **1.0.0** (2026-10-09) New component: Select: an inline label + icon that opens a sheet of options — Small, Medium, Large, a subtle version, and ↕ or chevron icons. New Figma component L3: Select (Size × isSubtle, ✏️ Label, ↪ Icon). A button with aria-haspopup="dialog" and aria-expanded; 32px tap area.
 
@@ -2947,7 +2993,7 @@ Use `max` / `min`. Keyboard: arrows move by day and week, Home / End to the week
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.7.0
+- Version: 1.7.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65938
 - Source: `src/components/Tabs`
 - Also called: Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher
@@ -3034,9 +3080,9 @@ Tabs — Switch sections, filter or switch views
 
 ## Recent changes
 
+- **1.7.1** (2026-10-10) 48 tall touch area: Pill tabs shorter than 48 get a 48-tall touch area (was 32) — vertical only, so pills side by side don't overlap.
 - **1.7.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label primary (label-primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
-- **1.5.0** (2026-10-02) Hug or fill width: Width: Hug or Fill. Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.
 
 ---
 
@@ -3509,7 +3555,7 @@ Card — Groups related content
 - Group: Surfaces
 - Lifecycle: done
 - Status: Figma synced
-- Version: 2.3.2
+- Version: 2.3.3
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-63932
 - Source: `src/components/BottomSheet`
 - Also called: Sheet, modal sheet, drawer, action sheet, top sheet
@@ -3770,9 +3816,9 @@ Bottom sheet — A modal panel over the screen
 
 ## Recent changes
 
+- **2.3.3** (2026-10-10) 48 × 48 touch area: The header's icon buttons (back, ⓘ) have a touch area of at least 48 × 48 (was 32).
 - **2.3.2** (2026-10-10) Server rendering: Renders on the server (Next.js): the stack level has a server value and the portal waits for the browser. A closed sheet used to throw during server rendering. Development warnings no longer depend on Vite.
 - **2.3.1** (2026-10-09) Overlay is its own component: The dimmed backdrop is now the shared Overlay component, so other modals can use it. No visual change. Slot names match Figma: footer is the Figma Utility slot (the button dock); utility is a code-only area under it.
-- **2.3.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650). Large header description uses Description.
 
 ---
 
@@ -4446,7 +4492,7 @@ Tag — 3 types · 12 colors · 3 sizes · never tappable
 - Group: Data display
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.1.0
+- Version: 1.1.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5407-124
 - Source: `src/components/SectionHeader`
 - Also called: Section title, section heading, list header, group header, view all
@@ -4493,6 +4539,7 @@ The section header sits 16 above its card or list, and sections are 24 apart (32
 
 ## Recent changes
 
+- **1.1.1** (2026-10-10) Uses the shared touch areas: View all and the switcher hug their content and bring their own 48 × 48 touch areas (now built into Ghost buttons and Select), so the header no longer adds its own.
 - **1.1.0** (2026-10-10) Simpler CTA: L3: Section header is one component now: 👁️ CTA shows the action, and the nested "L3 base: section header cta" picks its Type — Button (View all) or Time Switcher. The three CTA variants are gone. View all hugs its label like in Figma: 16 tall instead of 32, so a header with only a title and View all is 20 tall. Its touch area stays 48 × 48. No API change: action={{ type: 'view-all' }} is Type=Button, type: 'switcher' is Type=Time Switcher.
 - **1.0.0** (2026-10-09) New component: Section header: a required heading with an optional tag, info icon, description (one line ideally, two at most) and one action — View all or a switcher. The action and info icon have a 48 × 48 touch area. New Figma component L3: Section header (CTA = None · View all · Switcher; ✏️ Heading, ✏️ Description, 👁️ Description · Tag · Info). <SectionHeader title description tag onInfo action headingLevel />; action is typed to view-all | switcher.
 

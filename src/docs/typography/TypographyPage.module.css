@@ -50,12 +50,12 @@
 
 /* ---- Tree -------------------------------------------------------------------- */
 
-/* Toolbar items: label + control side by side, 32px tall (size/tap-target). */
+/* Toolbar items: label + control side by side, 32px tall. */
 .toggle {
   display: inline-flex;
   align-items: center;
   gap: var(--l3-spacing-08);
-  min-height: var(--l3-size-tap-target);
+  min-height: var(--l3-size-32);
   font: var(--l3-text-label-14);
   color: var(--l3-content-primary);
   cursor: pointer;

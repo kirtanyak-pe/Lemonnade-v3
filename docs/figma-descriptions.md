@@ -11,7 +11,7 @@ Docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/
 ## Components used in screens
 
 ### L3: Button (4471:29225)
-Actions. Type: Primary for the main action (one per screen); Secondary only next to a stronger button, usually in a dock; Tertiary for standalone actions like "View all"; Ghost for text actions inside other components; Brand for brand moments; Buy / Sell only to place or confirm a trade. Icon-only: no label, one icon. Buttons in a dock are always Large.
+Actions. Type: Primary for the main action (one per screen); Secondary only next to a stronger button, usually in a dock; Tertiary for standalone actions like "View all"; Ghost for text actions inside other components; Brand for brand moments; Buy / Sell only to place or confirm a trade. Icon-only: no label, one icon. Buttons in a dock are always Large. Ghost hugs its content in every size (no padding, no fixed height); every button's touch area is at least 48 × 48 without taking layout space.
 Code: `<Button variant size>` · Docs: #/button
 
 ### L3: Tags (4464:27218)
@@ -114,7 +114,7 @@ A number with − / + buttons for quantity and lots. Small: inline in order-pad 
 Code: `<Stepper value onChange min max step size sublabel label>` · Docs: #/stepper
 
 ### L3: Select switcher (5377:49)
-An inline trigger — label + ↕ or chevron — that opens a bottom sheet of options. Small (Label/12) in form rows, Medium (Label/14) for filters, Large (Heading/14) for titles; isSubtle = secondary colour. Make the whole row the tap target.
+An inline trigger — label + ↕ or chevron — that opens a bottom sheet of options. Small (Label/12) in form rows, Medium (Label/14) for filters, Large (Heading/14) for titles; isSubtle = secondary colour. It hugs its content (no box, no padding); its touch area is at least 48 × 48 without taking layout space. Make the whole row the tap target.
 Code: `<Select onClick size subtle icon>` · Docs: #/select
 
 ### L3: Skeleton (5380:30) · L3: Skeleton pattern (5380:54)

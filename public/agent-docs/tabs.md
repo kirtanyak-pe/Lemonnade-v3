@@ -5,7 +5,7 @@
 - Group: Navigation
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.7.0
+- Version: 1.7.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65938
 - Source: `src/components/Tabs`
 - Also called: Tab bar, chips, filter pills, pill group, segmented control, toggle group, view switcher
@@ -92,6 +92,6 @@ Tabs — Switch sections, filter or switch views
 
 ## Recent changes
 
+- **1.7.1** (2026-10-10) 48 tall touch area: Pill tabs shorter than 48 get a 48-tall touch area (was 32) — vertical only, so pills side by side don't overlap.
 - **1.7.0** (2026-10-05) New type weights: Text uses the three typography roles: titles Heading (750), labels Label (650).
 - **1.6.0** (2026-10-04) Typography from Figma: Text styles follow the new Figma typography: labels use Label primary (label-primary-sb). Selected underline tabs keep the same SemiBold label as unselected ones (Figma no longer uses a bolder selected style).
-- **1.5.0** (2026-10-02) Hug or fill width: Width: Hug or Fill. Hug (default): tabs as wide as their labels, and a pill group's track wraps them. Fill: tabs stretch to fill the row; a pill group goes full width with equal pills. A pill group no longer stretches across a flex or grid parent when it should hug.

@@ -62,5 +62,5 @@
 | `icon-size/20` | `--l3-icon-size-20` | 20px |
 | `icon-size/22` | `--l3-icon-size-22` | 22px |
 | `icon-size/24` | `--l3-icon-size-24` | 24px |
-| `size/tap-target` | `--l3-size-tap-target` | 32px |
+| `size/tap-target` | `--l3-size-tap-target` | 48px |
 | `size/illustration` | `--l3-size-illustration` | 120px |

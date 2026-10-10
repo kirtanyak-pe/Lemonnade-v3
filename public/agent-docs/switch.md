@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.3.0
+- Version: 1.3.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=4543-65343
 - Source: `src/components/Switch`
 - Also called: Toggle, knob, toggle button
@@ -64,6 +64,6 @@ Toggle switch — A setting that applies immediately
 
 ## Recent changes
 
+- **1.3.1** (2026-10-10) 48 × 48 touch area: The touch area is at least 48 × 48 (was 32), without changing the switch's drawn size.
 - **1.3.0** (2026-10-10) Refs for forms: The ref you give it reaches the <input> (it used to be replaced by the switch's own), so react-hook-form and focus management work. Knob shadow uses color-mix() instead of relative rgb(from …) — same look, works in more browsers.
 - **1.2.0** (2026-09-26) Accessibility pass: Development warning when a switch has no accessible name.
-- **1.1.1** (2026-09-26) L3 naming: Figma references renamed from D2 to L3.

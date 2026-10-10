@@ -5,7 +5,7 @@
 - Group: Input & control
 - Lifecycle: done
 - Status: Figma synced
-- Version: 1.0.0
+- Version: 1.0.1
 - Figma: https://www.figma.com/design/lxQ6QIXGOv5mmx0khh5sJn/?node-id=5374-18184
 - Source: `src/components/Stepper`
 - Also called: Quantity input, counter, number input, lot picker, spinner
@@ -56,4 +56,5 @@ Each tap adds or removes one step — usually the lot size. At the lowest value 
 
 ## Recent changes
 
+- **1.0.1** (2026-10-10) 48 × 48 touch area: The − and + buttons have a touch area of at least 48 × 48 (was 32); the row stays compact.
 - **1.0.0** (2026-10-09) New component: Stepper: a number with − / + buttons for quantity and lots. Small (inline in order-pad rows) and Large (with a sublabel such as “91 Lots”). Each button turns grey at its limit. New Figma components L3: Stepper (Size = Small · Large, ✏️ Value, ✏️ / 👁️ Sublabel) and .L3: Stepper button (Type × State × Size). Named group, labelled buttons, the value is announced on change, and the 20px Small buttons have a 32px tap area.

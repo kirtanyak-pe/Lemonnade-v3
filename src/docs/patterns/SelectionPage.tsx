@@ -149,7 +149,7 @@ export function SelectionPage() {
             <li><strong>Announce the state.</strong> Radios and checkboxes are native and announce “checked”; tabs announce “selected”; a selectable card or row is a button announced as “pressed”, or a link announced as “current”.</li>
             <li><strong>Group single choices.</strong> Radio rows sit in one group with a name (“Choose a contract”) and share a name, so arrow keys move the choice.</li>
             <li><strong>Keyboard.</strong> Tabs move with ← → Home End; radios with arrow keys; checkboxes and cards with Space / Enter. The focus ring is always visible.</li>
-            <li><strong>Tap targets.</strong> The whole row or card is the target (at least 32 px tall), not just the dot or the box.</li>
+            <li><strong>Tap targets.</strong> The whole row or card is the target, not just the dot or the box.</li>
             <li><strong>Contrast.</strong> The selected cue must stand out from the unselected one in both themes; the ♿ Accessible themes strengthen borders where needed.</li>
           </ul>
         </section>

@@ -403,7 +403,13 @@ There is **no spinner** — use `Skeleton` for loading content and `Button loadi
 
 ## 11. Interaction
 
-- **Tap targets are at least 32px** (`--l3-size-tap-target`). Components grow their tap area with an invisible `::after`, so the visual size doesn't change.
+- **Touch areas are at least 48 × 48** (`--l3-size-tap-target`, the same as Figma's `size/touch-min`). A control drawn
+  smaller keeps its drawn size and grows an invisible `::before` / `::after` — it never adds height, padding or space to
+  the layout.
+- **Ghost buttons and the Select switcher hug their content in both directions** — no padding, no fixed height — so
+  they're as big as their label and icon; the 48 × 48 touch area does the tapping. The same goes for every control
+  drawn smaller than 48 (checkbox, switch, small pill tabs, icon buttons, stepper buttons). Where controls sit closer
+  than 48 (pill tabs side by side), the touch area grows only in the free direction so neighbours don't overlap.
 - **Hover styles only inside `@media (hover: hover)`**, so taps don't leave elements stuck highlighted. Add `touch-action: manipulation`.
 - **Hover and press use state layers:** `--l3-state-layer-dark-*` on light fills and `--l3-state-layer-light-*` on dark ones, painted as a background image, not an overlay element.
 - **Focus:** `:focus-visible` outline `var(--l3-spacing-02) solid var(--l3-border-dark)`.

@@ -2,7 +2,7 @@
  * L3 Stepper — every value is an --l3-* token (Figma L3: Stepper + .L3: Stepper button).
  * Small: 104×28 pill on surface/secondary, 20px square buttons (discover accent when enabled, surface/disabled at the limit).
  * Large: 32px round outlined buttons, value Heading/14 with an optional Label/10 sublabel.
- * The Small buttons are 20px to keep the order-pad rows compact; an invisible ::before grows the tap area to size/tap-target (32px).
+ * The Small buttons are 20px to keep the order-pad rows compact; an invisible ::before grows the touch area to size/tap-target (48 × 48).
  */
 
 .stepper {
