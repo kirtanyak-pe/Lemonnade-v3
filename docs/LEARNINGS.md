@@ -3,6 +3,31 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — redesigning old Lemonn screens (Navigation, KYC, Market, Portfolio) from scratch in Figma
+
+28 screens rebuilt in a new section next to the old one ("🟨 Lm→ General: Playground", page Account setup), 198 L3
+instances, audit after: 0 unbound colours, 0 unstyled texts, 0 raw spacing.
+
+- **Registry drift: "L3: Select" now imports as "L3: Select switcher".** verify-registry flagged it (30/31 OK). Not
+  fixed in `figma-library.json` yet — build-screen / swap look it up by the old name. Rename in the data + scripts
+  together.
+- **Tabs group has minWidth 328.** In a row next to a button (pills + "Import", pills + "Filters") the button was
+  pushed off-screen. Fix: `minWidth = null`, then FILL. Also zero the wrapper slot's 16 inset inside a padded body
+  (DESIGN_SYSTEM 2.3), otherwise the first chip sits at 32.
+- **A FILL text next to a HUG Button in a row centres itself** (x 103, w 88 of 230) — even after re-creating the text.
+  Fix used: fixed width = row − control − button − gaps. Worth checking whether the L3: Button has a min-width.
+- **L3: Button defaults to full width (328) and shows both placeholder icons**; L3: Tags too. Every helper must set
+  `👁️ Icon-L/R` explicitly and HUG buttons that sit in slots or rows.
+- **Brand mascots ("Lemon emotions", 24 expressions) can't be imported by key** ("Component not found") — it's not in
+  a library this file can import from by key. Cloning an existing instance and `setProperties({emotions})` works.
+  Candidate for the L3 library (empty states, KYC, onboarding all use it).
+- **Old illustrations are loose layers, not one group** (coin front/back, gear face/shadow): cloning the "largest node
+  in the region" copied half of them. Mascots replaced them; empty-state art should become components.
+- **Sheets over a screen:** clone the base screen → absolute L3: Overlay (360×800) → L3: Bottom sheet in the
+  overlay's container slot. Plain ListCells inside a sheet's content slot double the 16 inset — set the cell's own
+  side padding to 0.
+- **The MCP connection dropped mid-call but the script had finished** — always re-read the canvas before retrying.
+
 ## 2026-10-10 — making the components portable (developers copy them into production)
 
 - **Vite-only code crashed components elsewhere.** 9 files used `import.meta.env.DEV` for dev warnings — undefined in
