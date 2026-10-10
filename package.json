@@ -20,7 +20,8 @@
     "audit:ui": "node scripts/audit-ui.ts",
     "check:portable": "node --no-warnings scripts/check-portable.ts",
     "figma": "node scripts/figma/bundle.ts",
-    "screen": "node scripts/screen.ts"
+    "screen": "node scripts/screen.ts",
+    "kit": "node --no-warnings scripts/figma/kit.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

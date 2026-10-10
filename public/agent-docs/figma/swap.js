@@ -123,6 +123,7 @@ return varsById.get(id)
 const L3_STYLE_BY_KEY = new Map(Object.entries((DATA.library && DATA.library.textStyles) || {}).map(([name, key]) => [key, name]))
 const styleKeyOf = (id) => { const m = typeof id === 'string' && /^S:([0-9a-f]+),/.exec(id); return m ? m[1] : null }
 const l3StyleOfId = (id) => L3_STYLE_BY_KEY.get(styleKeyOf(id)) || null // 'Label/12' or null
+async function applyTextStyle(t, id) { try { t.textStyleId = id; if (t.textStyleId === id) return } catch (e) {} await t.setTextStyleIdAsync(id) }
 const fontsLoaded = new Set()
 async function loadFonts(texts) {
 const need = new Map()
@@ -443,9 +444,9 @@ const tf = nu.findOne((x) => x.name === 'Text' && x.type === 'FRAME')
 if (tf) await setSpacing(tf, 'itemSpacing', col.itemSpacing)
 const lbl = nu.findOne((x) => x.name === 'Label'), dsc = nu.findOne((x) => x.name === 'Description')
 await loadFonts([lbl, dsc].filter(Boolean))
-if (title.textStyleId && typeof title.textStyleId === 'string') { await lbl.setTextStyleIdAsync(title.textStyleId); lbl.fills = title.fills }
+if (title.textStyleId && typeof title.textStyleId === 'string') { await applyTextStyle(lbl, title.textStyleId); lbl.fills = title.fills }
 if (dsc && rest.length) {
-if (typeof rest[0].textStyleId === 'string' && rest[0].textStyleId) await dsc.setTextStyleIdAsync(rest[0].textStyleId)
+if (typeof rest[0].textStyleId === 'string' && rest[0].textStyleId) await applyTextStyle(dsc, rest[0].textStyleId)
 let pos = 0
 rest.forEach((t, i) => { dsc.setRangeFills(pos, pos + parts[i].length, t.fills); pos += parts[i].length + 2 })
 }

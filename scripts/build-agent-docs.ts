@@ -97,6 +97,8 @@ const add = (id: string, title: string, summary: string, body: string, section: 
 const readIf = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : '')
 
 // Rules first: the agent contract and the full rulebook.
+add('generate', 'Generate & redesign screens in Figma (L3 kit)', 'Read first for any screen / flow / redesign task in Figma: the algorithm, the L3 JSX language and the rules the kit applies for you.', readIf(join(root, 'docs/agent/GENERATE.md')), 'Rules')
+add('algorithm', 'Why the L3 kit: token & time audit', 'Measured on 16 sessions: where tokens and time went, the principles, the pipeline and what it saves.', readIf(join(root, 'docs/agent/ALGORITHM.md')), 'Rules')
 add('agents', 'Instructions for AI agents', 'Read first. Workflow, non-negotiable rules and how to verify a screen.', readIf(join(root, 'AGENTS.md')), 'Rules')
 add('figma-code-map', 'Figma → code map', 'How every Figma component and property maps to a React component and prop.', readIf(join(root, 'docs/figma-code-map.md')), 'Rules')
 add('design-system', 'Design system rules', 'Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don\'t.', readIf(join(root, 'DESIGN_SYSTEM.md')), 'Rules')

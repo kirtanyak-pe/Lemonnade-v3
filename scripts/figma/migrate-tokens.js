@@ -142,7 +142,7 @@ async function migrate(root) {
   const before = new Map(topScreens.map((s) => [s.id, [Math.round(s.width), Math.round(s.height)]]))
 
   // 3a. Text styles (parallel), with the wrap guard
-  const done = await Promise.allSettled(textJobs.map(async (j) => j.t.setTextStyleIdAsync((await l3TextStyle(j.key)).id)))
+  const done = await Promise.allSettled(textJobs.map(async (j) => applyTextStyle(j.t, (await l3TextStyle(j.key)).id)))
   const widthChanged = [], fallback = []
   const wraps = (j, st) => { const lh = st.lineHeight.unit === 'PIXELS' ? st.lineHeight.value : st.fontSize * 1.3; return j.w > 2 && j.t.height > j.h + 2 && j.h < lh * 1.6 && j.t.height >= lh * 1.8 }
   for (let i = 0; i < textJobs.length; i++) {
@@ -154,11 +154,11 @@ async function migrate(root) {
     }
   }
   for (const j of fallback) {
-    if (j.alt) { const st = await l3TextStyle(j.alt); await j.t.setTextStyleIdAsync(st.id); if (!wraps(j, st)) { note('wrapping text set to lighter style'); continue } }
+    if (j.alt) { const st = await l3TextStyle(j.alt); await applyTextStyle(j.t, st.id); if (!wraps(j, st)) { note('wrapping text set to lighter style'); continue } }
     try {
       if (j.orig.missing && !j.orig.styleId) throw new Error('missing font')
-      if (j.orig.styleId) await j.t.setTextStyleIdAsync(j.orig.styleId)
-      else { await figma.loadFontAsync(j.orig.font); await j.t.setTextStyleIdAsync(''); Object.assign(j.t, { fontName: j.orig.font, fontSize: j.orig.size, lineHeight: j.orig.lh, letterSpacing: j.orig.ls }) }
+      if (j.orig.styleId) await applyTextStyle(j.t, j.orig.styleId)
+      else { await figma.loadFontAsync(j.orig.font); await applyTextStyle(j.t, ''); Object.assign(j.t, { fontName: j.orig.font, fontSize: j.orig.size, lineHeight: j.orig.lh, letterSpacing: j.orig.ls }) }
       R.textStyled--; widthChanged.push({ id: j.t.id, text: j.t.characters.slice(0, 24), issue: 'kept old style: no L3 style fits' })
     } catch (e) { widthChanged.push({ id: j.t.id, text: j.t.characters.slice(0, 24), issue: 'wraps; could not restore (missing font)' }) }
   }

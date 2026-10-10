@@ -21,7 +21,7 @@ async function txt(chars, style, tok, name) {
   const s = await l3TextStyle(style)
   const t = figma.createText()
   t.name = name || chars.slice(0, 24)
-  if (s) await t.setTextStyleIdAsync(s.id); else { await figma.loadFontAsync({ family: 'Manrope', style: 'SemiBold' }); t.fontName = { family: 'Manrope', style: 'SemiBold' } }
+  if (s) await applyTextStyle(t, s.id); else { await figma.loadFontAsync({ family: 'Manrope', style: 'SemiBold' }); t.fontName = { family: 'Manrope', style: 'SemiBold' } }
   t.characters = String(chars)
   const v = await color(tok || 'content/primary')
   if (v) t.fills = [boundPaint({ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }, v, t)]
@@ -122,7 +122,7 @@ try {
         setText(content, 'Heading', h.title || spec.name)
         // An L1 screen (no back / ✕) shows its title in Heading/18, named like the designers' "L1 page heading".
         const t = !h.back && content.findOne((n) => n.type === 'TEXT' && n.name === 'Heading')
-        if (t) { await t.setTextStyleIdAsync((await l3TextStyle('Heading/18')).id); t.name = 'L1 page heading' }
+        if (t) { await applyTextStyle(t, (await l3TextStyle('Heading/18')).id); t.name = 'L1 page heading' }
       }
       const descSlot = content.findOne((n) => n.type === 'SLOT' && /Description/.test(n.name))
       if (h.change !== undefined && descSlot) { content.setProperties({ [propKey(content, '👁️ Description')]: true }); for (const c of [...descSlot.children]) c.remove(); descSlot.appendChild(await priceChange(h.change, 'Small')) }

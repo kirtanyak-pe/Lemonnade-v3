@@ -4,6 +4,11 @@ This repo is the **Lemonnade V3 (L3) design system**: React + TypeScript + Vite 
 design tokens in `src/tokens`, and a docs site in `src/docs`. When you build UI here — a screen, a flow, a new
 component, or a Figma design — follow this file.
 
+> **Designing screens, a flow or a redesign in Figma?** Read only [`docs/agent/GENERATE.md`](docs/agent/GENERATE.md) and
+> follow it. You write short L3 JSX, `npm run kit` checks it against the rules below and fixes what it can, and one
+> `use_figma` call builds the whole flow from real L3 instances. Don't load the other docs for that job (why:
+> `docs/agent/ALGORITHM.md`).
+
 ## 1. Read before you build
 
 1. **`DESIGN_SYSTEM.md`** — spacing scale, layout primitives, token rules, card/actionbar rules, states, a11y,
@@ -107,11 +112,13 @@ Key component rules (details in the USAGE files / DESIGN_SYSTEM.md):
 - **Old code:** `npm run audit:ui -- <src>`; fix errors, then warnings; re-run until clean.
 - **Old Figma designs:** Figma `audit` → `migrate-tokens` (dryRun first) → `swap` (dryRun → sandbox → run) → audit
   again. Bundle scripts with `npm run figma -- <script> --config '{…}'` and paste into `use_figma`.
-- **New screens:** `npm run screen -- new <archetype>` → edit the spec → `score` (≥ 85, no blocking) → `gen` (code,
-  written outside this repo) and/or Figma `build-screen` (sandbox first). How screens should look:
-  `docs/DESIGN_LANGUAGE.md`.
-- **Efficiency:** cheapest lookup first (`components.json`, code map, registry) · batch + parallel reads · one page per
-  Figma call, ≤ ~10k nodes · dry-run → sandbox → run · numbers over screenshots · read `timing` before optimising.
+- **New screens in Figma:** the L3 kit — `docs/agent/GENERATE.md` (write `flow.jsx` → `npm run kit -- build` → one
+  `use_figma` call per ≤ ~15 screens). Redesigns start with `npm run kit -- outline <ids>` instead of screenshots.
+- **New screens in code:** `npm run screen -- new <archetype>` → edit the spec → `score` (≥ 85, no blocking) → `gen`
+  (written outside this repo). How screens should look: `docs/DESIGN_LANGUAGE.md`.
+- **Efficiency:** every call re-reads the whole context (73% of our token cost), so: few calls, small context ·
+  cheapest lookup first (`components.json`, code map, registry) · batch + parallel reads · one page per Figma call,
+  ≤ ~10k nodes · dry-run → sandbox → run · numbers over screenshots · read `timing` before optimising.
 - **Improve the system, not the one-off:** after each task add to `docs/LEARNINGS.md` and fix the data or script that
   caused the trouble.
 

@@ -202,6 +202,10 @@ const L3_STYLE_BY_KEY = new Map(Object.entries((DATA.library && DATA.library.tex
 const styleKeyOf = (id) => { const m = typeof id === 'string' && /^S:([0-9a-f]+),/.exec(id); return m ? m[1] : null }
 const l3StyleOfId = (id) => L3_STYLE_BY_KEY.get(styleKeyOf(id)) || null // 'Label/12' or null
 
+// Apply a text style fast: the sync setter takes ~2 ms, while the FIRST setTextStyleIdAsync of a use_figma call stalls
+// ~29 s (measured 2026-10-11, playground file). Falls back to the async API where the sync setter isn't allowed.
+async function applyTextStyle(t, id) { try { t.textStyleId = id; if (t.textStyleId === id) return } catch (e) {} await t.setTextStyleIdAsync(id) }
+
 // Fonts: never wait on a missing font (it stalls ~40s) — callers skip those texts.
 const fontsLoaded = new Set()
 async function loadFonts(texts) {

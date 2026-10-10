@@ -6,6 +6,8 @@ Human docs: https://kirtanyak-pe.github.io/lemonnade-v3-docs/ · Figma: https://
 
 ## Rules
 
+- [Generate & redesign screens in Figma (L3 kit)](agent-docs/generate.md): Read first for any screen / flow / redesign task in Figma: the algorithm, the L3 JSX language and the rules the kit applies for you.
+- [Why the L3 kit: token & time audit](agent-docs/algorithm.md): Measured on 16 sessions: where tokens and time went, the principles, the pipeline and what it saves.
 - [Instructions for AI agents](agent-docs/agents.md): Read first. Workflow, non-negotiable rules and how to verify a screen.
 - [Figma → code map](agent-docs/figma-code-map.md): How every Figma component and property maps to a React component and prop.
 - [Design system rules](agent-docs/design-system.md): Spacing, layout, tokens, typography, components, states, accessibility, theming, Do/Don't.

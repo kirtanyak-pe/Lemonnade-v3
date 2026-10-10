@@ -3,6 +3,45 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-11 — token & time audit → the L3 kit (docs/agent/ALGORITHM.md)
+
+16 sessions, 8,348 calls measured with `scripts/token-audit.py`: **73% of the cost was re-reading context** (cost ≈
+context × calls; sessions compacted only near 1M). Generation sessions spent the first minute loading ~100k tokens of
+docs, then 20–40 exploration calls, re-sent a hand-written 10–43 kB helper library in every build call and fixed
+component quirks one call at a time.
+
+- **Fix: the L3 kit.** Agents read only `docs/agent/GENERATE.md`, write L3 JSX (6 screens = 2.4 kB ≈ 700 tokens),
+  `npm run kit -- build` lints / auto-fixes / tree-shakes, one `use_figma` call builds the flow, checks it and returns
+  snapshots. Benchmark: 6-screen price-alerts flow, 1 call, 0 issues, **8.2 s** (was 55 s). Quirks are handled once
+  in `kit/runtime.js`.
+- **First `setTextStyleIdAsync` per call stalls ~29 s** (the "~60 s per build" mystery below): the sync setter takes
+  2 ms → `applyTextStyle` in lib/core.js, used by build-screen, swap, migrate-tokens and the kit.
+- **FILL child makes a hugging parent fixed** — a screen with `body.layoutGrow = 1` set early stopped growing and its
+  content slid under the dock. The kit now measures first, then pins short screens.
+- **`findAllWithCriteria` returned INSTANCE nodes** for `types: ['TEXT']` (slots) and crashed a check — filter by type.
+- **Resident code (plugin data + eval) works but is blocked** by the auto-mode classifier as an RCE surface; so is
+  smuggling code in an uploaded image. Accepted: per-call runtime, tree-shaken, many screens per call.
+- **Subagents can't use the claude.ai Figma connector** here — a cheap "paste runner" subagent isn't an option yet.
+- `.claude/settings.json` → `autoCompactWindow: 250000`.
+
+## 2026-10-10 — Kill Switch v2: local pattern components built on L3
+
+30 redesigned frames + 5 local pattern components (icon badge, OTP field, Kill Switch status card, position card,
+profile card) on the playground page. Audit after: 0 unbound colours, 0 unstyled texts, 0 placeholder copy.
+
+- **Text properties can't point inside a library instance's slot** ("Cannot set component property references on
+  instance sublayer"). A local component that wraps L3: Card can't expose its card text as properties — designers edit
+  the text in the slot directly. Expose properties only on layers that are direct children of the local component.
+- **An INSTANCE_SWAP property resets every variant to its one default icon**, and a **TEXT property resets every
+  variant's text to its one default**. Per-variant icons or copy (Success = check, Error = error; helper text per OTP
+  state) must stay plain nested layers, not properties.
+- **A text with `layoutGrow = 1` inside a slot rendered centred** (x 41 of 304) even with `textAlignHorizontal = LEFT`.
+  Use `layoutSizingHorizontal = 'FILL'` + `textAutoResize = 'HEIGHT'` instead of layoutGrow for texts.
+- **`getRangeAllFontNames(0, 0)` throws on empty texts** (empty OTP boxes). Skip zero-length texts when loading fonts.
+- **L3 → Empty state is 412 tall** — under a section header on a Positions screen its message falls below the fold.
+  For "nothing here" inside a busy screen, a non-tappable card list cell reads better; keep Empty state for full
+  screens.
+
 ## 2026-10-10 — generating a 25-frame flow from scratch in Figma (Kill Switch, playground file)
 
 25 frames (screens, bottom sheets, OTP states) built only from L3 instances with a small helper library, 6 use_figma

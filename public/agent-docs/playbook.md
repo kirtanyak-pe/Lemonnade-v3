@@ -14,7 +14,9 @@ NEED SOMETHING?   npm run find -- "<the job, in words>"          → component, 
 OLD FIGMA FILE?   audit → migrate-tokens (dry → run) → swap (dry → sandbox → run) → audit again     (§4)
 OLD CODE?         npm run audit:ui -- <src> → fix errors → fix warnings → tsc + build + look          (§5)
 MISSING PIECE?    ladder (§2) → only then spec → Figma → code → docs → registry                       (§6)
-NEW SCREEN?       npm run screen -- new <archetype> → edit spec → score ≥ 85 → gen (code) / build-screen (Figma) (§7)
+NEW SCREENS (FIGMA)  docs/agent/GENERATE.md: flow.jsx → npm run kit -- build → 1 use_figma call per ≤ ~15 screens (§7)
+REDESIGN (FIGMA)     npm run kit -- outline <ids> → 1 call → text outlines → flow.jsx → as above              (§7)
+NEW SCREEN (CODE)    npm run screen -- new <archetype> → edit spec → score ≥ 85 → gen                           (§7)
 AFTER ANY TASK    add what slowed you down or was wrong to docs/LEARNINGS.md, then fix the data/script (§9)
 ```
 
@@ -194,7 +196,12 @@ dev notes + props), `src/preview/<Name>Variants.tsx`, playground, `changelog.ts`
 
 ## 7. Generate new screens
 
-**The algorithm:**
+**In Figma, use the L3 kit** — `docs/agent/GENERATE.md` is the whole procedure (why: `docs/agent/ALGORITHM.md`). Write
+every screen of the flow as L3 JSX in one file, `npm run kit -- build flow.jsx --parent <id>` (lint + auto-fixes +
+bundle), paste each `flow*.figma.js` as one `use_figma` call. It replaces `build-screen` for Figma; the JSON spec below
+stays for generating React code (`gen`).
+
+**JSON spec → code (and the older Figma `build-screen`):**
 1. **Brief → archetype.** Pick from `npm run screen -- list` (home · list · detail · order · review · result ·
    portfolio · history · form · settings · search). Multi-screen flows: one spec per screen; money flows always
    include `review` (+ a `result` toast).
@@ -247,6 +254,14 @@ Header: `title` · `description` · `back` · `actions` (≤ 2) · `tabs` · `se
 - `setCurrentPageAsync` once per call; `page.loadAsync()` to touch another page's nodes (main-edit).
 - `use_figma` code is limited to 50,000 characters — `bundle.ts` warns; trim DATA per script there.
 - `figma.notify` throws; `console.log` is invisible — return everything.
+- **The first `setTextStyleIdAsync` of every `use_figma` call stalls ~29 s**; the sync setter `t.textStyleId = id` takes
+  ~2 ms. Use `applyTextStyle` (lib/core.js) — it falls back to the async API only when the sync setter is refused.
+- **A FILL child turns a hugging auto-layout parent into a fixed one** (as in the Figma UI). Measure a hugging frame
+  first; give a child `layoutGrow` only when the frame is meant to be fixed.
+- `findAllWithCriteria({ types: ['TEXT'] })` can return INSTANCE nodes inside slots — filter by `n.type === 'TEXT'`.
+- **No resident code:** storing a script in the file (plugin data) and `eval`-ing it later is blocked as a
+  remote-code-execution surface — every call carries its own code; keep it small (tree-shake) and batch work per call.
+- Subagents can't reach the claude.ai Figma connector in the desktop app — keep `use_figma` calls in the main agent.
 
 ---
 
