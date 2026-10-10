@@ -3,6 +3,24 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — Kill Switch v2: local pattern components built on L3
+
+30 redesigned frames + 5 local pattern components (icon badge, OTP field, Kill Switch status card, position card,
+profile card) on the playground page. Audit after: 0 unbound colours, 0 unstyled texts, 0 placeholder copy.
+
+- **Text properties can't point inside a library instance's slot** ("Cannot set component property references on
+  instance sublayer"). A local component that wraps L3: Card can't expose its card text as properties — designers edit
+  the text in the slot directly. Expose properties only on layers that are direct children of the local component.
+- **An INSTANCE_SWAP property resets every variant to its one default icon**, and a **TEXT property resets every
+  variant's text to its one default**. Per-variant icons or copy (Success = check, Error = error; helper text per OTP
+  state) must stay plain nested layers, not properties.
+- **A text with `layoutGrow = 1` inside a slot rendered centred** (x 41 of 304) even with `textAlignHorizontal = LEFT`.
+  Use `layoutSizingHorizontal = 'FILL'` + `textAutoResize = 'HEIGHT'` instead of layoutGrow for texts.
+- **`getRangeAllFontNames(0, 0)` throws on empty texts** (empty OTP boxes). Skip zero-length texts when loading fonts.
+- **L3 → Empty state is 412 tall** — under a section header on a Positions screen its message falls below the fold.
+  For "nothing here" inside a busy screen, a non-tappable card list cell reads better; keep Empty state for full
+  screens.
+
 ## 2026-10-10 — generating a 25-frame flow from scratch in Figma (Kill Switch, playground file)
 
 25 frames (screens, bottom sheets, OTP states) built only from L3 instances with a small helper library, 6 use_figma
