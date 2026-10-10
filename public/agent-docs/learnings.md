@@ -37,6 +37,17 @@ instances, audit after: 0 unbound colours, 0 unstyled texts, 0 raw spacing.
   overlay's container slot. Plain ListCells inside a sheet's content slot double the 16 inset — set the cell's own
   side padding to 0.
 - **The MCP connection dropped mid-call but the script had finished** — always re-read the canvas before retrying.
+- **The L3 library itself still used old variables** (found by auditing a consumer screen, not the library): Radio &
+  check box, input field (`PrimitiveSize/s-*`), Aerobar (`Spacing/Sapcing-0`, `Spacing-2`), Actionbar (`Base hex/
+  radius/full`, a D2 text colour on the bottom-slot placeholder), Radio (`shadow/shadow-sm` effect style), Brand logo
+  (`Base hex` honey in gradient stops) and icons nested in Bottom sheet / Checkbox (`🎨 L3 Theme` — a second, older copy
+  of the theme collection that comes with the Icons library). 296 bindings rebound to identical-value L3 tokens
+  (radius/00·06·12·full, spacing/00·02·04·08, size/16·24, elevation/low, base honey) → 0 non-L3 bindings in all 30 L3
+  components. Next: teach `verify-registry` / `audit` to scan the library's own components for non-L3 collections, and
+  check the Icons library for the duplicate `🎨 L3 Theme` collection.
+- **Artwork can only partly move to L3 without recolouring:** 206 of 408 mascot / logo / illustration colours matched
+  an L3 base colour exactly or within 6/255; the mascot's own palette (lemon #fcc21b, blues #e1e9fe / #97b2fd,
+  green #048245) has no L3 equivalent. Decide: add them to the base palette, or treat the mascot as brand artwork.
 
 ## 2026-10-10 — making the components portable (developers copy them into production)
 
