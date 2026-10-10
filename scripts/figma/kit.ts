@@ -8,18 +8,30 @@
 //   npm run kit -- outline <id|url> …   read-only intake: old screens → compact text outline (for redesigns)
 //   npm run kit -- jsx <spec.json>      turn a screen spec stored in Figma (l3kit/spec) back into JSX
 import { createHash } from 'node:crypto'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vm from 'node:vm'
-import { minifySync } from 'rolldown/experimental'
 import { createCompiler } from './kit/compile.js'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
-const lib = JSON.parse(readFileSync(join(root, 'docs/migration/figma-library.json'), 'utf8'))
-const map = JSON.parse(readFileSync(join(root, 'docs/migration/d2-to-l3.json'), 'utf8'))
-const icons: Record<string, string> = JSON.parse(readFileSync(join(root, 'docs/agent/icons.json'), 'utf8')).icons
-const runtime = readFileSync(join(root, 'scripts/figma/kit/runtime.js'), 'utf8')
+// Runs from the repo (scripts/figma/kit.ts) or from the standalone skill (scripts/kit.mjs + data/ + runtime files)
+const selfDir = dirname(fileURLToPath(import.meta.url))
+const skill = existsSync(join(selfDir, '..', 'data', 'figma-library.json'))
+const root = skill ? join(selfDir, '..') : join(selfDir, '..', '..')
+const FILE: Record<string, string> = skill
+  ? { lib: 'data/figma-library.json', map: 'data/colors.json', icons: 'data/icons.json', runtime: 'scripts/runtime.js', compile: 'scripts/compile.js', outline: 'scripts/outline.js', doc: 'SKILL.md', examples: 'examples' }
+  : { lib: 'docs/migration/figma-library.json', map: 'docs/migration/d2-to-l3.json', icons: 'docs/agent/icons.json', runtime: 'scripts/figma/kit/runtime.js', compile: 'scripts/figma/kit/compile.js', outline: 'scripts/figma/kit/outline.js', doc: 'docs/agent/GENERATE.md', examples: 'scripts/figma/kit/examples' }
+const read = (k: string) => readFileSync(join(root, FILE[k]), 'utf8')
+const lib = JSON.parse(read('lib'))
+const map = JSON.parse(read('map'))
+const icons: Record<string, string> = JSON.parse(read('icons')).icons
+const runtime = read('runtime')
+// optional minifier (repo dev dependency); without it the build stays readable, just ~20% larger
+type Minify = (f: string, c: string, o: object) => { code: string; errors?: unknown[] }
+let minifySync: Minify | null = null
+try { minifySync = ((await import('rolldown/experimental')) as { minifySync: Minify }).minifySync } catch { minifySync = null }
+const strip = (c: string) => c.split('\n').filter((l) => !/^\s*\/\//.test(l)).map((l) => l.replace(/\s+\/\/ [^'"`]*$/, '').trim()).filter(Boolean).join('\n')
+const squeeze = (c: string) => { if (!minifySync) return strip(c); const m = minifySync('kit.js', c, { compress: true, mangle: false, codegen: { removeWhitespace: true } }); if (m.errors && m.errors.length) throw new Error('minify: ' + JSON.stringify(m.errors).slice(0, 300)); return m.code.replace(/;(?=(const|let|async function|function|RENDER\.)\b)/g, ';\n') }
 const LIMIT = 49000
 
 // ---- runtime regions: //#core … //#end, //#el Name uses A B … //#end ------------------------------------------------
@@ -32,7 +44,7 @@ function code(els: Set<string>) {
   if (els.has('BottomSheet')) add('BottomSheet')
   return [regions.get('core')!.code, ...[...regions.keys()].filter((k) => k !== 'core' && need.has(k)).map((k) => regions.get(k)!.code)].join('\n')
 }
-const VERSION = 'kit-' + createHash('sha1').update(runtime + readFileSync(join(root, 'scripts/figma/kit/compile.js'), 'utf8')).digest('hex').slice(0, 7)
+const VERSION = 'kit-' + createHash('sha1').update(runtime + read('compile')).digest('hex').slice(0, 7)
 
 // JSON with unquoted identifier keys (shorter plans; still a plain JS literal)
 function js(v: unknown): string {
@@ -60,9 +72,7 @@ function bundle(p: ReturnType<ReturnType<typeof createCompiler>['plan']>, screen
   const DATA = { v: VERSION, c, s, i, k: { theme: lib.collections.theme.key, number: lib.collections.number.key, density: lib.collections.density.key }, p: map.l3ColorPrefix, block }
   const body = `const DATA = ${js(DATA)};\nconst PLAN = ${js({ screens, opt })};\n${src}`
   // Compressed but NOT mangled: every name stays readable (reviewable), one top-level statement per line (copies reliably)
-  const min = minifySync('kit.js', body, { compress: true, mangle: false, codegen: { removeWhitespace: true } })
-  if (min.errors && min.errors.length) throw new Error('minify: ' + JSON.stringify(min.errors).slice(0, 300))
-  const out = min.code.replace(/;(?=(const|let|async function|function|RENDER\.)\b)/g, ';\n')
+  const out = squeeze(body)
   new vm.Script(`(async () => {\n${out}\nreturn await run()\n})`) // syntax check only — never run here
   return `// L3 kit ${VERSION} · ${(screens as unknown[][]).map((x) => (x[1] as { name: string }).name).join(' · ')} — paste this whole file as use_figma \`code\`\n${out}\nreturn await run()\n`
 }
@@ -110,16 +120,16 @@ if (cmd === 'lint' || cmd === 'build') {
   // read-only intake for redesigns: node ids (or Figma URLs) → outline.figma.js to paste as one use_figma call
   const ids = process.argv.slice(3).filter((a) => !a.startsWith('--') && a !== flag('depth') && a !== flag('out')).map((a) => { const m = /node-id=([\d]+)[-:]([\d]+)/.exec(a); return m ? `${m[1]}:${m[2]}` : a.replace('-', ':') })
   if (!ids.length) throw new Error('npm run kit -- outline <node id or URL> [...] [--depth 9]')
-  const src = readFileSync(join(root, 'scripts/figma/kit/outline.js'), 'utf8')
-  const min = minifySync('outline.js', `const IDS = ${JSON.stringify(ids)};\nconst OPT = ${js({ depth: flag('depth') ? Number(flag('depth')) : undefined })};\n${src}`, { compress: true, mangle: false, codegen: { removeWhitespace: true } })
+  const src = read('outline')
+  const min = { code: squeeze(`const IDS = ${JSON.stringify(ids)};\nconst OPT = ${js({ depth: flag('depth') ? Number(flag('depth')) : undefined })};\n${src}`) }
   const out = here(flag('out') || 'outline.figma.js')
-  const code = `// L3 outline ${ids.join(' ')} — paste as use_figma \`code\` (read-only)\n${min.code.replace(/;(?=(const|let|async function|function)\b)/g, ';\n')}\nreturn await outline()\n`
+  const code = `// L3 outline ${ids.join(' ')} — paste as use_figma \`code\` (read-only)\n${min.code}\nreturn await outline()\n`
   new vm.Script(`(async () => {\n${code}\n})`)
   writeFileSync(out, code)
   console.log(`→ ${out} · ${code.length.toLocaleString()} chars · ${ids.length} node(s). Paste it as one use_figma call; the result is a text outline per screen.`)
 } else if (cmd === 'selftest') {
   // keeps the brief, the compiler and the runtime in step: every element documented + rendered, every example clean
-  const doc = readFileSync(join(root, 'docs/agent/GENERATE.md'), 'utf8')
+  const doc = read('doc')
   const C = createCompiler()
   const structural = new Set(['Flow', 'Screen', 'ActionbarAction', 'Tab', 'BottomSheetHeader', 'BottomSheet'])
   const fails: string[] = []
@@ -128,7 +138,7 @@ if (cmd === 'lint' || cmd === 'build') {
     if (!structural.has(el) && !regions.has(el)) fails.push(`runtime has no //#el ${el}`)
   }
   const examples = [...doc.matchAll(/```jsx\n([\s\S]*?)```/g)].map((m, k) => [`GENERATE.md example ${k + 1}`, m[1]])
-  for (const f of ['kill-switch.jsx']) examples.push([f, readFileSync(join(root, 'scripts/figma/kit/examples', f), 'utf8')])
+  for (const f of ['kill-switch.jsx']) examples.push([f, readFileSync(join(root, FILE.examples, f), 'utf8')])
   for (const [name, jsx] of examples) {
     const c = createCompiler()
     try {
@@ -144,10 +154,10 @@ if (cmd === 'lint' || cmd === 'build') {
   console.log(fails.length ? `${fails.length} problems` : 'selftest ok')
   process.exitCode = fails.length ? 1 : 0
 } else if (cmd === 'icons') {
-  const q = (file || '').toLowerCase()
+  const q = (args[1] || '').toLowerCase()
   const hits = Object.entries(icons).filter(([n]) => n.includes(q))
   for (const [n] of hits.slice(0, 60)) console.log(n)
-  console.log(`${hits.length} of ${Object.keys(icons).length}. Missing? search_design_system in "👁️ Lemonnade V3 → Icons", then add the key to docs/agent/icons.json.`)
+  console.log(`${hits.length} of ${Object.keys(icons).length}. Missing? search_design_system in "👁️ Lemonnade V3 → Icons", then add the key to icons.json (${FILE.icons}).`)
 } else if (cmd === 'jsx') {
   const raw = JSON.parse(readFileSync(file, 'utf8'))
   console.log(createCompiler().toJsx(typeof raw === 'string' ? JSON.parse(raw) : raw))

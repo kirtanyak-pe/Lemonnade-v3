@@ -21,7 +21,8 @@
     "check:portable": "node --no-warnings scripts/check-portable.ts",
     "figma": "node scripts/figma/bundle.ts",
     "screen": "node scripts/screen.ts",
-    "kit": "node --no-warnings scripts/figma/kit.ts"
+    "kit": "node --no-warnings scripts/figma/kit.ts",
+    "skill": "node --no-warnings scripts/build-skill.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

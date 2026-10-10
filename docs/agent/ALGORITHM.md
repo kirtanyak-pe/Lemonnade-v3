@@ -88,7 +88,14 @@ What the two sessions that generated screens from this repo did (Kill Switch, 25
 - **A FILL child silently turns a hugging auto-layout parent into a fixed one** (the body must only grow after the
   screen is measured), and **`findAllWithCriteria({types:['TEXT']})` can return instances** inside slots (filter by type).
 
-## 6. Session hygiene
+## 6. Distribution
+
+`npm run skill` packages the whole method as a standalone skill — `plugin/skills/lemonnade-l3-figma/` (SKILL.md from
+this brief, the kit CLI as plain ESM, compiler, runtime, outline, library keys, icons, examples; ~140 kB, zero
+dependencies) plus `plugin/lemonnade-l3-figma.zip` and a plugin marketplace (`.claude-plugin/marketplace.json`). The
+build runs the skill's own selftest from its folder, so a broken package never ships.
+
+## 7. Session hygiene
 
 - `.claude/settings.json` sets `autoCompactWindow: 250000`: compaction near 250k instead of ~1M — the average call
   re-reads roughly a third of what it did. Sessions started outside the repo can set the same in `~/.claude/settings.json`
@@ -96,7 +103,7 @@ What the two sessions that generated screens from this repo did (Kill Switch, 25
 - One task per session; a new flow starts fresh with GENERATE.md.
 - Big tool outputs (> ~30 kB) are persisted to files and must be re-read: print summaries, not dumps.
 
-## 7. Keep it improving
+## 8. Keep it improving
 
 1. After each run: one line in `docs/LEARNINGS.md` (what cost time, the number, the fix).
 2. Turn it into a rule: compiler lint/fix (`compile.js`), runtime behaviour (`runtime.js`), or a brief line (GENERATE.md).

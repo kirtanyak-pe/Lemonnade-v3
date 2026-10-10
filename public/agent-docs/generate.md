@@ -164,4 +164,4 @@ In-place migration that must keep the old layout (swap components, rebind tokens
 | `base "…" not found` | Build the base screen first (same file is fine) or check its name. |
 
 After the task: add one line to `docs/LEARNINGS.md` if something cost you time, and fix the kit (`scripts/figma/kit/`)
-or this file so the next agent doesn't pay for it again.
+or this file so the next agent doesn't pay for it again — then `npm run skill` so the shareable skill (`plugin/`) gets the fix too.

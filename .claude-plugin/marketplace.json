@@ -1,0 +1,13 @@
+{
+  "name": "lemonnade",
+  "owner": {
+    "name": "kirtanyak-pe"
+  },
+  "plugins": [
+    {
+      "name": "lemonnade",
+      "source": "./plugin",
+      "description": "Design production-ready Lemonnade V3 screens and flows in Figma."
+    }
+  ]
+}

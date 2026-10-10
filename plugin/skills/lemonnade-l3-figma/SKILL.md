@@ -1,12 +1,18 @@
-# Generate or redesign screens with the L3 kit
+---
+name: lemonnade-l3-figma
+description: Design production-ready mobile screens, flows and redesigns in Figma with the Lemonnade V3 (L3) design system (Lemonn, CS PRO, Kuber trading apps). Use when asked to design, generate, mock up or redesign app screens in Figma with Lemonnade / L3 components, or to turn a feature brief into Figma screens.
+---
 
-**Agents: for any "design screens / a flow / redesign old screens in Figma" task, read only this file.** It replaces
-reading DESIGN_SYSTEM.md, the USAGE files, PLAYBOOK and LEARNINGS for that job — the kit applies those rules for you.
-Open another doc only for a question this file doesn't answer, and then only that section (`grep -n`).
+# Lemonnade V3 (L3) — design screens in Figma
 
-Why it works (docs/agent/ALGORITHM.md has the numbers): you write short **L3 JSX** (the React component names and
-props), a local compiler checks it against the design rules and fixes what it can, and **one `use_figma` call builds
-the whole flow** from real ✅ Lemonnade V3 instances, then checks it and returns snapshots.
+Design production-ready mobile screens, flows and redesigns for the Lemonn / CS PRO / Kuber trading apps in Figma, from
+the ✅ Lemonnade V3 library. You write short **L3 JSX**; `node <skill>/scripts/kit.mjs build` checks it against the
+design rules and fixes what it can; **one `use_figma` call builds the whole flow** from real library instances, checks
+it and returns snapshots. `<skill>` = this skill's base directory (shown when the skill loads).
+
+**Needs:** Node 18+ (no install) · the Figma connector (`use_figma`) · a Figma file that has the **✅ Lemonnade V3**
+library enabled (Assets → Libraries) · the target page or section id (from its Figma link: `node-id=12-34` → `12:34`).
+Read only this file; everything the job needs is here or in the kit.
 
 ---
 
@@ -14,10 +20,10 @@ the whole flow** from real ✅ Lemonnade V3 instances, then checks it and return
 
 | # | Step | Tool | Budget |
 |---|---|---|---|
-| 0 | **Set up** — repo + this file. `git -C <repo> pull`; `npm ci` once if `node_modules` is missing. | Bash | 0 Figma calls |
-| 1 | **Intake.** New flow: list the screens (`"01 Positions"`, `"02 Settings"`…), what each shows, how they connect (push · bottom sheet · toast). Redesign: `npm run kit -- outline <node ids or URLs>` → paste the file it writes as **one** `use_figma` call → a text outline per old screen (§6). | — / 1 call | ≤ 1 call |
-| 2 | **Write `flow.jsx`** — every screen of the task in one file, in a work folder **outside the repo** (scratchpad). Content first: real-looking names, ₹ amounts, dates. | Write | 1 write |
-| 3 | **Compile** — `npm run kit -- build flow.jsx --parent <page or section id>`. Fix every ✖ (edit the JSX), read the ⚠, note the ✓ (already applied). | Bash | until 0 ✖ |
+| 0 | **Set up** — nothing to install. Get the target page / section id from the user's Figma link. | — | 0 Figma calls |
+| 1 | **Intake.** New flow: list the screens (`"01 Positions"`, `"02 Settings"`…), what each shows, how they connect (push · bottom sheet · toast). Redesign: `node <skill>/scripts/kit.mjs outline <node ids or URLs>` → paste the file it writes as **one** `use_figma` call → a text outline per old screen (§6). | — / 1 call | ≤ 1 call |
+| 2 | **Write `flow.jsx`** — every screen of the task in one file, in a work folder (scratchpad / temp — not inside any repo). Content first: real-looking names, ₹ amounts, dates. | Write | 1 write |
+| 3 | **Compile** — `node <skill>/scripts/kit.mjs build flow.jsx --parent <page or section id>`. Fix every ✖ (edit the JSX), read the ⚠, note the ✓ (already applied). | Bash | until 0 ✖ |
 | 4 | **Build** — paste each `flow*.figma.js` it wrote, **whole and unchanged**, as the `code` of one `use_figma` call (in order). | use_figma | 1 call per file (≈ 12–15 screens) |
 | 5 | **Review** — the result lists every screen (`id`, `size`, `issues`) plus a 0.5× snapshot of each. Fix by **editing `flow.jsx`**, then rebuild only those screens: `--only "03 Confirm,04 Done"` (rebuilt frames replace the old ones in place). | Edit + 3–4 | ≤ 2 rounds |
 | 6 | **Report** — what was built (screen names + ids), auto-fixes worth knowing, open questions (missing components, `PENDING` rules). | — | — |
@@ -34,13 +40,13 @@ shows a pattern with no L3 equivalent, or you're past the budgets above (somethi
   never screenshot old screens (use the outline), never read the kit's source.
 - **Images only from the build result** (already 0.5×). Need to look closer? `get_screenshot` one node, `maxDimension` ≤ 800.
 - **Long outputs land in files** (Bash > ~30 kB is persisted and must be re-read) — don't print big things.
-- **One task per session.** The repo's `.claude/settings.json` compacts at ~250k tokens; start a fresh session for a new flow.
+- **One task per session.** Start a fresh session for a new flow; compact long ones early.
 - **Tiny tweak** (one text, one toggle) on a kit-built screen? Still edit `flow.jsx` and rebuild that one screen —
   the JSX stays the source of truth and the kit keeps every rule.
 
 ## 3. L3 JSX — the language
 
-The **component elements and props are the React components'** (`src/components`, `docs/figma-code-map.md`). Props take
+The **component elements and props are the React components'** ([components](https://github.com/kirtanyak-pe/Lemonnade-v3/blob/main/src/components), [Figma ↔ code map](https://github.com/kirtanyak-pe/Lemonnade-v3/blob/main/docs/figma-code-map.md)). Props take
 `"text"`, `{number}`, `{true}`, `{[…]}`, `{{…}}` or `{<Element/>}`; a bare prop is `true`. Comments: `{/* … */}`.
 Layout helpers (`Flow Screen Section Stack Row List Text Icon KeyValue Stats Divider Placeholder`) exist only in the kit.
 
@@ -56,7 +62,7 @@ Layout helpers (`Flow Screen Section Stack Row List Text Icon KeyValue Stats Div
 | `<Text>` | `style` (`Heading/10–36` · `Label/10–18` · `Description/10–18`) · `color` · `align` · `lines` | Default `Description/14`, primary. Numbers are `Label` (or `Heading` when prominent ≥ 18), never `Description`. |
 | `<KeyValue>` | `label` · `value` · `valueStyle` · `change` (number or `{{ value, unit, percent, size }}`) · `align` | Label over value (+ PriceChange). |
 | `<Stats>` | `items={[["Invested","₹44,220.50"],…]}` · `columns` 2 · `card` (`false` = no grey card) | Grid of KeyValues in a filled card. |
-| `<Icon>` | `name` · `size` 24 · `color` | Material name from the Icons library (`npm run kit -- icons <q>`). |
+| `<Icon>` | `name` · `size` 24 · `color` | Material name from the Icons library (`node <skill>/scripts/kit.mjs icons <q>`). |
 | `<Divider>` / `<Placeholder>` | `inset` / `label` · `height` | Placeholder = grey box for real artwork you don't have (reported). |
 
 Colours (`color`, `bg`, `border`): `primary` `secondary` `tertiary` `disabled` `inverted` `up`/`profit` `down`/`loss`
@@ -139,29 +145,29 @@ the copy a real user would see — no lorem ipsum, no "Label".
 </Flow>
 ```
 
-More: an L1 portfolio screen with cards, stats and a positions section — `scripts/figma/kit/examples/kill-switch.jsx`.
+More: an L1 portfolio screen with cards, stats and a positions section — `<skill>/examples/kill-switch.jsx`.
 
 ## 6. Redesigning old screens
 
-1. `npm run kit -- outline <ids or URLs>` → paste `outline.figma.js` as one `use_figma` call (read-only). Each screen
+1. `node <skill>/scripts/kit.mjs outline <ids or URLs>` → paste `outline.figma.js` as one `use_figma` call (read-only). Each screen
    comes back as text: `⧉ instance props`, `"text"`, `▢ frame ↓gap p t/r/b/l`, repeats `×N`. Old D2 parts keep their names.
 2. Map what each block **does** to §4 (not how it looks): a grey stat block → `Stats`; a row of chips → `Tabs pill`; a
    bordered row with a chevron → `ListCell variant="card" iconRight`; an old CTA bar → `ButtonGroup`.
 3. Keep the copy and the order; drop decoration the system doesn't have; note anything with no L3 equivalent.
 4. Build the redesign next to the old section (`<Flow name="… · L3">`), never over it.
-In-place migration that must keep the old layout (swap components, rebind tokens) is a different job: PLAYBOOK §4.
+In-place migration that must keep the old layout (swap components, rebind tokens) is a different job: the repo's [PLAYBOOK §4](https://github.com/kirtanyak-pe/Lemonnade-v3/blob/main/docs/PLAYBOOK.md).
 
 ## 7. When something goes wrong
 
 | You see | Do |
 |---|---|
 | `✖ <X> isn't an L3 element` | Use §3 / §4. Missing for real → stop and ask. |
-| `✖ icon "x" isn't in docs/agent/icons.json` | `npm run kit -- icons <part>` for the right name. Not there → one `search_design_system` in "👁️ Lemonnade V3 → Icons", add the key to `icons.json`. |
+| `✖ icon "x" isn't in `<skill>/data/icons.json` | `node <skill>/scripts/kit.mjs icons <part>` for the right name. Not there → one `search_design_system` in "👁️ Lemonnade V3 → Icons", add the key to `icons.json`. |
 | `issues: truncated: "…"` | Shorten the label; move detail to `description`. |
 | `issues: off-screen` / `placeholder` | Too much in a `Row` (give one child `grow`, drop one) / a prop you left empty. |
-| `⚠ X` note drawn in a screen, or `errors` in the result | The kit failed on that element — the rest was built. Fix the JSX; if it's the kit, log it in docs/LEARNINGS.md. |
+| `⚠ X` note drawn in a screen, or `errors` in the result | The kit failed on that element — the rest was built. Fix the JSX; if it's the kit, report it. |
 | `time budget — not built: …` | Re-run with `--only` for those screens. |
 | `base "…" not found` | Build the base screen first (same file is fine) or check its name. |
 
-After the task: add one line to `docs/LEARNINGS.md` if something cost you time, and fix the kit (`scripts/figma/kit/`)
-or this file so the next agent doesn't pay for it again — then `npm run skill` so the shareable skill (`plugin/`) gets the fix too.
+After the task: if something cost you time or the kit got it wrong, say so in your report (the kit's source and its
+learnings log live in the [Lemonnade-v3 repo](https://github.com/kirtanyak-pe/Lemonnade-v3): `scripts/figma/kit/`, `docs/LEARNINGS.md`).
