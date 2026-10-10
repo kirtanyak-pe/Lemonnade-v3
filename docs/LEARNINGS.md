@@ -3,6 +3,25 @@
 One entry per lesson: **what happened · the number · the fix (and where it lives)**. Newest first. When a lesson
 repeats, turn it into data or a script option (docs/PLAYBOOK.md §9) and say so here.
 
+## 2026-10-10 — generating a 25-frame flow from scratch in Figma (Kill Switch, playground file)
+
+25 frames (screens, bottom sheets, OTP states) built only from L3 instances with a small helper library, 6 use_figma
+calls. Audit after: 0 unbound colours, 0 unstyled texts, 0 leftover placeholder copy.
+
+- **L3: Button stretches to the full width of its parent row** (pushed the Actionbar title out, and "Exit all" off a
+  two-button row). Fix: `primaryAxisSizingMode = 'AUTO'` on every button that isn't in a dock; dock buttons FILL.
+- **Sheet over a screen:** the Overlay's `container slot` accepts `primaryAxisAlignItems = 'MAX'` — the sheet sits at
+  the bottom with no spacer. Hide the sheet's `Buttons` dock (`visible = false`) for sheets with no action (loading,
+  menus).
+- **L3: list cell's default Icon-R is a down chevron** (11×7 vector). Navigation rows need `chevron_right` swapped into
+  `icon-r`. Candidate fix: make chevron-right the default in the library.
+- **List-cell labels are one line** — "Resume trading anytime from settings" truncated at 328. Write row labels for one
+  line; put the rest in the description.
+- **No OTP component.** Used `L3: input field & text Box` (Default · Typed · Error · Success map onto empty · filled ·
+  incorrect · verified; verifying = Typed + Button ♻︎ Loading). A boxed 6-digit OTP input is a gap — propose it only if
+  it shows up in 3+ flows (PLAYBOOK §2).
+- **Re-sending the helper library each call** costs ~15k characters of the 50k budget; build several frames per call.
+
 ## 2026-10-10 — Density mode, fill containers, a duplicate variant
 
 - **Density without variants:** list cell padding is bound to a "📐 L3 → Density" collection (Compact / Breathable)
